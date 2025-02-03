@@ -1,9 +1,9 @@
 # webapp08: Aplicación web de subastas PujaHoy
 ## Entidades
 ### Usuario
-Guarda el rol, el id y si es usuario registrado guardará su reputación y su método de pago.
+Guarda el rol, el id y si es usuario registrado guardará su reputación, su método de pago y sus productos públicados.
 ### Producto
-Guarda el usuario que lo publica, todas las ofertas que se realizan sobre el, la transacción final, la hora inicial y final, el precio inicial, los datos del producto (imagen, nombre, etc) y el estado de este (sin verificar, verificado, terminado y vetado).
+Guarda todas las ofertas que se realizan sobre el, la transacción final, la hora inicial y final, el precio inicial, los datos del producto (imagen, nombre, etc) y el estado de este (sin verificar, verificado, terminado y vetado).
 ### Oferta
 Guardará el precio de la puja, la hora a la que se realiza, el usuario que la efectua y el identificador del producto.
 ### Transacción
