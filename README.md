@@ -1,6 +1,6 @@
 # webapp08
 # Aplicación web de subastas "PujaHoy"
-## Integrantes:
+## Integrantes
 ### Jorge Andrés Echevarría j.andres.2022@alumnos.urjc.es jae9104
 ### Arturo Enrique Gutierrez Mirandona ae.gutierrez.2022@alumnos.urjc.es arturox2500
 ### Iván Gutiérrez González i.gutierrez.2022@alumnos.urjc.es IvanGutierrrez
