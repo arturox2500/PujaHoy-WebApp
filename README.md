@@ -33,4 +33,4 @@ Los usuarios podrán consultar los gráficos que muestran el historial de oferta
 La aplicación web utilizará Auth0 para la gestión de autentificación y autorización.
 ### Algoritmo o consulta avanzada:
 Al ver los productos publicados se mostrarán en orden según la valoración que tenga el usuario que lo publica.
-# ![Diagrama de la base de datos de la aplicación](webapp08/imagenes/DAW_BBDD.png)
+# ![Diagrama de la base de datos de la aplicación](imagenes/DAW_BBDD.png)
