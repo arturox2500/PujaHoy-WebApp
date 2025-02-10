@@ -2188,3 +2188,102 @@ textarea.input {
     margin-top: 10px;
   }
 }
+
+
+/* Card padding for larger screens */
+.card.text-center {
+  padding: 2em;
+}
+
+/* Card body padding */
+.card-body {
+  padding: 2em;
+}
+
+/* Image adjustments */
+img.rounded-circle {
+  margin-bottom: 1em;
+}
+
+/* Flex alignment for the row gutters */
+.row.gutters-sm {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; /* Allow wrapping of items on small screens */
+  padding-bottom: 3em;
+}
+
+/* Adjust column size on small screens */
+.col-md-4 {
+  margin-bottom: 1em;
+}
+
+/* Adjusting the h5 padding for bids-auctions section */
+.row.bids-auctions h5 {
+  padding-top: 0.8em;
+}
+
+/* Hover effect for cards */
+.hover-card {
+  transition: background-color 0.3s ease;
+}
+
+.hover-card:hover {
+  background-color: #f1f1f1; /* Light grey color on hover */
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Profile button section padding */
+.text-left.mt-3.profile {
+  padding-top: 5em;
+}
+
+/* Responsive tweaks for mobile devices */
+@media (max-width: 768px) {
+  .row.gutters-sm {
+    flex-direction: column; /* Stack elements vertically on smaller screens */
+  }
+
+  .card.text-center {
+    padding: 1em; /* Reduce padding inside cards on smaller screens */
+  }
+
+  .card-body {
+    padding: 1.5em; /* Adjust padding for smaller screens */
+  }
+
+  .text-left.mt-3.profile {
+    padding-top: 2em; /* Adjust padding for logout button section */
+  }
+
+  .col-md-4 {
+    width: 100%; /* Make the columns take full width on smaller screens */
+    margin-bottom: 1em; /* Add margin between cards */
+  }
+  
+  .breadcrumb {
+    font-size: 0.9em; /* Smaller breadcrumb font on mobile */
+  }
+
+  .col-md-8.card{
+    width: 75%;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Further adjustments for very small screens (phones) */
+  .card.text-center {
+    padding: 0.8em; /* Reduce card padding for smaller screens */
+  }
+}
+
+.user-details-title{
+  text-align: center;
+}
+
+.card.mt-3{
+  text-align: justify;
+}
