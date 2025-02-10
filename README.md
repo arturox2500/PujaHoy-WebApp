@@ -5,6 +5,7 @@
 ### Arturo Enrique Gutierrez Mirandona ae.gutierrez.2022@alumnos.urjc.es arturox2500
 ### Iván Gutiérrez González i.gutierrez.2022@alumnos.urjc.es IvanGutierrrez
 ### Víctor Bartolomé Letosa v.bartolome.2022@alumnos.urjc.es victorino2324
+### Miguel Pradillo Bartolomé	m.pradillo.2020@alumnos.urjc.es	MikePradiBart
 ## Aspectos principales
 ### Entidades:
 #### Usuario
