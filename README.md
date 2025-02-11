@@ -53,7 +53,7 @@ Al ver los productos publicados se mostrarán en orden según la valoración que
 ## Imagen Your Winning Bids y Imagen Your products
 ![index](imagenes/YourWinningsBids.png)
 ## Diagrama de navegación
-![index](imagenes/DiagramaPaginas.png)
+![index](imagenes/DiagramaPagina.png)
 
 Aclaraciones:
 -> Flechas amarillas = todos los usuarios
