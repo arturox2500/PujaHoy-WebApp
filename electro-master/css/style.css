@@ -2330,3 +2330,6 @@ a {
 .card.mt-3{
   text-align: justify;
 }
+#product-images{
+  display: none;
+}
