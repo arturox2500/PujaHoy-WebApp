@@ -43,7 +43,7 @@ Al ver los productos publicados se mostrarán en orden según la valoración que
 ## Imagen Product
 ![Product](imagenes/CapturaProduct.jpg)
 ## Imagen Login
-![Login](imagenes/CapturaLogin.png)
+![Login](imagenes/CapturaLogin.PNG)
 ## Imagen Profile
 ![Profile](imagenes/Profile.png)
 ## Imagen New Auction
@@ -51,6 +51,6 @@ Al ver los productos publicados se mostrarán en orden según la valoración que
 ## Imagen Edit Profile
 ![index](imagenes/EditProfile.png)
 ## Imagen Your Winning Bids y Imagen Your products
-![index](imagenes/YourWinningBids.png)
+![index](imagenes/YourWinningsBids.png)
 ## Diagrama de navegación
 ![index](imagenes/DiagramaPaginas.png)
