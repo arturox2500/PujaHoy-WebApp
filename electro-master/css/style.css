@@ -1903,14 +1903,57 @@ textarea.input {
   color: #D10024;
 }
 
-.order-details .payment-method {
-  margin: 30px 0px;
+.upload-container {
+  text-align: center;
+  padding: 20px;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
 }
 
-.order-details .order-submit {
-  display: block;
-  margin-top: 30px;
+.custom-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #d32f2f; /* Rojo similar al botón */
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 30px; /* Bordes redondeados */
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
 }
+
+.custom-upload-btn:hover {
+  background-color: #b71c1c; /* Rojo más oscuro al pasar el ratón */
+}
+
+.icon-upload {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url('https://img.icons8.com/ios-filled/50/ffffff/upload.png'); /* Ícono blanco */
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.image-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.image-preview img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+
 
 /*=========================================================
 	10 -> NEWSLETTER
