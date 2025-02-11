@@ -36,3 +36,21 @@ La aplicación web utilizará Auth0 para la gestión de autentificación y autor
 Al ver los productos publicados se mostrarán en orden según la valoración que tenga el usuario que lo publica.
 ## Diagrama de la base de datos de la aplicación
 ![Diagrama de la base de datos de la aplicación](imagenes/DAW_BBDD.png)
+## Imagen index
+![index](imagenes/Index.png)
+## Imagen Store
+![Store](imagenes/Store.png)
+## Imagen Product
+![Product](imagenes/CapturaProduct.jpg)
+## Imagen Login
+![Login](imagenes/CapturaLogin.png)
+## Imagen Profile
+![Profile](imagenes/Profile.png)
+## Imagen New Auction
+![New Auction](imagenes/NewAuction.png)
+## Imagen Edit Profile
+![index](imagenes/EditProfile.png)
+## Imagen Your Winning Bids y Imagen Your products
+![index](imagenes/YourWinningBids.png)
+## Diagrama de navegación
+![index](imagenes/DiagramaPaginas.png)
