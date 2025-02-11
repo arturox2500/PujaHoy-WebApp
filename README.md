@@ -59,7 +59,7 @@ Aclaraciones:
 -> Flechas amarillas = todos los usuarios
 -> Flechas azules = usuarios registrados
 
-Todos los ususarios son capaces de acceder a las paginas de Index, Store y Product y serán vistas de igual manera. 
+Todos los ususarios son capaces de acceder a las paginas de Index, Store y Product, excepto que la última mostrará unos botones u otros según el tipo de usuario. 
 
 En el caso de la pagina Profile podrán acceder todos los tipos de usuario pero con pequeñas diferencias en la presentación, por ejemplo, los usuarios registrados tendran a acceso a los botones para acceder a las paginas Add Auction, Your Winning Bids, Your Products y Edit Profile, los usuarios no registrados podrán ver la informacion (no privada) de los usuarios registrados si acceden a su perfil desde sus publicaciones y no tendran acceso a los botones que pertenecen a las acciones de los usuarios registrados, finalmente, los administradores podrán ver la información de los usuarios registrados y tendran acceso a un botón para bloquear a dicho usuario en caso de conductas inapropiadas.
 
