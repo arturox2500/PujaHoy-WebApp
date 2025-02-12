@@ -53,11 +53,14 @@ Al ver los productos publicados se mostrarán en orden según la valoración que
 ## Imagen Your Winning Bids y Imagen Your products
 ![index](imagenes/YourWinningsBids.png)
 ## Diagrama de navegación
-![index](imagenes/DiagramaPaginas.png)
+![index](imagenes/DiagramaPantallas.png)
 
 Aclaraciones:
+
 Flechas amarillas = todos los usuarios
+
 Flechas verdes = administradores y usuarios registrados
+
 Flechas azules = usuarios registrados
 
 Todos los ususarios son capaces de acceder a las paginas de Index, Store y Product y se mostrarán igual a todos excepto la última, que mostrará unos botones u otros según el tipo de usuario. 
