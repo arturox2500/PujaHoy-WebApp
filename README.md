@@ -54,6 +54,7 @@ Usuario registrado que quiere comprar: Le saldrá el botón "Place a bid" para h
 Administrador: Tendrá acceso a los botones "Seller" y "Delete".
 
 Y como aclaración las Reviews mostradás son del perfil del usuario, realizadas por aquellos usuarios que hayan comprado productos suyos en alguna ocasión.
+
 ![Product](imagenes/CapturaProduct.jpg)
 ### Imagen Login
 ![Login](imagenes/CapturaLogin.PNG)
@@ -67,6 +68,7 @@ Usuario registrado que accede a su propia cuenta: podrá ver toda la informació
 Usuario registrado que accede a la cuenta de otro usuario: tendrá el mismo acceso que un usuario no registrado más información de contacto como "Email" y/o "Phone".
 
 Administrador: Tendrá acceso a todos los datos y solo al botón de "Ban User" y "Your Auctions" para banear al usuario o eliminar alguno de sus productos.
+
 ![Profile](imagenes/Profile.png)
 ### Imagen New Auction
 ![New Auction](imagenes/NewAuction.png)
@@ -74,6 +76,7 @@ Administrador: Tendrá acceso a todos los datos y solo al botón de "Ban User" y
 ![Edit Porfile](imagenes/EditProfile.png)
 ### Imagen Your Winning Bids y Imagen Your products
 Está página se divirá en dos, según la acción que realize el usuario registrado en su perfil, ya sea ver sus apuestas ganadas  o sus productos publicados (está página también la podrá ver un admionistrador) mostrando el botón de "Rate" y "Eliminate" respectivamente.
+
 ![Your winnigns bids y Your products](imagenes/YourWinningsBids.png)
 ### Diagrama de navegación
 ![Diagrama de pantallas](imagenes/DiagramaPantallas.png)
