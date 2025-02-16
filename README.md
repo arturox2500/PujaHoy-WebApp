@@ -36,35 +36,45 @@ La aplicación web utilizará Auth0 para la gestión de autentificación y autor
 Al ver los productos publicados se mostrarán en orden según la valoración que tenga el usuario que lo publica.
 ## Diagrama de la base de datos de la aplicación
 ![Diagrama de la base de datos de la aplicación](imagenes/DAW_BBDD.png)
-## Imagen index
+## Imagenes
+A continuación explicaremos las páginas de nuestra web, en caso de ser necesario, según el tipo de usuario que acceda a ellas. En todas las páginas en caso de ser un usuario no registrado el boton de My Account se sustituíria por el de Log in para registrarse.
+### Imagen index
 ![index](imagenes/Index.png)
-## Imagen Store
+### Imagen Store
 ![Store](imagenes/Store.png)
-## Imagen Product
+### Imagen Product
+En está pagina saldrán unos botones u otros según quien acceda a ella:
+Usuario no registrado: solo le saldrá el botón de "Seller" para ir a al perfil del vendedor.
+Usuario registrado que posee el producto: le saldrá la opción de eliminarlo con el botón "Delete".
+Usuario registrado que quiere comprar: Le saldrá el botón "Place a bid" para hacer una oferta y el botón "Seller" antes mencionado.
+Administrador: Tendrá acceso a los botones "Seller" y "Delete".
+Y como aclaración las Reviews mostradás son del perfil del usuario, realizadas por aquellos usuarios que hayan comprado productos suyos en alguna ocasión.
 ![Product](imagenes/CapturaProduct.jpg)
-## Imagen Login
+### Imagen Login
 ![Login](imagenes/CapturaLogin.PNG)
-## Imagen Profile
+### Imagen Profile
+En la pagina del perfil se mostra´ra más o menos información y se podrán realizar ciertas acciones según tipo de usuario:
+Usuario no registrado: solo podrá ver la información de "Full Name", "User" y "User Rating" y no podrá realizar ninguna acción.
+Usuario registrado que accede a su propia cuenta: podrá ver toda la información y tendrá acceso a todas las funciones menos la del botón "Ban User".
+Usuario registrado que accede a la cuenta de otro usuario: tendrá el mismo acceso que un usuario no registrado más información de contacto como "Email" y/o "Phone".
+Administrador: Tendrá acceso a todos los datos y solo al botón de "Ban User" y "Your Auctions" para banear al usuario o eliminar alguno de sus productos.
 ![Profile](imagenes/Profile.png)
-## Imagen New Auction
+### Imagen New Auction
 ![New Auction](imagenes/NewAuction.png)
-## Imagen Edit Profile
-![index](imagenes/EditProfile.png)
-## Imagen Your Winning Bids y Imagen Your products
-![index](imagenes/YourWinningsBids.png)
-## Diagrama de navegación
-![index](imagenes/DiagramaPantallas.png)
+### Imagen Edit Profile
+![Edit Porfile](imagenes/EditProfile.png)
+### Imagen Your Winning Bids y Imagen Your products
+Está página se divirá en dos, según la acción que realize el usuario registrado en su perfil, ya sea ver sus apuestas ganadas  o sus productos publicados (está página tanmién la podrá ver un admionistrador) mostrando el botón de "Rate" y "Eliminate" respectivamente.
+![Your winnigns bids y Your products](imagenes/YourWinningsBids.png)
+### Diagrama de navegación
+![Diagrama de pantallas](imagenes/DiagramaPantallas.png)
 
 Aclaraciones:
 
-Flechas amarillas = todos los usuarios
+Flechas amarillas = todos los usuarios.
 
-Flechas verdes = administradores y usuarios registrados
+Flechas verdes = administradores y usuarios registrados quie acceden a su perfil.
 
-Flechas azules = usuarios registrados
-
-Todos los ususarios son capaces de acceder a las paginas de Index, Store y Product y se mostrarán igual a todos excepto la última, que mostrará unos botones u otros según el tipo de usuario. 
-
-En el caso de la pagina Profile podrán acceder todos los tipos de usuario pero con pequeñas diferencias en la presentación, por ejemplo, los usuarios registrados tendran a acceso a los botones para acceder a las paginas Add Auction, Your Winning Bids, Your Products y Edit Profile, los usuarios no registrados podrán ver la informacion (no privada) de los usuarios registrados si acceden a su perfil desde sus publicaciones y no tendran acceso a los botones que pertenecen a las acciones de los usuarios registrados, finalmente, los administradores podrán ver la información de los usuarios registrados y tendran acceso a un botón para bloquear a dicho usuario en caso de conductas inapropiadas.
+Flechas azules = usuarios registrados ajenos a la perfil.
 
 
