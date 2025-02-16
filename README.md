@@ -44,19 +44,28 @@ A continuación explicaremos las páginas de nuestra web, en caso de ser necesar
 ![Store](imagenes/Store.png)
 ### Imagen Product
 En está pagina saldrán unos botones u otros según quien acceda a ella:
+
 Usuario no registrado: solo le saldrá el botón de "Seller" para ir a al perfil del vendedor.
+
 Usuario registrado que posee el producto: le saldrá la opción de eliminarlo con el botón "Delete".
+
 Usuario registrado que quiere comprar: Le saldrá el botón "Place a bid" para hacer una oferta y el botón "Seller" antes mencionado.
+
 Administrador: Tendrá acceso a los botones "Seller" y "Delete".
+
 Y como aclaración las Reviews mostradás son del perfil del usuario, realizadas por aquellos usuarios que hayan comprado productos suyos en alguna ocasión.
 ![Product](imagenes/CapturaProduct.jpg)
 ### Imagen Login
 ![Login](imagenes/CapturaLogin.PNG)
 ### Imagen Profile
 En la pagina del perfil se mostra´ra más o menos información y se podrán realizar ciertas acciones según tipo de usuario:
+
 Usuario no registrado: solo podrá ver la información de "Full Name", "User" y "User Rating" y no podrá realizar ninguna acción.
+
 Usuario registrado que accede a su propia cuenta: podrá ver toda la información y tendrá acceso a todas las funciones menos la del botón "Ban User".
+
 Usuario registrado que accede a la cuenta de otro usuario: tendrá el mismo acceso que un usuario no registrado más información de contacto como "Email" y/o "Phone".
+
 Administrador: Tendrá acceso a todos los datos y solo al botón de "Ban User" y "Your Auctions" para banear al usuario o eliminar alguno de sus productos.
 ![Profile](imagenes/Profile.png)
 ### Imagen New Auction
@@ -64,7 +73,7 @@ Administrador: Tendrá acceso a todos los datos y solo al botón de "Ban User" y
 ### Imagen Edit Profile
 ![Edit Porfile](imagenes/EditProfile.png)
 ### Imagen Your Winning Bids y Imagen Your products
-Está página se divirá en dos, según la acción que realize el usuario registrado en su perfil, ya sea ver sus apuestas ganadas  o sus productos publicados (está página tanmién la podrá ver un admionistrador) mostrando el botón de "Rate" y "Eliminate" respectivamente.
+Está página se divirá en dos, según la acción que realize el usuario registrado en su perfil, ya sea ver sus apuestas ganadas  o sus productos publicados (está página también la podrá ver un admionistrador) mostrando el botón de "Rate" y "Eliminate" respectivamente.
 ![Your winnigns bids y Your products](imagenes/YourWinningsBids.png)
 ### Diagrama de navegación
 ![Diagrama de pantallas](imagenes/DiagramaPantallas.png)
