@@ -1,5 +1,7 @@
 package com.webapp08.pujahoy.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,4 +14,8 @@ public class UsuarioService {
     @Autowired
 	private UsuarioRepository repository;
     
+    public Optional<Usuario> findById(String id) {
+		return repository.findById(id);
+	}
+
 }
