@@ -43,7 +43,7 @@ public class UsuarioController {
     @GetMapping("/usuario/banear")
     public String banearUsuario(){
 
-        return "deleteProfile"; //Falta crear la pagina de confirmación
+        return "banedProfile";
     }
 
     @GetMapping("/usuario/NuevoProducto")
@@ -55,7 +55,7 @@ public class UsuarioController {
     @GetMapping("/usuario/verProductos")
     public String verProductos(){
 
-        return "YourAuctions"; //Falta crear la página específica de tus productos
+        return "YourAuctions";
     }
 
     @GetMapping("/usuario/verCompras")
