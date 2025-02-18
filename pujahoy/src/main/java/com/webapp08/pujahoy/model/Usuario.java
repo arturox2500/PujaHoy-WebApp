@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class Usuario{
+public class Usuario{//Hola
     
     @Id
     private String id;
