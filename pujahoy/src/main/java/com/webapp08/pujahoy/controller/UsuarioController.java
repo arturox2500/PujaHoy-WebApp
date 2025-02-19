@@ -19,18 +19,32 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping("/usuario/{id}") //Falta el modificarlo para q vaya por sesión
-    public String usuario(Model model, @PathVariable String id){//HttpSesion sesion) {
+    public String verTuPerfilUsuario(Model model, @PathVariable String id){//HttpSesion sesion) {
         Optional<Usuario> user = usuarioService.findById(id);
 		if (user.isPresent()) {
             model.addAttribute("Usuario",user.get());
 			model.addAttribute("nombre", user.get().getNombre());
-            model.addAttribute("nombreVisible", user.get().getNombreVisible());
             model.addAttribute("reputacion", user.get().getReputacion());
-            model.addAttribute("contacto", user.get().getContacto());
-            model.addAttribute("descripcion", user.get().getDescripcion());
+            model.addAttribute("admin", false);
 			return "profile";
 		} else {
-			return "error"; //Falta crear página error
+            model.addAttribute("texto", "el usuario no existe");
+            return "pageError";
+		}
+    }
+
+    @GetMapping("/usuario/{id}") //Falta el modificarlo para q vaya por sesión
+    public String verPerfilAjeno(Model model, @PathVariable String id){//HttpSesion sesion) {
+        Optional<Usuario> user = usuarioService.findById(id);
+		if (user.isPresent()) {
+            model.addAttribute("Usuario",user.get());
+			model.addAttribute("nombre", user.get().getNombre());
+            model.addAttribute("reputacion", user.get().getReputacion());
+            model.addAttribute("admin", false);
+			return "profile";
+		} else {
+            model.addAttribute("texto", "el usuario no existe");
+            return "pageError";
 		}
     }
 
