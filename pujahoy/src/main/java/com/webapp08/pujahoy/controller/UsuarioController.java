@@ -34,7 +34,7 @@ public class UsuarioController {
 		}
     }
 
-    @GetMapping("/usuario/{id}") //Falta el modificarlo para q vaya por sesión
+    @GetMapping("/usuarios/{id}") //Falta el modificarlo para q vaya por sesión
     public String verPerfilAjeno(Model model, @PathVariable String id){//HttpSesion sesion) {
         Optional<Usuario> user = usuarioService.findById(id);
 		if (user.isPresent()) {
