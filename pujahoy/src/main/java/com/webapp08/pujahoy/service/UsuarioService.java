@@ -18,4 +18,8 @@ public class UsuarioService {
 		return repository.findById(id);
 	}
 
+	public void save(Usuario user) {
+		repository.save(user);
+	}
+
 }
