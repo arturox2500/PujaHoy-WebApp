@@ -1,20 +1,16 @@
 package com.webapp08.pujahoy.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Transaccion {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long producto_id;
 
     private String vendedor_id;
     private String comprador_id;
-    private long producto_id;
     private double coste;
 
     protected Transaccion(){
@@ -26,14 +22,6 @@ public class Transaccion {
         this.comprador_id = comprador_id;
         this.producto_id = producto_id;
         this.coste = coste;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getVendedor_id() {

@@ -21,7 +21,7 @@ public class Valoracion {
 
     }   
 
-    protected Valoracion(String vendedor_id, long producto_id, int puntuacion, String comentario){
+    public Valoracion(String vendedor_id, long producto_id, int puntuacion, String comentario){
         this.vendedor_id = vendedor_id;
         this.producto_id = producto_id;
         this.puntuacion = puntuacion;
