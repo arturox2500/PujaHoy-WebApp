@@ -143,6 +143,7 @@ public class UsuarioController {
             if (user.isPresent() && user1.isPresent()) {
                 if (user.get().getTipo().equals("Usuario registrado") && user1.get().getId().equals(user.get().getId())) {
                     model.addAttribute("id", id);
+                    model.addAttribute("imagen", product.get().getImagen());
                     return "ratingProduct";
                 } else {
                     model.addAttribute("texto", "este producto no es tuyo");
