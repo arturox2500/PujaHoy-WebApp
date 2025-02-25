@@ -1,12 +1,17 @@
 package com.webapp08.pujahoy.model;
 
+import java.util.ArrayList;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Usuario{//Hola
     
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
 
     private String nombre;
@@ -15,12 +20,15 @@ public class Usuario{//Hola
     private String tipo;
     private String descripcion;
     private String contacto;
+    private String pass;
+    private Boolean estatus;
+    private ArrayList<String> roles;
 
     protected Usuario(){
 
     }
 
-    public Usuario(String id, String nombre, String nombreVisible, int reputacion, String tipo, String descripcion, String contacto){
+    public Usuario(String id, String nombre, String nombreVisible, int reputacion, String tipo, String descripcion, String contacto, String pass, Boolean estatus, ArrayList<String> roles){
         this.id = id;
         this.nombre = nombre;
         this.nombreVisible = nombreVisible;
@@ -28,6 +36,10 @@ public class Usuario{//Hola
         this.tipo = tipo;
         this.descripcion = descripcion;
         this.contacto = contacto;
+        this.pass = pass;
+        this.estatus = estatus;
+        this.roles = new ArrayList<String>(roles);
+    
     }
 
     public String getId() {
@@ -36,6 +48,14 @@ public class Usuario{//Hola
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getPass(){
+        return this.pass;
+    }
+
+    public void setPass(String pass){
+        this.pass = pass;
     }
 
     public String getNombre() {
