@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background: #000;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #ff0000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #ff5959;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 id="form-title">Login</h2>
+        
+        <form id="user-form" action="/login" method="post">
+            <img style="max-width: 200px; margin-bottom: 15px" src="./img/logo.png"/>
+            <input type="email" name="email" id="email" placeholder="Email" required>
+            <input type="password" name="password" id="password" placeholder="Password" required>
+
+            <div id="register-fields" class="hidden">
+                <input type="text" id="nombre" name="nombre" placeholder="Nombre">
+                <input type="text" id="nombreVisible" name="nombreVisible" placeholder="Nombre Visible">
+                <input type="text" id="descripcion" name="descripcion" placeholder="Descripción">
+            </div>
+            
+            <button type="submit" id="submit-btn">Log In</button>
+        </form>
+        <button id="toggle-btn">¿No tienes cuenta? Regístrate</button>
+    </div>
+    <div>
+        {{#error}}
+            <p style="color: red;">{{error}}</p>
+        {{/error}}
+    </div>
+    <script>
+        const toggleBtn = document.getElementById('toggle-btn');
+        const formTitle = document.getElementById('form-title');
+        const userForm = document.getElementById('user-form');
+        const registerFields = document.getElementById('register-fields');
+        const submitBtn = document.getElementById('submit-btn');
+
+        let isRegister = false;
+
+        toggleBtn.addEventListener('click', function () {
+            isRegister = !isRegister;
+
+            if (isRegister) {
+                formTitle.innerText = "Registro";
+                userForm.action = "/register";
+                registerFields.classList.remove("hidden");
+                submitBtn.innerText = "Registrarse";
+                toggleBtn.innerText = "¿Ya tienes cuenta? Inicia sesión";
+            } else {
+                formTitle.innerText = "Login";
+                userForm.action = "/login";
+                registerFields.classList.add("hidden");
+                submitBtn.innerText = "Log In";
+                toggleBtn.innerText = "¿No tienes cuenta? Regístrate";
+            }
+        });
+    </script>
+</body>
+</html>
+
+

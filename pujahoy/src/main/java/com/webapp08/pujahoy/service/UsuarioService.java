@@ -14,7 +14,7 @@ public class UsuarioService {
     @Autowired
 	private UsuarioRepository repository;
     
-    public Optional<Usuario> findById(String id) {
+    public Optional<Usuario> findById(Long id) {
 		return repository.findById(id);
 	}
 

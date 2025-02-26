@@ -7,11 +7,10 @@ import java.util.Optional;
 import com.webapp08.pujahoy.model.Usuario;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, String> {
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByContacto(String contacto);
 
-    Optional<Usuario> findByEmail(String email);
     
 }
    

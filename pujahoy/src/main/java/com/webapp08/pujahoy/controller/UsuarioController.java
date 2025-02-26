@@ -19,7 +19,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping("/usuario/{id}") //Falta el modificarlo para q vaya por sesión
-    public String usuario(Model model, @PathVariable String id){//HttpSesion sesion) {
+    public String usuario(Model model, @PathVariable Long id){//HttpSesion sesion) {
         Optional<Usuario> user = usuarioService.findById(id);
 		if (user.isPresent()) {
             model.addAttribute("Usuario",user.get());

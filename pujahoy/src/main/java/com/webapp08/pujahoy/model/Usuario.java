@@ -12,7 +12,7 @@ public class Usuario{//Hola
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Long id;
 
     private String nombre;
     private String nombreVisible;
@@ -28,26 +28,19 @@ public class Usuario{//Hola
 
     }
 
-    public Usuario(String id, String nombre, String nombreVisible, int reputacion, String tipo, String descripcion, String contacto, String pass, Boolean estatus, ArrayList<String> roles){
-        this.id = id;
+    public Usuario(String nombre, String nombreVisible, int reputacion, String descripcion, String contacto, String pass, Boolean estatus, ArrayList<String> roles){
         this.nombre = nombre;
         this.nombreVisible = nombreVisible;
         this.reputacion = reputacion;
-        this.tipo = tipo;
         this.descripcion = descripcion;
         this.contacto = contacto;
         this.pass = pass;
         this.estatus = estatus;
-        this.roles = new ArrayList<String>(roles);
-    
+        this.roles = new ArrayList<String>(roles);    
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public Long getId() {
+        return this.id;
     }
 
     public String getPass(){
@@ -104,6 +97,10 @@ public class Usuario{//Hola
 
     public void setContacto(String contacto) {
         this.contacto = contacto;
+    }
+
+    public ArrayList<String> getRoles(){
+        return this.roles;
     }
     
 }

@@ -1,15 +1,22 @@
 package com.webapp08.pujahoy.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import java.util.Optional;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.webapp08.pujahoy.repository.UsuarioRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import com.webapp08.pujahoy.model.Usuario;
 
 @Controller
@@ -23,25 +30,20 @@ public class LoginController {
 
     @GetMapping("/login")
     public String loginRedirect() {
-        return "loginPage"; // Devuelve la vista "loginPage.html"
+        return "login"; // Devuelve la vista "loginPage.html"
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestParam Usuario user) {
-        if (usuarioRepository.findByContacto(user.getContacto()).isPresent()) {
-            return ResponseEntity.badRequest().body("Email already in use");
+        public String register(@RequestParam String email, @RequestParam String password, @RequestParam String nombre, @RequestParam String nombreVisible, @RequestParam String tipo, @RequestParam String descripcion, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        if (usuarioRepository.findByContacto(email).isPresent()) {
+            redirectAttributes.addFlashAttribute("error", "Email ya registrado");
+            return "login"; // Redirige al formulario de registro con error
+            
         }
-        user.setPass(passwordEncoder.encode(user.getPass()));
-        usuarioRepository.save(user);
-        return ResponseEntity.ok("User registered successfully");
-    }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
-        Optional<Usuario> userOpt = usuarioRepository.findByEmail(email);
-        if (userOpt.isPresent() && passwordEncoder.matches(password, userOpt.get().getPass())) {
-            return ResponseEntity.ok("Login successful");
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-    }
+        Usuario user = new Usuario(nombre, nombreVisible, 0, descripcion, email, "", true, new ArrayList<>(Arrays.asList("USER")));
+        user.setPass(passwordEncoder.encode(password));
+        usuarioRepository.save(user);
+        return "index"; // Redirige a la página principal con sesión iniciada
+}
 }
