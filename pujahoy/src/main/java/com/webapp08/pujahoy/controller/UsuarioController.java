@@ -42,6 +42,14 @@ public class UsuarioController {
 
     @GetMapping("/usuario") //Cuando acceden a su perfil
     public String verTuPerfilUsuario(Model model, HttpSession sesion){
+        Long userId = (Long) sesion.getAttribute("id");
+        System.out.println("ID en sesión al acceder a /usuario: " + userId);
+
+        if (userId == null) { // Si no hay ID en la sesión, el usuario no está autenticado correctamente
+            model.addAttribute("texto", "No has iniciado sesión correctamente.");
+            return "pageError";
+        }
+        
         Optional<Usuario> user = usuarioService.findById((Long) sesion.getAttribute("id"));
 		if (user.isPresent()) {
             model.addAttribute("Usuario",user.get());

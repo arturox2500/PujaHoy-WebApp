@@ -32,11 +32,11 @@ public class Usuario{
 
     }
 
-    public Usuario(String nombre, int reputacion, String nombreVisible, String contacto, String descripcion, boolean activo, String encodedPassword, List<String> roles){
+    public Usuario(String nombre, int reputacion, String nombreVisible, String contacto, String descripcion, boolean activo, String encodedPassword, String... roles){
         this.nombre = nombre;
         this.reputacion = reputacion;
         this.encodedPassword = encodedPassword;
-        this.roles = roles;
+        this.roles = List.of(roles);
         this.contacto = contacto;
         this.descripcion = descripcion;
         this.activo = activo;
