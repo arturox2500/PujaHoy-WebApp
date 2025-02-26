@@ -2,50 +2,65 @@ package com.webapp08.pujahoy.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Transaccion {
 
     @Id
-    private long producto_id;
+    private long id;
 
-    private String vendedor_id;
-    private String comprador_id;
+    @OneToOne
+    private Producto producto;
+
+    @OneToOne
+    private Usuario vendedor;
+
+    @OneToOne
+    private Usuario comprador;
     private double coste;
 
     protected Transaccion(){
 
     }
 
-    protected Transaccion(String vendedor_id, String comprador_id, long producto_id, double coste){
-        this.vendedor_id = vendedor_id;
-        this.comprador_id = comprador_id;
-        this.producto_id = producto_id;
+    public Transaccion(Producto producto, Usuario vendedor, Usuario comprador, double coste){
+        this.producto = producto;
+        this.vendedor = vendedor;
+        this.comprador = comprador;
         this.coste = coste;
     }
 
-    public String getVendedor_id() {
-        return vendedor_id;
+    public long getId() {
+        return id;
     }
 
-    public void setVendedor_id(String vendedor_id) {
-        this.vendedor_id = vendedor_id;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getComprador_id() {
-        return comprador_id;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setComprador_id(String comprador_id) {
-        this.comprador_id = comprador_id;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
-    public long getProducto_id() {
-        return producto_id;
+    public Usuario getVendedor() {
+        return vendedor;
     }
 
-    public void setProducto_id(long producto_id) {
-        this.producto_id = producto_id;
+    public void setVendedor(Usuario vendedor) {
+        this.vendedor = vendedor;
+    }
+
+    public Usuario getComprador() {
+        return comprador;
+    }
+
+    public void setComprador(Usuario comprador) {
+        this.comprador = comprador;
     }
 
     public double getCoste() {
@@ -54,6 +69,5 @@ public class Transaccion {
 
     public void setCoste(double coste) {
         this.coste = coste;
-    }
-    
+    }    
 }

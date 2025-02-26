@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+
 import java.util.Date;
 
 //import org.springframework.stereotype.Indexed;
@@ -15,8 +18,12 @@ public class Oferta {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private long usuario_id;
-    private long producto_id;
+    @OneToOne
+    private Usuario usuario;
+
+    @ManyToOne
+    private Producto producto;
+
     private double coste;
     private Date hora;
 
@@ -24,46 +31,50 @@ public class Oferta {
 
     }
 
-    public Oferta(long usuario_id, long producto_id, double coste, Date hora){
-        this.usuario_id = usuario_id;
-        this.producto_id = producto_id;
+    public Oferta(Usuario usuario, Producto producto, double coste, Date hora){
+        this.usuario = usuario;
+        this.producto = producto;
         this.coste = coste;
         this.hora = hora;
     }
 
-    public long getId(){
+    public long getId() {
         return id;
     }
 
-    public long getUsuarioId(){
-        return usuario_id;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public long getProductoId(){
-        return producto_id;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public double getCoste(){
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    public double getCoste() {
         return coste;
     }
 
-    public Date getHora(){
-        return hora;
-    }
-
-    public void setUsuarioId(long usuario_id){
-        this.usuario_id = usuario_id;
-    }
-
-    public void setProductoId(long producto_id){
-        this.producto_id = producto_id;
-    }
-
-    public void setCoste(double coste){
+    public void setCoste(double coste) {
         this.coste = coste;
     }
 
-    public void setHora(Date hora){
+    public Date getHora() {
+        return hora;
+    }
+
+    public void setHora(Date hora) {
         this.hora = hora;
     }
 }

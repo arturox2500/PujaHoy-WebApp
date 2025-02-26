@@ -4,8 +4,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Producto {
@@ -19,19 +24,25 @@ public class Producto {
         private Date horaFin;
         private String estado;
         private Blob imagen;
-        private String vendedor_id;
+
+        @OneToMany(mappedBy="producto")
+        private List<Oferta> ofertas;
+
+        @ManyToOne
+        private Usuario vendedor;
     
         protected Producto(){
     
         }
 
-        protected Producto(String datos, Date horaIni, Date horaFin, String estado, Blob imagen, String vendedor_id){
+        public Producto(String datos, Date horaIni, Date horaFin, String estado, Blob imagen, Usuario vendedor){
             this.datos = datos;
             this.horaIni = horaIni;
             this.horaFin = horaFin;
             this.estado = estado;
             this.imagen = imagen;
-            this.vendedor_id = vendedor_id;
+            this.vendedor = vendedor;
+            this.ofertas = new ArrayList<Oferta>();
         }
 
         public long getId() {
@@ -82,14 +93,24 @@ public class Producto {
             this.imagen = imagen;
         }
 
-        public String getVendedor_id() {
-            return vendedor_id;
+        public Usuario getVendedor() {
+            return vendedor;
         }
 
-        public void setVendedor_id(String vendedor_id) {
-            this.vendedor_id = vendedor_id;
+        public void setVendedor(Usuario vendedor) {
+            this.vendedor = vendedor;
         }
 
-        
+        public List<Oferta> getOfertas() {
+            return ofertas;
+        }
+
+        public void setOfertas(List<Oferta> ofertas) {
+            this.ofertas = ofertas;
+        }
+
+        public void addOferta(Oferta oferta){
+            this.ofertas.add(oferta);
+        }
 
 }

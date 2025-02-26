@@ -42,7 +42,7 @@ public class UsuarioController {
 
     @GetMapping("/usuario") //Cuando acceden a su perfil
     public String verTuPerfilUsuario(Model model, HttpSession sesion){
-        Optional<Usuario> user = usuarioService.findById((String) sesion.getAttribute("id"));
+        Optional<Usuario> user = usuarioService.findById((Long) sesion.getAttribute("id"));
 		if (user.isPresent()) {
             model.addAttribute("Usuario",user.get());
             model.addAttribute("id",user.get().getId());
@@ -57,25 +57,25 @@ public class UsuarioController {
 		}
     }
 
-    @GetMapping("/usuario/{id}") //El id es el del producto
+    @GetMapping("/vendedor/{id}") //El id es el del producto
     //Doy por hecho q el valor asociado a la sesión es el id del usuario
     public String verPerfilAjeno(Model model, @PathVariable long id, HttpSession sesion) {
         Optional<Producto> product = productoService.findById(id);
 		if (product.isPresent()) {
-            String idUser = (String) sesion.getAttribute("id");
+            Long idUser = (Long) sesion.getAttribute("id");
             Optional<Usuario> user = usuarioService.findById(idUser);
             if (product.isPresent()) {
-                String tipo = user.get().getTipo();
+                String tipo = user.get().determinarTipoUsuario();
                 model.addAttribute("Usuario",user.get());
                 model.addAttribute("id",user.get().getId());
 			    model.addAttribute("nombre", user.get().getNombre());
                 model.addAttribute("reputacion", user.get().getReputacion());
-                if (tipo == "admin") {
+                if (tipo == "Administrador") {
                     model.addAttribute("admin", true);
                     model.addAttribute("registrado", false);
                 } else{ //Usuario registrado
                     model.addAttribute("admin", false);
-                    if (product.get().getVendedor_id() == idUser){ //Si el perfil es el suyo propio
+                    if (product.get().getVendedor().getId() == user.get().getId()){ //Si el perfil es el suyo propio
                         model.addAttribute("registrado", true);
                     } else{
                         model.addAttribute("registrado", false);
@@ -99,14 +99,14 @@ public class UsuarioController {
     }
 
     @PostMapping("/usuario/{id}/banear")
-	public String deletePost(Model model, @PathVariable String id, HttpSession sesion) {
+	public String deletePost(Model model, @PathVariable Long id, HttpSession sesion) {
         Optional<Usuario> user = usuarioService.findById(id);
-        String tipo = usuarioService.findById((String) sesion.getAttribute("id")).get().getTipo();
-		if (user.isPresent() && tipo.equals("admin")) {
-            user.get().setTipo("baned");
+        String tipo = usuarioService.findById((Long) sesion.getAttribute("id")).get().determinarTipoUsuario();
+		if (user.isPresent() && tipo.equals("Administrador")) {
+            user.get().setActivo(false);
             usuarioService.save(user.get());
 			return "banedProfile";
-		} else if (tipo.equals("admin")) {
+		} else if (tipo.equals("Administrador")) {
             model.addAttribute("texto", "no tienes permisos para banear a un usuario");
             return "pageError";
 		} else {
@@ -138,10 +138,10 @@ public class UsuarioController {
         Optional<Producto> product = productoService.findById(id);
         if (product.isPresent()) {
             Optional<Transaccion> trans = transaccionService.findByProducto_id(id);
-            Optional<Usuario> user = usuarioService.findById(trans.get().getComprador_id());
-            Optional<Usuario> user1 = usuarioService.findById((String) sesion.getAttribute("id"));
+            Optional<Usuario> user = usuarioService.findById(trans.get().getComprador().getId());
+            Optional<Usuario> user1 = usuarioService.findById((Long) sesion.getAttribute("id"));
             if (user.isPresent() && user1.isPresent()) {
-                if (user.get().getTipo().equals("Usuario registrado") && user1.get().getId().equals(user.get().getId())) {
+                if (user.get().determinarTipoUsuario().equals("Usuario Registrado") && user1.get().getId().equals(user.get().getId())) {
                     model.addAttribute("id", id);
                     model.addAttribute("imagen", product.get().getImagen());
                     return "ratingProduct";
@@ -170,7 +170,7 @@ public class UsuarioController {
         }
         Optional<Producto> product = productoService.findById(id);
         if (product.isPresent()) {
-            Valoracion val = new Valoracion(product.get().getVendedor_id(),product.get().getId(),puntuacion,comentario);
+            Valoracion val = new Valoracion(product.get().getVendedor(),product.get(),puntuacion,comentario);
             valoracionService.save(val);
             return "productRated";
         } else {

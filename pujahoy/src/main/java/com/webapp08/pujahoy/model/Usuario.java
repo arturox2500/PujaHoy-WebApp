@@ -1,34 +1,53 @@
 package com.webapp08.pujahoy.model;
 
+import java.util.List;
+
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-@Entity
+@Entity(name = "USERS")
 public class Usuario{
     
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     private String nombre;
     private int reputacion;
-    private String tipo;
+    private String nombreVisible;
+    private String contacto;
+    private String descripcion;
+    private boolean activo;
+
+    private String encodedPassword;
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	private List<String> roles;
 
     protected Usuario(){
 
     }
 
-    public Usuario(String id, String nombre, int reputacion, String tipo){
-        this.id = id;
+    public Usuario(String nombre, int reputacion, String nombreVisible, String contacto, String descripcion, boolean activo, String encodedPassword, List<String> roles){
         this.nombre = nombre;
         this.reputacion = reputacion;
-        this.tipo = tipo;
+        this.encodedPassword = encodedPassword;
+        this.roles = roles;
+        this.contacto = contacto;
+        this.descripcion = descripcion;
+        this.activo = activo;
+        this.nombreVisible = nombreVisible;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -48,12 +67,63 @@ public class Usuario{
         this.reputacion = reputacion;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getNombreVisible() {
+        return nombreVisible;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setNombreVisible(String nombreVisible) {
+        this.nombreVisible = nombreVisible;
     }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
+    public String getEncodedPassword() {
+        return encodedPassword;
+    }
+
+    public void setPass(String encodedPassword) {
+        this.encodedPassword = encodedPassword;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }    
+
+    public String getContacto() {
+        return contacto;
+    }
+
+    public void setContacto(String contacto) {
+        this.contacto = contacto;
+    }
+
+    public String determinarTipoUsuario() {
+        if (this.getRoles().contains("ADMIN")) {
+            return "Administrador";
+        } else if (this.getRoles().contains("USER")) {
+            return "Usuario Registrado";
+        } else {
+            return "Desconocido";
+        }
+    }
+    
     
 }
