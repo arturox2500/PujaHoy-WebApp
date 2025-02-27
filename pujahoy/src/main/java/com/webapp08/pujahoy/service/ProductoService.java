@@ -18,4 +18,12 @@ public class ProductoService {
 		return repository.findById(id);
 	}
 
+	public Optional<Producto> findByDatos(String id) {
+		return repository.findByDatos(id);
+	}	
+
+	public Producto save(Producto producto) {
+		return repository.save(producto);
+	}
+
 }
