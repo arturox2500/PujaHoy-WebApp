@@ -52,49 +52,70 @@ public class UsuarioController {
                 model.addAttribute("Usuario",user.get());
                 model.addAttribute("id",user.get().getId());
                 model.addAttribute("nombre", user.get().getNombre());
+                model.addAttribute("nombreVisible", user.get().getNombreVisible());
                 model.addAttribute("reputacion", user.get().getReputacion());
+                model.addAttribute("contacto", user.get().getContacto());
+                model.addAttribute("descripcion", user.get().getDescripcion());
                 model.addAttribute("admin", false);
-                model.addAttribute("registrado", true);
-                return "profile";
-            }
-        }
-		model.addAttribute("texto", "el usuario no existe o usted no esta autenticado");
-        return "pageError";
-    }
-
-    @GetMapping("/vendedor/{id}") //El id es el del producto
-    //Doy por hecho q el valor asociado a la sesión es el id del usuario
-    public String verPerfilAjeno(Model model, @PathVariable long id, HttpSession sesion) {
-        Optional<Producto> product = productoService.findById(id);
-		if (product.isPresent()) {
-            Long idUser = (Long) sesion.getAttribute("id");
-            Optional<Usuario> user = usuarioService.findById(idUser);
-            if (product.isPresent()) {
-                String tipo = user.get().determinarTipoUsuario();
-                model.addAttribute("Usuario",user.get());
-                model.addAttribute("id",user.get().getId());
-			    model.addAttribute("nombre", user.get().getNombre());
-                model.addAttribute("reputacion", user.get().getReputacion());
-                if (tipo == "Administrador") {
-                    model.addAttribute("admin", true);
+                if (!user.get().isActivo()) { //Si esta baneado
+                    model.addAttribute("baneado", true);
                     model.addAttribute("registrado", false);
-                } else{ //Usuario registrado
-                    model.addAttribute("admin", false);
-                    if (product.get().getVendedor().getId() == user.get().getId()){ //Si el perfil es el suyo propio
-                        model.addAttribute("registrado", true);
-                    } else{
-                        model.addAttribute("registrado", false);
-                    }
+                } else {
+                    model.addAttribute("baneado", false);
+                    model.addAttribute("registrado", true);
                 }
                 return "profile";
             } else {
-                model.addAttribute("texto", "perfil del vendedor no encontrado");
-                return "pageError";
+                model.addAttribute("texto", "el usuario no existe");
+            }
+        }
+		model.addAttribute("texto", "usted no esta autenticado");
+        return "pageError";
+    }
+
+    @GetMapping("/usuario/{id}") //El id es el del producto
+    //Doy por hecho q el valor asociado a la sesión es el id del usuario
+    public String verPerfilAjeno(Model model, @PathVariable String id, HttpServletRequest request) {
+        Optional<Producto> product = productoService.findByDatos(id);
+		if (product.isPresent()) {
+            Optional<Usuario> vendedor = usuarioService.findByProductos(product.get());
+            if (vendedor.isPresent()){
+                Principal principal = request.getUserPrincipal();
+                Optional<Usuario> user;
+                String tipo;
+                if (principal != null) { //Si esta autenticado
+                    String username = principal.getName(); // Obtiene el nombre de usuario
+                    user = usuarioService.findByNombre(username); // Busca en la base de datos
+                    tipo = user.get().determinarTipoUsuario();
+                    if (user.get().getId() == vendedor.get().getId()){ //Si el perfil es el suyo propio
+                        return "redirect:/usuario";
+                    }
+                } else {
+                    user = null;
+                    tipo = "";
+                }
+                model.addAttribute("registrado", false);
+                model.addAttribute("baneado", false);
+                model.addAttribute("Usuario",vendedor.get());
+                model.addAttribute("id",vendedor.get().getId());
+                model.addAttribute("nombre", vendedor.get().getNombre());
+                model.addAttribute("nombreVisible", vendedor.get().getNombreVisible());
+                model.addAttribute("reputacion", vendedor.get().getReputacion());
+                model.addAttribute("contacto", vendedor.get().getContacto());
+                model.addAttribute("descripcion", vendedor.get().getDescripcion());
+                if (tipo.equals("Administrador")) {
+                    model.addAttribute("admin", true);
+                } else{ //Usuario registrado
+                    model.addAttribute("admin", false);
+                }
+                return "profile";
+            } else {
+                model.addAttribute("texto", "el vendedor no existe");
             }
 		} else {
             model.addAttribute("texto", "el prodcuto no existe");
-            return "pageError";
 		}
+        return "pageError";
     }
 
     @GetMapping("/usuario/editar")
@@ -104,20 +125,31 @@ public class UsuarioController {
     }
 
     @PostMapping("/usuario/{id}/banear")
-	public String deletePost(Model model, @PathVariable Long id, HttpSession sesion) {
-        Optional<Usuario> user = usuarioService.findById(id);
-        String tipo = usuarioService.findById((Long) sesion.getAttribute("id")).get().determinarTipoUsuario();
-		if (user.isPresent() && tipo.equals("Administrador")) {
-            user.get().setActivo(false);
-            usuarioService.save(user.get());
-			return "banedProfile";
-		} else if (tipo.equals("Administrador")) {
-            model.addAttribute("texto", "no tienes permisos para banear a un usuario");
-            return "pageError";
-		} else {
-            model.addAttribute("texto", "el usuario no existe");
-            return "pageError";
+	public String deletePost(Model model, @PathVariable String id, HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        System.out.println("0");
+        if (principal != null){
+            Optional<Usuario> admin = usuarioService.findByNombre(principal.getName());
+            System.out.println("1");
+            Optional<Usuario> user = usuarioService.findById(Long.parseLong(id));
+            System.out.println("2");
+            String tipo = admin.get().determinarTipoUsuario();
+            System.out.println("3");
+            if (user.isPresent() && tipo.equals("Administrador")) {
+                user.get().setActivo(false);
+                System.out.println("4");
+                usuarioService.save(user.get());
+                System.out.println("5");
+                return "bannedProfile";
+            } else if (!tipo.equals("Administrador")) {
+                model.addAttribute("texto", "no tienes permisos para banear a un usuario");
+            } else {
+                model.addAttribute("texto", "el usuario no existe");
+            }
+        } else {
+            model.addAttribute("texto", "usted no esta autenticado");
         }
+        return "pageError";
 	}
 
     @GetMapping("/usuario/NuevoProducto")
