@@ -51,9 +51,13 @@
 							<p>Estado: {{producto.estado}}</p>
 							<p>{{producto.descripcion}}</p>
 							<div class="add-to-cart">
-                                {{#usuario_autenticado}}
-								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Place bid</button>
-                                {{#usuario_autenticado}}
+								{{#usuario_autenticado}}
+								<form action="/product/{{producto.id}}/place-bid" method="post">
+									<button type="submit" class="add-to-cart-btn">
+										<i class="fa fa-shopping-cart"></i> Place bid
+									</button>
+								</form>
+								{{/usuario_autenticado}}
 							</div>
 							<div class="add-to-cart">
 								<button class="add-to-cart-btn"> Seller</button>
