@@ -1,6 +1,13 @@
 package com.webapp08.pujahoy.model;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.List;
+
+import javax.sql.rowset.serial.SerialBlob;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
@@ -24,6 +31,7 @@ public class Usuario{
     private String contacto;
     private String descripcion;
     private boolean activo;
+    private Blob fotoPerfil;
 
     @OneToMany(mappedBy="vendedor",cascade = CascadeType.ALL)
     private List<Producto> productos;
@@ -47,6 +55,7 @@ public class Usuario{
         this.activo = activo;
         this.nombreVisible = nombreVisible;
         this.productos = null;
+        this.fotoPerfil = cargarFotoPerfilEstandar();
     }
 
     public Long getId() {
@@ -55,6 +64,10 @@ public class Usuario{
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Blob getFotoPerfil() {
+        return fotoPerfil;
     }
 
     public String getNombre() {
@@ -136,6 +149,16 @@ public class Usuario{
             return "Usuario Registrado";
         } else {
             return "Desconocido";
+        }
+    }
+
+    private Blob cargarFotoPerfilEstandar() {
+        try {
+            byte[] imagenBytes = Files.readAllBytes(Paths.get("src/main/resources/static/img/default-profile.jpg"));
+            return new SerialBlob(imagenBytes);
+        } catch (IOException | SQLException e) {
+            e.printStackTrace();
+            return null; // Si hay un error, deja el blob como null
         }
     }
     
