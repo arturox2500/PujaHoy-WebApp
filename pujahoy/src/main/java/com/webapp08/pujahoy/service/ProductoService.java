@@ -1,5 +1,6 @@
 package com.webapp08.pujahoy.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,10 @@ public class ProductoService {
 
 	public void DeleteById(long id_producto) {
         repository.deleteById(id_producto);
+    }
+
+    public List<Producto> obtenerTodosLosProductos() {
+        return repository.findAll(); 
     }
 
 }

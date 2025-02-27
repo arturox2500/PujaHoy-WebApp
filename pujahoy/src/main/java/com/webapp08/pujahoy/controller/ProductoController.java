@@ -2,6 +2,7 @@ package com.webapp08.pujahoy.controller;
 
 import java.security.Principal;
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class ProductoController {
 
     @Autowired
-    private ProductoService ProductoService;
+    private ProductoService productoService;
 
     @Autowired
     private UsuarioService usuarioService;
@@ -37,12 +38,21 @@ public class ProductoController {
     @Autowired
     private OfertaService OfertaService;
 
+
+    @GetMapping("/")
+    public String listarProductos(Model model) {    
+        List<Producto> productos = productoService.obtenerTodosLosProductos();
+        System.out.println(productos);
+        model.addAttribute("productos", productos); // Pasa los productos al modelo
+        return "index"; 
+    }
+
     @PostMapping("/product/{id_producto}/delete")
     public String delteProduct(Model model,@PathVariable long id_producto) {
-        Optional<Producto> product = ProductoService.findById(id_producto);
+        Optional<Producto> product = productoService.findById(id_producto);
         
         if (product.isPresent()) {
-            ProductoService.DeleteById(id_producto);
+            productoService.DeleteById(id_producto);
 			return "/";
 		} else {
             model.addAttribute("texto", "Error al borrar producto");
@@ -52,7 +62,7 @@ public class ProductoController {
     }
     @GetMapping("/producto/{id_producto}")
     public String mostrarProducto(@PathVariable long id_producto, Model model, HttpServletRequest request) {
-        Optional<Producto> productoOpt = ProductoService.findById(id_producto);
+        Optional<Producto> productoOpt = productoService.findById(id_producto);
         if (productoOpt.isPresent()) {
             Producto producto = productoOpt.get();
             model.addAttribute("producto", producto);
@@ -83,7 +93,7 @@ public class ProductoController {
     @PostMapping("/product/{id_producto}/place-bid")
     public String placeBid(@PathVariable long id_producto, HttpServletRequest request, Model model) {
         
-        Optional<Producto> productoOpt = ProductoService.findById(id_producto);
+        Optional<Producto> productoOpt = productoService.findById(id_producto);
         
         if (!productoOpt.isPresent()) {
             model.addAttribute("texto", "Producto no encontrado.");
@@ -124,7 +134,7 @@ public class ProductoController {
         producto.getOfertas().add(nuevaOferta); //añadimos oferta a la lista
 
         OfertaService.save(nuevaOferta);
-        ProductoService.save(producto);
+        productoService.save(producto);
 
         return "redirect:/producto/" + id_producto;
     }

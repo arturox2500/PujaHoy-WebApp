@@ -38,7 +38,9 @@ public class DataBaseInitializer {
 			userRepository.save(user3);
 	
 			Producto product1 = new Producto("Producto1","mola mucho",900,"En venta", user2);
+			Producto product2 = new Producto("Producto2","mola nada",840,"En venta", user3);
 
 			productoRepository.save(product1);
+			productoRepository.save(product2);
 	}
 }
