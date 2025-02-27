@@ -19,13 +19,13 @@ public class ProductoService {
 	}
 
 	public Optional<Producto> findByDatos(String id) {
-		return repository.findByDatos(id);
+		return repository.findByNombre(id);
 	}	
 
 	public Producto save(Producto producto) {
 		return repository.save(producto);
 	}
-	
+
 	public void DeleteById(long id_producto) {
         repository.deleteById(id_producto);
     }
