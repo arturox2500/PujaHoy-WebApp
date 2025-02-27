@@ -19,7 +19,9 @@ public class Producto {
         @GeneratedValue(strategy = GenerationType.AUTO)
         private long id;
     
-        private String datos;
+        private String nombre;
+        private String descripcion;
+        private double valorini;
         private Date horaIni;
         private Date horaFin;
         private String estado;
@@ -35,8 +37,10 @@ public class Producto {
     
         }
 
-        public Producto(String datos, String estado, Usuario vendedor){
-            this.datos = datos;
+        public Producto(String nombre,String descripcion,double valorini, String estado, Usuario vendedor){
+            this.nombre = nombre;
+            this.descripcion = descripcion;
+            this.valorini = valorini;
             this.horaIni = null;//horaIni;
             this.horaFin = null;//horaFin;
             this.estado = estado;
@@ -53,12 +57,30 @@ public class Producto {
             this.id = id;
         }
 
-        public String getDatos() {
-            return datos;
+        public String getNombre() {
+            return nombre;
         }
 
-        public void setDatos(String datos) {
-            this.datos = datos;
+        public void setNombre(String nombre) {
+            this.nombre = nombre;
+        }
+
+        
+        public String getDescripcion() {
+            return descripcion;
+        }
+
+        public void setDescripcion(String descripcion) {
+            this.descripcion = descripcion;
+        }
+
+       
+        public double getValorini() {
+            return valorini;
+        }
+
+        public void setValorini(double valorini) {
+            this.valorini = valorini;
         }
 
         public Date getHoraIni() {
