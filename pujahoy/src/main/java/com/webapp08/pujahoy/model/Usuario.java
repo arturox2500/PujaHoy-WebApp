@@ -2,12 +2,14 @@ package com.webapp08.pujahoy.model;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity(name = "USERS")
 public class Usuario{
@@ -22,6 +24,9 @@ public class Usuario{
     private String contacto;
     private String descripcion;
     private boolean activo;
+
+    @OneToMany(mappedBy="vendedor",cascade = CascadeType.ALL)
+    private List<Producto> productos;
 
     private String encodedPassword;
 
@@ -41,6 +46,7 @@ public class Usuario{
         this.descripcion = descripcion;
         this.activo = activo;
         this.nombreVisible = nombreVisible;
+        this.productos = null;
     }
 
     public Long getId() {
@@ -105,7 +111,15 @@ public class Usuario{
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
-    }    
+    }  
+    
+    public List<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
+    }
 
     public String getContacto() {
         return contacto;
