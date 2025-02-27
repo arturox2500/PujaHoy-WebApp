@@ -82,7 +82,7 @@ public class ProductoController {
     }  
     @PostMapping("/product/{id_producto}/place-bid")
     public String placeBid(@PathVariable long id_producto, HttpServletRequest request, Model model) {
-        // Buscar el producto
+        
         Optional<Producto> productoOpt = ProductoService.findById(id_producto);
         
         if (!productoOpt.isPresent()) {
@@ -92,12 +92,8 @@ public class ProductoController {
 
         Producto producto = productoOpt.get();
 
-        // Obtener el usuario autenticado
+        
         Principal principal = request.getUserPrincipal();
-        if (principal == null) {
-            model.addAttribute("texto", "Debes iniciar sesión para hacer una oferta.");
-            return "error";
-        }
 
         String username = principal.getName();
         Optional<Usuario> usuarioOpt = usuarioService.findByNombre(username);
@@ -109,19 +105,24 @@ public class ProductoController {
 
         Usuario usuario = usuarioOpt.get();
 
-        // Obtener la última oferta del producto desde la base de datos
         Oferta ultimaOferta = OfertaService.findLastOfferByProduct(id_producto);
 
-        // Determinar el nuevo precio de la oferta
-        double nuevoPrecio = (ultimaOferta != null) ? ultimaOferta.getCoste() + 10.0 : producto.getValorini();
+        double nuevoPrecio;
+        if(ultimaOferta != null){
+             nuevoPrecio = ultimaOferta.getCoste() + 10.0;
+        }else{//no tiene pujas a si que el valor inicial
+             nuevoPrecio = producto.getValorini();
+        }
 
-        // Crear y guardar la nueva oferta
-        Oferta nuevaOferta = new Oferta(usuario, producto, nuevoPrecio, new Date(id_producto));
+        //fecha actual
+        long actualTime = System.currentTimeMillis();
+        Date fechaActual = new Date(actualTime);
 
-        // Agregar la oferta a la lista de ofertas del producto
-        producto.getOfertas().add(nuevaOferta);
+        Oferta nuevaOferta = new Oferta(usuario, producto, nuevoPrecio, fechaActual);
 
-        // Guardar la oferta y actualizar el producto
+        
+        producto.getOfertas().add(nuevaOferta); //añadimos oferta a la lista
+
         OfertaService.save(nuevaOferta);
         ProductoService.save(producto);
 
