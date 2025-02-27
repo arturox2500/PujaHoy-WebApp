@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.webapp08.pujahoy.model.Producto;
 import com.webapp08.pujahoy.model.Usuario;
 import com.webapp08.pujahoy.repository.UsuarioRepository;
 
@@ -26,4 +27,7 @@ public class UsuarioService {
 		return repository.findByNombre(nombre);
 	}
 
+	public Optional<Usuario> findByProductos(Producto producto){
+		return repository.findByProductos(producto);
+	}
 }
