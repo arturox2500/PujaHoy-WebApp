@@ -35,12 +35,12 @@ public class Producto {
     
         }
 
-        public Producto(String datos, Date horaIni, Date horaFin, String estado, Blob imagen, Usuario vendedor){
+        public Producto(String datos, String estado, Usuario vendedor){
             this.datos = datos;
-            this.horaIni = horaIni;
-            this.horaFin = horaFin;
+            this.horaIni = null;//horaIni;
+            this.horaFin = null;//horaFin;
             this.estado = estado;
-            this.imagen = imagen;
+            this.imagen = null;//imagen;
             this.vendedor = vendedor;
             this.ofertas = new ArrayList<Oferta>();
         }
