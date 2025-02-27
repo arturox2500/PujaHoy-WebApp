@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
 import com.webapp08.pujahoy.repository.UsuarioRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,13 +29,8 @@ public class LoginController {
         return "login"; // Devuelve la vista "loginPage.html"
     }
 
-    @PostMapping("/login")
-    public String probarLogin() {
-        return "login"; // Devuelve la vista "loginPage.html"
-    }
-
     @PostMapping("/register")
-    public String register(@RequestParam String email, @RequestParam String password, @RequestParam String nombre, @RequestParam String nombreVisible, @RequestParam String tipo, @RequestParam String descripcion, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        public String register(@RequestParam String email, @RequestParam String password, @RequestParam String nombre, @RequestParam String nombreVisible, @RequestParam String tipo, @RequestParam String descripcion, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         if (usuarioRepository.findByContacto(email).isPresent()) {
             redirectAttributes.addFlashAttribute("error", "Email ya registrado");
             return "login"; // Redirige al formulario de registro con error
