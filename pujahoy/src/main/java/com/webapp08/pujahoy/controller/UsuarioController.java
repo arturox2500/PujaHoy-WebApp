@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+import java.security.Principal;
 import com.webapp08.pujahoy.model.Usuario;
 import com.webapp08.pujahoy.service.UsuarioService;
 import com.webapp08.pujahoy.model.Producto;
@@ -41,28 +43,23 @@ public class UsuarioController {
     //Para ver perfil falta el contacto q se saca de Auth0
 
     @GetMapping("/usuario") //Cuando acceden a su perfil
-    public String verTuPerfilUsuario(Model model, HttpSession sesion){
-        Long userId = (Long) sesion.getAttribute("id");
-        System.out.println("ID en sesión al acceder a /usuario: " + userId);
-
-        if (userId == null) { // Si no hay ID en la sesión, el usuario no está autenticado correctamente
-            model.addAttribute("texto", "No has iniciado sesión correctamente.");
-            return "pageError";
+    public String verTuPerfilUsuario(Model model,  HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        if (principal != null) {
+            String username = principal.getName(); // Obtiene el nombre de usuario
+            Optional<Usuario> user = usuarioService.findByNombre(username); // Busca en la base de datos
+            if (user.isPresent()) {
+                model.addAttribute("Usuario",user.get());
+                model.addAttribute("id",user.get().getId());
+                model.addAttribute("nombre", user.get().getNombre());
+                model.addAttribute("reputacion", user.get().getReputacion());
+                model.addAttribute("admin", false);
+                model.addAttribute("registrado", true);
+                return "profile";
+            }
         }
-        
-        Optional<Usuario> user = usuarioService.findById((Long) sesion.getAttribute("id"));
-		if (user.isPresent()) {
-            model.addAttribute("Usuario",user.get());
-            model.addAttribute("id",user.get().getId());
-			model.addAttribute("nombre", user.get().getNombre());
-            model.addAttribute("reputacion", user.get().getReputacion());
-            model.addAttribute("admin", false);
-            model.addAttribute("registrado", true);
-			return "profile";
-		} else {
-            model.addAttribute("texto", "el usuario no existe");
-            return "pageError";
-		}
+		model.addAttribute("texto", "el usuario no existe o usted no esta autenticado");
+        return "pageError";
     }
 
     @GetMapping("/vendedor/{id}") //El id es el del producto

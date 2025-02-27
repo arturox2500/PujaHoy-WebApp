@@ -22,4 +22,8 @@ public class UsuarioService {
 		repository.save(user);
 	}
 
+	public Optional<Usuario> findByNombre(String nombre) {
+		return repository.findByNombre(nombre);
+	}
+
 }
