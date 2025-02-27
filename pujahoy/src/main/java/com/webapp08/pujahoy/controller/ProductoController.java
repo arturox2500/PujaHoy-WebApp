@@ -1,6 +1,7 @@
 package com.webapp08.pujahoy.controller;
 
 import java.security.Principal;
+import java.sql.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.webapp08.pujahoy.model.Oferta;
 import com.webapp08.pujahoy.model.Producto;
 import com.webapp08.pujahoy.model.Usuario;
+import com.webapp08.pujahoy.repository.OfertaRepository;
+import com.webapp08.pujahoy.service.OfertaService;
 import com.webapp08.pujahoy.service.ProductoService;
 import com.webapp08.pujahoy.service.UsuarioService;
 
@@ -29,6 +33,9 @@ public class ProductoController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private OfertaService OfertaService;
 
     @PostMapping("/product/{id_producto}/delete")
     public String delteProduct(Model model,@PathVariable long id_producto) {
@@ -73,5 +80,53 @@ public class ProductoController {
             return "error";
         }
     }  
+    @PostMapping("/product/{id_producto}/place-bid")
+    public String placeBid(@PathVariable long id_producto, HttpServletRequest request, Model model) {
+        
+        Optional<Producto> productoOpt = ProductoService.findById(id_producto);
+        
+        if (!productoOpt.isPresent()) {
+            model.addAttribute("texto", "Producto no encontrado.");
+            return "error";
+        }
+
+        Producto producto = productoOpt.get();
+
+        
+        Principal principal = request.getUserPrincipal();
+
+        String username = principal.getName();
+        Optional<Usuario> usuarioOpt = usuarioService.findByNombre(username);
+
+        if (!usuarioOpt.isPresent()) {
+            model.addAttribute("texto", "Usuario no encontrado.");
+            return "error";
+        }
+
+        Usuario usuario = usuarioOpt.get();
+
+        Oferta ultimaOferta = OfertaService.findLastOfferByProduct(id_producto);
+
+        double nuevoPrecio;
+        if(ultimaOferta != null){
+             nuevoPrecio = ultimaOferta.getCoste() + 10.0;
+        }else{//no tiene pujas a si que el valor inicial
+             nuevoPrecio = producto.getValorini();
+        }
+
+        //fecha actual
+        long actualTime = System.currentTimeMillis();
+        Date fechaActual = new Date(actualTime);
+
+        Oferta nuevaOferta = new Oferta(usuario, producto, nuevoPrecio, fechaActual);
+
+        
+        producto.getOfertas().add(nuevaOferta); //añadimos oferta a la lista
+
+        OfertaService.save(nuevaOferta);
+        ProductoService.save(producto);
+
+        return "redirect:/producto/" + id_producto;
+    }
 }
     
