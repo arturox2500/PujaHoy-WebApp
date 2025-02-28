@@ -42,18 +42,12 @@ public class DataBaseInitializer {
 			long ahora = System.currentTimeMillis(); // Tiempo actual en milisegundos
 			Date fechaActual = new Date(ahora); // Convertir a java.sql.Date
 
-			// Sumar un minuto a la fecha actual
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTimeInMillis(ahora); // Establecer la fecha actual en el calendario
-			calendar.add(Calendar.MINUTE, 1); // Sumar 1 minuto
+			Date fechaConUnMinuto= new Date(ahora+60000);
+			Date fechaConDosMinuto= new Date(ahora + 120000);
 
-			// Obtener la nueva fecha con un minuto adicional
-			Date fechaConUnMinuto = new Date(calendar.getTimeInMillis()); // Convertir a java.sql.Date
-			calendar.add(Calendar.MINUTE, 2); // Sumar 1 minuto
-			Date fechaCondosMinuto = new Date(calendar.getTimeInMillis()); // Convertir a java.sql.Date
 	
 			Producto product1 = new Producto("Producto1","mola mucho",900,fechaActual,fechaConUnMinuto,"En curso", user2);
-			Producto product2 = new Producto("Producto2","mola nada",840,fechaActual,fechaCondosMinuto,"En curso", user3);
+			Producto product2 = new Producto("Producto2","mola nada",840,fechaActual,fechaConDosMinuto,"En curso", user3);
 
 			productoRepository.save(product1);
 			productoRepository.save(product2);
