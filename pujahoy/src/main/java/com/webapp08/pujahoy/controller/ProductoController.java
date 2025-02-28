@@ -42,10 +42,15 @@ public class ProductoController {
 
     @ModelAttribute
 	public void addAttributes(Model model, HttpServletRequest request) {
+
 		Principal principal = request.getUserPrincipal();
+
 		if (principal != null) {
+
 			model.addAttribute("logged", true);
 			model.addAttribute("userName", principal.getName());
+			model.addAttribute("admin", request.isUserInRole("ADMIN"));
+
 		} else {
 			model.addAttribute("logged", false);
 		}
@@ -89,6 +94,17 @@ public class ProductoController {
             Producto producto = productoOpt.get();
             model.addAttribute("producto", producto);
 
+            long actualTime = System.currentTimeMillis();
+            
+
+            if(producto.getHoraFin().getTime()<=(actualTime)){
+                producto.setEstado("Finalizado");
+            }else{
+                producto.setEstado("En curso");
+            }
+            
+            productoService.save(producto);
+
             // Obtener usuario de la sesión
             Principal principal = request.getUserPrincipal();
             if (principal != null) {
@@ -107,6 +123,7 @@ public class ProductoController {
                     model.addAttribute("admin", false);
                     model.addAttribute("usuario_autenticado", false);
                 }
+            
             }
             return "product";
         } else {
