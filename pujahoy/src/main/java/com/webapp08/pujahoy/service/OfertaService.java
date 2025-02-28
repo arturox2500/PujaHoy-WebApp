@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.webapp08.pujahoy.model.Oferta;
-import com.webapp08.pujahoy.model.Producto;
 import com.webapp08.pujahoy.repository.OfertaRepository;
 
 //import com.webapp08.pujahoy.model.Oferta;

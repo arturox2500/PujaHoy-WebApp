@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.webapp08.pujahoy.model.Oferta;
-import com.webapp08.pujahoy.model.Producto;
 
 public interface OfertaRepository extends JpaRepository<Oferta, Long> {
 
