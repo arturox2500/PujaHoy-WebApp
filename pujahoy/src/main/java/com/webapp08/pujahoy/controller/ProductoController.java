@@ -84,7 +84,8 @@ public class ProductoController {
                 String username = principal.getName(); // Obtiene el nombre de usuario
                 Optional<Usuario> user = usuarioService.findByNombre(username); // Busca en la base de datos
                 Usuario usuario = user.orElse(null);
-            
+                model.addAttribute("codigoPostal", producto.getVendedor().getCodigoPostal());
+
                 if (usuario != null && "Administrador".equalsIgnoreCase(usuario.determinarTipoUsuario())) {
                     model.addAttribute("admin", true);
                     model.addAttribute("usuario_autenticado", false);

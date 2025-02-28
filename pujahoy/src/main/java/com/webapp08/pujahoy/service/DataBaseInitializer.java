@@ -29,9 +29,9 @@ public class DataBaseInitializer {
 
     @PostConstruct
 	public void init() throws IOException, URISyntaxException {
-			Usuario user1 = new Usuario("Juan", 5, "Juanito", "juanElGrande@gmail.com", "descripción prueba arturo", true, passwordEncoder.encode("pass"), "ADMIN");
-			Usuario user2 = new Usuario("Pedro", 2, "Pedrito", "pedrosimple@gmail.com", "descripcion", true, passwordEncoder.encode("pass"), "USER");
-			Usuario user3 = new Usuario("Pablo", 3, "Pablito", "pablo@gmail.com", "descripcion", true, passwordEncoder.encode("pass"), "USER");
+			Usuario user1 = new Usuario("Juan", 5, "Juanito", "juanElGrande@gmail.com", 28001,"descripción prueba arturo", true, passwordEncoder.encode("pass"), "ADMIN");
+			Usuario user2 = new Usuario("Pedro", 2, "Pedrito", "pedrosimple@gmail.com", 28024,"descripcion", true, passwordEncoder.encode("pass"), "USER");
+			Usuario user3 = new Usuario("Pablo", 3, "Pablito", "pablo@gmail.com", 28012,"descripcion", true, passwordEncoder.encode("pass"), "USER");
 
 			userRepository.save(user1);
 			userRepository.save(user2);

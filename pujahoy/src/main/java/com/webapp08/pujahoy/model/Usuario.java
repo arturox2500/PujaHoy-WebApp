@@ -32,6 +32,7 @@ public class Usuario{
     private String descripcion;
     private boolean activo;
     private Blob fotoPerfil;
+    private int codigoPostal;
 
     @OneToMany(mappedBy="vendedor",cascade = CascadeType.ALL)
     private List<Producto> productos;
@@ -45,7 +46,7 @@ public class Usuario{
 
     }
 
-    public Usuario(String nombre, int reputacion, String nombreVisible, String contacto, String descripcion, boolean activo, String encodedPassword, String... roles){
+    public Usuario(String nombre, int reputacion, String nombreVisible, String contacto, int codigoPostal,String descripcion, boolean activo, String encodedPassword, String... roles){
         this.nombre = nombre;
         this.reputacion = reputacion;
         this.encodedPassword = encodedPassword;
@@ -56,10 +57,15 @@ public class Usuario{
         this.nombreVisible = nombreVisible;
         this.productos = null;
         this.fotoPerfil = cargarFotoPerfilEstandar();
+        this.codigoPostal = codigoPostal;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public int getCodigoPostal() {
+        return codigoPostal;
     }
 
     public void setId(Long id) {

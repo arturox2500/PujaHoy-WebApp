@@ -30,14 +30,14 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-        public String register(@RequestParam String email, @RequestParam String password, @RequestParam String nombre, @RequestParam String nombreVisible, @RequestParam String tipo, @RequestParam String descripcion, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        public String register(@RequestParam String email, @RequestParam String password, @RequestParam int codigoPostal, @RequestParam String nombre, @RequestParam String nombreVisible, @RequestParam String tipo, @RequestParam String descripcion, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         if (usuarioRepository.findByContacto(email).isPresent()) {
             redirectAttributes.addFlashAttribute("error", "Email ya registrado");
             return "login"; // Redirige al formulario de registro con error
             
         }
 
-        Usuario user = new Usuario(nombre, 0, nombreVisible, email, descripcion, true, "", "USER");
+        Usuario user = new Usuario(nombre, 0, nombreVisible, email, codigoPostal, descripcion, true, "", "USER");
         user.setPass(passwordEncoder.encode(password));
         usuarioRepository.save(user);
         return "index"; // Redirige a la página principal con sesión iniciada
