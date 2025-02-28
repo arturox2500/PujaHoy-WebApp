@@ -6,24 +6,28 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.webapp08.pujahoy.model.Oferta;
 import com.webapp08.pujahoy.model.Producto;
 import com.webapp08.pujahoy.model.Usuario;
-import com.webapp08.pujahoy.repository.OfertaRepository;
 import com.webapp08.pujahoy.service.OfertaService;
 import com.webapp08.pujahoy.service.ProductoService;
 import com.webapp08.pujahoy.service.UsuarioService;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+
 
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @Controller
@@ -40,11 +44,17 @@ public class ProductoController {
 
 
     @GetMapping("/")
-    public String listarProductos(Model model) {    
-        List<Producto> productos = productoService.obtenerTodosLosProductos();
-        System.out.println(productos);
-        model.addAttribute("productos", productos); // Pasa los productos al modelo
-        return "index"; 
+    public String listarProductos(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {    
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        // Obtener la página de productos
+        Page<Producto> productosPage = productoService.obtenerProductosPaginados(pageable);
+
+        // Agregar atributos al modelo
+        model.addAttribute("productos", productosPage); // Lista de productos
+
+        return "index"; // Retorna la plantilla index.mustache
     }
 
     @PostMapping("/product/{id_producto}/delete")
