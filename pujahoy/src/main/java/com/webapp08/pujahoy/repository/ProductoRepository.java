@@ -1,5 +1,6 @@
 package com.webapp08.pujahoy.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -15,5 +16,5 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     
     Optional<Producto> findByNombre(String id);
 
-    Page<Producto> findAll(Pageable pageable);
+    List<Producto> findAll();
 }

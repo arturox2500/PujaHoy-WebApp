@@ -2,10 +2,10 @@ package com.webapp08.pujahoy.controller;
 
 import java.security.Principal;
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -43,15 +42,18 @@ public class ProductoController {
 
 
     @GetMapping("/")
-    public String listarProductos(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {    
+        public String listarProductos(Model model) {    
+        System.out.println("probando");
+        List<Producto> productos = productoService.obtenerTodosLosProductos(); // Cambiamos a lista
 
-        Pageable pageable = PageRequest.of(page, size);
-
-        // Obtener la página de productos
-        Page<Producto> productosPage = productoService.obtenerProductosPaginados(pageable);
+        System.out.println("la cabra");
+        // Imprimir los productos en la consola
+        for (Producto producto : productos) {
+            System.out.println(producto);
+        }
 
         // Agregar atributos al modelo
-        model.addAttribute("productos", productosPage); // Lista de productos
+        model.addAttribute("productos", productos);
 
         return "index"; // Retorna la plantilla index.mustache
     }
