@@ -9,7 +9,7 @@ import jakarta.persistence.OneToMany;
 
 import java.sql.Blob;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -37,12 +37,12 @@ public class Producto {
     
         }
 
-        public Producto(String nombre,String descripcion,double valorini, String estado, Usuario vendedor){
+        public Producto(String nombre,String descripcion,double valorini, Date horaIni,Date horaFin, String estado, Usuario vendedor){
             this.nombre = nombre;
             this.descripcion = descripcion;
             this.valorini = valorini;
-            this.horaIni = null;//horaIni;
-            this.horaFin = null;//horaFin;
+            this.horaIni = horaIni;
+            this.horaFin = horaFin;
             this.estado = estado;
             this.imagen = null;//imagen;
             this.vendedor = vendedor;
