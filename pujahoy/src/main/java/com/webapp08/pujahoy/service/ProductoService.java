@@ -5,9 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import com.webapp08.pujahoy.model.Producto;
 import com.webapp08.pujahoy.repository.ProductoRepository;
 
@@ -21,8 +18,8 @@ public class ProductoService {
 		return repository.findById(id);
 	}
 
-	public Optional<Producto> findByDatos(String id) {
-		return repository.findByNombre(id);
+	public Optional<Producto> findById(Long id) {
+		return repository.findById(id);
 	}	
 
 	public Producto save(Producto producto) {
