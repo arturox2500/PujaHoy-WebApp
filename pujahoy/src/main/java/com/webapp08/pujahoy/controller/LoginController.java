@@ -42,4 +42,10 @@ public class LoginController {
         usuarioRepository.save(user);
         return "index"; // Redirige a la página principal con sesión iniciada
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        request.getSession().invalidate();
+        return "index"; // Redirige a la página principal
+    } 
 }
