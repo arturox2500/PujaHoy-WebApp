@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-md-12">
                 <ul class="breadcrumb-tree">
-                    <li><a href="#">Home</a></li>
+                    <li><a href="/">Home</a></li>
                     <li><a href="#">Productos</a></li>
 					{{#producto}}
                     <li class="active">{{nombre}}</li>
@@ -62,7 +62,7 @@
                         {{/usuario_autenticado}}
                     </div>
                     <div class="add-to-cart">
-                        <button class="add-to-cart-btn"> Seller</button>
+                        <button class="btn"> <a href="/usuario/{{id}}">Seller</a></button>
                     </div>
                     <div class="add-to-cart">
                         {{#admin}}

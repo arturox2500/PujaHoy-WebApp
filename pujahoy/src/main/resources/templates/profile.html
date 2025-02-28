@@ -49,16 +49,11 @@
 							{{#baneado}}
 							<hr>
 							<div class="row">
-								{{#admin}}
 								<div class="col-sm-12"><strong>	The user is banned</strong></div>
-								{{/admin}}
-								{{^admin}}
-								<div class="col-sm-12"><strong>	You are banned, contact to an admin</strong></div>
-								{{/admin}}
 							</div>
 							<hr>
 							{{/baneado}}
-							
+
 							{{#registrado}}
 							<hr>
 							<div class="row">
@@ -129,7 +124,7 @@
 				
 				{{#admin}}
 				<div class="text-left mt-3 profile">
-					<form action="./usuario/{{id}}/banear" method="post">
+					<form action="/usuario/{{id}}/banear" method="post">
 						<button type="submit" class="btn btn-danger">Ban User</button>
 					</form>
 				</div>

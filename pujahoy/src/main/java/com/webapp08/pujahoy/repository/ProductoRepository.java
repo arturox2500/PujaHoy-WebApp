@@ -12,7 +12,7 @@ import com.webapp08.pujahoy.model.Producto;
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
     
-    Optional<Producto> findByNombre(String id);
+    Optional<Producto> findById(Long id);
 
     List<Producto> findAll();
 }

@@ -47,15 +47,18 @@
 						<li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
 					</ul>
 					<ul class="header-links pull-right">
+						{{#logged}}
+						<li><a><i class="fa"></i> {{userName}}</a></li>
+						{{/logged}}
+						{{^logged}}
+                    	<li><a href="/login"><i class="fa fa-sign-in"></i> Log in / Sign up</a></li>
+						{{/logged}}
 						<li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
 						<li><a href="/usuario"><i class="fa fa-user-o"></i> My Account</a></li>
 						{{#authenticated}}
                     	<li><a href="/logout" onclick="return confirmLogout()"><i class="fa fa-sign-out" ></i> Log out</a></li>
                     	{{/authenticated}}
-                    	{{^authenticated}}
-                    	<li><a href="/login"><i class="fa fa-sign-in"></i> Log in / Sign up</a></li>
-                    	{{/authenticated}}
-						</ul>
+					</ul>
 				</div>
 			</div>
 			<!-- /TOP HEADER -->

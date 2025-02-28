@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ import com.webapp08.pujahoy.service.TransaccionService;
 import org.springframework.ui.Model;
 
 @Controller
+@RequestMapping("/usuario")
 public class UsuarioController {
 
     @Autowired
@@ -43,15 +45,10 @@ public class UsuarioController {
 
     @ModelAttribute
 	public void addAttributes(Model model, HttpServletRequest request) {
-
 		Principal principal = request.getUserPrincipal();
-
 		if (principal != null) {
-
 			model.addAttribute("logged", true);
 			model.addAttribute("userName", principal.getName());
-			model.addAttribute("admin", request.isUserInRole("ADMIN"));
-
 		} else {
 			model.addAttribute("logged", false);
 		}
@@ -59,7 +56,7 @@ public class UsuarioController {
 
     //Para ver perfil falta el contacto q se saca de Auth0
 
-    @GetMapping("/usuario") //Cuando acceden a su perfil
+    @GetMapping("/") //Cuando acceden a su perfil
     public String verTuPerfilUsuario(Model model,  HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         if (principal != null) {
@@ -83,17 +80,19 @@ public class UsuarioController {
                 }
                 return "profile";
             } else {
-                model.addAttribute("texto", "el usuario no existe");
+                model.addAttribute("texto", "user not found");
+                model.addAttribute("url", "/");
             }
         }
-		model.addAttribute("texto", "usted no esta autenticado");
+		model.addAttribute("texto", "you must be logged in");
+        model.addAttribute("url", "/");
         return "pageError";
     }
 
-    @GetMapping("/usuario/{id}") //El id es el del producto
+    @GetMapping("/{id}") //El id es el del producto
     //Doy por hecho q el valor asociado a la sesión es el id del usuario
-    public String verPerfilAjeno(Model model, @PathVariable String id, HttpServletRequest request) {
-        Optional<Producto> product = productoService.findByDatos(id);
+    public String verPerfilAjeno(Model model, @PathVariable long id, HttpServletRequest request) {
+        Optional<Producto> product = productoService.findById(id);
 		if (product.isPresent()) {
             Optional<Usuario> vendedor = usuarioService.findByProductos(product.get());
             if (vendedor.isPresent()){
@@ -125,12 +124,19 @@ public class UsuarioController {
                 } else{ //Usuario registrado
                     model.addAttribute("admin", false);
                 }
+                if (vendedor.get().isActivo()) { //Si esta baneado
+                    model.addAttribute("baneado", false);
+                } else {
+                    model.addAttribute("baneado", true);
+                }
                 return "profile";
             } else {
-                model.addAttribute("texto", "el vendedor no existe");
+                model.addAttribute("texto", "seller not found");
+                model.addAttribute("url", "/");
             }
 		} else {
-            model.addAttribute("texto", "el prodcuto no existe");
+            model.addAttribute("texto", "product not found");
+            model.addAttribute("url", "/");
 		}
         return "pageError";
     }
@@ -141,7 +147,7 @@ public class UsuarioController {
         return "editProfile";
     }
 
-    @PostMapping("/usuario/{id}/banear")
+    @PostMapping("/{id}/banear")
 	public String deletePost(Model model, @PathVariable String id, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         System.out.println("0");
@@ -159,12 +165,15 @@ public class UsuarioController {
                 System.out.println("5");
                 return "bannedProfile";
             } else if (!tipo.equals("Administrador")) {
-                model.addAttribute("texto", "no tienes permisos para banear a un usuario");
+                model.addAttribute("texto", "you are not allow to banned users");
+                model.addAttribute("url", "/");
             } else {
-                model.addAttribute("texto", "el usuario no existe");
+                model.addAttribute("texto", "user not found");
+                model.addAttribute("url", "/");
             }
         } else {
-            model.addAttribute("texto", "usted no esta autenticado");
+            model.addAttribute("texto", "you must be logged in");
+            model.addAttribute("url", "/");
         }
         return "pageError";
 	}
@@ -200,27 +209,28 @@ public class UsuarioController {
                     model.addAttribute("imagen", product.get().getImagen());
                     return "ratingProduct";
                 } else {
-                    model.addAttribute("texto", "este producto no es tuyo");
-                    return "pageError";
+                    model.addAttribute("texto", "this product is not yours");
+                    model.addAttribute("url", "/");
                 }
             } else {
-                model.addAttribute("texto", "el usuario comprador no existe");
-                return "pageError";
+                model.addAttribute("texto", "buyer not exist");
+                model.addAttribute("url", "/");
             }
 		} else {
-            model.addAttribute("texto", "el producto no existe");
-            return "pageError";
+            model.addAttribute("texto", "product not found");
+            model.addAttribute("url", "/");
         } 
+        return "pageError";
     }
 
     @PostMapping("/usuario/{id}/valorado") //BORRAR PRINCIPIO EN CASO DE COMPROBAR EL FORMULARIO EN EL CLIENTE
     public String valorarProducto(Model model, @PathVariable long id, @RequestParam String comentario, @RequestParam int puntuacion){
         if (puntuacion < 1 || puntuacion > 5) {
-            model.addAttribute("texto", "la puntuación debe ser un número entre 1 y 5");
-            return "pageError";
+            model.addAttribute("texto", "the rated must be between 1 and 5");
+            model.addAttribute("url", "/");
         } else if (comentario.length() > 255) {
-            model.addAttribute("texto", "el comentario no puede tener más de 255 caracteres");
-            return "pageError";
+            model.addAttribute("texto", "the comment must be less than 255 characters");
+            model.addAttribute("url", "/");
         }
         Optional<Producto> product = productoService.findById(id);
         if (product.isPresent()) {
@@ -228,8 +238,9 @@ public class UsuarioController {
             valoracionService.save(val);
             return "productRated";
         } else {
-            model.addAttribute("texto", "no se encontró el producto");
-            return "pageError";
+            model.addAttribute("texto", "product not found");
+            model.addAttribute("url", "/");
         }
+        return "pageError";
     }
 }
