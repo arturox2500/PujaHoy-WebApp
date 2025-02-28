@@ -49,8 +49,13 @@
 					<ul class="header-links pull-right">
 						<li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
 						<li><a href="/usuario"><i class="fa fa-user-o"></i> My Account</a></li>
-						<li><a href="/login"><i class="fa fa-user-o"></i> Log in / Sign up</a></li>
-					</ul>
+						{{#authenticated}}
+                    	<li><a href="/logout" onclick="return confirmLogout()"><i class="fa fa-sign-out" ></i> Log out</a></li>
+                    	{{/authenticated}}
+                    	{{^authenticated}}
+                    	<li><a href="/login"><i class="fa fa-sign-in"></i> Log in / Sign up</a></li>
+                    	{{/authenticated}}
+						</ul>
 				</div>
 			</div>
 			<!-- /TOP HEADER -->
@@ -94,3 +99,10 @@
 			<!-- /MAIN HEADER -->
 		</header>
 		<!-- /HEADER -->
+		
+
+		<script>
+			function confirmLogout() {
+				return confirm("Are you sure you want to log out?");
+			}
+		</script>
