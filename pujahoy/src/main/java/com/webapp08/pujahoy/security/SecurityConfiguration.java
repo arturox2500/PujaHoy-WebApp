@@ -47,26 +47,41 @@ public class SecurityConfiguration {
 		http
 			.authorizeHttpRequests(authorize -> authorize
 	
-				.requestMatchers("/h2-console/").permitAll()
-				.anyRequest().permitAll()
-				
-					// PUBLIC PAGES
-					//.requestMatchers("/").permitAll()
-					//.requestMatchers("/css/").permitAll()
-                	//.requestMatchers("/img/").permitAll()
-                	//.requestMatchers("/static/").permitAll()
-					//.requestMatchers("/vendedor/").permitAll()
-					//.requestMatchers("/login/").permitAll()
-					// PRIVATE PAGES
-					//.requestMatchers("/usuario").hasAnyAuthority("USER", "ADMIN")
-					//.requestMatchers("/usuario/").hasAnyAuthority("USER", "ADMIN")
-
+				.requestMatchers("/h2-console/**").permitAll()
+				.requestMatchers("/h2-console").permitAll()
+				// PUBLIC PAGES
+				.requestMatchers("/").permitAll()
+				.requestMatchers("/css/**").permitAll()
+				.requestMatchers("/img/**").permitAll()
+				.requestMatchers("/static/**").permitAll()
+				.requestMatchers("/producto/{id_producto}").permitAll()
+				.requestMatchers("/login").permitAll()
+				.requestMatchers("/register").permitAll()
+				.requestMatchers("/usuario/{id}").permitAll()
+				.requestMatchers("/producto/{id}/image").permitAll()
+				.requestMatchers("/usuario/producto_template").permitAll()
+				// PRIVATE PAGES
+				.requestMatchers("/product/{id_producto}/delete").hasAnyRole("ADMIN")
+				.requestMatchers("/product/{id_producto}/place-bid").hasAnyRole("USER")
+				.requestMatchers("/usuario").hasAnyRole("USER", "ADMIN")
+				.requestMatchers("/usuario/{id}/banear").hasAnyRole("ADMIN")
+				.requestMatchers("/usuario/{id}/rate").hasAnyRole("USER")
+				.requestMatchers("/usuario/producto_template_compras").hasAnyRole("USER")
+				.requestMatchers("/usuario/submit_auction").hasAnyRole("USER")
+				.requestMatchers("/usuario/NuevoProducto").hasAnyRole("USER")
+				.requestMatchers("/usuario/verCompras").hasAnyRole("USER")
+				.requestMatchers("/usuario/verProductos").hasAnyRole("USER")
+				.requestMatchers("/usuario/{id}/rated").hasAnyRole("USER")
 			)
 			.formLogin(formLogin -> formLogin
 					.loginPage("/login")
 					.failureUrl("/loginerror")
 					.defaultSuccessUrl("/")
 					.permitAll()
+			)
+			.rememberMe(rememberMe -> rememberMe
+				.key("uniqueAndSecret")
+				.tokenValiditySeconds(86400) // 1 día de sesión activa
 			)
 			.logout(logout -> logout
 					.logoutUrl("/logout")
