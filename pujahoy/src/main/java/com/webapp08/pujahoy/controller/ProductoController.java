@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 
 import com.webapp08.pujahoy.model.Oferta;
