@@ -84,11 +84,21 @@ public class ProductoController {
         Optional<Producto> product = productoService.findById(id_producto);
         
         if (product.isPresent()) {
+            if (!product.get().getOfertas().isEmpty()) {
+                for (Oferta oferta : product.get().getOfertas()) {
+                    OfertaService.deleteById(oferta.getId());
+                }
+            } 
+            Optional<Transaccion> trans = transaccionService.findByProducto(product.get());
+            if (trans.isPresent()) {
+                transaccionService.deleteById(trans.get().getId());
+            }
             productoService.DeleteById(id_producto);
-			return "/";
+			return "redirect:/";
 		} else {
             model.addAttribute("texto", "Error al borrar producto");
-			return "error"; 
+            model.addAttribute("url", "/");
+			return "errorPage"; 
 		}
         
     }

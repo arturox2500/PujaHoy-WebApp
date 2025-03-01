@@ -11,5 +11,5 @@ import com.webapp08.pujahoy.model.Transaccion;
 
  @Repository
 public interface TransaccionRepository extends JpaRepository<Transaccion, Long> {
-    Optional<Transaccion> findByProducto(Optional<Producto> product);
+    Optional<Transaccion> findByProducto(Producto product);
 }

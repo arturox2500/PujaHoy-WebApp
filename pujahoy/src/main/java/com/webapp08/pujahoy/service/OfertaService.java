@@ -22,4 +22,7 @@ public class OfertaService {
     public Oferta findLastOfferByProduct(long id_producto){
         return repository.findLastOfferByProduct(id_producto);
     }
+    public void deleteById(long id){
+        repository.deleteById(id);
+    }
 }

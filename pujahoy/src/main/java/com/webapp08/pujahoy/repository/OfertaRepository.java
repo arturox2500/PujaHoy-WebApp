@@ -11,7 +11,7 @@ public interface OfertaRepository extends JpaRepository<Oferta, Long> {
 
     @Query("SELECT o FROM Oferta o WHERE o.producto.id = :id_producto ORDER BY o.hora DESC LIMIT 1")
     Oferta findLastOfferByProduct(@Param("id_producto") long id_producto);
-
+    void deleteById(long id);
     
     
 }

@@ -352,7 +352,7 @@ public class UsuarioController {
                 model.addAttribute("url", "/");
                 return "pageError";
             }
-            Optional<Transaccion> trans = transaccionService.findByProducto(product);
+            Optional<Transaccion> trans = transaccionService.findByProducto(product.get());
             if (trans.isEmpty()) {
                 model.addAttribute("texto", "this product has not been sold");
                 model.addAttribute("url", "/");
