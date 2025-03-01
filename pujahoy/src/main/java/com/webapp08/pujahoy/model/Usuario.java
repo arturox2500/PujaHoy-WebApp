@@ -20,13 +20,13 @@ import jakarta.persistence.OneToMany;
 
 @Entity(name = "USERS")
 public class Usuario{
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String nombre;
-    private int reputacion;
+    private double reputacion;
     private String nombreVisible;
     private String contacto;
     private String descripcion;
@@ -46,7 +46,7 @@ public class Usuario{
 
     }
 
-    public Usuario(String nombre, int reputacion, String nombreVisible, String contacto, int codigoPostal,String descripcion, boolean activo, String encodedPassword, String... roles){
+    public Usuario(String nombre, double reputacion, String nombreVisible, String contacto, int codigoPostal,String descripcion, boolean activo, String encodedPassword, String... roles){
         this.nombre = nombre;
         this.reputacion = reputacion;
         this.encodedPassword = encodedPassword;
@@ -84,11 +84,11 @@ public class Usuario{
         this.nombre = nombre;
     }
 
-    public int getReputacion() {
+    public double getReputacion() {
         return reputacion;
     }
 
-    public void setReputacion(int reputacion) {
+    public void setReputacion(double reputacion) {
         this.reputacion = reputacion;
     }
 
@@ -167,6 +167,5 @@ public class Usuario{
             return null; // Si hay un error, deja el blob como null
         }
     }
-    
     
 }

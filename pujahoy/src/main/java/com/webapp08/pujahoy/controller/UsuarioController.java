@@ -1,5 +1,6 @@
 package com.webapp08.pujahoy.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 import java.security.Principal;
 import com.webapp08.pujahoy.model.Usuario;
@@ -196,17 +196,27 @@ public class UsuarioController {
         return "YourWinningBids"; 
     }
 
-    @GetMapping("/usuario/{id}/valorar") //Te envia a la pagina de valorar
-    public String irValorar(Model model, @PathVariable long id, HttpSession sesion){
+    @GetMapping("/{id}/rate") //Te envia a la pagina de valorar
+    public String irValorar(Model model, @PathVariable long id, HttpServletRequest request){
         Optional<Producto> product = productoService.findById(id);
         if (product.isPresent()) {
-            Optional<Transaccion> trans = transaccionService.findByProducto_id(id);
+            Principal principal = request.getUserPrincipal();
+            if (principal == null){
+                model.addAttribute("texto", "you must be logged in");
+                model.addAttribute("url", "/");
+                return "pageError";
+            }
+            Optional<Transaccion> trans = transaccionService.findByProducto(product);
+            if (trans.isEmpty()) {
+                model.addAttribute("texto", "this product has not been sold");
+                model.addAttribute("url", "/");
+                return "pageError";
+            }
             Optional<Usuario> user = usuarioService.findById(trans.get().getComprador().getId());
-            Optional<Usuario> user1 = usuarioService.findById((Long) sesion.getAttribute("id"));
+            Optional<Usuario> user1 = usuarioService.findByNombre(principal.getName());
             if (user.isPresent() && user1.isPresent()) {
                 if (user.get().determinarTipoUsuario().equals("Usuario Registrado") && user1.get().getId().equals(user.get().getId())) {
                     model.addAttribute("id", id);
-                    model.addAttribute("imagen", product.get().getImagen());
                     return "ratingProduct";
                 } else {
                     model.addAttribute("texto", "this product is not yours");
@@ -223,19 +233,40 @@ public class UsuarioController {
         return "pageError";
     }
 
-    @PostMapping("/usuario/{id}/valorado") //BORRAR PRINCIPIO EN CASO DE COMPROBAR EL FORMULARIO EN EL CLIENTE
-    public String valorarProducto(Model model, @PathVariable long id, @RequestParam String comentario, @RequestParam int puntuacion){
-        if (puntuacion < 1 || puntuacion > 5) {
+    public void updateRating(Usuario user) {
+        List<Valoracion> valoraciones = valoracionService.findAllByVendedor(user);
+        if (valoraciones.isEmpty()) {
+            return; // Evitar división por cero
+        }
+        int amount = 0;
+        for (Valoracion val : valoraciones) {
+            amount += val.getPuntuacion();
+        }
+        double mean = (double) amount / valoraciones.size();
+        
+        user.setReputacion(mean);
+        usuarioService.save(user);
+    }
+
+    @PostMapping("/{id}/rated")
+    public String valorarProducto(Model model, @PathVariable long id, @RequestParam int rating){
+        if (rating < 1 || rating > 5) {
             model.addAttribute("texto", "the rated must be between 1 and 5");
             model.addAttribute("url", "/");
-        } else if (comentario.length() > 255) {
-            model.addAttribute("texto", "the comment must be less than 255 characters");
-            model.addAttribute("url", "/");
+            return "pageError";
         }
         Optional<Producto> product = productoService.findById(id);
         if (product.isPresent()) {
-            Valoracion val = new Valoracion(product.get().getVendedor(),product.get(),puntuacion,comentario);
+            Optional<Valoracion> existingVal = valoracionService.findByProducto(product.get());
+            if (existingVal.isPresent()) {
+                model.addAttribute("texto", "This product has already been rated");
+                model.addAttribute("url", "/");
+                return "pageError";
+            }
+            Valoracion val = new Valoracion(product.get().getVendedor(),product.get(),rating);
             valoracionService.save(val);
+            this.updateRating(product.get().getVendedor());
+            model.addAttribute("id", product.get().getId());
             return "productRated";
         } else {
             model.addAttribute("texto", "product not found");
