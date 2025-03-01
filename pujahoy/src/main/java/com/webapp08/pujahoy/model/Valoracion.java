@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -13,23 +14,21 @@ public class Valoracion {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @OneToOne
+    @ManyToOne
     private Usuario vendedor;
 
     @OneToOne
     private Producto producto;
     private int puntuacion;
-    private String comentario;
 
     protected Valoracion(){
 
     }   
 
-    public Valoracion(Usuario vendedor, Producto producto, int puntuacion, String comentario){
+    public Valoracion(Usuario vendedor, Producto producto, int puntuacion){
         this.vendedor = vendedor;
         this.producto = producto;
         this.puntuacion = puntuacion;
-        this.comentario = comentario;
     }
 
     public long getId() {
@@ -63,14 +62,5 @@ public class Valoracion {
     public void setPuntuacion(int puntuacion) {
         this.puntuacion = puntuacion;
     }
-
-    public String getComentario() {
-        return comentario;
-    }
-
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
-    }
-
     
 }

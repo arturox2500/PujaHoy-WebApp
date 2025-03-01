@@ -95,9 +95,9 @@
                                 <!-- Formulario para dejar Review (habilitado) -->
                                 <div class="text-center">
                                     <div id="review-form">
-                                        <form class="center" action="" method="post">
-                                            <button class="primary-btn" type="submit">Submit</button>
-                                        </form>
+                                        {{#producto}}
+                                        <a class="btn primary-btn" href="/usuario/{{id}}/rate">Rate product</a>
+                                        {{/producto}}
                                     </div>
                                 </div>
                                 <!-- /Formulario para dejar Review -->

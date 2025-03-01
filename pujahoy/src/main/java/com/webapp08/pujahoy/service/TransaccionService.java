@@ -15,12 +15,11 @@ public class TransaccionService {
     @Autowired
     private TransaccionRepository repository;
 
-    public Optional<Transaccion> findByProducto_id(long id) {
-		return repository.findById(id);
-
+    public Optional<Transaccion> findByProducto(Optional<Producto> product) {
+		  return repository.findByProducto(product);
 	  }
 
     public Transaccion save(Transaccion transaccion) {
-		return repository.save(transaccion);
-	}
+      return repository.save(transaccion);
+    }
 }

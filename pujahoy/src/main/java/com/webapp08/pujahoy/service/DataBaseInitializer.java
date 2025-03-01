@@ -33,7 +33,6 @@ public class DataBaseInitializer {
 	@Autowired
 	private TransaccionRepository transaccionRepository;
 
-	
 	@Autowired
 	private OfertaRepository ofertaRepository;
 
@@ -67,18 +66,26 @@ public class DataBaseInitializer {
 			Producto product1 = new Producto("Producto1","mola mucho",900,fecha24,fecha25M,"En curso", user2);
 			Producto product2 = new Producto("Producto2","mola nada",840,fecha24,fecha25M,"En curso", user3);
 			Producto product3 = new Producto("Ordenador To Guapo","lo a utilizado CR7",500000,fecha24,fecha25,"Finalizado", user3);
+			Producto product4 = new Producto("Ordenador To Guapo 2 ","lo a utilizado messi",500000,fecha24,fecha25,"Finalizado", user4);
 
 			Oferta nuevaOferta = new Oferta(user2, product3, 800000, fecha24);
 			product3.getOfertas().add(nuevaOferta);
 
+			Oferta nuevaOferta1 = new Oferta(user3, product4, 800000, fecha24);
+			product4.getOfertas().add(nuevaOferta);
+
 			productoRepository.save(product1);
 			productoRepository.save(product2);
 			productoRepository.save(product3);
+			productoRepository.save(product4);
 
 			ofertaRepository.save(nuevaOferta);
+			ofertaRepository.save(nuevaOferta1);
 			
             Transaccion transaccion1= new Transaccion(product3,user3,user2,800000);
+			Transaccion transaccion2= new Transaccion(product4,user4,user3,800000);
 
 			transaccionRepository.save(transaccion1);
+			transaccionRepository.save(transaccion2);
 	}
 }
