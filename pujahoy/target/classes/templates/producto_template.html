@@ -1,30 +1,32 @@
 
 {{#productos}}
-<a href="/producto/{{id}}" class="product-link">
-	<div class="product">
-		<div class="product-img">
-			{{#imagen}}
-				<img src="/producto/{{id}}/image" alt="Imagen del producto">
-			{{/imagen}}
-			{{^imagen}}
-				<img src="/img/default-product.png" alt="Imagen no disponible">
-			{{/imagen}}
-			<div class="product-label">
-				<span class="new">NEW</span>
+<div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">
+	<a href="/producto/{{id}}" class="product-link">
+		<div class="product product-card">
+			<div class="product-img">
+				{{#imagen}}
+					<img src="/producto/{{id}}/image" alt="Imagen del producto">
+				{{/imagen}}
+				{{^imagen}}
+					<img src="/img/default-product.png" alt="Imagen no disponible">
+				{{/imagen}}
+				<div class="product-label">
+					<span class="new">NEW</span>
+				</div>
+			</div>
+			<div class="product-body">
+				<p class="product-category">Category</p>
+				<h3 class="product-name"><a href="#">{{nombre}}</a></h3>
+				<h4 class="product-price">{{valorini}} <del class="product-old-price">{{valorini}}</del></h4>
+				<div class="product-rating">
+					<i class="fa fa-star"></i>
+					<i class="fa fa-star"></i>
+					<i class="fa fa-star"></i>
+					<i class="fa fa-star"></i>
+					<i class="fa fa-star"></i>
+				</div>
 			</div>
 		</div>
-		<div class="product-body">
-			<p class="product-category">Category</p>
-			<h3 class="product-name"><a href="#">{{nombre}}</a></h3>
-			<h4 class="product-price">{{valorini}} <del class="product-old-price">{{valorini}}</del></h4>
-			<div class="product-rating">
-				<i class="fa fa-star"></i>
-				<i class="fa fa-star"></i>
-				<i class="fa fa-star"></i>
-				<i class="fa fa-star"></i>
-				<i class="fa fa-star"></i>
-			</div>
-		</div>
-	</div>
-</a>
+	</a>
+</div>
 {{/productos}}

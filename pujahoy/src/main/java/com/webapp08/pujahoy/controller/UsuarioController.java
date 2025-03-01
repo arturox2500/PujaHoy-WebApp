@@ -266,8 +266,6 @@ public class UsuarioController {
 
             if (user.isPresent()) {
                 Page<Producto> productos = productoService.obtenerProductosComprados(username, pagina, tamaño);
-
-                System.out.println(productos);
                 
                 model.addAttribute("productos", productos); // Pasamos la página completa
                 return "YourWinningBids";

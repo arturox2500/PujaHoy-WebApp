@@ -6,66 +6,43 @@
 			<div class="container">
 				<!-- row -->
 				<div class="row">
-
-					<!-- section title -->
-					<div class="col-md-12">
-						<div class="section-title">
-							<h3 class="title">Products</h3>
-						</div>
-					</div>
-					<!-- /section title -->
-
-					<!-- Products tab & slick -->
-					<div class="col-md-12">
-						<div class="row">
-							<div class="products-tabs">
-								<!-- tab -->
-								<div id="tab1" class="tab-pane active">
-									<div class="products-slick" data-nav="#slick-nav-1">
-										<!-- product -->
-										{{#productos}}
-										<a href="/producto/{{id}}" class="product-link">
-											<div class="product">
-												<div class="product-img">
-													{{#imagen}}
-                                    					<img src="/producto/{{id}}/image" alt="Imagen del producto">
-                                					{{/imagen}}
-                                					{{^imagen}}
-                                    					<img src="/img/default-product.png" alt="Imagen no disponible">
-                                					{{/imagen}}
-													<div class="product-label">
-														<span class="new">NEW</span>
-													</div>
-												</div>
-												<div class="product-body">
-													<p class="product-category">Category</p>
-													<h3 class="product-name"><a href="#">{{nombre}}</a></h3>
-													<h4 class="product-price">{{valorini}} <del class="product-old-price">{{valorini}}</del></h4>
-													<div class="product-rating">
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
-														<i class="fa fa-star"></i>
-													</div>
-												</div>
-											</div>
-										</a>
-										{{/productos}}
-
-										{{^productos}}
-										<p>No hay na</p>
-										{{/productos}}
-										<!-- /product -->
+					{{#productos}}
+					<div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">
+						<a href="/producto/{{id}}" class="product-link">
+							<div class="product product-card">
+								<div class="product-img">
+									{{#imagen}}
+										<img src="/producto/{{id}}/image" alt="Imagen del producto">
+									{{/imagen}}
+									{{^imagen}}
+										<img src="/img/default-product.png" alt="Imagen no disponible">
+									{{/imagen}}
+									<div class="product-label">
+										<span class="new">NEW</span>
 									</div>
-									<div id="slick-nav-1" class="products-slick-nav"></div>
 								</div>
-								<!-- /tab -->
+								<div class="product-body">
+									<p class="product-category">Category</p>
+									<h3 class="product-name"><a href="#">{{nombre}}</a></h3>
+									<h4 class="product-price">{{valorini}} <del class="product-old-price">{{valorini}}</del></h4>
+									<div class="product-rating">
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+									</div>
+								</div>
 							</div>
-						</div>
+						</a>
 					</div>
-					<!-- Products tab & slick -->
+					{{/productos}}
+				
+					{{^productos}}
+					<p class="text-center">No hay productos disponibles</p>
+					{{/productos}}
 				</div>
+				
 				<!-- /row -->
 			</div>
 			<!-- /container -->
