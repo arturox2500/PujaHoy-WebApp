@@ -48,23 +48,18 @@ public class SecurityConfiguration {
 			.authorizeHttpRequests(authorize -> authorize
 	
 				.requestMatchers("/h2-console/").permitAll()
-				// PUBLIC PAGES
-				.requestMatchers("/").permitAll()
-				.requestMatchers("/css/**").permitAll()
-                .requestMatchers("/img/**").permitAll()
-                .requestMatchers("/static/**").permitAll()
-				.requestMatchers("/producto/{id_producto}").permitAll()
-				.requestMatchers("/login").permitAll()
-				.requestMatchers("/register").permitAll()
-				.requestMatchers("/usuario/{id}").permitAll()
-				// PRIVATE PAGES
-				.requestMatchers("/product/{id_producto}/delete").hasAnyAuthority("ADMIN")
-				.requestMatchers("/product/{id_producto}/place-bid").hasAnyAuthority("USER")
-				.requestMatchers("/product/{id_producto}/place-bid").hasAnyAuthority("USER")
-				.requestMatchers("/usuario").hasAnyAuthority("USER", "ADMIN")
-				.requestMatchers("/{id}/banear").hasAnyAuthority("ADMIN")
-				.requestMatchers("/usuario/{id}/rate").hasAnyAuthority("USER")
-				.requestMatchers("/usuario/{id}/rated").hasAnyAuthority("USER")
+				.anyRequest().permitAll()
+				
+					// PUBLIC PAGES
+					//.requestMatchers("/").permitAll()
+					//.requestMatchers("/css/").permitAll()
+                	//.requestMatchers("/img/").permitAll()
+                	//.requestMatchers("/static/").permitAll()
+					//.requestMatchers("/vendedor/").permitAll()
+					//.requestMatchers("/login/").permitAll()
+					// PRIVATE PAGES
+					//.requestMatchers("/usuario").hasAnyAuthority("USER", "ADMIN")
+					//.requestMatchers("/usuario/").hasAnyAuthority("USER", "ADMIN")
 
 			)
 			.formLogin(formLogin -> formLogin

@@ -56,7 +56,7 @@ public class UsuarioController {
 
     //Para ver perfil falta el contacto q se saca de Auth0
 
-    @GetMapping("/") //Cuando acceden a su perfil
+    @GetMapping() //Cuando acceden a su perfil
     public String verTuPerfilUsuario(Model model,  HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         if (principal != null) {
