@@ -56,7 +56,7 @@ public class UsuarioController {
 
     //Para ver perfil falta el contacto q se saca de Auth0
 
-    @GetMapping("/") //Cuando acceden a su perfil
+    @GetMapping() //Cuando acceden a su perfil
     public String verTuPerfilUsuario(Model model,  HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         if (principal != null) {
@@ -148,21 +148,21 @@ public class UsuarioController {
     }
 
     @PostMapping("/{id}/banear")
-	public String deletePost(Model model, @PathVariable String id, HttpServletRequest request) {
+	public String bannedUser(Model model, @PathVariable String id, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
-        System.out.println("0");
         if (principal != null){
             Optional<Usuario> admin = usuarioService.findByNombre(principal.getName());
-            System.out.println("1");
             Optional<Usuario> user = usuarioService.findById(Long.parseLong(id));
-            System.out.println("2");
             String tipo = admin.get().determinarTipoUsuario();
-            System.out.println("3");
             if (user.isPresent() && tipo.equals("Administrador")) {
-                user.get().setActivo(false);
-                System.out.println("4");
+                Boolean activo = user.get().isActivo();
+                user.get().changeActivo();
                 usuarioService.save(user.get());
-                System.out.println("5");
+                if (activo) {
+                    model.addAttribute("text", "user banned");
+                } else {
+                    model.addAttribute("text", "user unbanned");
+                }
                 return "bannedProfile";
             } else if (!tipo.equals("Administrador")) {
                 model.addAttribute("texto", "you are not allow to banned users");

@@ -116,6 +116,10 @@ public class Usuario{
         this.activo = activo;
     }
 
+    public void changeActivo(){
+        this.activo = !this.activo;
+    }
+
     public String getEncodedPassword() {
         return encodedPassword;
     }
