@@ -3,7 +3,9 @@ package com.webapp08.pujahoy.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,10 +13,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.security.Principal;
+import java.sql.Blob;
+import java.sql.Date;
+
 import com.webapp08.pujahoy.model.Usuario;
 import com.webapp08.pujahoy.service.UsuarioService;
 import com.webapp08.pujahoy.model.Producto;
@@ -56,7 +62,7 @@ public class UsuarioController {
 
     //Para ver perfil falta el contacto q se saca de Auth0
 
-    @GetMapping("/") //Cuando acceden a su perfil
+    @GetMapping() //Cuando acceden a su perfil
     public String verTuPerfilUsuario(Model model,  HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         if (principal != null) {
@@ -178,23 +184,157 @@ public class UsuarioController {
         return "pageError";
 	}
 
-    @GetMapping("/usuario/NuevoProducto")
-    public String nuevoProducto(){
+    @GetMapping("/producto_template")
+    public String verProductos(Model model, HttpServletRequest request,
+                            @RequestParam(defaultValue = "0") int pagina,
+                            @RequestParam(defaultValue = "10") int tamaño) {
+        Principal principal = request.getUserPrincipal();
+        
+        if (principal != null) {
+            String username = principal.getName(); // Obtener nombre de usuario
+            Optional<Usuario> user = usuarioService.findByNombre(username);
 
-        return "newAuction";
+            if (user.isPresent()) {
+                Page<Producto> productos = productoService.obtenerProductosPaginados(username, pagina, tamaño);
+                
+                model.addAttribute("productos", productos); // Pasamos la página completa
+                return "producto_template";
+            }
+        }
+
+        model.addAttribute("texto", "Usted no está autenticado");
+        return "pageError";
     }
 
-    @GetMapping("/usuario/verProductos")
-    public String verProductos(){
+    @GetMapping("/verProductos")
+    public String verProductosIni(Model model, HttpServletRequest request,
+                            @RequestParam(defaultValue = "0") int pagina,
+                            @RequestParam(defaultValue = "10") int tamaño) {
+        Principal principal = request.getUserPrincipal();
+        
+        if (principal != null) {
+            String username = principal.getName(); // Obtener nombre de usuario
+            Optional<Usuario> user = usuarioService.findByNombre(username);
 
-        return "YourAuctions";
+            if (user.isPresent()) {
+                Page<Producto> productos = productoService.obtenerProductosPaginados(username, pagina, tamaño);
+                System.out.println("NOUN");
+                System.out.println(productos);
+                
+                model.addAttribute("productos", productos); // Pasamos la página completa
+                return "YourProducts";
+            }
+        }
+
+        model.addAttribute("texto", "Usted no está autenticado");
+        return "pageError";
     }
 
-    @GetMapping("/usuario/verCompras")
-    public String verCompras(){
 
-        return "YourWinningBids"; 
+    @GetMapping("/producto_template_compras")
+    public String verProductosCompras(Model model, HttpServletRequest request,
+                            @RequestParam(defaultValue = "0") int pagina,
+                            @RequestParam(defaultValue = "10") int tamaño) {
+        Principal principal = request.getUserPrincipal();
+        
+        if (principal != null) {
+            String username = principal.getName(); // Obtener nombre de usuario
+            Optional<Usuario> user = usuarioService.findByNombre(username);
+
+            if (user.isPresent()) {
+                Page<Producto> productos = productoService.obtenerProductosComprados(username, pagina, tamaño);
+                
+                model.addAttribute("productos", productos); // Pasamos la página completa
+                return "producto_template";
+            }
+        }
+
+        model.addAttribute("texto", "Usted no está autenticado");
+        return "pageError";
     }
+        
+
+    @GetMapping("/verCompras")
+    public String verProductosComprasIni(Model model, HttpServletRequest request,
+                            @RequestParam(defaultValue = "0") int pagina,
+                            @RequestParam(defaultValue = "10") int tamaño) {
+        Principal principal = request.getUserPrincipal();
+        
+        if (principal != null) {
+            String username = principal.getName(); // Obtener nombre de usuario
+            Optional<Usuario> user = usuarioService.findByNombre(username);
+
+            if (user.isPresent()) {
+                Page<Producto> productos = productoService.obtenerProductosComprados(username, pagina, tamaño);
+
+                System.out.println(productos);
+                
+                model.addAttribute("productos", productos); // Pasamos la página completa
+                return "YourWinningBids";
+            }
+        }
+
+        model.addAttribute("texto", "Usted no está autenticado");
+        return "pageError";
+}
+
+    @GetMapping("/NuevoProducto")
+        public String nuevoProducto(){
+            return "newAuction";
+        }
+
+    @PostMapping("/submit_auction")
+    public String publicarProducto(
+        @RequestParam("nombre") String nombre,
+        @RequestParam("descripcion") String descripcion,
+        @RequestParam("valorini") double precio,
+        @RequestParam("duracion") int duracion,
+        @RequestParam("estado") String estado,
+        @RequestParam("imagen") MultipartFile imagenFile,
+        HttpServletRequest request,
+        Model model) {    
+    
+        Principal principal = request.getUserPrincipal();
+    
+        if (principal == null) {
+            model.addAttribute("texto", "Usuario no encontrado");
+            return "pageError";
+        }
+    
+        Optional<Usuario> usuario = usuarioService.findByNombre(principal.getName());
+    
+        if (usuario.isEmpty()) {
+            model.addAttribute("texto", "Usuario no encontrado en la base de datos");
+            return "pageError";
+        }
+    
+        try {
+            // Obtener la fecha y hora actual en java.sql.Date
+            Date horaIni = new Date(System.currentTimeMillis());
+            Date horaFin = new Date(horaIni.getTime() + (long) duracion * 24 * 60 * 60 * 1000);
+    
+            // Convertir la imagen a Blob si existe
+            Blob imagen = null;
+            if (!imagenFile.isEmpty()) {
+                imagen = BlobProxy.generateProxy(imagenFile.getInputStream(), imagenFile.getSize());
+            }
+    
+            // Crear el producto con el usuario obtenido
+            Producto producto = new Producto(nombre, descripcion, precio, horaIni, horaFin, estado, imagen, usuario.get());
+    
+            // Guardar el producto en la base de datos
+            productoService.save(producto);
+    
+            model.addAttribute("producto", producto);
+            return "redirect:/producto/" + producto.getId();
+            
+        } catch (Exception e) {
+            model.addAttribute("texto", "Error al procesar el producto: " + e.getMessage());
+            return "pageError";
+        }
+    }
+
+    
 
     @GetMapping("/{id}/rate") //Te envia a la pagina de valorar
     public String irValorar(Model model, @PathVariable long id, HttpServletRequest request){

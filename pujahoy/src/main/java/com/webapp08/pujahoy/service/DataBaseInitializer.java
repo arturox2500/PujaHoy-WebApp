@@ -63,10 +63,10 @@ public class DataBaseInitializer {
 			Date fecha25M = new Date(calendar.getTimeInMillis());
 			//son fechas de prueba
 
-			Producto product1 = new Producto("Producto1","mola mucho",900,fecha24,fecha25M,"En curso", user2);
-			Producto product2 = new Producto("Producto2","mola nada",840,fecha24,fecha25M,"En curso", user3);
-			Producto product3 = new Producto("Ordenador To Guapo","lo a utilizado CR7",500000,fecha24,fecha25,"Finalizado", user3);
-			Producto product4 = new Producto("Ordenador To Guapo 2 ","lo a utilizado messi",500000,fecha24,fecha25,"Finalizado", user4);
+			Producto product1 = new Producto("Producto1","mola mucho",900,fecha24,fecha25M,"En curso",null, user2);
+			Producto product2 = new Producto("Producto2","mola nada",840,fecha24,fecha25M,"En curso",null, user3);
+			Producto product3 = new Producto("Ordenador To Guapo","lo a utilizado CR7",500000,fecha24,fecha25,"Finalizado",null, user3);
+			Producto product4 = new Producto("Ordenador To Guapo 2 ","lo a utilizado messi",500000,fecha24,fecha25,"Finalizado",null, user4);
 
 			Oferta nuevaOferta = new Oferta(user2, product3, 800000, fecha24);
 			product3.getOfertas().add(nuevaOferta);

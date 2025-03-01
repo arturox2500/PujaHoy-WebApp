@@ -37,17 +37,19 @@ public class Producto {
     
         }
 
-        public Producto(String nombre,String descripcion,double valorini, Date horaIni,Date horaFin, String estado, Usuario vendedor){
+        public Producto(String nombre,String descripcion,double valorini, Date horaIni,Date horaFin, String estado, Blob imagen, Usuario vendedor){
             this.nombre = nombre;
             this.descripcion = descripcion;
             this.valorini = valorini;
             this.horaIni = horaIni;
             this.horaFin = horaFin;
             this.estado = estado;
-            this.imagen = null;//imagen;
+            this.imagen = imagen;
             this.vendedor = vendedor;
             this.ofertas = new ArrayList<Oferta>();
         }
+
+        
 
         public long getId() {
             return id;
