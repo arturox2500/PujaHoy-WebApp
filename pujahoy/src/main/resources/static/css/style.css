@@ -2334,3 +2334,11 @@ a {
 #product-images{
   display: none;
 }
+
+#imgup{
+  margin: 3em 4em;
+}
+
+.spinner-border{
+  display: none;
+}
