@@ -18,7 +18,7 @@ public class Oferta {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @OneToOne
+    @ManyToOne
     private Usuario usuario;
 
     @ManyToOne

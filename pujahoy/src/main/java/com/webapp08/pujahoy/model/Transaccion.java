@@ -1,22 +1,26 @@
 package com.webapp08.pujahoy.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
 public class Transaccion {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @OneToOne
     private Producto producto;
 
-    @OneToOne
+    @ManyToOne
     private Usuario vendedor;
 
-    @OneToOne
+    @ManyToOne
     private Usuario comprador;
     private double coste;
 

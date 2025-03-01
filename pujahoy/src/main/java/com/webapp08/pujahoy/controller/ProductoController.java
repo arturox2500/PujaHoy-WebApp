@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.webapp08.pujahoy.model.Oferta;
 import com.webapp08.pujahoy.model.Producto;
+import com.webapp08.pujahoy.model.Transaccion;
 import com.webapp08.pujahoy.model.Usuario;
 import com.webapp08.pujahoy.service.OfertaService;
 import com.webapp08.pujahoy.service.ProductoService;
+import com.webapp08.pujahoy.service.TransaccionService;
 import com.webapp08.pujahoy.service.UsuarioService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,6 +41,9 @@ public class ProductoController {
 
     @Autowired
     private OfertaService OfertaService;
+
+    @Autowired
+    private TransaccionService transaccionService;
 
     @ModelAttribute
 	public void addAttributes(Model model, HttpServletRequest request) {
@@ -92,10 +97,18 @@ public class ProductoController {
             long actualTime = System.currentTimeMillis();
             
 
-            if(producto.getHoraFin().getTime()<=(actualTime)){
+            if(producto.getHoraFin().getTime()<=(actualTime) && producto.getEstado().equals("En curso")){
                 producto.setEstado("Finalizado");
-            }else{
-                producto.setEstado("En curso");
+                List<Oferta> ofertas = producto.getOfertas();
+                if (!ofertas.isEmpty()) {
+                    Oferta ultimaOferta = ofertas.get(ofertas.size() - 1);
+
+                    // New transaction
+                    Transaccion transaccion = new Transaccion(producto,producto.getVendedor(),ultimaOferta.getUsuario(),ultimaOferta.getCoste());
+
+                    // Save transaction
+                    transaccionService.save(transaccion);
+                }
             }
             
             productoService.save(producto);
@@ -117,6 +130,21 @@ public class ProductoController {
                 }else{
                     model.addAttribute("admin", false);
                     model.addAttribute("usuario_autenticado", false);
+                }
+                if(producto.getEstado().equals("Finalizado")){
+                    model.addAttribute("Finalizado", true);
+                    List<Oferta> ofertas = producto.getOfertas();
+                    if (!ofertas.isEmpty()) {
+                        Oferta ultimaOferta = ofertas.get(ofertas.size() - 1);
+                    
+                        if(ultimaOferta.getUsuario().equals(usuario)){
+                            model.addAttribute("Ganador", true);
+                        }else{
+                            model.addAttribute("Ganador", false);
+                        }
+                    }
+                }else{
+                    model.addAttribute("Finalizado", false);
                 }
             
             }

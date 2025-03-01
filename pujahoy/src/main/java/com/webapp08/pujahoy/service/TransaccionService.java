@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.webapp08.pujahoy.model.Producto;
 import com.webapp08.pujahoy.model.Transaccion;
 import com.webapp08.pujahoy.repository.TransaccionRepository;
 
@@ -16,5 +17,10 @@ public class TransaccionService {
 
     public Optional<Transaccion> findByProducto_id(long id) {
 		return repository.findById(id);
+
+	  }
+
+    public Transaccion save(Transaccion transaccion) {
+		return repository.save(transaccion);
 	}
 }
