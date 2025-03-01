@@ -87,5 +87,31 @@ public class DataBaseInitializer {
 
 			transaccionRepository.save(transaccion1);
 			transaccionRepository.save(transaccion2);
+
+			Producto product5 = new Producto("Producto5", "Me encanta", 950, fecha24, fecha25M, "En curso", null, user2);
+			Producto product6 = new Producto("Producto6", "Totalmente recomendable", 1100, fecha24, fecha25M, "En curso", null, user2);
+			Producto product7 = new Producto("Producto7", "Perfecto para todo", 1400, fecha24, fecha25M, "En curso", null, user2);
+			Producto product8 = new Producto("Producto8", "Lo mejor del mercado", 2000, fecha24, fecha25M, "En curso", null, user2);
+			Producto product9 = new Producto("Producto9", "Muy buena opción", 1300, fecha24, fecha25M, "En curso", null, user2);
+			Producto product10 = new Producto("Producto10", "Totalmente recomendable", 1050, fecha24, fecha25M, "En curso", null, user2);
+			Producto product11 = new Producto("Producto11", "Calidad premium", 2200, fecha24, fecha25M, "En curso", null, user2);
+			Producto product12 = new Producto("Producto12", "Lo usarás a diario", 850, fecha24, fecha25M, "En curso", null, user2);
+			Producto product13 = new Producto("Producto13", "No te arrepentirás", 1300, fecha24, fecha25M, "En curso", null, user2);
+			Producto product14 = new Producto("Producto14", "Muy práctico y duradero", 1400, fecha24, fecha25M, "En curso", null, user2);
+			Producto product15 = new Producto("Producto15", "Innovador y moderno", 1600, fecha24, fecha25M, "En curso", null, user2);
+
+			productoRepository.save(product5);
+			productoRepository.save(product6);
+			productoRepository.save(product7);
+			productoRepository.save(product8);
+			productoRepository.save(product9);
+			productoRepository.save(product10);
+			productoRepository.save(product11);
+			productoRepository.save(product12);
+			productoRepository.save(product13);
+			productoRepository.save(product14);
+			productoRepository.save(product15);
+
+
 	}
 }

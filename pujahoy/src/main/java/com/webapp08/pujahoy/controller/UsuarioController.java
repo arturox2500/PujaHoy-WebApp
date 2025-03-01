@@ -218,7 +218,12 @@ public class UsuarioController {
 
             if (user.isPresent()) {
                 Page<Producto> productos = productoService.obtenerProductosPaginados(username, pagina, tamaño);
+                Boolean button = true;
+                if (productos.isEmpty()){
+                    button = false;
+                }
                 
+                model.addAttribute("button", button);
                 model.addAttribute("productos", productos); // Pasamos la página completa
                 return "YourProducts";
             }
@@ -238,7 +243,7 @@ public class UsuarioController {
         if (principal != null) {
             String username = principal.getName(); // Obtener nombre de usuario
             Optional<Usuario> user = usuarioService.findByNombre(username);
-
+            
             if (user.isPresent()) {
                 Page<Producto> productos = productoService.obtenerProductosComprados(username, pagina, tamaño);
                 
@@ -264,7 +269,12 @@ public class UsuarioController {
 
             if (user.isPresent()) {
                 Page<Producto> productos = productoService.obtenerProductosComprados(username, pagina, tamaño);
+                Boolean button = true;
+                if (productos.isEmpty()){
+                    button = false;
+                }
                 
+                model.addAttribute("button", button);
                 model.addAttribute("productos", productos); // Pasamos la página completa
                 return "YourWinningBids";
             }

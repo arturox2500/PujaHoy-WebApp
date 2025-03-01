@@ -66,14 +66,6 @@
 						</a>
 					</div>
 
-						<!-- store bottom filter -->
-					<div class="text-center">
-						<button id="load-more-yposts" class="btn btn-danger">Cargar Más</button>
-						<div id="spinnerY" class="spinner-border text-primary d-block mx-auto" role="status" style="display: none !important; visibility: hidden;">
-							<span class="visually-hidden">Cargando...</span>
-						</div>
-					</div>
-
 					{{/productos}}
 				
 					{{^productos}}
@@ -84,7 +76,15 @@
 				<!-- /store products -->
 
 				
-				
+				{{#button}}
+						<!-- store bottom filter -->
+						<div class="text-center">
+							<button id="load-more-yposts" class="btn btn-danger">Cargar Más</button>
+							<div id="spinnerY" class="spinner-border text-primary d-block mx-auto" role="status" style="display: none !important; visibility: hidden;">
+								<span class="visually-hidden">Cargando...</span>
+							</div>
+						</div>
+				{{/button}}
 				
 				<!-- /store bottom filter -->
 			</div>
