@@ -3,7 +3,6 @@ let page = 1;
 let noMorePosts = false;
 
 async function cargarPosts() {
-    console.log("presiona")
     if (noMorePosts) {
         return;
     }
@@ -17,9 +16,8 @@ async function cargarPosts() {
         const responseNext = await fetch(`/usuario/producto_template?pagina=${page+1}`);
         if (response.ok) {
             const nuevosPostsHTML = (await response.text()); 
-            console.log(nuevosPostsHTML)
             if (nuevosPostsHTML != "") {
-                console.log("YESSSU")
+                
                 document.getElementById("yourProdsRow").innerHTML += nuevosPostsHTML;
                 document.getElementById("load-more-yposts").style.display = "block";
                 if (!responseNext.ok || (await responseNext.text()).trim() === "") {
@@ -28,7 +26,7 @@ async function cargarPosts() {
                     document.getElementById("spinnerY").style.visibility = "hidden";
                 }
             } 
-            console.log(page)
+            
             page++;
         }
     } catch (error) {
@@ -48,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 async function cargarPosts2() {
-    console.log("presiona")
+    
     if (noMorePosts) {
         return;
     }
