@@ -7,7 +7,7 @@
 			<div class="container">
 				<h2>FEATURED PRODUCTS</h2>
 				<!-- row -->
-				<div class="row">
+				<div class="row" id="indexProduct">
 					{{#productos}}
 					<div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">
 						<a href="/producto/{{id}}" class="product-link">
@@ -48,6 +48,14 @@
 				<!-- /row -->
 			</div>
 			<!-- /container -->
+			{{#button}}
+				<div class="text-center">
+					<button id="load-more-index" class="btn btn-danger">Cargar Más</button>
+					<div id="spinnerIndex" class="spinner-border text-primary d-block mx-auto" role="status" style="display: none !important; visibility: hidden;">
+						<span class="visually-hidden">Cargando...</span>
+					</div>
+				</div>
+			{{/button}}
 		</div>
 		<!-- /SECTION -->
 

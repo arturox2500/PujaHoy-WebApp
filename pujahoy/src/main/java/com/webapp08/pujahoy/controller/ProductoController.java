@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import org.springframework.core.io.Resource;
 
+import org.springframework.data.domain.Page;
+
 import com.webapp08.pujahoy.model.Oferta;
 import com.webapp08.pujahoy.model.Producto;
 import com.webapp08.pujahoy.model.Transaccion;
@@ -32,6 +34,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -63,20 +66,30 @@ public class ProductoController {
 
 
     @GetMapping("/")
-        public String listarProductos(Model model) {    
-        System.out.println("probando");
-        List<Producto> productos = productoService.obtenerTodosLosProductos(); // Cambiamos a lista
+        public String listarProductos(Model model,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {    
+        Page<Producto> productos = productoService.obtenerTodosLosProductos(page,size); // Cambiamos a lista
 
-        System.out.println("la cabra");
-        // Imprimir los productos en la consola
-        for (Producto producto : productos) {
-            System.out.println(producto);
+        Boolean button = true;
+        if (productos.isEmpty()){
+                button = false;
         }
 
         // Agregar atributos al modelo
+        model.addAttribute("button", button);
         model.addAttribute("productos", productos);
 
         return "index"; // Retorna la plantilla index.mustache
+    }
+    
+    @GetMapping("/producto_template_index")
+    public String verProductos(Model model, HttpServletRequest request, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+
+        Page<Producto> productos = productoService.obtenerTodosLosProductos(page,size);
+                
+        model.addAttribute("productos", productos); // Pasamos la página completa
+        return "producto_template";
+            
+
     }
 
     @PostMapping("/product/{id_producto}/delete")

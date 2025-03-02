@@ -33,8 +33,9 @@ public class ProductoService {
         repository.deleteById(id_producto);
     }
 
-    public List<Producto> obtenerTodosLosProductos() {
-        return repository.findAll();
+    public Page<Producto> obtenerTodosLosProductos(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+        return repository.findAll(pageable);
     }
 
 	public Page<Producto> obtenerProductosPaginados(String nombreVendedor, int pagina, int tamaño) {

@@ -85,5 +85,45 @@ document.addEventListener("DOMContentLoaded", function () {
     if (btnWB) btnWB.addEventListener("click", cargarPosts2);
 });
 
+async function cargarIndex() {
+    
+    if (noMorePosts) {
+        return;
+    }
+    
+    document.getElementById("spinnerIndex").style.display = "block"; // Mostrar el spinner
+    document.getElementById("spinnerIndex").style.visibility = "visible";
+    document.getElementById("load-more-index").style.display = "none";
+    await sleep(300);
+    try {
+        const response = await fetch(`/producto_template_index?page=${page}`);
+        const responseNext = await fetch(`/producto_template_index?page=${page+1}`);
+        if (response.ok) {
+            const nuevosPostsHTML = await response.text(); 
+            
+            if (nuevosPostsHTML !== "") {
+                document.getElementById("indexProduct").innerHTML += nuevosPostsHTML;
+                document.getElementById("load-more-index").style.display = "block";
+                if (!responseNext.ok || (await responseNext.text()).trim() === "") {                   
+                    noMorePosts = true;
+                    document.getElementById("load-more-index").style.display = "none";
+                    document.getElementById("spinnerIndex").style.visibility = "hidden";
+                }
+            } 
+
+            page++;
+        }
+    } catch (error) {
+        console.error("Error al cargar los posts:", error);
+    }
+
+    document.getElementById("spinnerIndex").style.display = "none"; // Ocultar el spinner
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const btnIndex = document.getElementById("load-more-index");
+    if (btnIndex) btnIndex.addEventListener("click", cargarIndex);
+});
+
 
 

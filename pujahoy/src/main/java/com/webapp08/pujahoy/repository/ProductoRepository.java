@@ -25,5 +25,5 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
        "WHERE u.nombre = :compradorNombre")
     Page<Producto> findProductosCompradosPorUsuario(@Param("compradorNombre") String compradorNombre, Pageable pageable);
 
-    List<Producto> findAll();
+    Page<Producto> findAll(Pageable pageable);
 }

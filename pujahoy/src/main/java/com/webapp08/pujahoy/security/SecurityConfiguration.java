@@ -61,6 +61,8 @@ public class SecurityConfiguration {
 				.requestMatchers("/usuario/{id}").permitAll()
 				.requestMatchers("/producto/{id}/image").permitAll()
 				.requestMatchers("/usuario/producto_template").permitAll()
+				.requestMatchers("/producto_template").permitAll()
+				.requestMatchers("/producto_template_index").permitAll()
 				// PRIVATE PAGES
 				.requestMatchers("/product/*/delete").hasAnyRole("ADMIN")
 				.requestMatchers("/product/{id_producto}/place-bid").hasAnyRole("USER")
