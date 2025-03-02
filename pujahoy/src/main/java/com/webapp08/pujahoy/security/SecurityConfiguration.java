@@ -77,7 +77,7 @@ public class SecurityConfiguration {
 				.requestMatchers("/usuario/{id}/rated").hasAnyRole("USER")
 			)
 			.formLogin(formLogin -> formLogin
-					.loginPage("/login")
+					.loginPage("/login")					
 					.failureUrl("/loginerror")
 					.defaultSuccessUrl("/")
 					.permitAll()
