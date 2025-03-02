@@ -142,13 +142,7 @@ public class ProductoController {
             
             productoService.save(producto);
 
-            // Obtener usuario de la sesión
-            Principal principal = request.getUserPrincipal();
-            if (principal != null) {
-                String username = principal.getName(); // Obtiene el nombre de usuario
-                Optional<Usuario> user = usuarioService.findByNombre(username); // Busca en la base de datos
-                Usuario usuario = user.orElse(null);
-                List<Oferta> ofertas = producto.getOfertas();
+            List<Oferta> ofertas = producto.getOfertas();
                 double[] costes;
                 int numOfertas = ofertas.size();
                 if (numOfertas > 0){
@@ -162,6 +156,14 @@ public class ProductoController {
                 
                 model.addAttribute("costes", Arrays.toString(costes));
 
+
+            // Obtener usuario de la sesión
+            Principal principal = request.getUserPrincipal();
+            if (principal != null) {
+                String username = principal.getName(); // Obtiene el nombre de usuario
+                Optional<Usuario> user = usuarioService.findByNombre(username); // Busca en la base de datos
+                Usuario usuario = user.orElse(null);
+                
                 model.addAttribute("codigoPostal", producto.getVendedor().getCodigoPostal());
 
                 if (usuario != null && "Administrador".equalsIgnoreCase(usuario.determinarTipoUsuario())) {
