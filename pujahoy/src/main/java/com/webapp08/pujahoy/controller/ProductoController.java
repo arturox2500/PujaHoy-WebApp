@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.sql.Blob;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -147,6 +148,20 @@ public class ProductoController {
                 String username = principal.getName(); // Obtiene el nombre de usuario
                 Optional<Usuario> user = usuarioService.findByNombre(username); // Busca en la base de datos
                 Usuario usuario = user.orElse(null);
+                List<Oferta> ofertas = producto.getOfertas();
+                double[] costes;
+                int numOfertas = ofertas.size();
+                if (numOfertas > 0){
+                    costes = new double[numOfertas];
+                    for(int i = 0; i < numOfertas; i++){
+                        costes[i] = ofertas.get(i).getCoste();
+                    }
+                } else {
+                    costes = new double[0];
+                }
+                
+                model.addAttribute("costes", Arrays.toString(costes));
+
                 model.addAttribute("codigoPostal", producto.getVendedor().getCodigoPostal());
 
                 if (usuario != null && "Administrador".equalsIgnoreCase(usuario.determinarTipoUsuario())) {
@@ -161,7 +176,7 @@ public class ProductoController {
                 }
                 if(producto.getEstado().equals("Finalizado")){
                     model.addAttribute("Finalizado", true);
-                    List<Oferta> ofertas = producto.getOfertas();
+                    
                     if (!ofertas.isEmpty()) {
                         Oferta ultimaOferta = ofertas.get(ofertas.size() - 1);
                     

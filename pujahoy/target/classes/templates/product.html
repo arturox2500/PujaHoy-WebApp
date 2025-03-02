@@ -36,7 +36,7 @@
                         <img src="/producto/{{id}}/image" alt="Imagen del producto">
                         {{/imagen}}
                         {{^imagen}}
-                        <img src="" alt="Imagen no disponible">
+                        <img src="/img/default-product.png" alt="Imagen no disponible">
                         {{/imagen}}
                     </div>
                 </div>
@@ -128,8 +128,21 @@
     </div>
 </div>
 <!-- /MAP SECTION -->
-{{>footer}}
 
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Historial de Pujas</h3>
+                <canvas id="pujasChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{>footer}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 {{#vendedor}}
@@ -173,6 +186,33 @@
         
         // Llamar a la función con el código postal del producto
         mostrarUbicacion("{{codigoPostal}}");
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        const numPujas = 10;
+        let montos = "{{costes}}";     
+        montos = JSON.parse(montos)
+        montos.sort((a, b) => a - b);
+        const ctx = document.getElementById("pujasChart").getContext("2d");
+        new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: montos.map((_, i) => `Puja ${i + 1}`), // Eje X con números de puja
+                datasets: [{
+                    label: "Evolución de las pujas",
+                    data: montos,
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderWidth: 2,
+                    tension: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: false }
+                }
+            }
+        });
     });
 </script>
 {{/vendedor}}

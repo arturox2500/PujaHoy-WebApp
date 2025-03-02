@@ -74,6 +74,11 @@ public class DataBaseInitializer {
 			Oferta nuevaOferta1 = new Oferta(user3, product4, 800000, fecha24);
 			product4.getOfertas().add(nuevaOferta);
 
+			Oferta nuevaOferta2 = new Oferta(user2, product3, 810000, fecha24);
+			product3.getOfertas().add(nuevaOferta);
+			Oferta nuevaOferta3 = new Oferta(user2, product3, 890000, fecha24);
+			product3.getOfertas().add(nuevaOferta);
+
 			productoRepository.save(product1);
 			productoRepository.save(product2);
 			productoRepository.save(product3);
@@ -81,6 +86,8 @@ public class DataBaseInitializer {
 
 			ofertaRepository.save(nuevaOferta);
 			ofertaRepository.save(nuevaOferta1);
+			ofertaRepository.save(nuevaOferta2);
+			ofertaRepository.save(nuevaOferta3);
 			
             Transaccion transaccion1= new Transaccion(product3,user3,user2,800000);
 			Transaccion transaccion2= new Transaccion(product4,user4,user3,800000);
