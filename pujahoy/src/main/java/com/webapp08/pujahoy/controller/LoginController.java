@@ -52,14 +52,20 @@ public class LoginController {
 
     @PostMapping("/register")
     public String register(Model model, @RequestParam String email, @RequestParam String password,
-            @RequestParam int codigoPostal, @RequestParam String username, @RequestParam String nombreVisible,
+            @RequestParam String codigoPostal, @RequestParam String username, @RequestParam String nombreVisible,
             @RequestParam String descripcion, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        if (usuarioRepository.findByNombre(username).isPresent()) {
-            model.addAttribute("error", "Datos ya registrados, por favor, introduzca otros datos.");
+        if (usuarioRepository.findByNombre(username).isPresent() || email.isBlank() || password.isBlank()
+                || codigoPostal.isBlank() || username.isBlank() || nombreVisible.isBlank()) {
+            model.addAttribute("error", "Datos erroneos o faltantes");
             return "login"; // Redirige al formulario de registro con error
         }
 
-        Usuario user = new Usuario(username, 0, nombreVisible, email, codigoPostal, descripcion, true,
+        if (!codigoPostal.matches("\\d{5}") ) {
+            model.addAttribute("error", "El código postal debe tener exactamente 5 cifras.");
+            return "login"; 
+        }
+
+        Usuario user = new Usuario(username, 0, nombreVisible, email, Integer.parseInt(codigoPostal), descripcion, true,
                 passwordEncoder.encode(password), "USER");
         usuarioRepository.save(user);
 

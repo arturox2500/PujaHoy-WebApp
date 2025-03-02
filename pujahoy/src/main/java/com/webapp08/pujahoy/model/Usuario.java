@@ -1,6 +1,7 @@
 package com.webapp08.pujahoy.model;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Blob;
@@ -66,6 +67,14 @@ public class Usuario{
 
     public int getCodigoPostal() {
         return codigoPostal;
+    }
+
+    public void setCodigoPostal(int codigoPostal) {
+        this.codigoPostal = codigoPostal;
+    }
+
+    public void setFotoPerfil(Blob fotoPerfil) {
+        this.fotoPerfil = fotoPerfil;
     }
 
     public void setId(Long id) {
@@ -164,8 +173,12 @@ public class Usuario{
 
     private Blob cargarFotoPerfilEstandar() {
         try {
-            byte[] imagenBytes = Files.readAllBytes(Paths.get("src/main/resources/static/img/default-profile.jpg"));
-            return new SerialBlob(imagenBytes);
+            InputStream imageStream = getClass().getClassLoader().getResourceAsStream("static/img/default-profile.jpg");
+            if (imageStream != null) {
+                byte[] imagenBytes = imageStream.readAllBytes();
+                return new SerialBlob(imagenBytes);
+            }
+            return null;
         } catch (IOException | SQLException e) {
             e.printStackTrace();
             return null; // Si hay un error, deja el blob como null

@@ -63,6 +63,8 @@ public class SecurityConfiguration {
 				.requestMatchers("/usuario/producto_template").permitAll()
 				.requestMatchers("/producto_template").permitAll()
 				.requestMatchers("/producto_template_index").permitAll()
+				.requestMatchers("/usuario/profile-picture/**").permitAll()
+				.requestMatchers("/usuario/{id}/fotoPerfil").permitAll()
 				// PRIVATE PAGES
 				.requestMatchers("/product/*/delete").hasAnyRole("ADMIN")
 				.requestMatchers("/product/{id_producto}/place-bid").hasAnyRole("USER")
