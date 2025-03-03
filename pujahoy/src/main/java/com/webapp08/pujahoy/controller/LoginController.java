@@ -3,10 +3,6 @@ package com.webapp08.pujahoy.controller;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,9 +26,6 @@ public class LoginController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private DaoAuthenticationProvider authenticationProvider;
 
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
@@ -68,11 +61,6 @@ public class LoginController {
         Usuario user = new Usuario(username, 0, nombreVisible, email, Integer.parseInt(codigoPostal), descripcion, true,
                 passwordEncoder.encode(password), "USER");
         usuarioRepository.save(user);
-
-        // Autentica automáticamente al usuario reutilizando el authenticationProvider
-        //UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
-        //Authentication authentication = authenticationProvider.authenticate(authToken);
-        //SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return "redirect:/"; // Redirige a la página principal con sesión iniciada
     }
