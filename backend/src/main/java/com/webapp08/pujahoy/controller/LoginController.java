@@ -68,6 +68,6 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         request.getSession().invalidate();
-        return "index"; // Redirige a la página principal
+        return "redirect:/"; // Redirige a la página principal
     }
 }

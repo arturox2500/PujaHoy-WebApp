@@ -220,11 +220,12 @@
 			form.appendChild(codigoPostalInput);
 
 			// csrf token
-			const idToken = document.createElement("input");
-			idInput.setAttribute("type", "hidden");
-			idInput.setAttribute("name", "_csrf");
-			idInput.value = "{{token}}"; // Poner el ID del usuario que viene de la plantilla
-			form.appendChild(idToken);
+			const csrfToken = document.createElement("input");
+			csrfToken.setAttribute("type", "hidden");
+			csrfToken.setAttribute("name", "_csrf");
+			csrfToken.value = "{{token}}"; // Asegúrate de que esto está bien renderizado en tu plantilla
+			form.appendChild(csrfToken);
+
 
 			const imageInput = document.getElementById("new-profile-image");
 			if (imageInput.files.length > 0) {

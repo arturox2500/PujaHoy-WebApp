@@ -103,11 +103,11 @@ public class UsuarioController {
                 }
                 return "profile";
             } else {
-                model.addAttribute("texto", "user not found");
+                model.addAttribute("texto", " user not found");
                 model.addAttribute("url", "/");
             }
         }
-        model.addAttribute("texto", "you must be logged in");
+        model.addAttribute("texto", " you must be logged in");
         model.addAttribute("url", "/");
         return "pageError";
     }
@@ -154,11 +154,11 @@ public class UsuarioController {
                 }
                 return "profile";
             } else {
-                model.addAttribute("texto", "seller not found");
+                model.addAttribute("texto", " seller not found");
                 model.addAttribute("url", "/");
             }
         } else {
-            model.addAttribute("texto", "product not found");
+            model.addAttribute("texto", " product not found");
             model.addAttribute("url", "/");
         }
         return "pageError";
@@ -220,21 +220,21 @@ public class UsuarioController {
                 user.get().changeActivo();
                 usuarioService.save(user.get());
                 if (activo) {
-                    model.addAttribute("text", "user banned. \n All his products have been removed.");
+                    model.addAttribute("text", "User banned. All his products have been removed.");
                     this.deleteProducts(user.get());
                 } else {
-                    model.addAttribute("text", "user unbanned.");
+                    model.addAttribute("text", "User unbanned.");
                 }
                 return "bannedProfile";
             } else if (!tipo.equals("Administrador")) {
-                model.addAttribute("texto", "you are not allow to banned users");
+                model.addAttribute("texto", " you are not allow to banned users");
                 model.addAttribute("url", "/");
             } else {
-                model.addAttribute("texto", "user not found");
+                model.addAttribute("texto", " user not found");
                 model.addAttribute("url", "/");
             }
         } else {
-            model.addAttribute("texto", "you must be logged in");
+            model.addAttribute("texto", " you must be logged in");
             model.addAttribute("url", "/");
         }
         return "pageError";
@@ -258,7 +258,8 @@ public class UsuarioController {
             }
         }
 
-        model.addAttribute("texto", "Usted no está autenticado");
+        model.addAttribute("texto", " You are not authenticated");
+        model.addAttribute("url", "/");
         return "pageError";
     }
 
@@ -285,7 +286,8 @@ public class UsuarioController {
             }
         }
 
-        model.addAttribute("texto", "Usted no está autenticado");
+        model.addAttribute("texto", " You are not authenticated");
+        model.addAttribute("url", "/");
         return "pageError";
     }
 
@@ -307,7 +309,8 @@ public class UsuarioController {
             }
         }
 
-        model.addAttribute("texto", "Usted no está autenticado");
+        model.addAttribute("texto", " You are not authenticated");
+        model.addAttribute("url", "/");
         return "pageError";
     }
 
@@ -334,7 +337,8 @@ public class UsuarioController {
             }
         }
 
-        model.addAttribute("texto", "Usted no está autenticado");
+        model.addAttribute("texto", " You are not authenticated");
+        model.addAttribute("url", "/");
         return "pageError";
     }
 
@@ -357,14 +361,16 @@ public class UsuarioController {
         Principal principal = request.getUserPrincipal();
 
         if (principal == null) {
-            model.addAttribute("texto", "Usuario no encontrado");
+            model.addAttribute("texto", " User not authenticated");
+            model.addAttribute("url", "/");
             return "pageError";
         }
 
         Optional<Usuario> usuario = usuarioService.findByNombre(principal.getName());
 
         if (usuario.isEmpty()) {
-            model.addAttribute("texto", "Usuario no encontrado en la base de datos");
+            model.addAttribute("texto", " User not found");
+            model.addAttribute("url", "/");
             return "pageError";
         }
 
@@ -390,7 +396,8 @@ public class UsuarioController {
             return "redirect:/producto/" + producto.getId();
 
         } catch (Exception e) {
-            model.addAttribute("texto", "Error al procesar el producto: " + e.getMessage());
+            model.addAttribute("texto", " Error processing the product: " + e.getMessage());
+            model.addAttribute("url", "/");
             return "pageError";
         }
     }
@@ -402,13 +409,13 @@ public class UsuarioController {
             Principal principal = request.getUserPrincipal();
             if (principal == null) {
                 model.addAttribute("texto", "you must be logged in");
-                model.addAttribute("url", "/");
+                model.addAttribute("url", "/producto/" + id);
                 return "pageError";
             }
             Optional<Transaccion> trans = transaccionService.findByProducto(product.get());
             if (trans.isEmpty()) {
                 model.addAttribute("texto", "this product has not been sold");
-                model.addAttribute("url", "/");
+                model.addAttribute("url", "/producto/" + id);
                 return "pageError";
             }
             Optional<Usuario> user = usuarioService.findById(trans.get().getComprador().getId());
@@ -420,7 +427,7 @@ public class UsuarioController {
                     return "ratingProduct";
                 } else {
                     model.addAttribute("texto", "this product is not yours");
-                    model.addAttribute("url", "/");
+                    model.addAttribute("url", "/producto/" + id);
                 }
             } else {
                 model.addAttribute("texto", "buyer not exist");
@@ -451,16 +458,16 @@ public class UsuarioController {
     @PostMapping("/{id}/rated")
     public String valorarProducto(Model model, @PathVariable long id, @RequestParam int rating) {
         if (rating < 1 || rating > 5) {
-            model.addAttribute("texto", "the rated must be between 1 and 5");
-            model.addAttribute("url", "/");
+            model.addAttribute("texto", " the rated must be between 1 and 5");
+            model.addAttribute("url", "/producto/" + id + "/rate");
             return "pageError";
         }
         Optional<Producto> product = productoService.findById(id);
         if (product.isPresent()) {
             Optional<Valoracion> existingVal = valoracionService.findByProducto(product.get());
             if (existingVal.isPresent()) {
-                model.addAttribute("texto", "This product has already been rated");
-                model.addAttribute("url", "/");
+                model.addAttribute("texto", " This product has already been rated");
+                model.addAttribute("url", "/producto/" + id + "/rate");
                 return "pageError";
             }
             Valoracion val = new Valoracion(product.get().getVendedor(), product.get(), rating);
@@ -469,7 +476,7 @@ public class UsuarioController {
             model.addAttribute("id", product.get().getId());
             return "productRated";
         } else {
-            model.addAttribute("texto", "product not found");
+            model.addAttribute("texto", " product not found");
             model.addAttribute("url", "/");
         }
         return "pageError";
