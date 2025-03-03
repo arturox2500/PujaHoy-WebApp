@@ -91,8 +91,7 @@ Flechas azules = usuarios registrados ajenos a la perfil.
 
 
 ---
-#Somewhat Updated ReadMe.md
-#Proofread!
+
 ---
 
 # Auction Application (PUJAHOY)
