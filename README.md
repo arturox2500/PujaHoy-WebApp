@@ -250,24 +250,6 @@ Admins have the ability to remove product listings to ensure compliance with pla
 | [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/pujahoy/src/main/resources/templates/login.html) | The login html was made by me too. Interesting to highlight register and login go throw the same view and are dynamicaly swapped between them with JS. Backend checks are done to secure reliable data.|
 | [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/pujahoy/src/main/resources/templates/profile.html) | Although i wasnt in charge of creating the profile view, i had to add edit a profile. As a challenge i decided to use the same view to be able to edit a user with a button. A hidden form is created dynamically and data is sent in it. Backend checks are done to secure reliable data.|
 
-### 👤 Iván Gutierrez González
-
-| Commit | Description |
-| :----: | :---------: |
-| [1º](https://github.com/) | |
-| [2º](https://github.com/) | |
-| [3º](https://github.com/) | |
-| [4º](https://github.com/) | |
-| [5º](https://github.com/) | |
-
-| File | Description |
-| :----: | :---------: |
-| [1º](link del archivo) | |
-| [2º](link del archivo) | |
-| [3º](link del archivo) | |
-| [4º](link del archivo) | |
-| [5º](link del archivo) | |
-
 ### 👤 Arturo Enrique Gutierrez Mirandona 
 
 | Commit | Description |
@@ -285,6 +267,24 @@ Admins have the ability to remove product listings to ensure compliance with pla
 | [3º](link del archivo) | |
 | [4º](link del archivo) | |
 | [5º](link del archivo) | |
+
+### 👤 Iván Gutierrez González
+
+| Commit | Description |
+| :----: | :---------: |
+| [1º]([https://github.com/](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/4a6a660d4e56250eca70bd25a231ebe3b05ec72d)) | Create the server and create, relate, and initialize the initial H2 database.|
+| [2º]([https://github.com/](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/dacc88a8fc2761cc06c53b235ba3483c6cb2c17a)) | Functionality to view the profile of the user and the seller and complete the login functionality that Jorge started.|
+| [3º]([https://github.com/](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/24c5236fd47da6943f29609ac01374f84b6cfd49)) | Functionality to rate the seller, create the form, save the rating, and update the seller's overall rating.|
+| [4º]([https://github.com/](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/9a0c3c66f6cfe96678f8527e80c1c0117b7a5813)) | Functionality for the administrator to ban a registered user and improve the error page structure.|
+| [5º]([https://github.com/](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/ecd70945c05390cf3927f6980892b80438afce7e)) | Create user roles and verify route permissions for each user type.|
+
+| File | Description |
+| :----: | :---------: |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blame/main/backend/src/main/java/com/webapp08/pujahoy/controller/UsuarioController.java) | Functionalities to view the user's own profile, view the seller's profile, ban users, and rate the seller.|
+| [2º](lhttps://github.com/CodeURJC-DAW-2024-25/webapp08/blame/main/backend/src/main/java/com/webapp08/pujahoy/security/SecurityConfiguration.java) | Configure roles, role-specific URLs, login, and cookies to keep the session saved for one day.|
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blame/main/backend/src/main/resources/templates/profile.html) | Display certain parts using Mustache based on the user type: unregistered user, registered user accessing their own profile, registered user accessing the seller's profile, and administrator.|
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/model/Usuario.java) | Create the class, create and modify the attributes, and implement the constructors, setters, and getters.|
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blame/main/backend/src/main/java/com/webapp08/pujahoy/service/UsuarioService.java) | Create database queries for users.|
 
 ### 👤 Victor Bartolomé Letosa
 
