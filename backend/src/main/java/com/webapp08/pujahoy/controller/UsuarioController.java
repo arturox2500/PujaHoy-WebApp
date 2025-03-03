@@ -31,12 +31,13 @@ import java.sql.SQLException;
 
 import com.webapp08.pujahoy.model.Usuario;
 import com.webapp08.pujahoy.service.UsuarioService;
+import com.webapp08.pujahoy.model.Oferta;
 import com.webapp08.pujahoy.model.Producto;
 import com.webapp08.pujahoy.model.Transaccion;
+import com.webapp08.pujahoy.service.OfertaService;
 import com.webapp08.pujahoy.service.ProductoService;
 import com.webapp08.pujahoy.model.Valoracion;
 import com.webapp08.pujahoy.service.ValoracionService;
-//import com.webapp08.pujahoy.model.Transaccion;
 import com.webapp08.pujahoy.service.TransaccionService;
 
 import org.springframework.ui.Model;
@@ -56,6 +57,9 @@ public class UsuarioController {
 
     @Autowired
     private TransaccionService transaccionService;
+
+    @Autowired
+    private OfertaService ofertaService;
 
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
@@ -189,6 +193,21 @@ public class UsuarioController {
         return "redirect:/usuario"; // Redirigir al perfil actualizado
     }
 
+    private void deleteProducts(Usuario user) {
+        List<Producto> productos = productoService.findByVendedor(user);
+        for (Producto product : productos) {
+            if (!product.getOfertas().isEmpty()) {
+                for (Oferta oferta : product.getOfertas()) {
+                    ofertaService.deleteById(oferta.getId());
+                }
+            } 
+            Optional<Transaccion> trans = transaccionService.findByProducto(product);
+            if (trans.isPresent()) {
+                transaccionService.deleteById(trans.get().getId());
+            }
+            productoService.DeleteById(product.getId());
+        }
+    }
     @PostMapping("/{id}/banear")
     public String bannedUser(Model model, @PathVariable String id, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
@@ -201,9 +220,10 @@ public class UsuarioController {
                 user.get().changeActivo();
                 usuarioService.save(user.get());
                 if (activo) {
-                    model.addAttribute("text", "user banned");
+                    model.addAttribute("text", "user banned. \n All his products have been removed.");
+                    this.deleteProducts(user.get());
                 } else {
-                    model.addAttribute("text", "user unbanned");
+                    model.addAttribute("text", "user unbanned.");
                 }
                 return "bannedProfile";
             } else if (!tipo.equals("Administrador")) {

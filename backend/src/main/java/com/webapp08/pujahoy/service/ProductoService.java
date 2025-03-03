@@ -1,4 +1,5 @@
 package com.webapp08.pujahoy.service;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
 import com.webapp08.pujahoy.model.Producto;
+import com.webapp08.pujahoy.model.Usuario;
 import com.webapp08.pujahoy.repository.ProductoRepository;
 
 @Service
@@ -31,6 +33,10 @@ public class ProductoService {
 	public void DeleteById(long id_producto) {
         repository.deleteById(id_producto);
     }
+
+	public List<Producto> findByVendedor(Usuario user) {
+		return repository.findByVendedor(user);
+	}
 
     public Page<Producto> obtenerTodosLosProductosOrderByReputacion(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size);
