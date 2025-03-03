@@ -56,12 +56,12 @@ public class LoginController {
             @RequestParam String descripcion, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         if (usuarioRepository.findByNombre(username).isPresent() || email.isBlank() || password.isBlank()
                 || codigoPostal.isBlank() || username.isBlank() || nombreVisible.isBlank()) {
-            model.addAttribute("error", "Datos erroneos o faltantes");
+            model.addAttribute("error", "Wrongs fields or user already exists");
             return "login"; // Redirige al formulario de registro con error
         }
 
         if (!codigoPostal.matches("\\d{5}") ) {
-            model.addAttribute("error", "El código postal debe tener exactamente 5 cifras.");
+            model.addAttribute("error", "The zip code must be a 5 digit number");
             return "login"; 
         }
 
