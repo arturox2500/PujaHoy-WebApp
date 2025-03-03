@@ -103,8 +103,7 @@ Flechas azules = usuarios registrados ajenos a la perfil.
   - [Product Entity](#product-entity)  
   - [Bid Entity](#bid-entity)  
   - [Purchase Entity](#purchase-entity)  
-  - [Rating Entity](#rating-entity)  
-  - [USERS_ROLES](#users_roles)  
+  - [Rating Entity](#rating-entity)    
 - [User Roles & Permissions](#user-roles--permissions)  
   - [Unregistered User](#unregistered-user)  
   - [Registered User](#registered-user)  
@@ -143,9 +142,6 @@ The Purchase entity represents the final transaction in which a user buys a prod
 ### Rating Entity  
 The VALORACION entity represents the ratings given to sellers for their auctioned products. It includes attributes such as ID, score, product ID, and seller ID.  
 
-### USERS_ROLES  
-The USERS_ROLES table defines the relationship between users and their assigned roles within the system. It includes attributes such as user ID and roles.  
-
 ---
 
 ## User Roles & Permissions  
@@ -182,7 +178,7 @@ The USERS_ROLES table defines the relationship between users and their assigned 
 - Users can view line charts displaying the bidding history for each listed product.  
 
 ## Complementary Technology  
-- The web application will use **Auth0** for authentication and authorization management.  #(update!!!!!!)
+- The web application was supposed to use **Auth0** for authentication and authorization management. However, due to issues with the implementation it was decided to take the safer route and implement the map API that shows a postal code area.
 
 ## Advanced Algorithm or Query  
 - When viewing listed products, they will be displayed in order based on the rating of the seller.  
@@ -225,7 +221,7 @@ All users can view:
 - The product's title, initial price, description, and current status (ongoing or finished).  
 - The seller’s profile page.  
 - A bidding history line chart.  
-- An approximate location of the product using the postal code.  (#CHECK)
+- An approximate location of the product using the postal code.
 
 Registered users can place bids on the product.  
 Admins have the ability to remove product listings to ensure compliance with platform rules.  
