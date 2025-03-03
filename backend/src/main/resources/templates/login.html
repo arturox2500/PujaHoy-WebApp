@@ -58,15 +58,15 @@
 
             <div id="register-fields" class="hidden">
                 <input type="email" id="email" name="email" placeholder="Email">
-                <input type="text" id="nombreVisible" name="nombreVisible" placeholder="Nombre Visible">
-                <input type="text" id="codigoPostal" name="codigoPostal" placeholder="Codigo Postal">
-                <input type="text" id="descripcion" name="descripcion" placeholder="Descripción">
+                <input type="text" id="nombreVisible" name="nombreVisible" placeholder="Visible Name">
+                <input type="text" id="codigoPostal" name="codigoPostal" placeholder="Zip Code">
+                <input type="text" id="descripcion" name="descripcion" placeholder="Description / Bio">
             </div>
             
             <button type="submit" id="submit-btn">Log In</button>
             <input type="hidden" name="_csrf" value="{{token}}" />
         </form>
-        <button id="toggle-btn">¿No tienes cuenta? Regístrate</button>
+        <button id="toggle-btn">Don't have an account? Sign up</button>
         <div>
             {{#error}}
                 <p style="color: red;">{{error}}</p>
@@ -86,17 +86,17 @@
             isRegister = !isRegister;
 
             if (isRegister) {
-                formTitle.innerText = "Registro";
+                formTitle.innerText = "Sign Up";
                 userForm.action = "/register";
                 registerFields.classList.remove("hidden");
-                submitBtn.innerText = "Registrarse";
-                toggleBtn.innerText = "¿Ya tienes cuenta? Inicia sesión";
+                submitBtn.innerText = "Sign Up";
+                toggleBtn.innerText = "Already have an account? Log in";
             } else {
                 formTitle.innerText = "Login";
                 userForm.action = "/login";
                 registerFields.classList.add("hidden");
                 submitBtn.innerText = "Log In";
-                toggleBtn.innerText = "¿No tienes cuenta? Regístrate";
+                toggleBtn.innerText = "Don't have an account? Sign up";
             }
         });
     </script>

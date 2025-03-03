@@ -8,7 +8,7 @@
             <div class="col-md-12">
                 <ul class="breadcrumb-tree">
                     <li><a href="/">Home</a></li>
-                    <li><a href="#">Productos</a></li>
+                    <li><a href="#">Products</a></li>
 					{{#producto}}
                     <li class="active">{{nombre}}</li>
 					{{/producto}}
@@ -33,10 +33,10 @@
                 <div id="product-main-img">
                     <div class="product-preview">
                         {{#imagen}}
-                        <img src="/producto/{{id}}/image" alt="Imagen del producto">
+                        <img src="/producto/{{id}}/image" alt="Product image">
                         {{/imagen}}
                         {{^imagen}}
-                        <img src="/img/default-product.png" alt="Imagen no disponible">
+                        <img src="/img/default-product.png" alt="Image not available">
                         {{/imagen}}
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                         {{#usuario_autenticado}}
                         {{^Finalizado}}
                         <form action="/product/{{id}}/place-bid" method="post">
-                            <input type="number" name="bid_amount" placeholder="Ingrese su puja" required>
+                            <input type="number" name="bid_amount" placeholder="Place your bid" required>
                             <button type="submit" class="add-to-cart-btn">
                                 <i class="fa fa-shopping-cart"></i> Place bid
                             </button>
@@ -84,11 +84,11 @@
             </div>
             <div class="col-md-2 text-right">
                 <div class="info-box">
-                    <small><strong> Fecha de finalización</strong></small>
+                    <small><strong> End Date:</strong></small>
                     <div id="countdown" class="info-value">{{horaFin}}</div>
                 </div>
                 <div class="info-box">
-                    <small><strong> Puja Ganadora </strong></small>
+                    <small><strong> Winning Bid </strong></small>
                     {{#Ganador}}
                     <div id="highest-bid" class="info-value" style="color: green;">{{Puja Ganadora}}</div>
                     {{/Ganador}}
@@ -97,7 +97,7 @@
                     {{/Ganador}}
                 </div>
                 <div class="info-box">
-                    <small><strong> Pujador</strong></small>
+                    <small><strong> Bidder</strong></small>
                     {{#Ganador}}
                     <div id="highest-bid" class="info-value" style="color: green;">{{Pujador Ganador}}</div>
                     {{/Ganador}}
@@ -152,7 +152,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h3>Ubicación del Producto</h3>
+                <h3>Product Location</h3>
                 <div id="map" style="height: 400px;"></div>
             </div>
         </div>
@@ -164,7 +164,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h3>Historial de Pujas</h3>
+                <h3>Bidding History</h3>
                 <canvas id="pujasChart" width="400" height="200"></canvas>
             </div>
         </div>
@@ -227,9 +227,9 @@
         new Chart(ctx, {
             type: "line",
             data: {
-                labels: montos.map((_, i) => `Puja ${i + 1}`), // Eje X con números de puja
+                labels: montos.map((_, i) => `Bid ${i + 1}`), 
                 datasets: [{
-                    label: "Evolución de las pujas",
+                    label: "Bid Progression",
                     data: montos,
                     borderColor: "rgba(75, 192, 192, 1)",
                     backgroundColor: "rgba(75, 192, 192, 0.2)",

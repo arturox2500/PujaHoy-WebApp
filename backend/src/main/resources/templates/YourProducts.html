@@ -41,10 +41,10 @@
 							<div class="product product-card">
 								<div class="product-img">
 									{{#imagen}}
-										<img src="/producto/{{id}}/image" alt="Imagen del producto">
+										<img src="/producto/{{id}}/image" alt="Product Image">
 									{{/imagen}}
 									{{^imagen}}
-										<img src="/img/default-product.png" alt="Imagen no disponible">
+										<img src="/img/default-product.png" alt="Image not available">
 									{{/imagen}}
 									<div class="product-label">
 										<span class="new">NEW</span>
@@ -69,7 +69,7 @@
 					{{/productos}}
 				
 					{{^productos}}
-					<p class="text-center">No hay productos disponibles</p>
+					<p class="text-center">No products Available</p>
 					{{/productos}}
 					<!-- /product -->
 				</div>
@@ -79,9 +79,9 @@
 				{{#button}}
 						<!-- store bottom filter -->
 						<div class="text-center">
-							<button id="load-more-yposts" class="btn btn-danger">Cargar Más</button>
+							<button id="load-more-yposts" class="btn btn-danger">Load More</button>
 							<div id="spinnerY" class="spinner-border text-primary d-block mx-auto" role="status" style="display: none !important; visibility: hidden;">
-								<span class="visually-hidden">Cargando...</span>
+								<span class="visually-hidden">Loading...</span>
 							</div>
 						</div>
 				{{/button}}
