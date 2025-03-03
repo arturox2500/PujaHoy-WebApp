@@ -54,6 +54,8 @@ public class SecurityConfiguration {
 				.requestMatchers("/static/**").permitAll()
 				.requestMatchers("/producto/{id_producto}").permitAll()
 				.requestMatchers("/login").permitAll()
+				.requestMatchers("/logout").permitAll()
+				.requestMatchers("/loginerror").permitAll()
 				.requestMatchers("/register").permitAll()
 				.requestMatchers("/usuario/{id}").permitAll()
 				.requestMatchers("/producto/{id}/image").permitAll()

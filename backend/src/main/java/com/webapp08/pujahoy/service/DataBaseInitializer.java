@@ -73,7 +73,6 @@ public class DataBaseInitializer {
 			userRepository.save(user3);
 			userRepository.save(user4);
 
-			//son fehcas de prueba
 			Calendar calendar = Calendar.getInstance();
 			calendar.set(2025, Calendar.FEBRUARY, 24); 
 			Date fecha24 = new Date(calendar.getTimeInMillis());
@@ -83,22 +82,29 @@ public class DataBaseInitializer {
 
 			calendar.set(2025, Calendar.MARCH, 25);
 			Date fecha25M = new Date(calendar.getTimeInMillis());
-			//son fechas de prueba
 
-			Producto product1 = new Producto("Producto1","mola mucho",900,fecha24,fecha25M,"En curso",saveImageFromFile("static/img/product01.png"), user2);
-			Producto product2 = new Producto("Producto2","mola nada",840,fecha24,fecha25M,"En curso",null, user3);
-			Producto product3 = new Producto("Ordenador To Guapo","lo a utilizado CR7",500000,fecha24,fecha25,"Finalizado",null, user3);
-			Producto product4 = new Producto("Ordenador To Guapo 2 ","lo a utilizado messi",500000,fecha24,fecha25,"Finalizado",null, user4);
-
-			Oferta nuevaOferta = new Oferta(user2, product3, 800000, fecha24);
+			Producto product1 = new Producto("Televisión LG", "Smart TV 4K de 55 pulgadas con HDR y sonido envolvente.", 129.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product01.jpg"), user2);
+			Producto product2 = new Producto("Monedas europeas", "Colección de monedas antiguas de distintos países de Europa.", 199.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product02.jpg"), user3);
+			Producto product3 = new Producto("Iphone 13", "iPhone 13 con 128GB, cámara dual y chip A15 Bionic en excelente estado.", 359.99, fecha24, fecha25, "Finalizado", saveImageFromFile("static/img/product03.jpg"), user3);		
+			Producto product4 = new Producto("Ordenador para ofimática", "PC ideal para oficina con procesador i5, 8GB RAM y SSD de 256GB.", 399.99, fecha24, fecha25, "Finalizado", saveImageFromFile("static/img/product04.jpg"), user4);
+			
+			Oferta nuevaOferta = new Oferta(user2, product3, 360.00, fecha24);
 			product3.getOfertas().add(nuevaOferta);
 
-			Oferta nuevaOferta1 = new Oferta(user3, product4, 800000, fecha24);
+			Oferta nuevaOferta1 = new Oferta(user3, product4, 400.00, fecha24);
 			product4.getOfertas().add(nuevaOferta);
 
-			Oferta nuevaOferta2 = new Oferta(user2, product3, 810000, fecha24);
+			Oferta nuevaOferta2 = new Oferta(user4, product3, 450.00, fecha24);
 			product3.getOfertas().add(nuevaOferta);
-			Oferta nuevaOferta3 = new Oferta(user2, product3, 890000, fecha24);
+			Oferta nuevaOferta3 = new Oferta(user2, product3, 460.00, fecha24);
+			product3.getOfertas().add(nuevaOferta);
+			Oferta nuevaOferta4 = new Oferta(user4, product3, 430.00, fecha24);
+			product3.getOfertas().add(nuevaOferta);
+			Oferta nuevaOferta5 = new Oferta(user2, product3, 500.00, fecha24);
+			product3.getOfertas().add(nuevaOferta);
+			Oferta nuevaOferta6 = new Oferta(user4, product3, 570.00, fecha24);
+			product3.getOfertas().add(nuevaOferta);
+			Oferta nuevaOferta7 = new Oferta(user2, product3, 800.00, fecha24);
 			product3.getOfertas().add(nuevaOferta);
 
 			productoRepository.save(product1);
@@ -110,25 +116,29 @@ public class DataBaseInitializer {
 			ofertaRepository.save(nuevaOferta1);
 			ofertaRepository.save(nuevaOferta2);
 			ofertaRepository.save(nuevaOferta3);
+			ofertaRepository.save(nuevaOferta4);
+			ofertaRepository.save(nuevaOferta5);
+			ofertaRepository.save(nuevaOferta6);
+			ofertaRepository.save(nuevaOferta7);
 			
-            Transaccion transaccion1= new Transaccion(product3,user3,user2,800000);
-			Transaccion transaccion2= new Transaccion(product4,user4,user3,800000);
+            Transaccion transaccion1= new Transaccion(product3,user3,user2,800.00);
+			Transaccion transaccion2= new Transaccion(product4,user4,user3,400.00);
 
 			transaccionRepository.save(transaccion1);
 			transaccionRepository.save(transaccion2);
 
-			Producto product5 = new Producto("Producto5", "Me encanta", 950, fecha24, fecha25M, "En curso", null, user2);
-			Producto product6 = new Producto("Producto6", "Totalmente recomendable", 1100, fecha24, fecha25M, "En curso", null, user2);
-			Producto product7 = new Producto("Producto7", "Perfecto para todo", 1400, fecha24, fecha25M, "En curso", null, user2);
-			Producto product8 = new Producto("Producto8", "Lo mejor del mercado", 2000, fecha24, fecha25M, "En curso", null, user2);
-			Producto product9 = new Producto("Producto9", "Muy buena opción", 1300, fecha24, fecha25M, "En curso", null, user2);
-			Producto product10 = new Producto("Producto10", "Totalmente recomendable", 1050, fecha24, fecha25M, "En curso", null, user2);
-			Producto product11 = new Producto("Producto11", "Calidad premium", 2200, fecha24, fecha25M, "En curso", null, user2);
-			Producto product12 = new Producto("Producto12", "Lo usarás a diario", 850, fecha24, fecha25M, "En curso", null, user2);
-			Producto product13 = new Producto("Producto13", "No te arrepentirás", 1300, fecha24, fecha25M, "En curso", null, user2);
-			Producto product14 = new Producto("Producto14", "Muy práctico y duradero", 1400, fecha24, fecha25M, "En curso", null, user2);
-			Producto product15 = new Producto("Producto15", "Innovador y moderno", 1600, fecha24, fecha25M, "En curso", null, user2);
-
+			Producto product5 = new Producto("Teclado mecánico", "Teclado gaming RGB con switches mecánicos y respuesta rápida.", 79.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product05.webp"), user2);
+			Producto product6 = new Producto("Gafas de sol", "Gafas polarizadas con protección UV400, diseño elegante.", 49.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product06.jpg"), user2);
+			Producto product7 = new Producto("Mando PS5", "Control inalámbrico DualSense con vibración háptica y gatillos adaptativos.", 69.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product07.avif"), user2);
+			Producto product8 = new Producto("Xbox Series X", "Consola de nueva generación con 1TB de almacenamiento y 4K real.", 559.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product08.webp"), user2);
+			Producto product9 = new Producto("Ratón para ordenador", "Ratón ergonómico con sensor óptico de alta precisión.", 39.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product09.jpg"), user2);
+			Producto product10 = new Producto("Rolex Presidential", "Reloj de lujo con caja de oro y movimiento automático.", 25259.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product10.jpg"), user2);
+			Producto product11 = new Producto("Bugatti La Voiture Noire", "Hiperdeportivo exclusivo de 1500 CV, edición limitada.", 1999999.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product11.jpg"), user2);
+			Producto product12 = new Producto("Jarrones decorativos", "Set de jarrones de cerámica con acabado artesanal.", 49.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product12.jpg"), user2);
+			Producto product13 = new Producto("Bolso Gucci", "Bolso de piel auténtica con diseño clásico y distintivo Gucci.", 1849.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product13.jpg"), user2);
+			Producto product14 = new Producto("Vino cosecha 2008", "Vino tinto añejo con notas afrutadas y envejecido en barrica.", 129.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product14.webp"), user2);
+			Producto product15 = new Producto("Barquito en botella", "Miniatura artesanal de barco dentro de una botella de cristal.", 59.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product15.jpg"), user2);
+			
 			productoRepository.save(product5);
 			productoRepository.save(product6);
 			productoRepository.save(product7);
@@ -140,7 +150,5 @@ public class DataBaseInitializer {
 			productoRepository.save(product13);
 			productoRepository.save(product14);
 			productoRepository.save(product15);
-
-
 	}
 }
