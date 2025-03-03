@@ -250,7 +250,7 @@ Admins have the ability to remove product listings to ensure compliance with pla
 | [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/pujahoy/src/main/resources/templates/login.html) | The login html was made by me too. Interesting to highlight register and login go throw the same view and are dynamicaly swapped between them with JS. Backend checks are done to secure reliable data.|
 | [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/pujahoy/src/main/resources/templates/profile.html) | Although i wasnt in charge of creating the profile view, i had to add edit a profile. As a challenge i decided to use the same view to be able to edit a user with a button. A hidden form is created dynamically and data is sent in it. Backend checks are done to secure reliable data.|
 
-### 👤 Iván Gutierrez 
+### 👤 Iván Gutierrez González
 
 | Commit | Description |
 | :----: | :---------: |
@@ -268,7 +268,7 @@ Admins have the ability to remove product listings to ensure compliance with pla
 | [4º](link del archivo) | |
 | [5º](link del archivo) | |
 
-### 👤 Arturo Enrique Gutierrez
+### 👤 Arturo Enrique Gutierrez Mirandona 
 
 | Commit | Description |
 | :----: | :---------: |
