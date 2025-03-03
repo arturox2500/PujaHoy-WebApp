@@ -2343,3 +2343,7 @@ a {
   display: none;
 }
 
+.product-img{
+  max-height: 17em;
+}
+

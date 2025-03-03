@@ -81,7 +81,7 @@ public class DataBaseInitializer {
 			Date fecha25M = new Date(calendar.getTimeInMillis());
 			//son fechas de prueba
 
-			Producto product1 = new Producto("Producto1","mola mucho",900,fecha24,fecha25M,"En curso",saveImageFromFile(null), user2);
+			Producto product1 = new Producto("Producto1","mola mucho",900,fecha24,fecha25M,"En curso",saveImageFromFile("C:\\Users\\gutie\\webapp08\\webapp08\\backend\\src\\main\\resources\\static\\img\\product01.png"), user2);
 			Producto product2 = new Producto("Producto2","mola nada",840,fecha24,fecha25M,"En curso",null, user3);
 			Producto product3 = new Producto("Ordenador To Guapo","lo a utilizado CR7",500000,fecha24,fecha25,"Finalizado",null, user3);
 			Producto product4 = new Producto("Ordenador To Guapo 2 ","lo a utilizado messi",500000,fecha24,fecha25,"Finalizado",null, user4);
