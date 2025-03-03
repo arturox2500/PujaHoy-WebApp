@@ -188,33 +188,43 @@ The VALORACION entity represents the ratings given to sellers for their auctione
 ## Pages  
 
 ### Featured Products (Index)  
-All users, including unregistered ones, can browse available products. These products are displayed in order based on the ratings of the sellers. Users can navigate to individual product pages to view more details.  
+All users, including unregistered ones, can browse available products. These products are displayed in order based on the ratings of the sellers. Users can navigate to individual product pages to view more details.
+![NewIndex](imagenes/NewIndex.jpeg)
 
 ### Sign-Up Page  
-Only available to unregistered users. This page allows them to provide the necessary information to create an account.  
+Only available to unregistered users. This page allows them to provide the necessary information to create an account.
+![NewSignUp](imagenes/NewSignUp.jpeg)
 
 ### Log-In Page  
-Accessible to all users. It allows registered users to enter their credentials and access the application.  
+Accessible to all users. It allows registered users to enter their credentials and access the application.
+![NewLogin](imagenes/NewLogin.jpeg)
 
 ### Account Details Page  
 Accessible to registered users and admins. Users can:  
 - Edit their profile information.  
 - View a list of products they have posted.  
-- Access a personal section displaying auctions where they have placed the highest bid.  
+- Access a personal section displaying auctions where they have placed the highest bid.
 
 When viewing another user's profile, these personal sections will not be visible.  
+![NewAccountsDetails](imagenes/NewAccountsDetails.jpeg)
+
 
 ### Your Winning Bids  
-This page is available to registered users. It displays a list of auctions where the user placed the highest bid, meaning they have won the item.  
+This page is available to registered users. It displays a list of auctions where the user placed the highest bid, meaning they have won the item.
+![NewWinningBids](imagenes/NewWinningBids.jpeg)
 
 ### Your Auctions  
 Available to registered users. It shows a list of auctions created by the user, whether they are ongoing or finished.  
+![NewYourAuctions](imagenes/NewYourAuctions.jpeg)
 
 ### Edit Profile  
-Users can access this page to update their personal details such as their display name, description, profile picture, and other relevant information.  
+Users can access this page to update their personal details such as their display name, description, profile picture, and other relevant information. It is an extension to the regular Account Details Page 
+![NewEditProfile](imagenes/NewEditProfile.jpeg)
 
 ### New Auction Page  
 Only available to registered users. This page allows them to create new product listings for auction.  
+![NewAuctionPage](imagenes/NewAuctionPage.jpeg)
+
 
 ### Product Page  
 All users can view:  
@@ -224,7 +234,8 @@ All users can view:
 - An approximate location of the product using the postal code.
 
 Registered users can place bids on the product.  
-Admins have the ability to remove product listings to ensure compliance with platform rules.  
+Admins have the ability to remove product listings to ensure compliance with platform rules.
+![NewProductPage](imagenes/NewProductPage.jpeg)
 
 ## Documentation
 
