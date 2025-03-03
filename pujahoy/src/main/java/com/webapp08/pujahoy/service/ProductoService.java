@@ -32,7 +32,12 @@ public class ProductoService {
         repository.deleteById(id_producto);
     }
 
-    public Page<Producto> obtenerTodosLosProductos(int page, int size) {
+    public Page<Producto> obtenerTodosLosProductosOrderByReputacion(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+        return repository.findAllOrderedByVendedorReputacion(pageable);
+    }
+
+	public Page<Producto> obtenerTodosLosProductos(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size);
         return repository.findAll(pageable);
     }

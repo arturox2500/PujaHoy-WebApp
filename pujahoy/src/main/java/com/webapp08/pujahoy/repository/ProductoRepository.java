@@ -24,4 +24,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     Page<Producto> findProductosCompradosPorUsuario(@Param("compradorNombre") String compradorNombre, Pageable pageable);
 
     Page<Producto> findAll(Pageable pageable);
+
+    @Query("SELECT p FROM Producto p ORDER BY p.vendedor.reputacion DESC")
+    Page<Producto> findAllOrderedByVendedorReputacion(Pageable pageable);
 }

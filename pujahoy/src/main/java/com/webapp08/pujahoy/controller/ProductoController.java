@@ -68,7 +68,7 @@ public class ProductoController {
 
     @GetMapping("/")
         public String listarProductos(Model model,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {    
-        Page<Producto> productos = productoService.obtenerTodosLosProductos(page,size); // Cambiamos a lista
+        Page<Producto> productos = productoService.obtenerTodosLosProductosOrderByReputacion(page,size); // Cambiamos a lista
 
         Boolean button = true;
         if (productos.isEmpty()){
@@ -85,7 +85,7 @@ public class ProductoController {
     @GetMapping("/producto_template_index")
     public String verProductos(Model model, HttpServletRequest request, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
 
-        Page<Producto> productos = productoService.obtenerTodosLosProductos(page,size);
+        Page<Producto> productos = productoService.obtenerTodosLosProductosOrderByReputacion(page,size);
                 
         model.addAttribute("productos", productos); // Pasamos la página completa
         return "producto_template";
@@ -118,31 +118,36 @@ public class ProductoController {
     }
     @GetMapping("/producto/{id_producto}")
     public String mostrarProducto(@PathVariable long id_producto, Model model, HttpServletRequest request) {
+        // Obtener el producto
         Optional<Producto> productoOpt = productoService.findById(id_producto);
-        if (productoOpt.isPresent()) {
-            Producto producto = productoOpt.get();
-            model.addAttribute("producto", producto);
+        if (!productoOpt.isPresent()) {
+            model.addAttribute("texto", "Producto no encontrado.");
+            model.addAttribute("url", "/");
+            return "pageError";
+        }
 
-            long actualTime = System.currentTimeMillis();
-            
+        Producto producto = productoOpt.get();
+        model.addAttribute("producto", producto);
 
-            if(producto.getHoraFin().getTime()<=(actualTime) && producto.getEstado().equals("En curso")){
-                producto.setEstado("Finalizado");
-                List<Oferta> ofertas = producto.getOfertas();
-                if (!ofertas.isEmpty()) {
-                    Oferta ultimaOferta = ofertas.get(ofertas.size() - 1);
-
-                    // New transaction
-                    Transaccion transaccion = new Transaccion(producto,producto.getVendedor(),ultimaOferta.getUsuario(),ultimaOferta.getCoste());
-
-                    // Save transaction
-                    transaccionService.save(transaccion);
-                }
-            }
-            
-            productoService.save(producto);
+        // Verificar si el producto ha finalizado
+        long actualTime = System.currentTimeMillis();
+        if (producto.getHoraFin().getTime() <= actualTime && producto.getEstado().equals("En curso")) {
+            producto.setEstado("Finalizado");
 
             List<Oferta> ofertas = producto.getOfertas();
+            if (!ofertas.isEmpty()) {
+                Oferta ultimaOferta = ofertas.get(ofertas.size() - 1);
+
+                // Crear y guardar la transacción
+                Transaccion transaccion = new Transaccion(producto, producto.getVendedor(), ultimaOferta.getUsuario(), ultimaOferta.getCoste());
+                transaccionService.save(transaccion);
+            }
+        }
+
+        // Guardar el producto con el estado actualizado
+        productoService.save(producto);
+
+        List<Oferta> ofertas = producto.getOfertas();
                 double[] costes;
                 int numOfertas = ofertas.size();
                 if (numOfertas > 0){
@@ -154,58 +159,67 @@ public class ProductoController {
                     costes = new double[0];
                 }
                 
-                model.addAttribute("costes", Arrays.toString(costes));
+        model.addAttribute("costes", Arrays.toString(costes));
 
+        // Obtener usuario autenticado
+        Principal principal = request.getUserPrincipal();
+        if (principal != null) {
+            String username = principal.getName();
+            Optional<Usuario> userOpt = usuarioService.findByNombre(username);
+            
+            if (!userOpt.isPresent()) {
+                model.addAttribute("texto", "Usuario no encontrado.");
+                model.addAttribute("url", "/");
+                return "pageError";
+            }
+    
+            Usuario usuario = userOpt.get();
 
-            // Obtener usuario de la sesión
-            Principal principal = request.getUserPrincipal();
-            if (principal != null) {
-                String username = principal.getName(); // Obtiene el nombre de usuario
-                Optional<Usuario> user = usuarioService.findByNombre(username); // Busca en la base de datos
-                Usuario usuario = user.orElse(null);
-                
-                model.addAttribute("codigoPostal", producto.getVendedor().getCodigoPostal());
+            model.addAttribute("codigoPostal", producto.getVendedor().getCodigoPostal());
 
-                if (usuario != null && "Administrador".equalsIgnoreCase(usuario.determinarTipoUsuario())) {
-                    model.addAttribute("admin", true);
-                    model.addAttribute("usuario_autenticado", false);
-                } else if (usuario != null) {
-                    model.addAttribute("admin", false);
-                    model.addAttribute("usuario_autenticado", true);
-                }else{
-                    model.addAttribute("admin", false);
-                    model.addAttribute("usuario_autenticado", false);
-                }
-                if(producto.getEstado().equals("Finalizado")){
+            if (usuario != null) {
+                boolean esAdmin = "Administrador".equalsIgnoreCase(usuario.determinarTipoUsuario());
+                model.addAttribute("admin", esAdmin);
+                model.addAttribute("usuario_autenticado", true);
+
+                // Determinar si el producto ha finalizado
+                if (producto.getEstado().equals("Finalizado")) {
                     model.addAttribute("Finalizado", true);
-                    
+
                     if (!ofertas.isEmpty()) {
                         Oferta ultimaOferta = ofertas.get(ofertas.size() - 1);
-                    
-                        if(ultimaOferta.getUsuario().equals(usuario)){
-                            model.addAttribute("Ganador", true);
-                        }else{
-                            model.addAttribute("Ganador", false);
-                        }
+                        model.addAttribute("Ganador", ultimaOferta.getUsuario().equals(usuario));
                     }
-                }else{
+                } else {
                     model.addAttribute("Finalizado", false);
                 }
-            
+            } else {
+                model.addAttribute("admin", false);
+                model.addAttribute("usuario_autenticado", false);
             }
-            return "product";
-        } else {
-            return "error";
         }
+
+        // Mostrar la última puja si existe
+        if (!ofertas.isEmpty()) {
+            Oferta ultimaOferta = ofertas.get(ofertas.size() - 1);
+            model.addAttribute("Puja Ganadora", ultimaOferta.getCoste());
+            model.addAttribute("Pujador Ganador", ultimaOferta.getUsuario().getNombre());
+        } else {
+            model.addAttribute("Puja Ganadora", "-");
+            model.addAttribute("Pujador Ganador", "-");
+        }
+
+        return "product";
     }  
     @PostMapping("/product/{id_producto}/place-bid")
-    public String placeBid(@PathVariable long id_producto, HttpServletRequest request, Model model) {
+    public String placeBid(@PathVariable long id_producto,@RequestParam double bid_amount, HttpServletRequest request, Model model) {
         
         Optional<Producto> productoOpt = productoService.findById(id_producto);
         
         if (!productoOpt.isPresent()) {
             model.addAttribute("texto", "Producto no encontrado.");
-            return "error";
+            model.addAttribute("url", "/");
+            return "pageError";
         }
 
         Producto producto = productoOpt.get();
@@ -218,25 +232,32 @@ public class ProductoController {
 
         if (!usuarioOpt.isPresent()) {
             model.addAttribute("texto", "Usuario no encontrado.");
-            return "error";
+            model.addAttribute("url", "/");
+            return "pageError";
         }
 
         Usuario usuario = usuarioOpt.get();
 
         Oferta ultimaOferta = OfertaService.findLastOfferByProduct(id_producto);
 
-        double nuevoPrecio;
+        double precioActual;
         if(ultimaOferta != null){
-             nuevoPrecio = ultimaOferta.getCoste() + 10.0;
+             precioActual = ultimaOferta.getCoste() ;
         }else{//no tiene pujas a si que el valor inicial
-             nuevoPrecio = producto.getValorini();
+             precioActual = producto.getValorini()-1;
+        }
+
+        if (bid_amount <= precioActual) {
+            model.addAttribute("texto", "La puja debe ser mayor que la puja actual.");
+            model.addAttribute("url", "/");
+            return "pageError";
         }
 
         //fecha actual
         long actualTime = System.currentTimeMillis();
         Date fechaActual = new Date(actualTime);
 
-        Oferta nuevaOferta = new Oferta(usuario, producto, nuevoPrecio, fechaActual);
+        Oferta nuevaOferta = new Oferta(usuario, producto, bid_amount, fechaActual);
 
         
         producto.getOfertas().add(nuevaOferta); //añadimos oferta a la lista
@@ -244,7 +265,9 @@ public class ProductoController {
         OfertaService.save(nuevaOferta);
         productoService.save(producto);
 
-        return "redirect:/producto/" + id_producto;
+        model.addAttribute("url", "/");
+
+        return "placeBidOk";
     }
 
 @GetMapping("/producto/{id}/image")
