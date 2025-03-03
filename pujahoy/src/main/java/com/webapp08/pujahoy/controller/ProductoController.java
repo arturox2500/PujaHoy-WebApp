@@ -174,6 +174,7 @@ public class ProductoController {
             }
     
             Usuario usuario = userOpt.get();
+            model.addAttribute("esVendedor", producto.getVendedor().equals(usuario));
 
             model.addAttribute("codigoPostal", producto.getVendedor().getCodigoPostal());
 

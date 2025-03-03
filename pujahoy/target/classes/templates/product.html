@@ -54,6 +54,7 @@
                     <p>{{descripcion}}</p>
                     <div class="add-to-cart">
                         {{^admin}}
+                        {{^esVendedor}}
                         {{#usuario_autenticado}}
                         {{^Finalizado}}
                         <form action="/product/{{id}}/place-bid" method="post">
@@ -64,10 +65,11 @@
                         </form>
                         {{/Finalizado}}
                         {{/usuario_autenticado}}
+                        {{/esVendedor}}
                         {{/admin}}
                     </div>
                     <div class="add-to-cart">
-                        <button class="btn" class="add-to-cart-btn"> <a href="/usuario/{{id}}">Seller</a></button>
+                        <button class="add-to-cart-btn"> <a href="/usuario/{{id}}">Seller</a></button>
                     </div>
                     <div class="add-to-cart">
                         {{#admin}}
