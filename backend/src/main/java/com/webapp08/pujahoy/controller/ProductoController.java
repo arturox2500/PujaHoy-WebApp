@@ -110,18 +110,18 @@ public class ProductoController {
             productoService.DeleteById(id_producto);
 			return "redirect:/";
 		} else {
-            model.addAttribute("texto", "Error al borrar producto");
-            model.addAttribute("url", "/");
+            model.addAttribute("texto", " Error deleting product");
+            model.addAttribute("url", "/producto/" + id_producto);
 			return "pageError"; 
-		}
-        
+		}  
     }
+
     @GetMapping("/producto/{id_producto}")
     public String mostrarProducto(@PathVariable long id_producto, Model model, HttpServletRequest request) {
         // Obtener el producto
         Optional<Producto> productoOpt = productoService.findById(id_producto);
         if (!productoOpt.isPresent()) {
-            model.addAttribute("texto", "Producto no encontrado.");
+            model.addAttribute("texto", " Product not found");
             model.addAttribute("url", "/");
             return "pageError";
         }
@@ -168,7 +168,7 @@ public class ProductoController {
             Optional<Usuario> userOpt = usuarioService.findByNombre(username);
             
             if (!userOpt.isPresent()) {
-                model.addAttribute("texto", "Usuario no encontrado.");
+                model.addAttribute("texto", " User not found");
                 model.addAttribute("url", "/");
                 return "pageError";
             }
@@ -218,7 +218,7 @@ public class ProductoController {
         Optional<Producto> productoOpt = productoService.findById(id_producto);
         
         if (!productoOpt.isPresent()) {
-            model.addAttribute("texto", "Producto no encontrado.");
+            model.addAttribute("texto", " Product not found");
             model.addAttribute("url", "/");
             return "pageError";
         }
@@ -232,7 +232,7 @@ public class ProductoController {
         Optional<Usuario> usuarioOpt = usuarioService.findByNombre(username);
 
         if (!usuarioOpt.isPresent()) {
-            model.addAttribute("texto", "Usuario no encontrado.");
+            model.addAttribute("texto", " User not found.");
             model.addAttribute("url", "/");
             return "pageError";
         }
@@ -249,8 +249,8 @@ public class ProductoController {
         }
 
         if (bid_amount <= precioActual) {
-            model.addAttribute("texto", "La puja debe ser mayor que la puja actual.");
-            model.addAttribute("url", "/");
+            model.addAttribute("texto", " The bid have to be higher than the current price.");
+            model.addAttribute("url", "/producto/" + id_producto);
             return "pageError";
         }
 
