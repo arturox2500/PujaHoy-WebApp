@@ -1,13 +1,12 @@
 package com.webapp08.pujahoy.service;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.sql.Blob;
 import java.sql.Date;
 import java.util.Calendar;
+import java.io.ByteArrayOutputStream;
 
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,18 +43,23 @@ public class DataBaseInitializer {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public Blob saveImageFromFile(String imagePath) throws IOException {
-		File file = new File(imagePath);
+	public Blob saveImageFromFile(String resourcePath) throws IOException {
+    ClassLoader classLoader = getClass().getClassLoader();
+    try (InputStream inputStream = classLoader.getResourceAsStream(resourcePath)) {
+        if (inputStream == null) {
+            throw new IOException("File not found in classpath: " + resourcePath);
+        }
 
-		if (!file.exists()) {
-			throw new IOException("File not found: " + imagePath);
-		}
-
-		try (FileInputStream fileInputStream = new FileInputStream(file)) {
-			byte[] fileBytes = Files.readAllBytes(file.toPath());
-    		return BlobProxy.generateProxy(fileBytes);
-		}
-	}
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        byte[] data = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = inputStream.read(data, 0, data.length)) != -1) {
+            buffer.write(data, 0, bytesRead);
+        }
+        
+        return BlobProxy.generateProxy(buffer.toByteArray());
+    }
+}
 
     @PostConstruct
 	public void init() throws IOException, URISyntaxException {
@@ -81,7 +85,7 @@ public class DataBaseInitializer {
 			Date fecha25M = new Date(calendar.getTimeInMillis());
 			//son fechas de prueba
 
-			Producto product1 = new Producto("Producto1","mola mucho",900,fecha24,fecha25M,"En curso",saveImageFromFile("C:\\Users\\gutie\\webapp08\\webapp08\\backend\\src\\main\\resources\\static\\img\\product01.png"), user2);
+			Producto product1 = new Producto("Producto1","mola mucho",900,fecha24,fecha25M,"En curso",saveImageFromFile("static/img/product01.png"), user2);
 			Producto product2 = new Producto("Producto2","mola nada",840,fecha24,fecha25M,"En curso",null, user3);
 			Producto product3 = new Producto("Ordenador To Guapo","lo a utilizado CR7",500000,fecha24,fecha25,"Finalizado",null, user3);
 			Producto product4 = new Producto("Ordenador To Guapo 2 ","lo a utilizado messi",500000,fecha24,fecha25,"Finalizado",null, user4);
