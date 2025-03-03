@@ -112,7 +112,7 @@ public class ProductoController {
 		} else {
             model.addAttribute("texto", "Error al borrar producto");
             model.addAttribute("url", "/");
-			return "errorPage"; 
+			return "pageError"; 
 		}
         
     }
