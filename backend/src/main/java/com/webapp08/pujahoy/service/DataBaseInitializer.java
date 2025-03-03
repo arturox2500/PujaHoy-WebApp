@@ -1,10 +1,15 @@
 package com.webapp08.pujahoy.service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.sql.Blob;
 import java.sql.Date;
 import java.util.Calendar;
 
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,6 +44,19 @@ public class DataBaseInitializer {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	public Blob saveImageFromFile(String imagePath) throws IOException {
+		File file = new File(imagePath);
+
+		if (!file.exists()) {
+			throw new IOException("File not found: " + imagePath);
+		}
+
+		try (FileInputStream fileInputStream = new FileInputStream(file)) {
+			byte[] fileBytes = Files.readAllBytes(file.toPath());
+    		return BlobProxy.generateProxy(fileBytes);
+		}
+	}
+
     @PostConstruct
 	public void init() throws IOException, URISyntaxException {
 			Usuario user1 = new Usuario("Juan", 5, "Juanito", "juanElGrande@gmail.com", 28001,"descripción prueba arturo", true, passwordEncoder.encode("pass"), "ADMIN");
@@ -63,7 +81,7 @@ public class DataBaseInitializer {
 			Date fecha25M = new Date(calendar.getTimeInMillis());
 			//son fechas de prueba
 
-			Producto product1 = new Producto("Producto1","mola mucho",900,fecha24,fecha25M,"En curso",null, user2);
+			Producto product1 = new Producto("Producto1","mola mucho",900,fecha24,fecha25M,"En curso",saveImageFromFile(null), user2);
 			Producto product2 = new Producto("Producto2","mola nada",840,fecha24,fecha25M,"En curso",null, user3);
 			Producto product3 = new Producto("Ordenador To Guapo","lo a utilizado CR7",500000,fecha24,fecha25,"Finalizado",null, user3);
 			Producto product4 = new Producto("Ordenador To Guapo 2 ","lo a utilizado messi",500000,fecha24,fecha25,"Finalizado",null, user4);
