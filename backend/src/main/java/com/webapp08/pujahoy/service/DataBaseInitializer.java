@@ -85,7 +85,7 @@ public class DataBaseInitializer {
 
 			Producto product1 = new Producto("Televisión LG", "Smart TV 4K de 55 pulgadas con HDR y sonido envolvente.", 129.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product01.jpg"), user2);
 			Producto product2 = new Producto("Monedas europeas", "Colección de monedas antiguas de distintos países de Europa.", 199.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product02.jpg"), user3);
-			Producto product3 = new Producto("Iphone 13", "iPhone 13 con 128GB, cámara dual y chip A15 Bionic en excelente estado.", 359.99, fecha24, fecha25, "Finalizado", saveImageFromFile("static/img/product03.jpg"), user3);		
+			Producto product3 = new Producto("Iphone 13", "iPhone 13 with 128GB, dual camera, and A15 Bionic chip in excellent condition", 359.99, fecha24, fecha25, "Completed", saveImageFromFile("static/img/product03.jpg"), user3);		
 			Producto product4 = new Producto("Ordenador para ofimática", "PC ideal para oficina con procesador i5, 8GB RAM y SSD de 256GB.", 399.99, fecha24, fecha25, "Finalizado", saveImageFromFile("static/img/product04.jpg"), user4);
 			
 			Oferta nuevaOferta = new Oferta(user2, product3, 360.00, fecha24);
