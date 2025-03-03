@@ -1,0 +1,30 @@
+{{>header}}
+  <!-- SECTION -->
+  <div class="section">
+    <!-- container -->
+    <div class="container">
+      <!-- row -->
+      <div class="row">
+        <div class="col-md-7">
+          <!-- Product Details Form -->
+          <div class="product-details">
+            <div class="section-title">
+              <h3 class="title">Rate product:</h3>
+            </div>
+            <form action="/usuario/{{id}}/rated" method="post">
+              <div class="form-group">
+                <label for="puntuacion" class="form-label">Rating (1-5)</label>
+                    <input type="number" class="form-control" id="rating" name="rating" min="1" max="5" required>
+              </div>
+              <button type="submit" class="primary-btn order-submit">Submit</button>
+              <input type="hidden" name="_csrf" value="{{token}}" />
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- /row -->
+    </div>
+    <!-- /container -->
+  </div>
+  <!-- /SECTION -->
+{{>footer}}

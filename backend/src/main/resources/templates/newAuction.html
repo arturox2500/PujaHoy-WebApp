@@ -1,0 +1,102 @@
+{{>header}}
+		 
+		<!-- BREADCRUMB -->
+		<div id="breadcrumb" class="section">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h3 class="breadcrumb-header">New Auction</h3>
+						<ul class="breadcrumb-tree">
+							<li><a href="#">Home</a></li>
+							<li class="active">Account</li>
+							<li class="active">New Auction</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /BREADCRUMB -->
+
+		<!-- SECTION -->
+		<div class="section">
+			<div class="container">
+				<div class="row">
+					<form action="/usuario/submit_auction" method="POST" class="col-md-12" enctype="multipart/form-data">
+						<div class="row">
+							<div class="col-md-8">
+								<!-- Product Details Form -->
+								<div class="product-details">
+									<div class="section-title">
+										<h3 class="title">Product Information</h3>
+									</div>
+									<div class="form-group">
+										<input class="input" type="text" name="nombre" placeholder="Product Name" required>
+									</div>
+									<div class="form-group">
+										<textarea class="input" name="descripcion" placeholder="Descripción" rows="4" required></textarea>
+									</div>
+									<div class="form-group">
+										<input class="input" type="number" name="valorini" placeholder="Price" step="0.1" min="0" required>
+									</div>
+									<div class="form-group">
+										<select class="input" name="duracion" required>
+											<option value="" disabled selected>Select Duration</option>
+											<option value="7">7 Days</option>
+											<option value="14">14 Days</option>
+											<option value="30">30 Days</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<select class="input" name="estado" required>
+											<option value="" disabled selected>Select Condition</option>
+											<option value="Malo">Malo</option>
+											<option value="Normal">Normal</option>
+											<option value="Bueno">Bueno</option>
+											<option value="Excelente">Excelente</option>
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<!-- Order Images -->
+							<div class="col-md-6 order-details" id="imgup">
+								<div class="section-title text-center">
+									<h3 class="title">Upload Product Images</h3>
+								</div>
+								<div class="upload-container">
+									<label for="product-images" class="custom-upload-btn">
+										<i class="icon-upload"></i> Choose Files
+									</label>
+									<input type="file" id="product-images" name="imagen" accept=".jpg .jpeg">
+									<div id="file-list"></div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 text-center">
+								<button type="submit" class="primary-btn order-submit">Confirm</button>
+							</div>
+						</div>
+						<input type="hidden" name="_csrf" value="{{token}}" />
+					</form>
+				</div>
+			</div>
+		</div>
+		<!-- /SECTION -->
+
+		<script>
+			document.getElementById('product-images').addEventListener('change', function(event) {
+				const fileList = document.getElementById('file-list');
+				fileList.innerHTML = ''; // Limpiar lista anterior
+
+				if (this.files.length > 0) {
+					for (let file of this.files) {
+						let listItem = document.createElement('p');
+						listItem.textContent = file.name;
+						fileList.appendChild(listItem);
+					}
+				}
+			});
+		</script>
+
+{{>footer}}

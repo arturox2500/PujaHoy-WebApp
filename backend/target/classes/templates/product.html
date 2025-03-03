@@ -1,0 +1,253 @@
+{{>header}}
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumb-tree">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="#">Productos</a></li>
+					{{#producto}}
+                    <li class="active">{{nombre}}</li>
+					{{/producto}}
+                </ul>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
+
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+		{{#producto}}
+        <div class="row">
+            <!-- Product main img -->
+            <div class="col-md-5 ">
+                <div id="product-main-img">
+                    <div class="product-preview">
+                        {{#imagen}}
+                        <img src="/producto/{{id}}/image" alt="Imagen del producto">
+                        {{/imagen}}
+                        {{^imagen}}
+                        <img src="/img/default-product.png" alt="Imagen no disponible">
+                        {{/imagen}}
+                    </div>
+                </div>
+            </div>
+            <!-- /Product main img -->
+
+            <!-- Product details -->
+            <div class="col-md-5">
+                <div class="product-details">
+                    <h2 class="product-name">{{nombre}}</h2>
+                    <div>
+                        <h3 class="product-price">Valor inicial: ${{valorini}}</h3>
+                    </div>
+                    <p>Estado: {{estado}}</p>
+                    <p>{{descripcion}}</p>
+                    <div class="add-to-cart">
+                        {{^admin}}
+                        {{^esVendedor}}
+                        {{#usuario_autenticado}}
+                        {{^Finalizado}}
+                        <form action="/product/{{id}}/place-bid" method="post">
+                            <input type="number" name="bid_amount" placeholder="Ingrese su puja" required>
+                            <button type="submit" class="add-to-cart-btn">
+                                <i class="fa fa-shopping-cart"></i> Place bid
+                            </button>
+                            <input type="hidden" name="_csrf" value="{{token}}" />
+                        </form>
+                        {{/Finalizado}}
+                        {{/usuario_autenticado}}
+                        {{/esVendedor}}
+                        {{/admin}}
+                    </div>
+                    <div class="add-to-cart">
+                        <button class="add-to-cart-btn"> <a href="/usuario/{{id}}">Seller</a></button>
+                    </div>
+                    <div class="add-to-cart">
+                        {{#admin}}
+                        <form action="/product/{{id}}/delete" method="post" style="display:inline;">
+                            <button type="submit" class="add-to-cart-btn">Delete</button>
+                            <input type="hidden" name="_csrf" value="{{token}}" />
+                        </form>
+                        {{/admin}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 text-right">
+                <div class="info-box">
+                    <small><strong> Fecha de finalización</strong></small>
+                    <div id="countdown" class="info-value">{{horaFin}}</div>
+                </div>
+                <div class="info-box">
+                    <small><strong> Puja Ganadora </strong></small>
+                    {{#Ganador}}
+                    <div id="highest-bid" class="info-value" style="color: green;">{{Puja Ganadora}}</div>
+                    {{/Ganador}}
+                    {{^Ganador}}
+                    <div id="highest-bid" class="info-value">{{Puja Ganadora}}</div>
+                    {{/Ganador}}
+                </div>
+                <div class="info-box">
+                    <small><strong> Pujador</strong></small>
+                    {{#Ganador}}
+                    <div id="highest-bid" class="info-value" style="color: green;">{{Pujador Ganador}}</div>
+                    {{/Ganador}}
+                    {{^Ganador}}
+                    <div id="highest-bid" class="info-value">{{Pujador Ganador}}</div>
+                    {{/Ganador}}
+                </div>
+            </div>
+            <!-- /Product details -->
+            {{#Ganador}}
+            <!-- Product tab -->
+            <div class="col-md-12">
+                <div id="product-tab">
+                    <!-- product tab nav -->
+                    <ul class="tab-nav">
+                        <li><a data-toggle="tab">Review</a></li>
+                    </ul>
+                    <!-- /product tab nav -->
+
+                    <!-- product tab content -->
+                    <div class="tab-content">
+                        <!-- tab3  -->
+                        <!-- Reviews (buyers' version) -->
+                        <div id="tab3">
+                            <div class="row">
+                                <!-- Formulario para dejar Review (habilitado) -->
+                                <div class="text-center">
+                                    <div id="review-form">
+                                        {{#producto}}
+                                        <a class="btn primary-btn" href="/usuario/{{id}}/rate">Rate product</a>
+                                        {{/producto}}
+                                    </div>
+                                </div>
+                                <!-- /Formulario para dejar Review -->
+                            </div>
+                        </div>
+                        <!-- /tab3  -->
+                    </div>
+                    <!-- /product tab content  -->
+                </div>
+            </div>
+            <!-- /product tab -->
+            {{/Ganador}}
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+<!-- MAP SECTION -->
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Ubicación del Producto</h3>
+                <div id="map" style="height: 400px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /MAP SECTION -->
+
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Historial de Pujas</h3>
+                <canvas id="pujasChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{>footer}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+{{#vendedor}}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var map = L.map('map').setView([0, 0], 2); // Mapa inicial vacío
+
+        // Agregar capa de OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        var marker;
+
+        function mostrarUbicacion(codigoPostal) {
+            if (!codigoPostal) {
+                alert("No hay código postal disponible.");
+                return;
+            }
+
+            var url = `https://nominatim.openstreetmap.org/search?format=json&q=${codigoPostal}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length === 0) {
+                        alert("Ubicación no encontrada para el código postal.");
+                        return;
+                    }
+
+                    var { lat, lon, display_name } = data[0];
+                    map.setView([lat, lon], 12);
+
+                    if (marker) map.removeLayer(marker);
+                    marker = L.marker([lat, lon]).addTo(map)
+                        .bindPopup(display_name)
+                        .openPopup();
+                })
+                .catch(error => console.error("Error obteniendo ubicación:", error));
+        }
+        
+        // Llamar a la función con el código postal del producto
+        mostrarUbicacion("{{codigoPostal}}");
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        const numPujas = 10;
+        let montos = "{{costes}}";     
+        montos = JSON.parse(montos)
+        montos.sort((a, b) => a - b);
+        const ctx = document.getElementById("pujasChart").getContext("2d");
+        new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: montos.map((_, i) => `Puja ${i + 1}`), // Eje X con números de puja
+                datasets: [{
+                    label: "Evolución de las pujas",
+                    data: montos,
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderWidth: 2,
+                    tension: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: false }
+                }
+            }
+        });
+    });
+</script>
+{{/vendedor}}
+{{/producto}}
+{{^producto}}
+<p>no hay na</p>
+{{/producto}}

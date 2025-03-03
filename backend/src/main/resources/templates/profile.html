@@ -1,0 +1,256 @@
+{{>header}}
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+			<div class="col-md-12">
+				<h3 class="breadcrumb-header">Account Details</h3>
+				<ul class="breadcrumb-tree">
+					<li><a href="/">Home</a></li>
+					<li class="active">Account</li>
+				</ul>
+			</div>
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
+
+<!-- PROFILE SECTION -->
+<div class="section container">
+	<nav aria-label="breadcrumb" class="main-breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+			<li class="breadcrumb-item active" aria-current="page">User Profile</li>
+		</ol>
+	</nav>
+	{{#Usuario}}
+	<div class="row gutters-sm">
+		<div class="col-md-4 mb-3">
+			<div class="card text-center">
+				<img src="/usuario/{{id}}/fotoPerfil" alt="Foto de perfil">
+				<h4 style="margin-top: 20px;">{{nombreVisible}}</h4>
+				<p class="text-secondary mb-1">Verified User ✔️</p>
+			</div>
+		</div>
+
+		<div class="col-md-8">
+			<div class="card mb-3">
+				<div class="user-details-title">
+					<h4>User Details</h4>
+				</div>
+
+				<div class="card-body">
+					{{#baneado}}
+					<hr>
+					<div class="row">
+						<div class="col-sm-12"><strong>The user is banned</strong></div>
+					</div>
+					<hr>
+					{{/baneado}}
+
+					{{#registrado}}
+					<hr>
+					<div class="row">
+						<div class="col-sm-3"><strong>Name</strong></div>
+						<div class="col-sm-9 text-secondary">{{nombre}}</div>
+					</div>
+					<hr>
+					{{/registrado}}
+
+					<hr>
+					<div class="row">
+						<div class="col-sm-3"><strong>User Rating</strong></div>
+						<div class="col-sm-9 text-secondary">{{reputacion}}</div>
+					</div>
+					<hr>
+
+					<hr>
+					<div class="row">
+						<div class="col-sm-3"><strong>Codigo Postal</strong></div>
+						<div class="col-sm-9 text-secondary">
+							<input type="text" id="codigoPostal" value="{{codigoPostal}}" readonly
+								class="form-control-plaintext">
+						</div>
+					</div>
+					<hr>
+
+					<hr>
+					<div class="row">
+						<div class="col-sm-3"><strong>Contacto</strong></div>
+						<div class="col-sm-9 text-secondary">
+							<input type="text" id="contacto" value="{{contacto}}" readonly
+								class="form-control-plaintext">
+						</div>
+					</div>
+					<hr>
+
+					<hr>
+					<div class="row">
+						<div class="col-sm-3"><strong>Descripción</strong></div>
+						<div class="col-sm-9 text-secondary">
+							<textarea id="descripcion" readonly
+								class="form-control-plaintext">{{descripcion}}</textarea>
+						</div>
+					</div>
+					<hr>
+
+					<hr>
+					<div class="row" id="profile-image-upload" style="display: none;">
+						<div class="col-sm-3"><strong>New Profile Picture</strong></div>
+						<div class="col-sm-9">
+							<input type="file" id="new-profile-image" name="newProfileImage" class="form-control">
+						</div>
+					</div>
+					<hr>
+
+					{{#registrado}}
+					<div class="row">
+						<div class="col-sm-12">
+							<button id="edit-btn" class="btn btn-info">Edit</button>
+							<button id="cancel-btn" class="btn btn-secondary" style="display: none;">Cancel</button>
+						</div>
+					</div>
+					{{/registrado}}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{{#registrado}}
+	<h4>My Bids & Auctions</h4>
+	<div class="row bids-auctions">
+		<div class="col-md-4">
+			<a href="/usuario/verProductos">
+				<div class="card text-center p-3 hover-card">
+					<i class="fas fa-gavel fa-2x text-primary"></i>
+					<h5>Your Auctions</h5>
+				</div>
+			</a>
+		</div>
+		<div class="col-md-4">
+			<a href="/usuario/NuevoProducto">
+				<div class="card text-center p-3 hover-card">
+					<i class="fas fa-plus-circle fa-2x text-success"></i>
+					<h5>New Auction</h5>
+				</div>
+			</a>
+		</div>
+		<div class="col-md-4">
+			<a href="/usuario/verCompras">
+				<div class="card text-center p-3 hover-card">
+					<i class="fas fa-trophy fa-2x text-info"></i>
+					<h5>Your Winning Bids</h5>
+				</div>
+			</a>
+		</div>
+	</div>
+	{{/registrado}}
+
+	{{#admin}}
+	<div class="text-left mt-3 profile">
+		<form action="/usuario/{{id}}/banear" method="post">
+			{{#baneado}}
+			<button type="submit" class="btn btn-danger">Unban User</button>
+			{{/baneado}}
+			{{^baneado}}
+			<button type="submit" class="btn btn-danger">Ban User</button>
+			{{/baneado}}
+			<input type="hidden" name="_csrf" value="{{token}}" />
+		</form>
+	</div>
+	{{/admin}}
+	{{/Usuario}}
+</div>
+
+{{>footer}}
+
+<!-- Script para habilitar la edición -->
+<script>
+	document.getElementById("edit-btn").addEventListener("click", function () {
+		// Hacer los campos editables
+		document.getElementById("contacto").readOnly = false;
+		document.getElementById("descripcion").readOnly = false;
+		document.getElementById("codigoPostal").readOnly = false;
+		document.getElementById("profile-image-upload").style.display = "block";
+		// Cambiar el botón a "Save"
+		document.getElementById("edit-btn").textContent = "Save";
+		document.getElementById("edit-btn").classList.remove("btn-info");
+		document.getElementById("edit-btn").classList.add("btn-success");
+
+		// Mostrar el botón "Cancel"
+		document.getElementById("cancel-btn").style.display = "inline-block";
+
+		// Cuando se haga clic en el botón "Save", se enviará el formulario
+		document.getElementById("edit-btn").addEventListener("click", function () {
+			// Crear un formulario dinámicamente
+			const form = document.createElement("form");
+			form.setAttribute("action", "/usuario");
+			form.setAttribute("method", "POST");
+			form.setAttribute("enctype", "multipart/form-data");
+
+			// Crear el campo de ID como hidden
+			const idInput = document.createElement("input");
+			idInput.setAttribute("type", "hidden");
+			idInput.setAttribute("name", "id");
+			idInput.value = "{{id}}"; // Poner el ID del usuario que viene de la plantilla
+			form.appendChild(idInput);
+
+			// Crear los campos de formulario con los valores de los inputs
+			const contactoInput = document.createElement("input");
+			contactoInput.setAttribute("type", "hidden");
+			contactoInput.setAttribute("name", "contacto");
+			contactoInput.value = document.getElementById("contacto").value;
+			form.appendChild(contactoInput);
+
+			const descripcionInput = document.createElement("input");
+			descripcionInput.setAttribute("type", "hidden");
+			descripcionInput.setAttribute("name", "descripcion");
+			descripcionInput.value = document.getElementById("descripcion").value;
+			form.appendChild(descripcionInput);
+
+			const codigoPostalInput = document.createElement("input");
+			codigoPostalInput.setAttribute("type", "hidden");
+			codigoPostalInput.setAttribute("name", "codigoPostal");
+			codigoPostalInput.value = document.getElementById("codigoPostal").value;
+			form.appendChild(codigoPostalInput);
+
+			// csrf token
+			const idToken = document.createElement("input");
+			idInput.setAttribute("type", "hidden");
+			idInput.setAttribute("name", "_csrf");
+			idInput.value = "{{token}}"; // Poner el ID del usuario que viene de la plantilla
+			form.appendChild(idToken);
+
+			const imageInput = document.getElementById("new-profile-image");
+			if (imageInput.files.length > 0) {
+			const file = imageInput.files[0];
+			// Comprobar el tipo de archivo
+			if (file.type.startsWith("image/")) {
+				// Si es una imagen válida, agregarla al formulario
+				const fileInput = document.createElement("input");
+				fileInput.setAttribute("type", "file");
+				fileInput.setAttribute("name", "fotoPerfil");
+				fileInput.files = imageInput.files;
+				form.appendChild(fileInput);
+			} else {
+				// Si no es una imagen válida, mostrar un mensaje de error
+				alert("Please select a valid image file.");
+				window.location.reload(); // Detener el envío del formulario
+			}
+		}
+
+			// Añadir el formulario a la página en el body
+			document.body.appendChild(form);
+			form.submit();
+		});
+	});
+
+	document.getElementById("cancel-btn").addEventListener("click", function () {
+		window.location.reload(); // Recarga la página y restaura los valores originales
+	});
+</script>
