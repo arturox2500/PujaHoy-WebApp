@@ -229,7 +229,7 @@ Admins have the ability to remove product listings to ensure compliance with pla
 ## Documentation
 
 ### Class and Templates Diagram 
-![Class and Templates Diagram ](imagenes/ClassTemplatesDiagram.svj)
+![Class and Templates Diagram ](imagenes/ClassTemplatesDiagram.png)
 
 
 ### 👤 Jorge Andrés Echevarría
