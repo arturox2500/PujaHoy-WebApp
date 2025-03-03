@@ -273,11 +273,11 @@ Admins have the ability to remove product listings to ensure compliance with pla
 
 | File | Description |
 | :----: | :---------: |
-| [1º]([link del archivo](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/UsuarioController.java)) | |
-| [2º]([link del archivo](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/resources/static/js/app.js)) | |
-| [3º](link del archivohttps://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/resources/templates/newAuction.htmlssssdddd) | |
-| [4º](link del archivo) | |
-| [5º](link del archivo) | |
+| [1º]([(https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/UsuarioController.java)]) | I implemented the functionality for creating new auctions and displaying users' listings, as well as the products they have won. |
+| [2º]((https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/resources/static/js/app.js)) | I developed the AJAX functionality using JavaScript. |
+| [3º]([https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/resources/templates/newAuction.html]) | I designed and implemented the HTML structure for the auction creation page, ensuring support for image uploads so that they can later be displayed on product pages. |
+| [4º](DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/repository/ProductoRepository.java) | I wrote the necessary query to retrieve and display users' winning bids. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/resources/templates/profile.html) | At the start of the project, I built the profile page entirely from scratch. |
 
 ### 👤 Iván Gutierrez González
 
@@ -332,4 +332,3 @@ Admins have the ability to remove product listings to ensure compliance with pla
 | [3º](link del archivo) | |
 | [4º](link del archivo) | |
 | [5º](link del archivo) | |
-
