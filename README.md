@@ -226,6 +226,11 @@ All users can view:
 Registered users can place bids on the product.  
 Admins have the ability to remove product listings to ensure compliance with platform rules.  
 
+## Documentation
+
+### Class and Templates Diagram 
+![Class and Templates Diagram ](imagenes/ClassTemplatesDiagram.svj)
+
 
 ### 👤 Jorge Andrés Echevarría
 
