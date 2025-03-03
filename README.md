@@ -227,4 +227,93 @@ Registered users can place bids on the product.
 Admins have the ability to remove product listings to ensure compliance with platform rules.  
 
 
+### 👤 Jorge Andrés Echevarría
+
+| Commit | Description |
+| :----: | :---------: |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/fbe449fd97f234ce21aed70ca6b6b1a94b3f74d3) | In this commit full functionality of edit profile was added. Specifically to try new things, the form that sends the data to be replaced in the DB is created dynamically with JS.
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/c0290a3c986e9232818a6ef3c1b77c4c7b1fa86f) | In this commit functionality for register was finished. Backend checks for certain details when registering such as Postal Code. Further checks to these fields were added on commit 1º   |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/8602f1bc7076d6e5a32ab3d52b2b2e2103c9b836) | In this commit functionality for the Map that locates a seller was implemented. Notice no GoogleMaps was used since a bank account was needed. So we decided to take the free approach. How it works is: Map is loaded with OpenStreetMap (Leaflet.js), the location is obtained with an API, then location is used to pin point in the map|
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/64d703cf32601a1defc8e310f2e2be7856eea541) | In this commit as stated before we tryed to use as external technology the Auth0 login workflow, but due to implementing issues and lack of time idea was depleted and we reversed to an easier approach.|
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/fe3da4a384356c46f69e0f3187c85a660cb53be5) | In this commit logout methods and a first instance of a user session was created. Later on this instance was changed into a more usefull use. Since only 'Authenticated' was sent when a user was logged in accross all views.|
+
+| File | Description |
+| :----: | :---------: |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/pujahoy/src/main/java/com/webapp08/pujahoy/security/SecurityConfiguration.java) | I was mostly in charge of security. As stated before all of my time during this weeks was invested into implementing Auth0 but due to a big difficulty when implementing it, because of outdated documentation and lack of information we decided to take the path explained during the theorical classes|
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/pujahoy/src/main/java/com/webapp08/pujahoy/controller/UsuarioController.java) | In this Controller i was in charge of making sure editing a profile was possible and all attributes were up to date and as they are intended |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/pujahoy/src/main/java/com/webapp08/pujahoy/controller/LoginController.java) | In the login controller i was in charge of creating the login and register functionalities, despite some help from Iván with the login. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/pujahoy/src/main/resources/templates/login.html) | The login html was made by me too. Interesting to highlight register and login go throw the same view and are dynamicaly swapped between them with JS. Backend checks are done to secure reliable data.|
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/pujahoy/src/main/resources/templates/profile.html) | Although i wasnt in charge of creating the profile view, i had to add edit a profile. As a challenge i decided to use the same view to be able to edit a user with a button. A hidden form is created dynamically and data is sent in it. Backend checks are done to secure reliable data.|
+
+### 👤 Iván Gutierrez 
+
+| Commit | Description |
+| :----: | :---------: |
+| [1º](https://github.com/) | |
+| [2º](https://github.com/) | |
+| [3º](https://github.com/) | |
+| [4º](https://github.com/) | |
+| [5º](https://github.com/) | |
+
+| File | Description |
+| :----: | :---------: |
+| [1º](link del archivo) | |
+| [2º](link del archivo) | |
+| [3º](link del archivo) | |
+| [4º](link del archivo) | |
+| [5º](link del archivo) | |
+
+### 👤 Arturo Enrique Gutierrez
+
+| Commit | Description |
+| :----: | :---------: |
+| [1º](https://github.com/) | |
+| [2º](https://github.com/) | |
+| [3º](https://github.com/) | |
+| [4º](https://github.com/) | |
+| [5º](https://github.com/) | |
+
+| File | Description |
+| :----: | :---------: |
+| [1º](link del archivo) | |
+| [2º](link del archivo) | |
+| [3º](link del archivo) | |
+| [4º](link del archivo) | |
+| [5º](link del archivo) | |
+
+### 👤 Victor Bartolomé Letosa
+
+| Commit | Description |
+| :----: | :---------: |
+| [1º](https://github.com/) | |
+| [2º](https://github.com/) | |
+| [3º](https://github.com/) | |
+| [4º](https://github.com/) | |
+| [5º](https://github.com/) | |
+
+| File | Description |
+| :----: | :---------: |
+| [1º](link del archivo) | |
+| [2º](link del archivo) | |
+| [3º](link del archivo) | |
+| [4º](link del archivo) | |
+| [5º](link del archivo) | |
+
+### 👤 Miguel Pradillo Bartolomé
+
+| Commit | Description |
+| :----: | :---------: |
+| [1º](https://github.com/) | |
+| [2º](https://github.com/) | |
+| [3º](https://github.com/) | |
+| [4º](https://github.com/) | |
+| [5º](https://github.com/) | |
+
+| File | Description |
+| :----: | :---------: |
+| [1º](link del archivo) | |
+| [2º](link del archivo) | |
+| [3º](link del archivo) | |
+| [4º](link del archivo) | |
+| [5º](link del archivo) | |
 
