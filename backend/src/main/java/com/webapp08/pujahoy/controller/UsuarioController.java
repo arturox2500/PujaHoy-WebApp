@@ -74,6 +74,11 @@ public class UsuarioController {
         if (principal != null) {
             String username = principal.getName(); // Obtiene el nombre de usuario
             Optional<Usuario> user = usuarioService.findByNombre(username); // Busca en la base de datos
+            if (user.get().determinarTipoUsuario().equals("Administrador")){
+                model.addAttribute("texto", " you dont have a profile");
+                model.addAttribute("url", "/");
+                return "pageError";
+            }
             if (user.isPresent()) {
                 model.addAttribute("Usuario", user.get());
                 model.addAttribute("id", user.get().getId());
