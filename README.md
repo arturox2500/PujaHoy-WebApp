@@ -91,8 +91,7 @@ Flechas azules = usuarios registrados ajenos a la perfil.
 
 
 ---
-#Somewhat Updated ReadMe.md
-#Proofread!
+
 ---
 
 # Auction Application (PUJAHOY)
@@ -265,19 +264,19 @@ Admins have the ability to remove product listings to ensure compliance with pla
 
 | Commit | Description |
 | :----: | :---------: |
-| [1º](https://github.com/) | |
-| [2º](https://github.com/) | |
-| [3º](https://github.com/) | |
-| [4º](https://github.com/) | |
-| [5º](https://github.com/) | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/31ae760d90eb92d8db777b22bdbe0d39f954f936) | This is my largest commit so far. Due to significant changes in the codebase since my previous commit, I had to restructure all my work to ensure compatibility with the updated codebase.|
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/2f11e58c7ada287219c719031fb6a0078d9d8a52) | The purpose of this commit is to implement a user's view of their own listings. Additionally, I set up the New Product Form. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/bf59b4fa5b599bcf96be3105585a7903edabf591) | In this commit, I implemented AJAX functionality to preload products without requiring a page reload. This update also includes a spinner animation. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/d24a093708772ac826d11b5768a07cc9cd10b327) | Implemented the bid history line chart using Chart.js. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/00a4141413a5d073d5813d7c69f8fe07e553efb7) | Since our template did not include a dedicated profile page, I created one from scratch using Bootstrap and custom CSS. |
 
 | File | Description |
 | :----: | :---------: |
-| [1º](link del archivo) | |
-| [2º](link del archivo) | |
-| [3º](link del archivo) | |
-| [4º](link del archivo) | |
-| [5º](link del archivo) | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/UsuarioController.java) | I implemented the functionality for creating new auctions and displaying users' listings, as well as the products they have won. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/resources/static/js/app.js) | I developed the AJAX functionality using JavaScript. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/resources/templates/newAuction.html) | I designed and implemented the HTML structure for the auction creation page, ensuring support for image uploads so that they can later be displayed on product pages. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/repository/ProductoRepository.java) | I wrote the necessary query to retrieve and display users' winning bids. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/resources/templates/profile.html) | At the start of the project, I built the profile page entirely from scratch. |
 
 ### 👤 Iván Gutierrez González
 
@@ -332,4 +331,3 @@ Admins have the ability to remove product listings to ensure compliance with pla
 | [3º](link del archivo) | |
 | [4º](link del archivo) | |
 | [5º](link del archivo) | |
-
