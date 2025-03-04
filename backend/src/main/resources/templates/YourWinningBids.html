@@ -27,71 +27,62 @@
 		<h2>YOUR WINNING BIDS</h2>
 		<!-- row -->
 		<div class="row">
-			
-
-			<!-- STORE -->
-			<div id="store" class="col-md-12">
-
-				<!-- store products -->
-				<div class="row" id="yourWBRow">
-					<!-- product -->
-					{{#productos}}
-					<div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">
-						<a href="/producto/{{id}}" class="product-link">
-							<div class="product product-card">
-								<div class="product-img">
-									{{#imagen}}
-										<img src="/producto/{{id}}/image" alt="Product Image">
-									{{/imagen}}
-									{{^imagen}}
-										<img src="/img/default-product.png" alt="Image not available">
-									{{/imagen}}
-									<div class="product-label">
-										<span class="new">NEW</span>
-									</div>
-								</div>
-								<div class="product-body">
-									<p class="product-category">Category</p>
-									<h3 class="product-name"><a href="#">{{nombre}}</a></h3>
-									<h4 class="product-price">{{valorini}}</h4>
-									<div class="product-rating">
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-										<i class="fa fa-star"></i>
-									</div>
+			<div class="row" id="yourWBRow">
+				<!-- product -->
+				{{#productos}}
+				<div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">
+					<a href="/producto/{{id}}" class="product-link">
+						<div class="product product-card">
+							<div class="product-img">
+								{{#imagen}}
+									<img src="/producto/{{id}}/image" alt="Product Image">
+								{{/imagen}}
+								{{^imagen}}
+									<img src="/img/default-product.png" alt="Image not available">
+								{{/imagen}}
+								<div class="product-label">
+									<span class="new">NEW</span>
 								</div>
 							</div>
-						</a>
-					</div>
-
-					<!-- store bottom filter -->
-				<div class="text-center">
-					<button id="load-more-WBposts" class="btn btn-danger">Load More</button>
-					<div id="spinnerWB" class="spinner-border text-primary d-block mx-auto" role="status" style="display: none !important; visibility: hidden;">
-						<span class="visually-hidden">Loading...</span>
-					</div>
+							<div class="product-body">
+								<p class="product-category">Category</p>
+								<h3 class="product-name"><a href="#">{{nombre}}</a></h3>
+								<h4 class="product-price">{{valorini}}</h4>
+								<div class="product-rating">
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+								</div>
+							</div>
+						</div>
+					</a>
 				</div>
-				
-					{{/productos}}
-				
-					{{^productos}}
-					<p class="text-center">No products available</p>
-					{{/productos}}
-					<!-- /product -->
-				</div>
-				<!-- /store products -->
-
-				
-				
-				<!-- /store bottom filter -->
+			
+				{{/productos}}
+			
+				{{^productos}}
+				<p class="text-center">No products available</p>
+				{{/productos}}
+				<!-- /product -->
 			</div>
-			<!-- /STORE -->
+
+		
 		</div>
 		<!-- /row -->
 	</div>
 	<!-- /container -->
+	{{#button}}
+	<!-- store bottom filter -->
+	<div class="text-center" id>
+		
+		<button id="load-more-WBposts" class="btn btn-danger loadb">Load More</button>
+		<div id="spinnerWB" class="spinner-border text-primary d-block mx-auto" role="status" style="display: none !important; visibility: hidden;">
+			<span class="visually-hidden">Loading...</span>
+		</div>
+	</div>
+	{{/button}}
 </div>
 <!-- /SECTION -->
 
@@ -103,11 +94,11 @@
 		if (response.ok) {
             const nuevosPostsHTML = (await response.text()); 
             if (nuevosPostsHTML != "") {
-				console.log(nuevosPostsHTML)
+				
                 if (nuevosPostsHTML.trim() =="") {
                     document.getElementById("load-more-WBposts").style.display = "none";
                     document.getElementById("spinnerWB").style.visibility = "hidden";
-                } 
+                }
             } 
             
         }
