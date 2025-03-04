@@ -320,7 +320,7 @@ Admins have the ability to remove product listings to ensure compliance with pla
 | :----: | :---------: |
 | [1º](https://github.com/) | |
 | [2º](https://github.com/) | |
-| [3º](https://github.com/) | |
+| [3º](https://github.com/) | CSRFHandlerConfiguration.java Added implementation and full funtionality on this commit for this file |
 | [4º](https://github.com/) | |
 | [5º](https://github.com/) | |
 
@@ -328,6 +328,6 @@ Admins have the ability to remove product listings to ensure compliance with pla
 | :----: | :---------: |
 | [1º](link del archivo) | product.html |
 | [2º](link del archivo) | productController.java |
-| [3º](link del archivo) | CSRFHandlerConfiguration.java |
+| [3º](link del archivo) CSRFHandlerConfiguration.java | Added implementation and full funtionality on this file as part of the security configuration of the PujaHoy web application. It is responsible for integrating CSRF protection into the application.|
 | [4º](link del archivo) | SecurityConfiguration.java |
 | [5º](link del archivo) | UserController.java |
