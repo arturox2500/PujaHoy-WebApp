@@ -84,9 +84,9 @@ public class DataBaseInitializer {
 			Date fecha25M = new Date(calendar.getTimeInMillis());
 
 			Producto product1 = new Producto("Televisión LG", "Smart TV 4K de 55 pulgadas con HDR y sonido envolvente.", 129.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product01.jpg"), user2);
-			Producto product2 = new Producto("Monedas europeas", "Colección de monedas antiguas de distintos países de Europa.", 199.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product02.jpg"), user2);
-			Producto product3 = new Producto("Iphone 13", "iPhone 13 with 128GB, dual camera, and A15 Bionic chip in excellent condition", 359.99, fecha24, fecha25, "Completed", saveImageFromFile("static/img/product03.jpg"), user2);		
-			Producto product4 = new Producto("Ordenador para ofimática", "PC ideal para oficina con procesador i5, 8GB RAM y SSD de 256GB.", 399.99, fecha24, fecha25, "Finalizado", saveImageFromFile("static/img/product04.jpg"), user2);
+			Producto product2 = new Producto("Monedas europeas", "Colección de monedas antiguas de distintos países de Europa.", 199.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product02.jpg"), user3);
+			Producto product3 = new Producto("Iphone 13", "iPhone 13 con 128GB, cámara dual y chip A15 Bionic en excelente estado.", 359.99, fecha24, fecha25, "Finalizado", saveImageFromFile("static/img/product03.jpg"), user3);		
+			Producto product4 = new Producto("Ordenador para ofimática", "PC ideal para oficina con procesador i5, 8GB RAM y SSD de 256GB.", 399.99, fecha24, fecha25, "Finalizado", saveImageFromFile("static/img/product04.jpg"), user4);
 			
 			Oferta nuevaOferta = new Oferta(user2, product3, 360.00, fecha24);
 			product3.getOfertas().add(nuevaOferta);
@@ -139,15 +139,6 @@ public class DataBaseInitializer {
 			Producto product14 = new Producto("Vino cosecha 2008", "Vino tinto añejo con notas afrutadas y envejecido en barrica.", 129.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product14.webp"), user2);
 			Producto product15 = new Producto("Barquito en botella", "Miniatura artesanal de barco dentro de una botella de cristal.", 59.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product15.jpg"), user2);
 			
-			Producto product16 = new Producto("Teclado mecánico", "Teclado gaming RGB con switches mecánicos y respuesta rápida.", 79.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product05.webp"), user2);
-			Producto product17 = new Producto("Gafas de sol", "Gafas polarizadas con protección UV400, diseño elegante.", 49.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product06.jpg"), user2);
-			Producto product22 = new Producto("Mando PS5", "Control inalámbrico DualSense con vibración háptica y gatillos adaptativos.", 69.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product07.avif"), user2);
-			Producto product18 = new Producto("Xbox Series X", "Consola de nueva generación con 1TB de almacenamiento y 4K real.", 559.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product08.webp"), user2);
-			Producto product19 = new Producto("Ratón para ordenador", "Ratón ergonómico con sensor óptico de alta precisión.", 39.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product09.jpg"), user2);
-			Producto product20 = new Producto("Rolex Presidential", "Reloj de lujo con caja de oro y movimiento automático.", 25259.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product10.jpg"), user2);
-			Producto product21 = new Producto("Bugatti La Voiture Noire", "Hiperdeportivo exclusivo de 1500 CV, edición limitada.", 1999999.99, fecha24, fecha25M, "En curso", saveImageFromFile("static/img/product11.jpg"), user2);
-
-
 			productoRepository.save(product5);
 			productoRepository.save(product6);
 			productoRepository.save(product7);
@@ -159,12 +150,5 @@ public class DataBaseInitializer {
 			productoRepository.save(product13);
 			productoRepository.save(product14);
 			productoRepository.save(product15);
-			productoRepository.save(product16);
-			productoRepository.save(product17);
-			productoRepository.save(product18);
-			productoRepository.save(product19);
-			productoRepository.save(product20);
-			productoRepository.save(product21);
-			productoRepository.save(product22);
 	}
 }

@@ -76,6 +76,7 @@ public class SecurityConfiguration {
 				.requestMatchers("/usuario/verCompras").hasAnyRole("USER")
 				.requestMatchers("/usuario/verProductos").hasAnyRole("USER")
 				.requestMatchers("/usuario/{id}/rated").hasAnyRole("USER")
+				.requestMatchers("/product/{id_producto}/finish").hasAnyRole("USER")
 			)
 			.formLogin(formLogin -> formLogin
 					.loginPage("/login")					
