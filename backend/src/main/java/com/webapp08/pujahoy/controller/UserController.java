@@ -120,10 +120,10 @@ public class UserController {
             if (seller.isPresent()) {
                 Principal principal = request.getUserPrincipal();
                 Optional<Usuario> user;
-                String tipo;
+                String userType;
                 if (principal != null) { 
                     String username = principal.getName();
-                    user = usuarioService.findByNombre(username); 
+                    user = userService.findByNombre(username); 
                     userType = user.get().determinarTipoUsuario();
                     if (user.get().getId() == seller.get().getId()) { 
                         return "redirect:/usuario";
@@ -146,7 +146,7 @@ public class UserController {
                 } else { 
                     model.addAttribute("admin", false);
                 }
-                if (vendedor.get().isActivo()) {
+                if (seller.get().isActivo()) {
                     model.addAttribute("banned", false);
                 } else {
                     model.addAttribute("banned", true);
@@ -170,7 +170,7 @@ public class UserController {
 
         Usuario user = userService.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         
-        if (!ziPCode.matches("\\d{5}") || !contact.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
+        if (!zipCode.matches("\\d{5}") || !contact.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
         ) {
             return "redirect:/usuario"; 
         }
@@ -311,7 +311,7 @@ public class UserController {
 
         if (principal != null) {
             String username = principal.getName(); 
-            Optional<Usuario> user = user.findByNombre(username);
+            Optional<Usuario> user = userService.findByNombre(username); //Missing
 
             if (user.isPresent()) {
                 Page<Producto> products = productService.obtenerProductosComprados(username, page, size);
@@ -339,7 +339,7 @@ public class UserController {
             if (user.isPresent()) {
                 Page<Producto> products = productService.obtenerProductosComprados(username, page, size);
                 Boolean button = true;
-                if (productos.isEmpty()) {
+                if (products.isEmpty()) {
                     button = false;
                 }
 
@@ -388,7 +388,7 @@ public class UserController {
 
         try {
             Date iniHour = new Date(System.currentTimeMillis());
-            Date endHour = new Date(iniHour.getTime() + (long) duracion * 24 * 60 * 60 * 1000);
+            Date endHour = new Date(iniHour.getTime() + (long) time * 24 * 60 * 60 * 1000);
 
             Blob image = null;
             if (!imageFile.isEmpty()) {
@@ -449,7 +449,7 @@ public class UserController {
     }
 
     public void updateRating(Usuario user) {
-        List<Valoracion> ratings = rating.findAllByVendedor(user);
+        List<Valoracion> ratings = ratingService.findAllByVendedor(user);
         if (ratings.isEmpty()) {
             return; 
         }
@@ -460,7 +460,7 @@ public class UserController {
         double mean = (double) amount / ratings.size();
 
         user.setReputacion(mean);
-        usuarioService.save(user);
+        userService.save(user);
     }
 
     @PostMapping("/{id}/rated")
@@ -505,7 +505,7 @@ public class UserController {
             byte[] picBytes = profilePic.getBytes(1, (int) profilePic.length());
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_PNG);
-            return new ResponseEntity<>(fotoBytes, headers, HttpStatus.OK);
+            return new ResponseEntity<>(picBytes, headers, HttpStatus.OK);
         } catch (SQLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
