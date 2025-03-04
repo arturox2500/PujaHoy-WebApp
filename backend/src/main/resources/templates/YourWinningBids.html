@@ -96,3 +96,20 @@
 <!-- /SECTION -->
 
 {{>footer}}
+
+<script>
+	document.addEventListener("DOMContentLoaded", async function () {
+		const response = await fetch(`/usuario/producto_template_compras?pagina=${1}`);		
+		if (response.ok) {
+            const nuevosPostsHTML = (await response.text()); 
+            if (nuevosPostsHTML != "") {
+				console.log(nuevosPostsHTML)
+                if (nuevosPostsHTML.trim() =="") {
+                    document.getElementById("load-more-WBposts").style.display = "none";
+                    document.getElementById("spinnerWB").style.visibility = "hidden";
+                }
+            } 
+            
+        }
+    });
+</script>

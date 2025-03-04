@@ -60,3 +60,20 @@
 		<!-- /SECTION -->
 
 {{>footer}}
+
+<script>
+	document.addEventListener("DOMContentLoaded", async function () {
+		const response = await fetch(`/producto_template_index?page=${1}`);		
+		if (response.ok) {
+            const nuevosPostsHTML = (await response.text()); 
+            if (nuevosPostsHTML != "") {
+				console.log(nuevosPostsHTML)
+                if (nuevosPostsHTML.trim() =="") {
+                    document.getElementById("load-more-index").style.display = "none";
+                    document.getElementById("spinnerIndex").style.visibility = "hidden";
+                }
+            } 
+            
+        }
+    });
+</script>

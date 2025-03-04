@@ -97,3 +97,20 @@
 <!-- /SECTION -->
 
 {{>footer}}
+
+<script>
+	document.addEventListener("DOMContentLoaded", async function () {
+		const response = await fetch(`/usuario/producto_template?pagina=${1}`);		
+		if (response.ok) {
+            const nuevosPostsHTML = (await response.text()); 
+            if (nuevosPostsHTML != "") {
+				console.log(nuevosPostsHTML)
+                if (nuevosPostsHTML.trim() =="") {
+                    document.getElementById("load-more-yposts").style.display = "none";
+                    document.getElementById("spinnerY").style.visibility = "hidden";
+                }
+            } 
+            
+        }
+    });
+</script>
