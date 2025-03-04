@@ -6,7 +6,7 @@ async function cargarPosts() {
     if (noMorePosts) {
         return;
     }
-    console.log(page);
+    
     
     document.getElementById("spinnerY").style.display = "block"; // Mostrar el spinner
     document.getElementById("spinnerY").style.visibility = "visible";

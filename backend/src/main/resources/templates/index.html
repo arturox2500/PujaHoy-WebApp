@@ -67,7 +67,7 @@
 		if (response.ok) {
             const nuevosPostsHTML = (await response.text()); 
             if (nuevosPostsHTML != "") {
-				console.log(nuevosPostsHTML)
+				
                 if (nuevosPostsHTML.trim() =="") {
                     document.getElementById("load-more-index").style.display = "none";
                     document.getElementById("spinnerIndex").style.visibility = "hidden";
