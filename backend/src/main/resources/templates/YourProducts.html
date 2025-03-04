@@ -1,50 +1,23 @@
 {{>header}}
-
-<!-- BREADCRUMB -->
-<div id="breadcrumb" class="section">
-	<!-- container -->
-	<div class="container">
-		<!-- row -->
-		<div class="row">
-			<div class="col-md-12">
-				<ul class="breadcrumb-tree">
-					<li><a href="#">Home</a></li>
-					<li><a href="#">Account</a></li>
-					<li><a href="#">Your product</a></li>
-				</ul>
-			</div>
-		</div>
-		<!-- /row -->
-	</div>
-	<!-- /container -->
-</div>
-<!-- /BREADCRUMB -->
-
-<!-- SECTION -->
-<div class="section">
-	<!-- container -->
-	<div class="container">
-		<h2>YOUR PRODUCTS</h2>
-		<!-- row -->
-		<div class="row">
+		
+		<!-- SECTION -->
+		<div class="section">
 			
-
-			<!-- STORE -->
-			<div id="store" class="col-md-12">
-
-				<!-- store products -->
-				<div class="row" id="yourProdsRow">
-					<!-- product -->
+			<!-- container -->
+			<div class="container">
+				<h2>FEATURED PRODUCTS</h2>
+				<!-- row -->
+				<div class="row" id="indexProduct">
 					{{#productos}}
 					<div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">
 						<a href="/producto/{{id}}" class="product-link">
 							<div class="product product-card">
 								<div class="product-img">
 									{{#imagen}}
-										<img src="/producto/{{id}}/image" alt="Product Image">
+										<img src="/producto/{{id}}/image" alt="Imagen del producto">
 									{{/imagen}}
 									{{^imagen}}
-										<img src="/img/default-product.png" alt="Image not available">
+										<img src="/img/default-product.png" alt="Imagen no disponible">
 									{{/imagen}}
 									<div class="product-label">
 										<span class="new">NEW</span>
@@ -65,36 +38,26 @@
 							</div>
 						</a>
 					</div>
-
 					{{/productos}}
 				
 					{{^productos}}
-					<p class="text-center">No products Available</p>
+					<p class="text-center">No products available</p>
 					{{/productos}}
-					<!-- /product -->
 				</div>
-				<!-- /store products -->
-
 				
-				{{#button}}
-						<!-- store bottom filter -->
-						<div class="text-center">
-							<button id="load-more-yposts" class="btn btn-danger">Load More</button>
-							<div id="spinnerY" class="spinner-border text-primary d-block mx-auto" role="status" style="display: none !important; visibility: hidden;">
-								<span class="visually-hidden">Loading...</span>
-							</div>
-						</div>
-				{{/button}}
-				
-				<!-- /store bottom filter -->
+				<!-- /row -->
 			</div>
-			<!-- /STORE -->
+			<!-- /container -->
+			{{#button}}
+				<div class="text-center">
+					<button id="load-more-yposts" class="btn btn-danger">Load More</button>
+					<div id="spinnerY" class="spinner-border text-primary d-block mx-auto" role="status" style="display: none !important; visibility: hidden;">
+						<span class="visually-hidden">Loading...</span>
+					</div>
+				</div>
+			{{/button}}
 		</div>
-		<!-- /row -->
-	</div>
-	<!-- /container -->
-</div>
-<!-- /SECTION -->
+		<!-- /SECTION -->
 
 {{>footer}}
 
@@ -108,7 +71,7 @@
                 if (nuevosPostsHTML.trim() =="") {
                     document.getElementById("load-more-yposts").style.display = "none";
                     document.getElementById("spinnerY").style.visibility = "hidden";
-                }
+                } 
             } 
             
         }

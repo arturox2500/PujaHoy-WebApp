@@ -3,6 +3,7 @@ let page = 1;
 let noMorePosts = false;
 
 async function cargarPosts() {
+    
     if (noMorePosts) {
         return;
     }
@@ -12,38 +13,40 @@ async function cargarPosts() {
     document.getElementById("load-more-yposts").style.display = "none";
     await sleep(300);
     try {
-        const response = await fetch(`/usuario/producto_template?pagina=${page}`);
-        const responseNext = await fetch(`/usuario/producto_template?pagina=${page+1}`);
+        const response = await fetch(`/producto_template?pagina=${page}`);
+        const responseNext = await fetch(`/producto_template?pagina=${page+1}`);
         if (response.ok) {
-            const nuevosPostsHTML = (await response.text()); 
-            if (nuevosPostsHTML != "") {
-                
-                document.getElementById("yourProdsRow").innerHTML += nuevosPostsHTML;
-                document.getElementById("load-more-yposts").style.display = "block";
-                if (!responseNext.ok || (await responseNext.text()).trim() === "") {
+            const nuevosPostsHTML = await responseNext.text(); 
+            
+            if (nuevosPostsHTML !== "") {
+                document.getElementById("indexProduct").innerHTML += nuevosPostsHTML;
+                document.getElementById("load-more-yposts").style.display = "inline";
+                if (!responseNext.ok || (await responseNext.text()).trim() === "") {                   
                     noMorePosts = true;
                     document.getElementById("load-more-yposts").style.display = "none";
-                    document.getElementById("spinnerY").style.visibility = "hidden";
+                    document.getElementById("spinnerY").style.display = "hidden";
                 }
-            } 
+            }
             
+            if (!noMorePosts) {
+                document.getElementById("load-more-yposts").style.display = "inline";
+            }
+            
+            document.getElementById("spinnerY").style.visibility = "hidden";
+
             page++;
         }
     } catch (error) {
         console.error("Error al cargar los posts:", error);
-    }
+    }   
 
     document.getElementById("spinnerY").style.display = "none"; // Ocultar el spinner
-    
 }
 
 document.addEventListener("DOMContentLoaded", function () {
     const btnY = document.getElementById("load-more-yposts");
-    if (btnY) {
-        btnY.addEventListener("click", cargarPosts);
-    }
+    if (btnY) btnY.addEventListener("click", cargarPosts);
 });
-
 
 async function cargarPosts2() {
     
@@ -63,13 +66,19 @@ async function cargarPosts2() {
             
             if (nuevosPostsHTML !== "") {
                 document.getElementById("yourWBRow").innerHTML += nuevosPostsHTML;
-                document.getElementById("load-more-WBposts").style.display = "block";
+                document.getElementById("load-more-WBposts").style.display = "inline";
                 if (!responseNext.ok || (await responseNext.text()).trim() === "") {                   
                     noMorePosts = true;
                     document.getElementById("load-more-WBposts").style.display = "none";
                     document.getElementById("spinnerWB").style.visibility = "hidden";
                 }
-            } 
+            }
+            
+            if (!noMorePosts) {
+                document.getElementById("load-more-WBposts").style.display = "block";
+            }
+            
+            document.getElementById("spinnerWB").style.visibility = "hidden";
 
             page++;
         }
@@ -103,19 +112,27 @@ async function cargarIndex() {
             
             if (nuevosPostsHTML !== "") {
                 document.getElementById("indexProduct").innerHTML += nuevosPostsHTML;
-                document.getElementById("load-more-index").style.display = "block";
+                document.getElementById("load-more-index").style.display = "inline";
                 if (!responseNext.ok || (await responseNext.text()).trim() === "") {                   
                     noMorePosts = true;
                     document.getElementById("load-more-index").style.display = "none";
-                    document.getElementById("spinnerIndex").style.visibility = "hidden";
+                    document.getElementById("spinnerIndex").style.display = "hidden";
                 }
-            } 
+            }
+            
+            if (!noMorePosts) {
+                document.getElementById("load-more-index").style.display = "inline";
+            }
+            
+            document.getElementById("spinnerIndex").style.visibility = "hidden";
 
             page++;
         }
     } catch (error) {
         console.error("Error al cargar los posts:", error);
     }
+
+    
 
     document.getElementById("spinnerIndex").style.display = "none"; // Ocultar el spinner
 }
