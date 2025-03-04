@@ -328,6 +328,6 @@ Admins have the ability to remove product listings to ensure compliance with pla
 | :----: | :---------: |
 | [1º](link del archivo) | product.html |
 | [2º](link del archivo) | productController.java |
-| [3º](link del archivo) | |
-| [4º](link del archivo) | |
-| [5º](link del archivo) | |
+| [3º](link del archivo) | CSRFHandlerConfiguration.java |
+| [4º](link del archivo) | SecurityConfiguration.java |
+| [5º](link del archivo) | UserController.java |
