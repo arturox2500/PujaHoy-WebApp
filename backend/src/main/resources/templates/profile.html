@@ -28,12 +28,12 @@
 			<li class="breadcrumb-item active" aria-current="page">User Profile</li>
 		</ol>
 	</nav>
-	{{#Usuario}}
+	{{#userInfo}}
 	<div class="row gutters-sm">
 		<div class="col-md-4 mb-3">
 			<div class="card text-center">
 				<img src="/usuario/{{id}}/fotoPerfil" alt="Foto de perfil">
-				<h4 style="margin-top: 20px;">{{nombreVisible}}</h4>
+				<h4 style="margin-top: 20px;">{{visibleName}}</h4>
 				<p class="text-secondary mb-1">Verified User ✔️</p>
 			</div>
 		</div>
@@ -45,27 +45,27 @@
 				</div>
 
 				<div class="card-body">
-					{{#baneado}}
+					{{#banned}}
 					<hr>
 					<div class="row">
 						<div class="col-sm-12"><strong>The user is banned</strong></div>
 					</div>
 					<hr>
-					{{/baneado}}
+					{{/banned}}
 
-					{{#registrado}}
+					{{#registered}}
 					<hr>
 					<div class="row">
 						<div class="col-sm-3"><strong>Name</strong></div>
-						<div class="col-sm-9 text-secondary">{{nombre}}</div>
+						<div class="col-sm-9 text-secondary">{{name}}</div>
 					</div>
 					<hr>
-					{{/registrado}}
+					{{/registered}}
 
 					<hr>
 					<div class="row">
 						<div class="col-sm-3"><strong>User Rating</strong></div>
-						<div class="col-sm-9 text-secondary">{{reputacion}}</div>
+						<div class="col-sm-9 text-secondary">{{reputation}}</div>
 					</div>
 					<hr>
 
@@ -73,7 +73,7 @@
 					<div class="row">
 						<div class="col-sm-3"><strong>Zip Code</strong></div>
 						<div class="col-sm-9 text-secondary">
-							<input type="text" id="codigoPostal" value="{{codigoPostal}}" readonly
+							<input type="text" id="zipCode" value="{{zipCode}}" readonly
 								class="form-control-plaintext">
 						</div>
 					</div>
@@ -83,7 +83,7 @@
 					<div class="row">
 						<div class="col-sm-3"><strong>Contact Info:</strong></div>
 						<div class="col-sm-9 text-secondary">
-							<input type="text" id="contacto" value="{{contacto}}" readonly
+							<input type="text" id="contact" value="{{contact}}" readonly
 								class="form-control-plaintext">
 						</div>
 					</div>
@@ -93,8 +93,8 @@
 					<div class="row">
 						<div class="col-sm-3"><strong>Bio</strong></div>
 						<div class="col-sm-9 text-secondary">
-							<textarea id="descripcion" readonly
-								class="form-control-plaintext">{{descripcion}}</textarea>
+							<textarea id="description" readonly
+								class="form-control-plaintext">{{description}}</textarea>
 						</div>
 					</div>
 					<hr>
@@ -108,20 +108,20 @@
 					</div>
 					<hr>
 
-					{{#registrado}}
+					{{#registered}}
 					<div class="row">
 						<div class="col-sm-12">
 							<button id="edit-btn" class="btn btn-info">Edit</button>
 							<button id="cancel-btn" class="btn btn-secondary" style="display: none;">Cancel</button>
 						</div>
 					</div>
-					{{/registrado}}
+					{{/registered}}
 				</div>
 			</div>
 		</div>
 	</div>
 
-	{{#registrado}}
+	{{#registered}}
 	<h4>My Bids & Auctions</h4>
 	<div class="row bids-auctions">
 		<div class="col-md-4">
@@ -149,31 +149,31 @@
 			</a>
 		</div>
 	</div>
-	{{/registrado}}
+	{{/registered}}
 
 	{{#admin}}
 	<div class="text-left mt-3 profile">
 		<form action="/usuario/{{id}}/banear" method="post">
-			{{#baneado}}
+			{{#banned}}
 			<button type="submit" class="btn btn-danger">Unban User</button>
-			{{/baneado}}
-			{{^baneado}}
+			{{/banned}}
+			{{^banned}}
 			<button type="submit" class="btn btn-danger">Ban User</button>
-			{{/baneado}}
+			{{/banned}}
 			<input type="hidden" name="_csrf" value="{{token}}" />
 		</form>
 	</div>
 	{{/admin}}
-	{{/Usuario}}
+	{{/userInfo}}
 </div>
 
 {{>footer}}
 
 <script>
 	document.getElementById("edit-btn").addEventListener("click", function () {
-		document.getElementById("contacto").readOnly = false;
-		document.getElementById("descripcion").readOnly = false;
-		document.getElementById("codigoPostal").readOnly = false;
+		document.getElementById("contact").readOnly = false;
+		document.getElementById("description").readOnly = false;
+		document.getElementById("zipCode").readOnly = false;
 		document.getElementById("profile-image-upload").style.display = "block";
 		document.getElementById("edit-btn").textContent = "Save";
 		document.getElementById("edit-btn").classList.remove("btn-info");
@@ -193,23 +193,23 @@
 			idInput.value = "{{id}}"; 
 			form.appendChild(idInput);
 
-			const contactoInput = document.createElement("input");
-			contactoInput.setAttribute("type", "hidden");
-			contactoInput.setAttribute("name", "contacto");
-			contactoInput.value = document.getElementById("contacto").value;
-			form.appendChild(contactoInput);
+			const contactInput = document.createElement("input");
+			contactInput.setAttribute("type", "hidden");
+			contactInput.setAttribute("name", "contact");
+			contactInput.value = document.getElementById("contact").value;
+			form.appendChild(contactInput);
 
-			const descripcionInput = document.createElement("input");
-			descripcionInput.setAttribute("type", "hidden");
-			descripcionInput.setAttribute("name", "descripcion");
-			descripcionInput.value = document.getElementById("descripcion").value;
-			form.appendChild(descripcionInput);
+			const descriptionInput = document.createElement("input");
+			descriptionInput.setAttribute("type", "hidden");
+			descriptionInput.setAttribute("name", "description");
+			descriptionInput.value = document.getElementById("description").value;
+			form.appendChild(descriptionInput);
 
-			const codigoPostalInput = document.createElement("input");
-			codigoPostalInput.setAttribute("type", "hidden");
-			codigoPostalInput.setAttribute("name", "codigoPostal");
-			codigoPostalInput.value = document.getElementById("codigoPostal").value;
-			form.appendChild(codigoPostalInput);
+			const zipCodeInput = document.createElement("input");
+			zipCodeInput.setAttribute("type", "hidden");
+			zipCodeInput.setAttribute("name", "zipCode");
+			zipCodeInput.value = document.getElementById("zipCode").value;
+			form.appendChild(zipCodeInput);
 
 			// csrf token
 			const csrfToken = document.createElement("input");
@@ -225,7 +225,7 @@
 			if (file.type.startsWith("image/")) {
 				const fileInput = document.createElement("input");
 				fileInput.setAttribute("type", "file");
-				fileInput.setAttribute("name", "fotoPerfil");
+				fileInput.setAttribute("name", "profilePic");
 				fileInput.files = imageInput.files;
 				form.appendChild(fileInput);
 			} else {
