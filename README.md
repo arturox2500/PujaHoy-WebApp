@@ -326,8 +326,8 @@ Admins have the ability to remove product listings to ensure compliance with pla
 
 | File | Description |
 | :----: | :---------: |
-| [1º](link del archivo) | |
-| [2º](link del archivo) | |
+| [1º](link del archivo) | product.html |
+| [2º](link del archivo) | productController.java |
 | [3º](link del archivo) | |
 | [4º](link del archivo) | |
 | [5º](link del archivo) | |

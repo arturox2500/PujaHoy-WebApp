@@ -193,6 +193,19 @@ public class UsuarioController {
         return "redirect:/usuario"; // Redirigir al perfil actualizado
     }
 
+    private void finishProductsForUser(Usuario user) {
+        List<Producto> productos = productoService.findByVendedor(user);
+        for (Producto product : productos) {
+            if (!product.getOfertas().isEmpty()) {
+                for (Oferta oferta : product.getOfertas()) {
+                    ofertaService.deleteById(oferta.getId());
+                }
+            }
+            product.setEstado("Finalizado");
+            productoService.save(product);
+        }
+    }
+
     private void deleteProducts(Usuario user) {
         List<Producto> productos = productoService.findByVendedor(user);
         for (Producto product : productos) {
@@ -208,6 +221,7 @@ public class UsuarioController {
             productoService.DeleteById(product.getId());
         }
     }
+
     @PostMapping("/{id}/banear")
     public String bannedUser(Model model, @PathVariable String id, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
@@ -220,10 +234,11 @@ public class UsuarioController {
                 user.get().changeActivo();
                 usuarioService.save(user.get());
                 if (activo) {
-                    model.addAttribute("text", "User banned. All his products have been removed.");
-                    this.deleteProducts(user.get());
+                    model.addAttribute("text", "User banned. All his products have been finished.");
+                    this.finishProductsForUser(user.get());
                 } else {
-                    model.addAttribute("text", "User unbanned.");
+                    this.deleteProducts(user.get());
+                    model.addAttribute("text", "User unbanned. All his products have been removed.");
                 }
                 return "bannedProfile";
             } else if (!tipo.equals("Administrador")) {

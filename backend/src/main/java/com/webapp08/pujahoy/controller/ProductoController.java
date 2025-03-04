@@ -184,7 +184,7 @@ public class ProductoController {
                 model.addAttribute("usuario_autenticado", true);
 
                 // Determinar si el producto ha finalizado
-                if (producto.getEstado().equals("Finalizado")) {
+                if (producto.getEstado().equals("Finalizado") || producto.getEstado().equals("Delivered")) {
                     model.addAttribute("Finalizado", true);
 
                     if (!ofertas.isEmpty()) {
@@ -197,6 +197,13 @@ public class ProductoController {
             } else {
                 model.addAttribute("admin", false);
                 model.addAttribute("usuario_autenticado", false);
+            }
+
+            Optional<Transaccion> trans = transaccionService.findByProducto(producto);
+            if (trans.isPresent() && trans.get().getComprador().getNombre().equals(usuario.getNombre()) && !producto.getEstado().equals("Delivered")) {
+                model.addAttribute("comprador", true);
+            } else {
+                model.addAttribute("comprador", false);
             }
         }
 
@@ -266,12 +273,12 @@ public class ProductoController {
         OfertaService.save(nuevaOferta);
         productoService.save(producto);
 
-        model.addAttribute("url", "/");
+        model.addAttribute("url", "/producto/" + id_producto);
 
         return "placeBidOk";
     }
 
-@GetMapping("/producto/{id}/image")
+    @GetMapping("/producto/{id}/image")
 	public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException {
 
 		Optional<Producto> op = productoService.findById(id);
@@ -288,6 +295,21 @@ public class ProductoController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+
+    @PostMapping("/product/{id_producto}/finish")
+    public String finishProduct(Model model,@PathVariable long id_producto) {
+        Optional<Producto> product = productoService.findById(id_producto);
+        
+        if (product.isPresent()) {
+            product.get().setEstado("Delivered");
+            productoService.save(product.get());
+			return "redirect:/producto/" + id_producto;
+		} else {
+            model.addAttribute("texto", " Error deleting product");
+            model.addAttribute("url", "/producto/" + id_producto);
+			return "pageError"; 
+		}  
+    }
 
 }
     
