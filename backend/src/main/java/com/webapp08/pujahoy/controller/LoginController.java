@@ -22,7 +22,7 @@ import com.webapp08.pujahoy.model.Usuario;
 public class LoginController {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -40,34 +40,34 @@ public class LoginController {
 
     @GetMapping("/login")
     public String loginRedirect() {
-        return "login"; // Devuelve la vista "loginPage.html"
+        return "login";
     }
 
     @PostMapping("/register")
     public String register(Model model, @RequestParam String email, @RequestParam String password,
-            @RequestParam String codigoPostal, @RequestParam String username, @RequestParam String nombreVisible,
-            @RequestParam String descripcion, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        if (usuarioRepository.findByNombre(username).isPresent() || email.isBlank() || password.isBlank()
-                || codigoPostal.isBlank() || username.isBlank() || nombreVisible.isBlank()) {
+            @RequestParam String zipCode, @RequestParam String username, @RequestParam String visibleName,
+            @RequestParam String description, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        if (userRepository.findByNombre(username).isPresent() || email.isBlank() || password.isBlank()
+                || zipCode.isBlank() || username.isBlank() || visibleName.isBlank()) {
             model.addAttribute("error", "Wrongs fields or user already exists");
-            return "login"; // Redirige al formulario de registro con error
+            return "login";
         }
 
-        if (!codigoPostal.matches("\\d{5}") ) {
+        if (!zipCode.matches("\\d{5}") ) {
             model.addAttribute("error", "The zip code must be a 5 digit number");
             return "login"; 
         }
 
-        Usuario user = new Usuario(username, 0, nombreVisible, email, Integer.parseInt(codigoPostal), descripcion, true,
+        Usuario user = new Usuario(username, 0, visibleName, email, Integer.parseInt(zipCode), description, true,
                 passwordEncoder.encode(password), "USER");
-        usuarioRepository.save(user);
+        userRepository.save(user);
 
-        return "redirect:/"; // Redirige a la página principal con sesión iniciada
+        return "redirect:/";
     }
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         request.getSession().invalidate();
-        return "redirect:/"; // Redirige a la página principal
+        return "redirect:/"; 
     }
 }

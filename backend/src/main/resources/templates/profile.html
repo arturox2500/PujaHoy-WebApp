@@ -169,38 +169,30 @@
 
 {{>footer}}
 
-<!-- Script para habilitar la edición -->
 <script>
 	document.getElementById("edit-btn").addEventListener("click", function () {
-		// Hacer los campos editables
 		document.getElementById("contacto").readOnly = false;
 		document.getElementById("descripcion").readOnly = false;
 		document.getElementById("codigoPostal").readOnly = false;
 		document.getElementById("profile-image-upload").style.display = "block";
-		// Cambiar el botón a "Save"
 		document.getElementById("edit-btn").textContent = "Save";
 		document.getElementById("edit-btn").classList.remove("btn-info");
 		document.getElementById("edit-btn").classList.add("btn-success");
 
-		// Mostrar el botón "Cancel"
 		document.getElementById("cancel-btn").style.display = "inline-block";
 
-		// Cuando se haga clic en el botón "Save", se enviará el formulario
 		document.getElementById("edit-btn").addEventListener("click", function () {
-			// Crear un formulario dinámicamente
 			const form = document.createElement("form");
 			form.setAttribute("action", "/usuario");
 			form.setAttribute("method", "POST");
 			form.setAttribute("enctype", "multipart/form-data");
 
-			// Crear el campo de ID como hidden
 			const idInput = document.createElement("input");
 			idInput.setAttribute("type", "hidden");
 			idInput.setAttribute("name", "id");
-			idInput.value = "{{id}}"; // Poner el ID del usuario que viene de la plantilla
+			idInput.value = "{{id}}"; 
 			form.appendChild(idInput);
 
-			// Crear los campos de formulario con los valores de los inputs
 			const contactoInput = document.createElement("input");
 			contactoInput.setAttribute("type", "hidden");
 			contactoInput.setAttribute("name", "contacto");
@@ -223,35 +215,30 @@
 			const csrfToken = document.createElement("input");
 			csrfToken.setAttribute("type", "hidden");
 			csrfToken.setAttribute("name", "_csrf");
-			csrfToken.value = "{{token}}"; // Asegúrate de que esto está bien renderizado en tu plantilla
+			csrfToken.value = "{{token}}"; 
 			form.appendChild(csrfToken);
 
 
 			const imageInput = document.getElementById("new-profile-image");
 			if (imageInput.files.length > 0) {
 			const file = imageInput.files[0];
-			// Comprobar el tipo de archivo
 			if (file.type.startsWith("image/")) {
-				// Si es una imagen válida, agregarla al formulario
 				const fileInput = document.createElement("input");
 				fileInput.setAttribute("type", "file");
 				fileInput.setAttribute("name", "fotoPerfil");
 				fileInput.files = imageInput.files;
 				form.appendChild(fileInput);
 			} else {
-				// Si no es una imagen válida, mostrar un mensaje de error
 				alert("Please select a valid image file.");
-				window.location.reload(); // Detener el envío del formulario
+				window.location.reload();
 			}
 		}
-
-			// Añadir el formulario a la página en el body
 			document.body.appendChild(form);
 			form.submit();
 		});
 	});
 
 	document.getElementById("cancel-btn").addEventListener("click", function () {
-		window.location.reload(); // Recarga la página y restaura los valores originales
+		window.location.reload(); 
 	});
 </script>
