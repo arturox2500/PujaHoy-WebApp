@@ -13,11 +13,12 @@ async function cargarPosts() {
     document.getElementById("load-more-yposts").style.display = "none";
     await sleep(300);
     try {
-        const response = await fetch(`/usuario/producto_template?pagina=${page}`);
-        const responseNext = await fetch(`/usuario/producto_template?pagina=${page+1}`);
+        const response = await fetch(`/user/product_template?page=${page}`);
+        const responseNext = await fetch(`/user/product_template?page=${page+1}`);
         if (response.ok) {
             const nuevosPostsHTML = (await response.text()); 
             if (nuevosPostsHTML != "") {
+                console.log(nuevosPostsHTML);
                 
                 document.getElementById("yourProdsRow").innerHTML += nuevosPostsHTML;
                 document.getElementById("load-more-yposts").style.display = "inline";
@@ -65,8 +66,8 @@ async function cargarPosts2() {
     document.getElementById("load-more-WBposts").style.display = "none";
     await sleep(300);
     try {
-        const response = await fetch(`/usuario/producto_template_compras?pagina=${page}`);
-        const responseNext = await fetch(`/usuario/producto_template_compras?pagina=${page+1}`);
+        const response = await fetch(`/user/product_template_buys?page=${page}`);
+        const responseNext = await fetch(`/user/product_template_buys?page=${page+1}`);
         if (response.ok) {
             const nuevosPostsHTML = await response.text(); 
             

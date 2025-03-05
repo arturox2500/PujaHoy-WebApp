@@ -90,7 +90,7 @@
 
 <script>
 	document.addEventListener("DOMContentLoaded", async function () {
-		const response = await fetch(`/usuario/producto_template_compras?pagina=${1}`);		
+		const response = await fetch(`/user/product_template_buys?page=${1}`);		
 		if (response.ok) {
             const nuevosPostsHTML = (await response.text()); 
             if (nuevosPostsHTML != "") {
