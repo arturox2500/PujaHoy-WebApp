@@ -428,8 +428,6 @@ public class UserController {
             }
             Optional<UserModel> user = userService.findById(trans.get().getBuyer().getId());
             Optional<UserModel> user1 = userService.findByName(principal.getName());
-            System.out.println("ANOOOO");
-            System.out.println(user1.get().getId().equals(user.get().getId()));
             if (user.isPresent() && user1.isPresent()) {
                 if (user.get().determineUserType().equals("Registered User")
                         && user1.get().getId().equals(user.get().getId())) {
