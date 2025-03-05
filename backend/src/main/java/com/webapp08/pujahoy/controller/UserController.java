@@ -29,37 +29,37 @@ import java.sql.Blob;
 import java.sql.Date;
 import java.sql.SQLException;
 
-import com.webapp08.pujahoy.model.Usuario;
-import com.webapp08.pujahoy.service.UsuarioService;
-import com.webapp08.pujahoy.model.Oferta;
-import com.webapp08.pujahoy.model.Producto;
-import com.webapp08.pujahoy.model.Transaccion;
-import com.webapp08.pujahoy.service.OfertaService;
-import com.webapp08.pujahoy.service.ProductoService;
-import com.webapp08.pujahoy.model.Valoracion;
-import com.webapp08.pujahoy.service.ValoracionService;
-import com.webapp08.pujahoy.service.TransaccionService;
+import com.webapp08.pujahoy.model.UserModel;
+import com.webapp08.pujahoy.service.UserService;
+import com.webapp08.pujahoy.model.Offer;
+import com.webapp08.pujahoy.model.Product;
+import com.webapp08.pujahoy.model.Transaction;
+import com.webapp08.pujahoy.service.OfferService;
+import com.webapp08.pujahoy.service.ProductService;
+import com.webapp08.pujahoy.model.Rating;
+import com.webapp08.pujahoy.service.RatingService;
+import com.webapp08.pujahoy.service.TransactionService;
 
 import org.springframework.ui.Model;
 
 @Controller
-@RequestMapping("/usuario")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
-    private UsuarioService userService;
+    private UserService userService;
 
     @Autowired
-    private ProductoService productService;
+    private ProductService productService;
 
     @Autowired
-    private ValoracionService ratingService;
+    private RatingService ratingService;
 
     @Autowired
-    private TransaccionService transactionService;
+    private TransactionService transactionService;
 
     @Autowired
-    private OfertaService offerService;
+    private OfferService offerService;
 
     @ModelAttribute
     public void addAttributes(Model model, HttpServletRequest request) {
@@ -77,24 +77,24 @@ public class UserController {
         Principal principal = request.getUserPrincipal();
         if (principal != null) {
             String username = principal.getName(); 
-            Optional<Usuario> user = userService.findByNombre(username); 
-            if (user.get().determinarTipoUsuario().equals("Administrador")){
-                model.addAttribute("texto", " you dont have a profile");
+            Optional<UserModel> user = userService.findByName(username); 
+            if (user.get().determineUserType().equals("Administrator")){
+                model.addAttribute("text", " you dont have a profile");
                 model.addAttribute("url", "/");
                 return "pageError";
             }
             if (user.isPresent()) {
                 model.addAttribute("userInfo", user.get());
                 model.addAttribute("id", user.get().getId());
-                model.addAttribute("name", user.get().getNombre());
-                model.addAttribute("visibleName", user.get().getNombreVisible());
-                model.addAttribute("reputation", user.get().getReputacion());
-                model.addAttribute("zipCode", user.get().getCodigoPostal());
-                model.addAttribute("contact", user.get().getContacto());
-                model.addAttribute("description", user.get().getDescripcion());
-                model.addAttribute("profilePic", user.get().getFotoPerfil());
+                model.addAttribute("name", user.get().getName());
+                model.addAttribute("visibleName", user.get().getVisibleName());
+                model.addAttribute("reputation", user.get().getReputation());
+                model.addAttribute("zipCode", user.get().getZipCode());
+                model.addAttribute("contact", user.get().getContact());
+                model.addAttribute("description", user.get().getDescription());
+                model.addAttribute("profilePic", user.get().getProfilePic());
                 model.addAttribute("admin", false);
-                if (!user.get().isActivo()) { 
+                if (!user.get().isActive()) { 
                     model.addAttribute("banned", true);
                     model.addAttribute("registered", false);
                 } else {
@@ -114,19 +114,19 @@ public class UserController {
 
     @GetMapping("/{id}") 
     public String viewOtherProfile(Model model, @PathVariable long id, HttpServletRequest request) {
-        Optional<Producto> product = productService.findById(id);
+        Optional<Product> product = productService.findById(id);
         if (product.isPresent()) {
-            Optional<Usuario> seller = userService.findByProductos(product.get());
+            Optional<UserModel> seller = userService.findByProducts(product.get());
             if (seller.isPresent()) {
                 Principal principal = request.getUserPrincipal();
-                Optional<Usuario> user;
+                Optional<UserModel> user;
                 String userType;
                 if (principal != null) { 
                     String username = principal.getName();
-                    user = userService.findByNombre(username); 
-                    userType = user.get().determinarTipoUsuario();
+                    user = userService.findByName(username); 
+                    userType = user.get().determineUserType();
                     if (user.get().getId() == seller.get().getId()) { 
-                        return "redirect:/usuario";
+                        return "redirect:/user";
                     }
                 } else {
                     user = null;
@@ -136,17 +136,17 @@ public class UserController {
                 model.addAttribute("banned", false);
                 model.addAttribute("userInfo", seller.get());
                 model.addAttribute("id", seller.get().getId());
-                model.addAttribute("name", seller.get().getNombre());
-                model.addAttribute("visibleName", seller.get().getNombreVisible());
-                model.addAttribute("reputation", seller.get().getReputacion());
-                model.addAttribute("contact", seller.get().getContacto());
-                model.addAttribute("description", seller.get().getDescripcion());
+                model.addAttribute("name", seller.get().getName());
+                model.addAttribute("visibleName", seller.get().getVisibleName());
+                model.addAttribute("reputation", seller.get().getReputation());
+                model.addAttribute("contact", seller.get().getContact());
+                model.addAttribute("description", seller.get().getDescription());
                 if (userType.equals("Administrador")) {
                     model.addAttribute("admin", true);
                 } else { 
                     model.addAttribute("admin", false);
                 }
-                if (seller.get().isActivo()) {
+                if (seller.get().isActive()) {
                     model.addAttribute("banned", false);
                 } else {
                     model.addAttribute("banned", true);
@@ -168,67 +168,67 @@ public class UserController {
             @RequestParam String description, @RequestParam String zipCode,
             @RequestParam(required = false) MultipartFile profilePic) throws IOException, SQLException {
 
-        Usuario user = userService.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        UserModel user = userService.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         
         if (!zipCode.matches("\\d{5}") || !contact.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
         ) {
-            return "redirect:/usuario"; 
+            return "redirect:/user"; 
         }
         
-        user.setContacto(contact);
-        user.setDescripcion(description);
-        user.setCodigoPostal(Integer.parseInt(zipCode));
+        user.setContact(contact);
+        user.setDescription(description);
+        user.setZipCode(Integer.parseInt(zipCode));
 
         if (profilePic != null && !profilePic.isEmpty()) {
             byte[] photoBytes = profilePic.getBytes();
             Blob photoBlob = new SerialBlob(photoBytes);
-            user.setFotoPerfil(photoBlob);
+            user.setProfilePic(photoBlob);
         }
 
         userService.save(user); 
 
-        return "redirect:/usuario"; 
+        return "redirect:/user"; 
     }
 
-    private void finishProductsForUser(Usuario user) {
-        List<Producto> products = productService.findByVendedor(user);
-        for (Producto product : products) {
-            if (!product.getOfertas().isEmpty()) {
-                for (Oferta offer : product.getOfertas()) {
+    private void finishProductsForUser(UserModel user) {
+        List<Product> products = productService.findBySeller(user);
+        for (Product product : products) {
+            if (!product.getOffers().isEmpty()) {
+                for (Offer offer : product.getOffers()) {
                     offerService.deleteById(offer.getId());
                 }
             }
-            product.setEstado("Finalizado");
+            product.setState("Finished");
             productService.save(product);
         }
     }
 
-    private void deleteProducts(Usuario user) {
-        List<Producto> products = productService.findByVendedor(user);
-        for (Producto product : products) {
-            if (!product.getOfertas().isEmpty()) {
-                for (Oferta offer : product.getOfertas()) {
+    private void deleteProducts(UserModel user) {
+        List<Product> products = productService.findBySeller(user);
+        for (Product product : products) {
+            if (!product.getOffers().isEmpty()) {
+                for (Offer offer : product.getOffers()) {
                     offerService.deleteById(offer.getId());
                 }
             } 
-            Optional<Transaccion> trans = transactionService.findByProducto(product);
+            Optional<Transaction> trans = transactionService.findByProduct(product);
             if (trans.isPresent()) {
                 transactionService.deleteById(trans.get().getId());
             }
-            productService.DeleteById(product.getId());
+            productService.deleteById(product.getId());
         }
     }
 
-    @PostMapping("/{id}/banear")
+    @PostMapping("/{id}/ban")
     public String bannedUser(Model model, @PathVariable String id, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         if (principal != null) {
-            Optional<Usuario> admin = userService.findByNombre(principal.getName());
-            Optional<Usuario> user = userService.findById(Long.parseLong(id));
-            String userType = admin.get().determinarTipoUsuario();
-            if (user.isPresent() && userType.equals("Administrador")) {
-                Boolean active = user.get().isActivo();
-                user.get().changeActivo();
+            Optional<UserModel> admin = userService.findByName(principal.getName());
+            Optional<UserModel> user = userService.findById(Long.parseLong(id));
+            String userType = admin.get().determineUserType();
+            if (user.isPresent() && userType.equals("Administrator")) {
+                Boolean active = user.get().isActive();
+                user.get().changeActive();
                 userService.save(user.get());
                 if (active) {
                     model.addAttribute("text", "User banned. All his products have been finished.");
@@ -252,7 +252,7 @@ public class UserController {
         return "pageError";
     }
 
-    @GetMapping("/producto_template")
+    @GetMapping("/product_template")
     public String seeProducts(Model model, HttpServletRequest request,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -260,13 +260,13 @@ public class UserController {
 
         if (principal != null) {
             String username = principal.getName(); 
-            Optional<Usuario> user = userService.findByNombre(username);
+            Optional<UserModel> user = userService.findByName(username);
 
             if (user.isPresent()) {
-                Page<Producto> products = productService.obtenerProductosPaginados(username, page, size);
+                Page<Product> products = productService.obtainPaginatedProducts(username, page, size);
 
                 model.addAttribute("products", products); 
-                return "producto_template";
+                return "product_template";
             }
         }
 
@@ -275,7 +275,7 @@ public class UserController {
         return "pageError";
     }
 
-    @GetMapping("/verProductos")
+    @GetMapping("/seeProducts")
     public String seeProductsIni(Model model, HttpServletRequest request,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -283,10 +283,10 @@ public class UserController {
 
         if (principal != null) {
             String username = principal.getName(); 
-            Optional<Usuario> user = userService.findByNombre(username);
+            Optional<UserModel> user = userService.findByName(username);
 
             if (user.isPresent()) {
-                Page<Producto> products = productService.obtenerProductosPaginados(username, page, size);
+                Page<Product> products = productService.obtainPaginatedProducts(username, page, size);
                 Boolean button = true;
                 if (products.isEmpty()) {
                     button = false;
@@ -303,7 +303,7 @@ public class UserController {
         return "pageError";
     }
 
-    @GetMapping("/producto_template_compras")
+    @GetMapping("/product_template_buys")
     public String seeProductsBuy(Model model, HttpServletRequest request,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -311,13 +311,13 @@ public class UserController {
 
         if (principal != null) {
             String username = principal.getName(); 
-            Optional<Usuario> user = userService.findByNombre(username); //Missing
+            Optional<UserModel> user = userService.findByName(username); //Missing
 
             if (user.isPresent()) {
-                Page<Producto> products = productService.obtenerProductosComprados(username, page, size);
+                Page<Product> products = productService.obtainProductsBuyed(username, page, size);
 
                 model.addAttribute("products", products); 
-                return "producto_template";
+                return "product_template";
             }
         }
 
@@ -326,7 +326,7 @@ public class UserController {
         return "pageError";
     }
 
-    @GetMapping("/verCompras")
+    @GetMapping("/seeBuys")
     public String seeProductsBuyIni(Model model, HttpServletRequest request,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -334,10 +334,10 @@ public class UserController {
 
         if (principal != null) {
             String username = principal.getName(); 
-            Optional<Usuario> user = userService.findByNombre(username);
+            Optional<UserModel> user = userService.findByName(username);
 
             if (user.isPresent()) {
-                Page<Producto> products = productService.obtenerProductosComprados(username, page, size);
+                Page<Product> products = productService.obtainProductsBuyed(username, page, size);
                 Boolean button = true;
                 if (products.isEmpty()) {
                     button = false;
@@ -354,7 +354,7 @@ public class UserController {
         return "pageError";
     }
 
-    @GetMapping("/NuevoProducto")
+    @GetMapping("/NewProduct")
     public String newProduct() {
         return "newAuction";
     }
@@ -378,10 +378,10 @@ public class UserController {
             return "pageError";
         }
 
-        Optional<Usuario> user = userService.findByNombre(principal.getName());
+        Optional<UserModel> user = userService.findByName(principal.getName());
 
         if (user.isEmpty()) {
-            model.addAttribute("texto", " User not found");
+            model.addAttribute("text", " User not found");
             model.addAttribute("url", "/");
             return "pageError";
         }
@@ -395,13 +395,13 @@ public class UserController {
                 image = BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize());
             }
 
-            Producto product = new Producto(name, description, prize, iniHour, endHour, state, image,
+            Product product = new Product(name, description, prize, iniHour, endHour, state, image,
                     user.get());
     
             productService.save(product);
 
             model.addAttribute("product", product);
-            return "redirect:/producto/" + product.getId();
+            return "redirect:/product/" + product.getId();
 
         } catch (Exception e) {
             model.addAttribute("text", " Error processing the product: " + e.getMessage());
@@ -412,7 +412,7 @@ public class UserController {
 
     @GetMapping("/{id}/rate") 
     public String gotoRate(Model model, @PathVariable long id, HttpServletRequest request) {
-        Optional<Producto> product = productService.findById(id);
+        Optional<Product> product = productService.findById(id);
         if (product.isPresent()) {
             Principal principal = request.getUserPrincipal();
             if (principal == null) {
@@ -420,16 +420,16 @@ public class UserController {
                 model.addAttribute("url", "/producto/" + id);
                 return "pageError";
             }
-            Optional<Transaccion> trans = transactionService.findByProducto(product.get());
+            Optional<Transaction> trans = transactionService.findByProduct(product.get());
             if (trans.isEmpty()) {
                 model.addAttribute("text", "this product has not been sold");
                 model.addAttribute("url", "/producto/" + id);
                 return "pageError";
             }
-            Optional<Usuario> user = userService.findById(trans.get().getComprador().getId());
-            Optional<Usuario> user1 = userService.findByNombre(principal.getName());
+            Optional<UserModel> user = userService.findById(trans.get().getBuyer().getId());
+            Optional<UserModel> user1 = userService.findByName(principal.getName());
             if (user.isPresent() && user1.isPresent()) {
-                if (user.get().determinarTipoUsuario().equals("Usuario Registrado")
+                if (user.get().determineUserType().equals("Usuario Registrado")
                         && user1.get().getId().equals(user.get().getId())) {
                     model.addAttribute("id", id);
                     return "ratingProduct";
@@ -448,18 +448,18 @@ public class UserController {
         return "pageError";
     }
 
-    public void updateRating(Usuario user) {
-        List<Valoracion> ratings = ratingService.findAllByVendedor(user);
+    public void updateRating(UserModel user) {
+        List<Rating> ratings = ratingService.findAllBySeller(user);
         if (ratings.isEmpty()) {
             return; 
         }
         int amount = 0;
-        for (Valoracion val : ratings) {
-            amount += val.getPuntuacion();
+        for (Rating val : ratings) {
+            amount += val.getRating();
         }
         double mean = (double) amount / ratings.size();
 
-        user.setReputacion(mean);
+        user.setReputation(mean);
         userService.save(user);
     }
 
@@ -470,17 +470,17 @@ public class UserController {
             model.addAttribute("url", "/producto/" + id + "/rate");
             return "pageError";
         }
-        Optional<Producto> product = productService.findById(id);
+        Optional<Product> product = productService.findById(id);
         if (product.isPresent()) {
-            Optional<Valoracion> existingVal = ratingService.findByProducto(product.get());
+            Optional<Rating> existingVal = ratingService.findByProduct(product.get());
             if (existingVal.isPresent()) {
                 model.addAttribute("text", " This product has already been rated");
                 model.addAttribute("url", "/producto/" + id + "/rate");
                 return "pageError";
             }
-            Valoracion val = new Valoracion(product.get().getVendedor(), product.get(), rating);
+            Rating val = new Rating(product.get().getSeller(), product.get(), rating);
             ratingService.save(val);
-            this.updateRating(product.get().getVendedor());
+            this.updateRating(product.get().getSeller());
             model.addAttribute("id", product.get().getId());
             return "productRated";
         } else {
@@ -490,16 +490,16 @@ public class UserController {
         return "pageError";
     }
 
-    @GetMapping("/{id}/fotoPerfil")
+    @GetMapping("/{id}/profilePic")
     public ResponseEntity<byte[]> getProfilePic(@PathVariable long id) {
 
-        Optional<Usuario> user = userService.findById(id);
+        Optional<UserModel> user = userService.findById(id);
 
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        Blob profilePic = user.get().getFotoPerfil();
+        Blob profilePic = user.get().getProfilePic();
 
         try {
             byte[] picBytes = profilePic.getBytes(1, (int) profilePic.length());

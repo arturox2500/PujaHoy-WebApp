@@ -32,7 +32,7 @@
 	<div class="row gutters-sm">
 		<div class="col-md-4 mb-3">
 			<div class="card text-center">
-				<img src="/usuario/{{id}}/fotoPerfil" alt="Foto de perfil">
+				<img src="/usuari/{{id}}/profilePic" alt="profile Picture">
 				<h4 style="margin-top: 20px;">{{visibleName}}</h4>
 				<p class="text-secondary mb-1">Verified User ✔️</p>
 			</div>
@@ -125,7 +125,7 @@
 	<h4>My Bids & Auctions</h4>
 	<div class="row bids-auctions">
 		<div class="col-md-4">
-			<a href="/usuario/verProductos">
+			<a href="/ser/seeProducts">
 				<div class="card text-center p-3 hover-card">
 					<i class="fas fa-gavel fa-2x text-primary"></i>
 					<h5>Your Auctions</h5>
@@ -133,7 +133,7 @@
 			</a>
 		</div>
 		<div class="col-md-4">
-			<a href="/usuario/NuevoProducto">
+			<a href="/user/newProduct">
 				<div class="card text-center p-3 hover-card">
 					<i class="fas fa-plus-circle fa-2x text-success"></i>
 					<h5>New Auction</h5>
@@ -141,7 +141,7 @@
 			</a>
 		</div>
 		<div class="col-md-4">
-			<a href="/usuario/verCompras">
+			<a href="/user/seeBuys">
 				<div class="card text-center p-3 hover-card">
 					<i class="fas fa-trophy fa-2x text-info"></i>
 					<h5>Your Winning Bids</h5>
@@ -153,7 +153,7 @@
 
 	{{#admin}}
 	<div class="text-left mt-3 profile">
-		<form action="/usuario/{{id}}/banear" method="post">
+		<form action="/user/{{id}}/ban" method="post">
 			{{#banned}}
 			<button type="submit" class="btn btn-danger">Unban User</button>
 			{{/banned}}
@@ -183,7 +183,7 @@
 
 		document.getElementById("edit-btn").addEventListener("click", function () {
 			const form = document.createElement("form");
-			form.setAttribute("action", "/usuario");
+			form.setAttribute("action", "/user");
 			form.setAttribute("method", "POST");
 			form.setAttribute("enctype", "multipart/form-data");
 

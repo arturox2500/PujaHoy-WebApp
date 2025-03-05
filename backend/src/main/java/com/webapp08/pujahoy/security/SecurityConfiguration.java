@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import com.webapp08.pujahoy.repository.UsuarioRepository;
+import com.webapp08.pujahoy.repository.UserModelRepository;
 import com.webapp08.pujahoy.service.RepositoryUserDetailsService;
 
 
@@ -22,7 +22,7 @@ public class SecurityConfiguration {
     public RepositoryUserDetailsService userDetailService;
 
 	@Autowired
-    public UsuarioRepository usuarioRepository;
+    public UserModelRepository usuarioRepository;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -52,31 +52,31 @@ public class SecurityConfiguration {
 				.requestMatchers("/img/**").permitAll()
 				.requestMatchers("/js/**").permitAll()
 				.requestMatchers("/static/**").permitAll()
-				.requestMatchers("/producto/{id_producto}").permitAll()
+				.requestMatchers("/product/{id_product}").permitAll()
 				.requestMatchers("/login").permitAll()
 				.requestMatchers("/logout").permitAll()
 				.requestMatchers("/loginerror").permitAll()
 				.requestMatchers("/register").permitAll()
-				.requestMatchers("/usuario/{id}").permitAll()
-				.requestMatchers("/producto/{id}/image").permitAll()
-				.requestMatchers("/usuario/producto_template").permitAll()
-				.requestMatchers("/producto_template").permitAll()
-				.requestMatchers("/producto_template_index").permitAll()
-				.requestMatchers("/usuario/profile-picture/**").permitAll()
-				.requestMatchers("/usuario/{id}/fotoPerfil").permitAll()
+				.requestMatchers("/user/{id}").permitAll()
+				.requestMatchers("/product/{id}/image").permitAll()
+				.requestMatchers("/user/product_template").permitAll()
+				.requestMatchers("/product_template").permitAll()
+				.requestMatchers("/product_template_index").permitAll()
+				.requestMatchers("/user/profile-picture/**").permitAll()
+				.requestMatchers("/user/{id}/profilePic").permitAll()
 				// PRIVATE PAGES
 				.requestMatchers("/product/*/delete").hasAnyRole("ADMIN")
-				.requestMatchers("/product/{id_producto}/place-bid").hasAnyRole("USER")
-				.requestMatchers("/usuario").hasAnyRole("USER", "ADMIN")
-				.requestMatchers("/usuario/{id}/banear").hasAnyRole("ADMIN")
-				.requestMatchers("/usuario/{id}/rate").hasAnyRole("USER")
-				.requestMatchers("/usuario/producto_template_compras").hasAnyRole("USER")
-				.requestMatchers("/usuario/submit_auction").hasAnyRole("USER")
-				.requestMatchers("/usuario/NuevoProducto").hasAnyRole("USER")
-				.requestMatchers("/usuario/verCompras").hasAnyRole("USER")
-				.requestMatchers("/usuario/verProductos").hasAnyRole("USER")
-				.requestMatchers("/usuario/{id}/rated").hasAnyRole("USER")
-				.requestMatchers("/product/{id_producto}/finish").hasAnyRole("USER")
+				.requestMatchers("/product/{id_product}/place-bid").hasAnyRole("USER")
+				.requestMatchers("/user").hasAnyRole("USER", "ADMIN")
+				.requestMatchers("/user/{id}/ban").hasAnyRole("ADMIN")
+				.requestMatchers("/user/{id}/rate").hasAnyRole("USER")
+				.requestMatchers("/user/product_template_buys").hasAnyRole("USER")
+				.requestMatchers("/user/submit_auction").hasAnyRole("USER")
+				.requestMatchers("/user/newProduct").hasAnyRole("USER")
+				.requestMatchers("/user/seeBuys").hasAnyRole("USER")
+				.requestMatchers("/user/seeProducts").hasAnyRole("USER")
+				.requestMatchers("/user/{id}/rated").hasAnyRole("USER")
+				.requestMatchers("/product/{id_product}/finish").hasAnyRole("USER")
 			)
 			.formLogin(formLogin -> formLogin
 					.loginPage("/login")					
@@ -86,7 +86,7 @@ public class SecurityConfiguration {
 			)
 			.rememberMe(rememberMe -> rememberMe
 				.key("uniqueAndSecret")
-				.tokenValiditySeconds(86400) // 1 día de sesión activa
+				.tokenValiditySeconds(86400) 
 			)
 			.logout(logout -> logout
 					.logoutUrl("/logout")

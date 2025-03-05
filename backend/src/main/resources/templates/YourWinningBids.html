@@ -29,25 +29,25 @@
 		<div class="row">
 			<div class="row" id="yourWBRow">
 				<!-- product -->
-				{{#productos}}
+				{{#products}}
 				<div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">
-					<a href="/producto/{{id}}" class="product-link">
+					<a href="/product/{{id}}" class="product-link">
 						<div class="product product-card">
 							<div class="product-img">
-								{{#imagen}}
-									<img src="/producto/{{id}}/image" alt="Product Image">
-								{{/imagen}}
-								{{^imagen}}
+								{{#image}}
+									<img src="/product/{{id}}/image" alt="Product Image">
+								{{/image}}
+								{{^image}}
 									<img src="/img/default-product.png" alt="Image not available">
-								{{/imagen}}
+								{{/image}}
 								<div class="product-label">
 									<span class="new">NEW</span>
 								</div>
 							</div>
 							<div class="product-body">
 								<p class="product-category">Category</p>
-								<h3 class="product-name"><a href="#">{{nombre}}</a></h3>
-								<h4 class="product-price">{{valorini}}</h4>
+								<h3 class="product-name"><a href="#">{{name}}</a></h3>
+								<h4 class="product-price">{{iniValue}}</h4>
 								<div class="product-rating">
 									<i class="fa fa-star"></i>
 									<i class="fa fa-star"></i>
@@ -60,11 +60,11 @@
 					</a>
 				</div>
 			
-				{{/productos}}
+				{{/products}}
 			
-				{{^productos}}
+				{{^products}}
 				<p class="text-center">No products available</p>
-				{{/productos}}
+				{{/products}}
 				<!-- /product -->
 			</div>
 

@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.webapp08.pujahoy.repository.UsuarioRepository;
+import com.webapp08.pujahoy.repository.UserModelRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import com.webapp08.pujahoy.model.Usuario;
+import com.webapp08.pujahoy.model.UserModel;
 
 @Controller
 public class LoginController {
 
     @Autowired
-    private UsuarioRepository userRepository;
+    private UserModelRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -47,7 +47,7 @@ public class LoginController {
     public String register(Model model, @RequestParam String email, @RequestParam String password,
             @RequestParam String zipCode, @RequestParam String username, @RequestParam String visibleName,
             @RequestParam String description, RedirectAttributes redirectAttributes, HttpServletRequest request) {
-        if (userRepository.findByNombre(username).isPresent() || email.isBlank() || password.isBlank()
+        if (userRepository.findByName(username).isPresent() || email.isBlank() || password.isBlank()
                 || zipCode.isBlank() || username.isBlank() || visibleName.isBlank()) {
             model.addAttribute("error", "Wrongs fields or user already exists");
             return "login";
@@ -58,7 +58,7 @@ public class LoginController {
             return "login"; 
         }
 
-        Usuario user = new Usuario(username, 0, visibleName, email, Integer.parseInt(zipCode), description, true,
+        UserModel user = new UserModel(username, 0, visibleName, email, Integer.parseInt(zipCode), description, true,
                 passwordEncoder.encode(password), "USER");
         userRepository.save(user);
 

@@ -11,27 +11,27 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.webapp08.pujahoy.model.Usuario;
-import com.webapp08.pujahoy.repository.UsuarioRepository;
+import com.webapp08.pujahoy.model.UserModel;
+import com.webapp08.pujahoy.repository.UserModelRepository;
 
 @Service
 public class RepositoryUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	private UsuarioRepository userRepository;
+	private UserModelRepository userRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-		Usuario user = userRepository.findByNombre(username)
+		UserModel user = userRepository.findByName(username)
 				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
 		List<GrantedAuthority> roles = new ArrayList<>();
-		for (String role : user.getRoles()) {
+		for (String role : user.getRols()) {
 			roles.add(new SimpleGrantedAuthority("ROLE_" + role));
 		}
 
-		return new org.springframework.security.core.userdetails.User(user.getNombre(), 
+		return new org.springframework.security.core.userdetails.User(user.getName(), 
 				user.getEncodedPassword(), roles);
 
 	}

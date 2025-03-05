@@ -21,7 +21,7 @@
 		<div class="section">
 			<div class="container">
 				<div class="row">
-					<form action="/usuario/submit_auction" method="POST" class="col-md-12" enctype="multipart/form-data">
+					<form action="/user/submit_auction" method="POST" class="col-md-12" enctype="multipart/form-data">
 						<div class="row">
 							<div class="col-md-8">
 								<!-- Product Details Form -->
@@ -30,16 +30,16 @@
 										<h3 class="title">Product Information</h3>
 									</div>
 									<div class="form-group">
-										<input class="input" type="text" name="nombre" placeholder="Product Name" required>
+										<input class="input" type="text" name="name" placeholder="Product Name" required>
 									</div>
 									<div class="form-group">
-										<textarea class="input" name="descripcion" placeholder="Descripción" rows="4" required></textarea>
+										<textarea class="input" name="description" placeholder="Description" rows="4" required></textarea>
 									</div>
 									<div class="form-group">
-										<input class="input" type="number" name="valorini" placeholder="Price" step="0.01" min="0" required>
+										<input class="input" type="number" name="iniValue" placeholder="Price" step="0.01" min="0" required>
 									</div>
 									<div class="form-group">
-										<select class="input" name="duracion" required>
+										<select class="input" name="time" required>
 											<option value="" disabled selected>Select Duration</option>
 											<option value="7">7 Days</option>
 											<option value="14">14 Days</option>
@@ -47,7 +47,7 @@
 										</select>
 									</div>
 									<div class="form-group">
-										<select class="input" name="estado" required>
+										<select class="input" name="state" required>
 											<option value="" disabled selected>Select Condition</option>
 											<option value="Bad">Bad</option>
 											<option value="Normal">Normal</option>
@@ -67,7 +67,7 @@
 									<label for="product-images" class="custom-upload-btn">
 										<i class="icon-upload"></i> Choose File
 									</label>
-									<input type="file" id="product-images" name="imagen" accept=".jpg .jpeg">
+									<input type="file" id="product-images" name="image" accept=".jpg .jpeg">
 									<div id="file-list"></div>
 								</div>
 							</div>
