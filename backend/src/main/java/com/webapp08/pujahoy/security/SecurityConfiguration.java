@@ -1,3 +1,4 @@
+
 package com.webapp08.pujahoy.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,7 @@ public class SecurityConfiguration {
 				.requestMatchers("/product_template_index").permitAll()
 				.requestMatchers("/user/profile-picture/**").permitAll()
 				.requestMatchers("/user/{id}/profilePic").permitAll()
+				.requestMatchers("/product/*").permitAll()
 				// PRIVATE PAGES
 				.requestMatchers("/product/*/delete").hasAnyRole("ADMIN")
 				.requestMatchers("/product/{id_product}/place-bid").hasAnyRole("USER")

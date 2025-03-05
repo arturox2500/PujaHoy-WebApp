@@ -112,8 +112,8 @@ async function cargarIndex() {
     document.getElementById("load-more-index").style.display = "none";
     await sleep(300);
     try {
-        const response = await fetch(`/producto_template_index?page=${page}`);
-        const responseNext = await fetch(`/producto_template_index?page=${page+1}`);
+        const response = await fetch(`/product_template_index?page=${page}`);
+        const responseNext = await fetch(`/product_template_index?page=${page+1}`);
         if (response.ok) {
             const nuevosPostsHTML = await response.text(); 
             

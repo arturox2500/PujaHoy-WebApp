@@ -97,25 +97,25 @@
                 </div>
                 <div class="info-box">
                     <small><strong> Winning Bid </strong></small>
-                    {{#winner}}
-                    <div id="highest-bid" class="info-value" style="color: green;">{{winning bid}}</div>
-                    {{/winner}}
-                    {{^winner}}
-                    <div id="highest-bid" class="info-value">{{winning bid}}</div>
-                    {{/winner}}
+                    {{#Winner}}
+                    <div id="highest-bid" class="info-value" style="color: green;">{{Winning bid}}</div>
+                    {{/Winner}}
+                    {{^Winner}}
+                    <div id="highest-bid" class="info-value">{{Winning bid}}</div>
+                    {{/Winner}}
                 </div>
                 <div class="info-box">
                     <small><strong> Bidder</strong></small>
-                    {{#winner}}
-                    <div id="highest-bid" class="info-value" style="color: green;">{{winner bidder}}</div>
-                    {{/winner}}
-                    {{^winner}}
-                    <div id="highest-bid" class="info-value">{{winner bidder}}</div>
-                    {{/winner}}
+                    {{#Winner}}
+                    <div id="highest-bid" class="info-value" style="color: green;">{{Winner bidder}}</div>
+                    {{/Winner}}
+                    {{^Winner}}
+                    <div id="highest-bid" class="info-value">{{Winner bidder}}</div>
+                    {{/Winner}}
                 </div>
             </div>
             <!-- /Product details -->
-            {{#winner}}
+            {{#Winner}}
             <!-- Product tab -->
             <div class="col-md-12">
                 <div id="product-tab">
@@ -148,7 +148,7 @@
                 </div>
             </div>
             <!-- /product tab -->
-            {{/winner}}
+            {{/Winner}}
         </div>
         <!-- /row -->
     </div>
