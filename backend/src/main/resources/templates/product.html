@@ -56,7 +56,7 @@
                         {{^admin}}
                         {{^isSeller}}
                         {{#authenticated_user}}
-                        {{^finished}}
+                        {{^Finished}}
                         <form action="/product/{{id}}/place-bid" method="post">
                             <input type="number" name="bid_amount" placeholder="Place your bid" required>
                             <button type="submit" class="add-to-cart-btn">
@@ -64,7 +64,7 @@
                             </button>
                             <input type="hidden" name="_csrf" value="{{token}}" />
                         </form>
-                        {{/finished}}
+                        {{/Finished}}
                         {{/authenticated_user}}
                         {{/isSeller}}
                         {{/admin}}

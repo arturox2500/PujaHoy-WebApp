@@ -417,13 +417,13 @@ public class UserController {
             Principal principal = request.getUserPrincipal();
             if (principal == null) {
                 model.addAttribute("text", "you must be logged in");
-                model.addAttribute("url", "/producto/" + id);
+                model.addAttribute("url", "/product/" + id);
                 return "pageError";
             }
             Optional<Transaction> trans = transactionService.findByProduct(product.get());
             if (trans.isEmpty()) {
                 model.addAttribute("text", "this product has not been sold");
-                model.addAttribute("url", "/producto/" + id);
+                model.addAttribute("url", "/product/" + id);
                 return "pageError";
             }
             Optional<UserModel> user = userService.findById(trans.get().getBuyer().getId());
@@ -435,7 +435,7 @@ public class UserController {
                     return "ratingProduct";
                 } else {
                     model.addAttribute("text", "this product is not yours");
-                    model.addAttribute("url", "/producto/" + id);
+                    model.addAttribute("url", "/product/" + id);
                 }
             } else {
                 model.addAttribute("text", "buyer not exist");
