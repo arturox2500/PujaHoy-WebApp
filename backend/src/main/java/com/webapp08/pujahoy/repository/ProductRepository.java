@@ -30,4 +30,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p ORDER BY p.seller.reputation DESC")
     Page<Product> findAllOrderedBySellerReputation(Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE p.state = 'In progress' ORDER BY p.seller.reputation DESC")
+    Page<Product> findByStateInProgressOrderedBySellerReputation(Pageable pageable);
 }

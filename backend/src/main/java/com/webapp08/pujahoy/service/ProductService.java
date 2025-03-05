@@ -43,6 +43,11 @@ public class ProductService {
         return repository.findAllOrderedBySellerReputation(pageable);
     }
 
+	public Page<Product> obtainAllProductOrdersInProgressByReputation(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+        return repository.findByStateInProgressOrderedBySellerReputation(pageable);
+    }
+
 	public Page<Product> obtainAllProducts(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size);
         return repository.findAll(pageable);

@@ -63,9 +63,31 @@ public class ProductController {
     }
 
     @GetMapping("/")
-    public String productList(Model model, @RequestParam(defaultValue = "0") int page,
+    public String productList(Model model, HttpServletRequest request, @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        Page<Product> product = productService.obtainAllProductOrdersByReputation(page, size);
+        
+        Page<Product> product;
+        Principal principal = request.getUserPrincipal();
+        if (principal != null) {
+            String username = principal.getName();
+            Optional<UserModel> userOpt = userService.findByName(username);
+
+            if (!userOpt.isPresent()) {
+                model.addAttribute("text", " User not found");
+                model.addAttribute("url", "/");
+                return "pageError";
+            }
+
+            UserModel user = userOpt.get();
+            if("Administrator".equalsIgnoreCase(user.determineUserType())){
+                product = productService.obtainAllProductOrdersByReputation(page, size);
+            }else{
+                product = productService.obtainAllProductOrdersInProgressByReputation(page, size);
+            }
+        }else{
+            product = productService.obtainAllProductOrdersInProgressByReputation(page, size);
+        }
+
 
         Boolean button = true;
         if (product.isEmpty()) {
