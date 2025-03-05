@@ -354,7 +354,7 @@ public class UserController {
         return "pageError";
     }
 
-    @GetMapping("/NewProduct")
+    @GetMapping("/newProduct")
     public String newProduct() {
         return "newAuction";
     }
