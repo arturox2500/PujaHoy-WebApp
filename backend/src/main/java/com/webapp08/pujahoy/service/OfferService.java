@@ -21,4 +21,7 @@ public class OfferService {
     public void deleteById(long id){
         repository.deleteById(id);
     }
+    public void delete(Offer offer){
+        repository.delete(offer);
+    }
 }

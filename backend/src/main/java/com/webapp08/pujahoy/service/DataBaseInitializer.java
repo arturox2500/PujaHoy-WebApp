@@ -63,11 +63,10 @@ public class DataBaseInitializer {
 
     @PostConstruct
 	public void init() throws IOException, URISyntaxException {
-			UserModel user1 = new UserModel("Juan", 5, "Juanito", "juanElGrande@gmail.com", 28001, "description test arturo", true, passwordEncoder.encode("pass"), "ADMIN");
-			UserModel user2 = new UserModel("Pedro", 2, "Pedrito", "pedrosimple@gmail.com", 28024, "description", true, passwordEncoder.encode("pass"), "USER");
-			UserModel user3 = new UserModel("Pablo", 3, "Pablito", "pablo@gmail.com", 28012, "description", true, passwordEncoder.encode("pass"), "USER");
-			UserModel user4 = new UserModel("Diego", 1, "Diegote", "Diege@gmail.com", 28044, "description the part", true, passwordEncoder.encode("pass"), "USER");
-
+			UserModel user1 = new UserModel("Juan", 5, "Juanito", "juanElGrande@gmail.com", 28001, "", true, passwordEncoder.encode("pass"), "ADMIN");
+			UserModel user2 = new UserModel("Pedro", 2, "Pedrito", "pedrosimple@gmail.com", 28024, "Dedicated seller offering high-quality products at affordable prices.", true, passwordEncoder.encode("pass"), "USER");
+			UserModel user3 = new UserModel("Pablo", 3, "Pablito", "pablo@gmail.com", 28012, "Specializes in unique and handcrafted items, ensuring customer satisfaction.", true, passwordEncoder.encode("pass"), "USER");
+			UserModel user4 = new UserModel("Diego", 1, "Diegote", "Diege@gmail.com", 28044, "Known for his excellent service and a wide variety of premium products.", true, passwordEncoder.encode("pass"), "USER");
 			userRepository.save(user1);
 			userRepository.save(user2);
 			userRepository.save(user3);
@@ -132,12 +131,12 @@ public class DataBaseInitializer {
 			Product product7 = new Product("PS5 controller", "Wireless DualSense controller with haptic feedback and adaptive triggers.", 69.99, date24, date25M, "In progress", saveImageFromFile("static/img/product07.avif"), user2);
 			Product product8 = new Product("Xbox Series X", "Next-gen console with 1TB storage and true 4K.", 559.99, date24, date25M, "In progress", saveImageFromFile("static/img/product08.webp"), user2);
 			Product product9 = new Product("Computer mouse", "Ergonomic mouse with high-precision optical sensor.", 39.99, date24, date25M, "In progress", saveImageFromFile("static/img/product09.jpg"), user2);
-			Product product10 = new Product("Rolex Presidential", "Luxury watch with gold case and automatic movement.", 25259.99, date24, date25M, "In progress", saveImageFromFile("static/img/product10.jpg"), user2);
+			Product product10 = new Product("Rolex Presidential", "Luxury watch with gold case and automatic movement.", 2499.99, date24, date25M, "In progress", saveImageFromFile("static/img/product10.jpg"), user2);
 			Product product11 = new Product("Bugatti La Voiture Noire", "Exclusive hypercar with 1500 HP, limited edition.", 1999999.99, date24, date25M, "In progress", saveImageFromFile("static/img/product11.jpg"), user2);
 			Product product12 = new Product("Decorative vases", "Set of ceramic vases with handcrafted finish.", 49.99, date24, date25M, "In progress", saveImageFromFile("static/img/product12.jpg"), user2);
-			Product product13 = new Product("Gucci bag", "Authentic leather bag with classic design and Gucci distinctive.", 1849.99, date24, date25M, "In progress", saveImageFromFile("static/img/product13.jpg"), user2);
+			Product product13 = new Product("Gucci bag", "Authentic leather bag with classic design and Gucci distinctive.", 1499.99, date24, date25M, "In progress", saveImageFromFile("static/img/product13.jpg"), user2);
 			Product product14 = new Product("Wine vintage 2008", "Aged red wine with fruity notes and barrel-aged.", 129.99, date24, date25M, "In progress", saveImageFromFile("static/img/product14.webp"), user2);
-			Product product15 = new Product("Ship in a bottle", "Handcrafted miniature ship inside a glass bottle.", 59.99, date24, date25M, "In progress", saveImageFromFile("static/img/product15.jpg"), user2);
+			Product product15 = new Product("Ship in a bottle", "Handcrafted miniature ship inside a glass bottle.", 59.99, date24, date25M, "In progress", saveImageFromFile("static/img/product15.jpg"), user4);
 			
 			productRepository.save(product5);
 			productRepository.save(product6);

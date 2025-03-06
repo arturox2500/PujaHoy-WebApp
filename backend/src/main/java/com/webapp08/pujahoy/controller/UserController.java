@@ -61,7 +61,7 @@ public class UserController {
     @Autowired
     private OfferService offerService;
 
-    @ModelAttribute
+    @ModelAttribute // Responsible for adding the attributes to the model in every request
     public void addAttributes(Model model, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         if (principal != null) {
@@ -72,7 +72,7 @@ public class UserController {
         }
     }
 
-    @GetMapping() 
+    @GetMapping() // Responsible for verifying that the parameters passed are valid and, if so, redirecting to the profile page of the user
     public String profileIndex(Model model, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         if (principal != null) {
@@ -112,7 +112,7 @@ public class UserController {
         return "pageError";
     }
 
-    @GetMapping("/{id}") 
+    @GetMapping("/{id}") // Responsible for verifying that the parameters passed are valid and, if so, redirecting to the profile page of the user or show the seller's profile
     public String viewOtherProfile(Model model, @PathVariable long id, HttpServletRequest request) {
         Optional<Product> product = productService.findById(id);
         if (product.isPresent()) {
@@ -190,7 +190,23 @@ public class UserController {
         return "redirect:/user"; 
     }
 
-    private void finishProductsForUser(UserModel user) {
+    private void finishProductsForUser(UserModel user) { // Responsible for finishing all the products of a user if he is banned
+        List<Product> products = productService.findBySeller(user);
+        for (Product product : products) {
+            if (product.getState().equals("In progress")) {
+                if (!product.getOffers().isEmpty()) {
+                    for (Offer offer : product.getOffers()) {
+                        offerService.delete(offer);
+                    }
+                }
+                product.setOffers(null);
+                product.setState("Finished");
+                productService.save(product);
+            }
+        }
+    }
+
+    private void deleteProducts(UserModel user) { // Responsible for deleting all products from a user if he is unbanned
         List<Product> products = productService.findBySeller(user);
         for (Product product : products) {
             if (!product.getOffers().isEmpty()) {
@@ -198,19 +214,6 @@ public class UserController {
                     offerService.deleteById(offer.getId());
                 }
             }
-            product.setState("Finished");
-            productService.save(product);
-        }
-    }
-
-    private void deleteProducts(UserModel user) {
-        List<Product> products = productService.findBySeller(user);
-        for (Product product : products) {
-            if (!product.getOffers().isEmpty()) {
-                for (Offer offer : product.getOffers()) {
-                    offerService.deleteById(offer.getId());
-                }
-            } 
             Optional<Transaction> trans = transactionService.findByProduct(product);
             if (trans.isPresent()) {
                 transactionService.deleteById(trans.get().getId());
@@ -219,7 +222,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/{id}/ban")
+    @PostMapping("/{id}/ban") // Responsible for verifying that the parameters passed are valid and, if so, banning or unbanning the user
     public String bannedUser(Model model, @PathVariable String id, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         if (principal != null) {
@@ -365,7 +368,6 @@ public class UserController {
             @RequestParam("description") String description,
             @RequestParam("iniValue") double prize,
             @RequestParam("time") int time,
-            @RequestParam("state") String state,
             @RequestParam("image") MultipartFile imageFile,
             HttpServletRequest request,
             Model model) {
@@ -395,7 +397,7 @@ public class UserController {
                 image = BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize());
             }
 
-            Product product = new Product(name, description, prize, iniHour, endHour, state, image,
+            Product product = new Product(name, description, prize, iniHour, endHour, "In progress", image,
                     user.get());
     
             productService.save(product);
@@ -410,7 +412,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{id}/rate") 
+    @GetMapping("/{id}/rate") // Responsible for verifying that the parameters passed are valid and, if so, redirecting to the rating page
     public String gotoRate(Model model, @PathVariable long id, HttpServletRequest request) {
         Optional<Product> product = productService.findById(id);
         if (product.isPresent()) {
@@ -448,7 +450,7 @@ public class UserController {
         return "pageError";
     }
 
-    public void updateRating(UserModel user) {
+    public void updateRating(UserModel user) { // Responsible for updating the reputation of a user
         List<Rating> ratings = ratingService.findAllBySeller(user);
         if (ratings.isEmpty()) {
             return; 
@@ -463,7 +465,7 @@ public class UserController {
         userService.save(user);
     }
 
-    @PostMapping("/{id}/rated")
+    @PostMapping("/{id}/rated") // Responsible for verifying that the parameters passed are valid and, if so, saving them in the database
     public String rateProduct(Model model, @PathVariable long id, @RequestParam int rating) {
         if (rating < 1 || rating > 5) {
             model.addAttribute("text", " the rated must be between 1 and 5");

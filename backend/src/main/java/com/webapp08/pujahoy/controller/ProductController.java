@@ -56,7 +56,7 @@ public class ProductController {
     @Autowired
     private TransactionService transactionService;
 
-    @ModelAttribute
+    @ModelAttribute // Responsible for adding the attributes to the model in every request
     public void addAttributes(Model model, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         if (principal != null) {
