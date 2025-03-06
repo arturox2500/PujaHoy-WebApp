@@ -58,7 +58,7 @@
 									<label for="product-images" class="custom-upload-btn">
 										<i class="icon-upload"></i> Choose File
 									</label>
-									<input type="file" id="product-images" name="image" accept=".jpg .jpeg">
+									<input type="file" id="product-images" name="image" accept="image/jpeg, image/jpg, image/png, image/webp">
 									<div id="file-list"></div>
 								</div>
 							</div>
@@ -88,6 +88,32 @@
 					}
 				}
 			});
+
+		document.querySelector("form").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const imageInput = document.getElementById("product-images");
+        const form = event.target; 
+
+        if (imageInput.files.length > 0) {
+            const file = imageInput.files[0];
+
+            if (file.type.startsWith("image/")) {
+                const fileInput = document.createElement("input");
+                fileInput.setAttribute("type", "file");
+                fileInput.setAttribute("name", "image");
+                fileInput.files = imageInput.files;
+                fileInput.style.display = "none"; 
+                form.appendChild(fileInput);
+                form.submit();
+            } else {
+                alert("Please select a valid image file (JPEG, JPG, PNG, WEBP).");
+                window.location.reload(); 
+            }
+        } else {
+            alert("Please upload an image before submitting.");
+        }
+    });
 		</script>
 
 {{>footer}}
