@@ -24,12 +24,14 @@ import org.springframework.data.domain.Page;
 
 import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
+import com.webapp08.pujahoy.model.Rating;
 import com.webapp08.pujahoy.model.Transaction;
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.service.OfferService;
 import com.webapp08.pujahoy.service.ProductService;
 import com.webapp08.pujahoy.service.TransactionService;
 import com.webapp08.pujahoy.service.UserService;
+import com.webapp08.pujahoy.service.RatingService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -47,6 +49,9 @@ public class ProductController {
 
     @Autowired
     private OfferService offerService;
+
+    @Autowired
+    private RatingService ratingService;
 
     @Autowired
     private TransactionService transactionService;
@@ -125,11 +130,15 @@ public class ProductController {
             if (trans.isPresent()) {
                 transactionService.deleteById(trans.get().getId());
             }
+            Optional<Rating> rate = ratingService.findByProduct(product.get());
+            if (rate.isPresent()) {
+                ratingService.deleteById(rate.get().getId());
+            }
             productService.deleteById(id_product);
             return "redirect:/";
         } else {
             model.addAttribute("text", " Error deleting product");
-            model.addAttribute("url", "/product/" + id_product);
+            model.addAttribute("url", "/");
             return "pageError";
         }
     }

@@ -28,4 +28,8 @@ public class RatingService {
     public List<Rating> findAllBySeller(UserModel user) {
 		  return repository.findAllBySeller(user);
 	  }
+
+    public void deleteById(Long id){
+      deleteById(id);
+    }
 }

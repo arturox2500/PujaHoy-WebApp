@@ -141,7 +141,7 @@ public class UserController {
                 model.addAttribute("reputation", seller.get().getReputation());
                 model.addAttribute("contact", seller.get().getContact());
                 model.addAttribute("description", seller.get().getDescription());
-                if (userType.equals("Administrador")) {
+                if (userType.equals("Administrator")) {
                     model.addAttribute("admin", true);
                 } else { 
                     model.addAttribute("admin", false);
