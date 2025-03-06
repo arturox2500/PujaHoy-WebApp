@@ -236,6 +236,26 @@ Registered users can place bids on the product.
 Admins have the ability to remove product listings to ensure compliance with platform rules.
 ![NewProductPage](imagenes/NewProductPage.jpeg)
 
+## Instructions to Run
+
+### Required Technologies / Applications
+- VSCode (or any preferred IDE like IntelliJ IDEA or Eclipse)
+- Java 21
+- Maven 4.0.0 or higher
+- Spring Boot 3.4.3
+- MySQL Installer 8.0.33 or higher
+- MySQL Workbench 8.0.33 or higher
+
+### Steps
+- Download the ZIP from this GitHub repository
+- Extract it
+- Run it with your IDE
+- Configure the MySQL database with the password Password0] (specified in application.properties)
+- Run the application
+- Open your browser
+- Go to https://localhost:8443
+- If you encounter security warnings, select Advanced options and then Proceed to the website
+
 ## Documentation
 
 ### Class and Templates Diagram 
@@ -290,11 +310,11 @@ Admins have the ability to remove product listings to ensure compliance with pla
 
 | File | Description |
 | :----: | :---------: |
-| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blame/main/backend/src/main/java/com/webapp08/pujahoy/controller/UsuarioController.java) | Functionalities to view the user's own profile, view the seller's profile, ban users, and rate the seller.|
-| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blame/main/backend/src/main/java/com/webapp08/pujahoy/security/SecurityConfiguration.java) | Configure roles, role-specific URLs, login, and cookies to keep the session saved for one day.|
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/UserController.java) | Functionalities to view the user's own profile, view the seller's profile, ban users, and rate the seller.|
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/security/SecurityConfiguration.java) | Configure roles, role-specific URLs, login, and cookies to keep the session saved for one day.|
 | [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blame/main/backend/src/main/resources/templates/profile.html) | Display certain parts using Mustache based on the user type: unregistered user, registered user accessing their own profile, registered user accessing the seller's profile, and administrator.|
 | [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/model/Usuario.java) | Create the class, create and modify the attributes, and implement the constructors, setters, and getters.|
-| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blame/main/backend/src/main/java/com/webapp08/pujahoy/service/UsuarioService.java) | Create database queries for users.|
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/service/UserService.java) | Create database queries for users.|
 
 ### 👤 Victor Bartolomé Letosa
 
