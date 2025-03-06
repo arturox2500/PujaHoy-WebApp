@@ -38,6 +38,8 @@ async function cargarPosts() {
             document.getElementById("spinnerY").style.visibility = "hidden";
             
             page++;
+
+            
         }
     } catch (error) {
         console.error("Error al cargar los posts:", error);
@@ -89,6 +91,8 @@ async function cargarPosts2() {
             document.getElementById("spinnerWB").style.visibility = "hidden";
 
             page++;
+
+            
         }
     } catch (error) {
         console.error("Error al cargar los posts:", error);
@@ -135,6 +139,8 @@ async function cargarIndex() {
             document.getElementById("spinnerIndex").style.visibility = "hidden";
 
             page++;
+
+            updateStars()
         }
     } catch (error) {
         console.error("Error al cargar los posts:", error);
@@ -149,6 +155,40 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnIndex = document.getElementById("load-more-index");
     if (btnIndex) btnIndex.addEventListener("click", cargarIndex);
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll(".product-rating").forEach(function(ratingElement) {
+        const reputation = parseInt(ratingElement.getAttribute("data-reputation")) || 0;
+        ratingElement.innerHTML = ""; // Limpiar contenido previo
+        for (let i = 0; i < reputation; i++) {
+            const star = document.createElement("i");
+            star.className = "fa fa-star";
+            ratingElement.appendChild(star);
+        }
+    });
+});
+
+function updateStars() {
+    document.querySelectorAll(".product-rating").forEach(function(ratingElement) {
+        if (ratingElement.hasAttribute("data-processed")) {
+            return; // Evitar procesar un producto dos veces
+        }
+
+        const reputation = parseInt(ratingElement.getAttribute("data-reputation")) || 0;
+        ratingElement.innerHTML = ""; // Limpiar contenido previo
+
+        for (let i = 0; i < reputation; i++) {
+            const star = document.createElement("i");
+            star.className = "fa fa-star";
+            ratingElement.appendChild(star);
+        }
+
+        ratingElement.setAttribute("data-processed", "true"); // Marcar como procesado
+    });
+}
+
+// Ejecutar al cargar la página
+document.addEventListener("DOMContentLoaded", actualizarEstrellas);
 
 
 

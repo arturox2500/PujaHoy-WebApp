@@ -11,22 +11,21 @@
 					<img src="/img/default-product.png" alt="Image not available">
 				{{/image}}
 				<div class="product-label">
-					<span class="new">NEW</span>
+					
 				</div>
 			</div>
 			<div class="product-body">
 				<p class="product-category">Category</p>
 				<h3 class="product-name"><a href="#">{{name}}</a></h3>
 				<h4 class="product-price">{{iniValue}}</h4>
-				<div class="product-rating">
-					<i class="fa fa-star"></i>
-					<i class="fa fa-star"></i>
-					<i class="fa fa-star"></i>
-					<i class="fa fa-star"></i>
-					<i class="fa fa-star"></i>
+				{{#seller}}
+				<div class="product-rating" data-reputation="{{reputation}}">
+					<!--stars-->
 				</div>
+				{{/seller}}
 			</div>
 		</div>
 	</a>
 </div>
 {{/products}}
+

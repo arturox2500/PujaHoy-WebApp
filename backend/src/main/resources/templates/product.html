@@ -70,7 +70,10 @@
                         {{/admin}}
                     </div>
                     <div class="add-to-cart">
-                        <button class="add-to-cart-btn"> <a href="/user/{{id}}">Seller</a></button>
+                        <form action="/user/{{id}}" method="get" style="display:inline;">
+                            <button type="submit" class="add-to-cart-btn">Seller</button>
+                            <input type="hidden" name="_csrf" value="{{token}}" />
+                        </form>
                     </div>
                     <div class="add-to-cart">
                         {{#admin}}
