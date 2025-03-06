@@ -131,7 +131,9 @@ public class ProductController {
                 transactionService.deleteById(trans.get().getId());
             }
             Optional<Rating> rate = ratingService.findByProduct(product.get());
-            rate.get().setProduct(null);
+            if (rate.isPresent()) {
+                rate.get().setProduct(null);
+            }
             productService.deleteById(id_product);
             return "redirect:/";
         } else {
