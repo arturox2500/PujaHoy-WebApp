@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
@@ -18,7 +19,9 @@ public class Rating {
     private UserModel seller;
 
     @OneToOne
+    @JoinColumn(name = "product_id", nullable = true)
     private Product product;
+    
     private int rating;
 
     protected Rating(){
