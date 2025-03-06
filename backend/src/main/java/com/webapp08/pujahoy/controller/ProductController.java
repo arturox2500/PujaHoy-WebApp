@@ -117,7 +117,7 @@ public class ProductController {
     }
 
     @PostMapping("/product/{id_product}/delete")
-    public String delteProduct(Model model, @PathVariable long id_product) {
+    public String deleteProduct(Model model, @PathVariable long id_product) {
         Optional<Product> product = productService.findById(id_product);
 
         if (product.isPresent()) {

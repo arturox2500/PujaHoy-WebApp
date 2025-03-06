@@ -238,7 +238,7 @@ public class UserController {
                     model.addAttribute("text", "User unbanned. All his products have been removed.");
                 }
                 return "bannedProfile";
-            } else if (!userType.equals("Administrador")) {
+            } else if (!userType.equals("Administrator")) {
                 model.addAttribute("text", " you are not allow to banned users");
                 model.addAttribute("url", "/");
             } else {
@@ -475,7 +475,7 @@ public class UserController {
             Optional<Rating> existingVal = ratingService.findByProduct(product.get());
             if (existingVal.isPresent()) {
                 model.addAttribute("text", " This product has already been rated");
-                model.addAttribute("url", "/producto/" + id + "/rate");
+                model.addAttribute("url", "/product/" + id);
                 return "pageError";
             }
             Rating val = new Rating(product.get().getSeller(), product.get(), rating);
