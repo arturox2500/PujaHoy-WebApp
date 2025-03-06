@@ -236,7 +236,7 @@ Registered users can place bids on the product.
 Admins have the ability to remove product listings to ensure compliance with platform rules.
 ![NewProductPage](imagenes/NewProductPage.jpeg)
 
-## Instrucciones de ejecución
+## Instructions to Run
 
 ### Required Technologies / Applications
 - VSCode (or any preferred IDE like IntelliJ IDEA or Eclipse)
