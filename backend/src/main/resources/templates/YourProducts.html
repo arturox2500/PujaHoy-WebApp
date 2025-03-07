@@ -84,10 +84,10 @@
 	document.addEventListener("DOMContentLoaded", async function () {
 		const response = await fetch(`/user/product_template?page=${1}`);		
 		if (response.ok) {
-            const nuevosPostsHTML = (await response.text()); 
-            if (nuevosPostsHTML != "") {
+            const newPostsHTML = (await response.text()); 
+            if (newPostsHTML != "") {
 				
-                if (nuevosPostsHTML.trim() =="") {
+                if (newPostsHTML.trim() =="") {
                     document.getElementById("load-more-yposts").style.display = "none";
                     document.getElementById("spinnerY").style.visibility = "hidden";
                 } else {

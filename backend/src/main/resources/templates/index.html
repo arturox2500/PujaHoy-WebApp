@@ -63,10 +63,10 @@
 	document.addEventListener("DOMContentLoaded", async function () {
 		const response = await fetch(`/product_template_index?page=${1}`);		
 		if (response.ok) {
-            const nuevosPostsHTML = (await response.text()); 
-            if (nuevosPostsHTML != "") {
+            const newPostsHTML = (await response.text()); 
+            if (newPostsHTML != "") {
 				
-                if (nuevosPostsHTML.trim() =="") {
+                if (newPostsHTML.trim() =="") {
                     document.getElementById("load-more-index").style.display = "none";
                     document.getElementById("spinnerIndex").style.visibility = "hidden";
                 } 
