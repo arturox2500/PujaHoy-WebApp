@@ -70,4 +70,12 @@ public class LoginController {
         request.getSession().invalidate();
         return "redirect:/"; 
     }
+
+    @GetMapping("/permitsError")
+    public String showErrorPage(Model model) {
+        model.addAttribute("text", " You don't have permits"); 
+        model.addAttribute("url", "/"); 
+        return "pageError"; // Se debe llamar igual que la vista Mustache o Thymeleaf
+    }
+
 }

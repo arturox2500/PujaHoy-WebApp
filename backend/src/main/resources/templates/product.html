@@ -8,15 +8,15 @@
             <div class="col-md-12">
                 <ul class="breadcrumb-tree">
                     <li><a href="/">Home</a></li>
-                    {{#Finished}}
+                    {{#after}}
                     <li class="active"><a href="/user">Account</a></li>
-                    {{#isSeller}}
+                    {{#a2}}
                     <li class="active"><a href="/user/seeProducts">Your products</a></li>
-                    {{/isSeller}}
+                    {{/a2}}
                     {{^isSeller}}
                     <li class="active"><a href="/user/seeBuys">Your winning bids</a></li>
                     {{/isSeller}}
-                    {{/Finished}}
+                    {{/after}}
 					{{#product}}
                     <li class="active">{{name}}</li>
 					{{/product}}

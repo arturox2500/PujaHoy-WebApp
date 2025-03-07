@@ -22,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.HttpHeaders;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -281,7 +282,7 @@ public class UserController {
     @GetMapping("/seeProducts")
     public String seeProductsIni(Model model, HttpServletRequest request,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size, HttpSession session) {
         Principal principal = request.getUserPrincipal();
 
         if (principal != null) {
@@ -294,7 +295,7 @@ public class UserController {
                 if (products.isEmpty()) {
                     button = false;
                 }
-
+                session.setAttribute("after", 2);
                 model.addAttribute("button", button);
                 model.addAttribute("products", products); 
                 return "YourProducts";
@@ -332,7 +333,7 @@ public class UserController {
     @GetMapping("/seeBuys")
     public String seeProductsBuyIni(Model model, HttpServletRequest request,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size, HttpSession session) {
         Principal principal = request.getUserPrincipal();
 
         if (principal != null) {
@@ -345,7 +346,7 @@ public class UserController {
                 if (products.isEmpty()) {
                     button = false;
                 }
-
+                session.setAttribute("after", 3);
                 model.addAttribute("button", button);
                 model.addAttribute("products", products); 
                 return "YourWinningBids";

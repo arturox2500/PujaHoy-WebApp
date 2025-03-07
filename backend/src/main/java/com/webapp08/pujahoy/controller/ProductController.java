@@ -34,6 +34,7 @@ import com.webapp08.pujahoy.service.UserService;
 import com.webapp08.pujahoy.service.RatingService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -107,7 +108,7 @@ public class ProductController {
 
     @GetMapping("/product_template_index")
     public String seeProducts(Model model, HttpServletRequest request, @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size, HttpSession session) {
 
                 Page<Product> product;
                 Principal principal = request.getUserPrincipal();
@@ -130,7 +131,7 @@ public class ProductController {
                 }else{
                     product = productService.obtainAllProductOrdersInProgressByReputation(page, size);
                 }
-
+                session.setAttribute("after", 1);
         model.addAttribute("products", product);
         return "product_template";
 
@@ -164,7 +165,7 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id_product}")
-    public String showProduct(@PathVariable long id_product, Model model, HttpServletRequest request) {
+    public String showProduct(@PathVariable long id_product, Model model, HttpServletRequest request, HttpSession session) {
         Optional<Product> productOpt = productService.findById(id_product);
         if (!productOpt.isPresent()) {
             model.addAttribute("text", " Product not found");
@@ -240,7 +241,19 @@ public class ProductController {
                 model.addAttribute("admin", false);
                 model.addAttribute("authenticated_user", false);
             }
-
+            if (session.getAttribute("after") != null) {
+                int after = (int) session.getAttribute("after");
+                if (after == 2 || after == 3) {
+                    if (after == 2){
+                        model.addAttribute("a2", true);
+                    } else {
+                        model.addAttribute("a2", false);
+                    }
+                    model.addAttribute("after", true);
+                } else {
+                    model.addAttribute("after", false);
+                }
+            }
             Optional<Transaction> trans = transactionService.findByProduct(product);
             if (trans.isPresent() && trans.get().getBuyer().getName().equals(user.getName())
                     && !product.getState().equals("Delivered")) {

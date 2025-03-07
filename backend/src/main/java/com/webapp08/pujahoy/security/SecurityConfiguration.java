@@ -66,6 +66,7 @@ public class SecurityConfiguration {
 				.requestMatchers("/user/profile-picture/**").permitAll()
 				.requestMatchers("/user/{id}/profilePic").permitAll()
 				.requestMatchers("/product/*").permitAll()
+				.requestMatchers("/permitsError").permitAll()
 				// PRIVATE PAGES
 				.requestMatchers("/product/*/delete").hasAnyRole("ADMIN")
 				.requestMatchers("/product/{id_product}/place-bid").hasAnyRole("USER")
@@ -81,20 +82,23 @@ public class SecurityConfiguration {
 				.requestMatchers("/product/{id_product}/finish").hasAnyRole("USER")
 			)
 			.formLogin(formLogin -> formLogin
-					.loginPage("/login")					
-					.failureUrl("/loginerror")
-					.defaultSuccessUrl("/")
-					.permitAll()
+				.loginPage("/login")					
+				.failureUrl("/loginerror")
+				.defaultSuccessUrl("/")
+				.permitAll()
 			)
 			.rememberMe(rememberMe -> rememberMe
 				.key("uniqueAndSecret")
-				.tokenValiditySeconds(86400) 
+				.tokenValiditySeconds(86400) // 1 day active session
 			)
 			.logout(logout -> logout
-					.logoutUrl("/logout")
-					.logoutSuccessUrl("/")
-					.permitAll()
-			);
+				.logoutUrl("/logout")
+				.logoutSuccessUrl("/")
+				.permitAll()
+			)
+			.exceptionHandling(exceptionHandling -> exceptionHandling
+            	.accessDeniedPage("/permitsError") // Redirect to /pageError if have error 403
+        	);
 			
 		http.headers().frameOptions().sameOrigin();
 
