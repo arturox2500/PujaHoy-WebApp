@@ -10,7 +10,19 @@
 				<h3 class="breadcrumb-header">Account Details</h3>
 				<ul class="breadcrumb-tree">
 					<li><a href="/">Home</a></li>
+					{{#owner}}
 					<li class="active">Account</li>
+					{{/owner}}
+					{{^owner}}
+                    {{#win}}
+					<li><a href="/user">Account</a></li>
+                    <li><a href="/user/seeBuys">Your winning bids</a></li>
+                    {{/win}}
+					{{#product}}
+					<li><a href="/product/{{id}}">{{name}}</a></li>
+					{{/product}}
+					<li class="active">Seller</li>
+					{{/owner}}
 				</ul>
 			</div>
 		</div>

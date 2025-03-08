@@ -95,6 +95,7 @@ public class UserController {
                 model.addAttribute("description", user.get().getDescription());
                 model.addAttribute("profilePic", user.get().getProfilePic());
                 model.addAttribute("admin", false);
+                model.addAttribute("owner", true);
                 if (!user.get().isActive()) { 
                     model.addAttribute("banned", true);
                     model.addAttribute("registered", false);
@@ -114,7 +115,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}") // Responsible for verifying that the parameters passed are valid and, if so, redirecting to the profile page of the user or show the seller's profile
-    public String viewOtherProfile(Model model, @PathVariable long id, HttpServletRequest request) {
+    public String viewOtherProfile(Model model, @PathVariable long id, HttpServletRequest request, HttpSession session) {
         Optional<Product> product = productService.findById(id);
         if (product.isPresent()) {
             Optional<UserModel> seller = userService.findByProducts(product.get());
@@ -132,6 +133,14 @@ public class UserController {
                 } else {
                     user = null;
                     userType = "";
+                }
+                model.addAttribute("owner", false);
+                model.addAttribute("product", product.get());
+                int after = (int) session.getAttribute("after");
+                if (after == 3){
+                    model.addAttribute("win", true);
+                } else {
+                    model.addAttribute("win", false);
                 }
                 model.addAttribute("registered", false);
                 model.addAttribute("banned", false);
