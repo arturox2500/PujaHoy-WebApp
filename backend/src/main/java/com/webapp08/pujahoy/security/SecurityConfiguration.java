@@ -47,9 +47,8 @@ public class SecurityConfiguration {
 		
 		http
 			.authorizeHttpRequests(authorize -> authorize
-				.anyRequest().permitAll()
 				// PUBLIC PAGES
-				/*.requestMatchers("/").permitAll()
+				.requestMatchers("/").permitAll()
 				.requestMatchers("/css/**").permitAll()
 				.requestMatchers("/img/**").permitAll()
 				.requestMatchers("/js/**").permitAll()
@@ -69,7 +68,7 @@ public class SecurityConfiguration {
 				.requestMatchers("/product/*").permitAll()
 				.requestMatchers("/permitsError").permitAll()
 				// PRIVATE PAGES
-				.requestMatchers("/product/ASTERISCO/delete").hasAnyRole("ADMIN")
+				.requestMatchers("/product/*/delete").hasAnyRole("ADMIN")
 				.requestMatchers("/product/{id_product}/place-bid").hasAnyRole("USER")
 				.requestMatchers("/user").hasAnyRole("USER", "ADMIN")
 				.requestMatchers("/user/{id}/ban").hasAnyRole("ADMIN")
@@ -81,7 +80,6 @@ public class SecurityConfiguration {
 				.requestMatchers("/user/seeProducts").hasAnyRole("USER")
 				.requestMatchers("/user/{id}/rated").hasAnyRole("USER")
 				.requestMatchers("/product/{id_product}/finish").hasAnyRole("USER")
-				*/
 			)
 			.formLogin(formLogin -> formLogin
 				.loginPage("/login")					
