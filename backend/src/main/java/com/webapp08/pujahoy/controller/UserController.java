@@ -368,7 +368,8 @@ public class UserController {
     }
 
     @GetMapping("/newProduct")
-    public String newProduct() {
+    public String newProduct(HttpSession session) {
+        session.setAttribute("after", 1);
         return "newAuction";
     }
 
