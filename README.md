@@ -258,6 +258,12 @@ Admins have the ability to remove product listings to ensure compliance with pla
 
 ## Documentation
 
+### Diagram with the database entities
+![MySQL Diagram](imagenes/DiagramaBBDD.png)
+
+![BBDD Class Diagram](imagenes/NOMBRE_IMAGEN_VICTOR)
+
+
 ### Class and Templates Diagram 
 ![Class and Templates Diagram ](imagenes/ClassTemDiagram.jpg)
 
