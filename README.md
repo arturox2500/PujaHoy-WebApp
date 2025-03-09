@@ -96,31 +96,54 @@ Flechas azules = usuarios registrados ajenos a la perfil.
 
 # Auction Application (PUJAHOY)
 
-## Index  
-- [Auction Application Entities](#auction-application-entities)  
-  - [User Entity](#user-entity)  
-  - [Product Entity](#product-entity)  
-  - [Bid Entity](#bid-entity)  
-  - [Purchase Entity](#purchase-entity)  
-  - [Rating Entity](#rating-entity)    
-- [User Roles & Permissions](#user-roles--permissions)  
-  - [Unregistered User](#unregistered-user)  
-  - [Registered User](#registered-user)  
-  - [Administrator](#administrator)  
-- [Images](#images)  
-- [Charts](#charts)  
-- [Complementary Technology](#complementary-technology)  
-- [Advanced Algorithm or Query](#advanced-algorithm-or-query)  
-- [Pages](#pages)  
-  - [Featured Products (Index)](#featured-products-index)  
-  - [Sign-Up Page](#sign-up-page)  
-  - [Log-In Page](#log-in-page)  
-  - [Account Details Page](#account-details-page)  
-  - [Your Winning Bids](#your-winning-bids)  
-  - [Your Auctions](#your-auctions)  
-  - [Edit Profile](#edit-profile)  
-  - [New Auction Page](#new-auction-page)  
-  - [Product Page](#product-page)  
+# Index
+
+1. **[Auction Application Entities](#auction-application-entities)**
+   - [User Entity](#user-entity)
+   - [Product Entity](#product-entity)
+   - [Offer Entity](#offer-entity)
+   - [Transaction Entity](#transaction-entity)
+   - [Rating Entity](#rating-entity)
+
+2. **[User Roles & Permissions](#user-roles--permissions)**
+   - [Unregistered User](#unregistered-user)
+   - [Registered User](#registered-user)
+   - [Administrator](#administrator)
+
+3. **[Images](#images)**
+
+4. **[Charts](#charts)**
+
+5. **[Complementary Technology](#complementary-technology)**
+
+6. **[Advanced Algorithm or Query](#advanced-algorithm-or-query)**
+
+7. **[Pages](#pages)**
+   - [Featured Products (Index)](#featured-products-index)
+   - [Sign-Up Page](#sign-up-page)
+   - [Log-In Page](#log-in-page)
+   - [Account Details Page](#account-details-page)
+   - [Your Winning Bids](#your-winning-bids)
+   - [Your Products](#your-products)
+   - [Edit Profile](#edit-profile)
+   - [New Auction Page](#new-auction-page)
+   - [Product Page](#product-page)
+
+8. **[Instructions to Run](#instructions-to-run)**
+   - [Required Technologies / Applications](#required-technologies--applications)
+   - [Steps](#steps)
+
+9. **[Documentation](#documentation)**
+   - [Diagram with the database entities](#diagram-with-the-database-entities)
+   - [Class and Templates Diagram](#class-and-templates-diagram)
+
+10. **[Contributors](#contributors)**
+    - [Jorge Andrés Echevarría](#jorge-andrés-echevarría)
+    - [Arturo Enrique Gutierrez Mirandona](#arturo-enrique-gutierrez-mirandona)
+    - [Iván Gutierrez González](#iván-gutierrez-gonzález)
+    - [Victor Bartolomé Letosa](#victor-bartolomé-letosa)
+    - [Miguel Pradillo Bartolomé](#miguel-pradillo-bartolomé)
+    
 
 
 
@@ -132,14 +155,14 @@ The User entity represents a person registered in the auction application. It in
 ### Product Entity  
 The Product entity represents an item listed for auction in the system. It includes attributes such as ID, name, description, initial value, seller ID, start time, end time, status, and image.  
 
-### Bid Entity  
-The Bid entity represents a user's offer for a product in an auction. It includes attributes such as ID, cost, time, product ID, and user ID.  
+### Offer Entity  
+The offer entity represents a user's offer for a product in an auction. It includes attributes such as ID, cost, time, product ID, and user ID.  
 
-### Purchase Entity  
-The Purchase entity represents the final transaction in which a user buys a product from a seller in an auction. It includes attributes such as ID, cost, buyer ID, product ID, and seller ID.  
+### Transaction Entity  
+The transaction entity represents the final transaction in which a user buys a product from a seller in an auction. It includes attributes such as ID, cost, buyer ID, product ID, and seller ID.  
 
 ### Rating Entity  
-The VALORACION entity represents the ratings given to sellers for their auctioned products. It includes attributes such as ID, score, product ID, and seller ID.  
+The rating entity represents the ratings given to sellers for their auctioned products. It includes attributes such as ID, score, product ID, and seller ID.  
 
 ---
 
@@ -154,7 +177,7 @@ The VALORACION entity represents the ratings given to sellers for their auctione
 ### Registered User  
 **Can:**  
 - Access their personal data.  
-- View their listed products (whether sold or not).  
+- View their listed products.  
 - List products for auction.  
 - Place bids on auctions.  
 - Complete transactions as a buyer or seller.  
@@ -212,7 +235,7 @@ When viewing another user's profile, these personal sections will not be visible
 This page is available to registered users. It displays a list of auctions where the user placed the highest bid, meaning they have won the item.
 ![NewWinningBids](imagenes/NewWinningBids.jpeg)
 
-### Your Auctions  
+### Your Products  
 Available to registered users. It shows a list of auctions created by the user, whether they are ongoing or finished.  
 ![NewYourAuctions](imagenes/NewYourAuctions.jpeg)
 
@@ -267,8 +290,9 @@ Admins have the ability to remove product listings to ensure compliance with pla
 ### Class and Templates Diagram 
 ![Class and Templates Diagram ](imagenes/ClassTemDiagram.jpg)
 
+## Contributors
 
-### 👤 Jorge Andrés Echevarría
+### Jorge Andrés Echevarría
 
 | Commit | Description |
 | :----: | :---------: |
@@ -286,7 +310,7 @@ Admins have the ability to remove product listings to ensure compliance with pla
 | [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/resources/templates/login.html) | The login html was made by me too. Interesting to highlight register and login go throw the same view and are dynamicaly swapped between them with JS. Backend checks are done to secure reliable data.|
 | [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/resources/templates/profile.html) | Although i wasnt in charge of creating the profile view, i had to add edit a profile. As a challenge i decided to use the same view to be able to edit a user with a button. A hidden form is created dynamically and data is sent in it. Backend checks are done to secure reliable data.|
 
-### 👤 Arturo Enrique Gutierrez Mirandona 
+### Arturo Enrique Gutierrez Mirandona 
 
 | Commit | Description |
 | :----: | :---------: |
@@ -304,7 +328,7 @@ Admins have the ability to remove product listings to ensure compliance with pla
 | [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/repository/ProductRepository.java) | I wrote the necessary query to retrieve and display users' winning bids. |
 | [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/resources/templates/profile.html) | At the start of the project, I built the profile page entirely from scratch. |
 
-### 👤 Iván Gutierrez González
+### Iván Gutierrez González
 
 | Commit | Description |
 | :----: | :---------: |
@@ -322,7 +346,7 @@ Admins have the ability to remove product listings to ensure compliance with pla
 | [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/model/Usuario.java) | Create the class, create and modify the attributes, and implement the constructors, setters, and getters.|
 | [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/service/UserService.java) | Create database queries for users.|
 
-### 👤 Victor Bartolomé Letosa
+### Victor Bartolomé Letosa
 
 | Commit | Description |
 | :----: | :---------: |
@@ -340,7 +364,7 @@ Admins have the ability to remove product listings to ensure compliance with pla
 | [4º](link del archivo) | |
 | [5º](link del archivo) | |
 
-### 👤 Miguel Pradillo Bartolomé
+### Miguel Pradillo Bartolomé
 
 | Commit | Description |
 | :----: | :---------: |
