@@ -39,14 +39,14 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-    public String loginRedirect() {
+    public String loginRedirect() { // Redirect to login view
         return "login";
     }
 
     @PostMapping("/register")
     public String register(Model model, @RequestParam String email, @RequestParam String password,
             @RequestParam String zipCode, @RequestParam String username, @RequestParam String visibleName,
-            @RequestParam String description, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+            @RequestParam String description, RedirectAttributes redirectAttributes, HttpServletRequest request) { // Form post for when someone attemps to register
         if (userRepository.findByName(username).isPresent() || email.isBlank() || password.isBlank()
                 || zipCode.isBlank() || username.isBlank() || visibleName.isBlank()) {
             model.addAttribute("error", "Wrongs fields or user already exists");
@@ -66,13 +66,13 @@ public class LoginController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    public String logout(HttpServletRequest request) { // Logout trigger method
         request.getSession().invalidate();
         return "redirect:/"; 
     }
 
     @GetMapping("/permitsError")
-    public String showErrorPage(Model model) {
+    public String showErrorPage(Model model) { // Error in case of not authorized
         model.addAttribute("text", " You don't have permits"); 
         model.addAttribute("url", "/"); 
         return "pageError"; // Se debe llamar igual que la vista Mustache o Thymeleaf
