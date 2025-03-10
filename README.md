@@ -128,6 +128,7 @@ Flechas azules = usuarios registrados ajenos a la perfil.
    - [Edit Profile](#edit-profile)
    - [New Auction Page](#new-auction-page)
    - [Product Page](#product-page)
+   - [Navigation diagram](#navigation-diagram)
 
 8. **[Instructions to Run](#instructions-to-run)**
    - [Required Technologies / Applications](#required-technologies--applications)
@@ -135,6 +136,7 @@ Flechas azules = usuarios registrados ajenos a la perfil.
 
 9. **[Documentation](#documentation)**
    - [Diagram with the database entities](#diagram-with-the-database-entities)
+   - 
    - [Class and Templates Diagram](#class-and-templates-diagram)
 
 10. **[Contributors](#contributors)**
@@ -291,7 +293,7 @@ As a summary we show the updated navigation diagram.
 ### Diagram with the database entities
 ![MySQL Diagram](imagenes/DiagramaBBDD.png)
 
-![BBDD Class Diagram](imagenes/NOMBRE_IMAGEN_VICTOR)
+![BBDD Class Diagram](imagenes/BBDDClassDiagram.png)
 
 
 ### Class and Templates Diagram 
@@ -357,19 +359,19 @@ As a summary we show the updated navigation diagram.
 
 | Commit | Description |
 | :----: | :---------: |
-| [1º](https://github.com/) | |
-| [2º](https://github.com/) | |
-| [3º](https://github.com/) | |
-| [4º](https://github.com/) | |
-| [5º](https://github.com/) | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/5999b2fce698a0c4d7a9ddd2c16f85f9e0a27a08) |First product functionalities highlighting displaying a product and an initial feature for deleting a product. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/995a9b940b3b498b59b4a884f82491b6affb30fd) |I add the functionality to create a transaction when a product has ended. I add validations to correctly display the products. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/d3a254103e8da4262e1ebe3ce4888a3b168e7229) |I complete and fix all product functionalities, enable bidding by entering the desired amount, display more product information, and correctly add navigation to error pages. |
+| [4º]([https://github.com/](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/fd3d8fb07d10ce7cb1c4cd4d2f5a0b6cee96246b)) |I load the elements in the index using AJAX without the advanced algorithm. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/516966e0d9b31b5416ecd6a1681e922ad5c4e39d) |We update the display of products on the index using the advanced algorithm based on the type of user entering the index. |
 
 | File | Description |
 | :----: | :---------: |
-| [1º](link del archivo) | |
-| [2º](link del archivo) | |
-| [3º](link del archivo) | |
-| [4º](link del archivo) | |
-| [5º](link del archivo) | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/resources/templates/product.html) |Product template where I perform various checks to display information using Mustache according to the user accessing it. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/resources/templates/index.html) |Index page where I have the template and the checks to ensure it displays correctly. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/ProductController.java) |The file I have worked on the most, the controller, manages all the operations performed on the product. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/service/ProductService.java) |The file that supports the product controller service. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/repository/ProductRepository.java) |Repository file with the product entity database, highlighting the queries of the advanced algorithm. |
 
 ### Miguel Pradillo Bartolomé
 
