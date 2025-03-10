@@ -74,23 +74,25 @@ public class ProductController {
         
         Page<Product> product;
         Principal principal = request.getUserPrincipal();
-        if (principal != null) {
+        if (principal != null) { // registered
             String username = principal.getName();
             Optional<UserModel> userOpt = userService.findByName(username);
 
+            //Error
             if (!userOpt.isPresent()) {
                 model.addAttribute("text", " User not found");
                 model.addAttribute("url", "/");
                 return "pageError";
             }
+            //Error
 
             UserModel user = userOpt.get();
             if("Administrator".equalsIgnoreCase(user.determineUserType())){
-                product = productService.obtainAllProductOrdersByReputation(page, size);
+                product = productService.obtainAllProductOrdersByReputation(page, size);//Search all
             }else{
-                product = productService.obtainAllProductOrdersInProgressByReputation(page, size);
+                product = productService.obtainAllProductOrdersInProgressByReputation(page, size);// Search only in progress
             }
-        }else{
+        }else{//Not registered
             product = productService.obtainAllProductOrdersInProgressByReputation(page, size);
         }
 
@@ -115,25 +117,27 @@ public class ProductController {
                 if (principal != null) {
                     String username = principal.getName();
                     Optional<UserModel> userOpt = userService.findByName(username);
-        
+                    
+                    //Error
                     if (!userOpt.isPresent()) {
                         model.addAttribute("text", " User not found");
                         model.addAttribute("url", "/");
                         return "pageError";
                     }
+                    //Error
         
                     UserModel user = userOpt.get();
                     if("Administrator".equalsIgnoreCase(user.determineUserType())){
                         product = productService.obtainAllProductOrdersByReputation(page, size);
                     }else{
-                        product = productService.obtainAllProductOrdersInProgressByReputation(page, size);
+                        product = productService.obtainAllProductOrdersInProgressByReputation(page, size);// Search all
                     }
                 }else{
-                    product = productService.obtainAllProductOrdersInProgressByReputation(page, size);
+                    product = productService.obtainAllProductOrdersInProgressByReputation(page, size);// Search only in progress
                 }
                 session.setAttribute("after", 1);
-        model.addAttribute("products", product);
-        return "product_template";
+            model.addAttribute("products", product);
+            return "product_template";
 
     }
 
@@ -142,19 +146,23 @@ public class ProductController {
         Optional<Product> product = productService.findById(id_product);
 
         if (product.isPresent()) {
+            //Offer verification
             if (!product.get().getOffers().isEmpty()) {
                 for (Offer oferta : product.get().getOffers()) {
                     offerService.deleteById(oferta.getId());
                 }
             }
+            //Transaction verification
             Optional<Transaction> trans = transactionService.findByProduct(product.get());
             if (trans.isPresent()) {
                 transactionService.deleteById(trans.get().getId());
             }
+            //Rating verification
             Optional<Rating> rate = ratingService.findByProduct(product.get());
             if (rate.isPresent()) {
                 rate.get().setProduct(null);
             }
+            //delete
             productService.deleteById(id_product);
             return "redirect:/";
         } else {
@@ -176,6 +184,7 @@ public class ProductController {
         Product product = productOpt.get();
         model.addAttribute("product", product);
 
+        //Check if a product has ended or is still in progress and create transaction
         long actualTime = System.currentTimeMillis();
         if (product.getEndHour().getTime() <= actualTime && product.getState().equals("In proccess")) {
             product.setState("Finished");
@@ -191,6 +200,7 @@ public class ProductController {
 
         productService.save(product);
 
+        //Retrieve offers for the chart
         List<Offer> offers = product.getOffers();
         double[] costs;
         int numOffers = offers.size();
@@ -221,12 +231,13 @@ public class ProductController {
 
             model.addAttribute("zipCode", product.getSeller().getZipCode());
 
+            // Check if user is logged in and handle user-related logic
             if (user != null) {
                 boolean esAdmin = "Administrator".equalsIgnoreCase(user.determineUserType());
                 model.addAttribute("admin", esAdmin);
                 model.addAttribute("authenticated_user", true);
 
-
+                // Check product state and offer status for the user
                 if (product.getState().equals("Finished") || product.getState().equals("Delivered")) {
                     model.addAttribute("Finished", true);
 
@@ -254,6 +265,7 @@ public class ProductController {
                     model.addAttribute("after", false);
                 }
             }
+            // Check if the user is the buyer for the product transaction
             Optional<Transaction> trans = transactionService.findByProduct(product);
             if (trans.isPresent() && trans.get().getBuyer().getName().equals(user.getName())
                     && !product.getState().equals("Delivered")) {
@@ -263,6 +275,7 @@ public class ProductController {
             }
         }
 
+        //Retrieve current bidding data
         if (!offers.isEmpty()) {
             Offer lastOffer = offers.get(offers.size() - 1);
             model.addAttribute("Winning bid", lastOffer.getCost());
@@ -302,8 +315,10 @@ public class ProductController {
 
         UserModel user = userOpt.get();
 
+        //Get the latest offer
         Offer lastOffer = offerService.findLastOfferByProduct(id_product);
 
+        //Set min cost
         double actualPrice;
         if (lastOffer != null) {
             actualPrice = lastOffer.getCost();
@@ -311,15 +326,19 @@ public class ProductController {
             actualPrice = product.getIniValue() - 1;
         }
 
+        //Verification
         if (bid_amount <= actualPrice) {
             model.addAttribute("text", " The bid have to be higher than the current price.");
             model.addAttribute("url", "/product/" + id_product);
             return "pageError";
         }
+        //Verification
 
+        //Take actual time
         long actualTime = System.currentTimeMillis();
         Date actualDate = new Date(actualTime);
 
+        //make bid
         Offer newOffer = new Offer(user, product, bid_amount, actualDate);
 
         product.getOffers().add(newOffer); 
