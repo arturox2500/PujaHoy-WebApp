@@ -176,7 +176,7 @@ public class UserController {
     @PostMapping()
     public String editProfile(Model model, @RequestParam long id, @RequestParam String contact,
             @RequestParam String description, @RequestParam String zipCode,
-            @RequestParam(required = false) MultipartFile profilePic) throws IOException, SQLException {
+            @RequestParam(required = false) MultipartFile profilePic) throws IOException, SQLException { //post in charge of editing a profile form, notice the use of regular expressions
 
         UserModel user = userService.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         
