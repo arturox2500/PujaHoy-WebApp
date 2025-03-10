@@ -332,6 +332,7 @@ public class ProductController {
         return "placeBidOk";
     }
 
+    // Used for downloading images from the BBDD
     @GetMapping("/product/{id}/image")
     public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException {
 

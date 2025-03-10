@@ -265,7 +265,7 @@ public class UserController {
         return "pageError";
     }
 
-    @GetMapping("/product_template")
+    @GetMapping("/product_template") // Used for loading new products to the your products view
     public String seeProducts(Model model, HttpServletRequest request,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -288,7 +288,7 @@ public class UserController {
         return "pageError";
     }
 
-    @GetMapping("/seeProducts")
+    @GetMapping("/seeProducts") // Responsible for showing the your products view
     public String seeProductsIni(Model model, HttpServletRequest request,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size, HttpSession session) {
@@ -316,7 +316,7 @@ public class UserController {
         return "pageError";
     }
 
-    @GetMapping("/product_template_buys")
+    @GetMapping("/product_template_buys") // Used for loading new products to the your winning bids view
     public String seeProductsBuy(Model model, HttpServletRequest request,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -324,7 +324,7 @@ public class UserController {
 
         if (principal != null) {
             String username = principal.getName(); 
-            Optional<UserModel> user = userService.findByName(username); //Missing
+            Optional<UserModel> user = userService.findByName(username); 
 
             if (user.isPresent()) {
                 Page<Product> products = productService.obtainProductsBuyed(username, page, size);
@@ -339,6 +339,7 @@ public class UserController {
         return "pageError";
     }
 
+    // Responsible for showing the your winning bids view
     @GetMapping("/seeBuys")
     public String seeProductsBuyIni(Model model, HttpServletRequest request,
             @RequestParam(defaultValue = "0") int page,
@@ -373,6 +374,7 @@ public class UserController {
         return "newAuction";
     }
 
+    // Used for creating new listings
     @PostMapping("/submit_auction")
     public String publishProduct(
             @RequestParam("name") String name,
