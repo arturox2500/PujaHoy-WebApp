@@ -377,16 +377,16 @@ As a summary we show the updated navigation diagram.
 
 | Commit | Description |
 | :----: | :---------: |
-| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/acf0c7a04932e4e4db12c485de9a298bee258023) | There was a problem with the bids were the seller could also bid up on his own product so it was chandged. |
-| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/c4506681b131abbdbbdc36aed07de859eeba7a8f) | CSRFHandlerConfiguration.java Added implementation and full funtionality on this commit for this file. |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/acf0c7a04932e4e4db12c485de9a298bee258023) | There was a problem with the auctions were the seller could also bid up on his own product so it was chandged. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/c4506681b131abbdbbdc36aed07de859eeba7a8f) | Added implementation for CSRFHandlerConfiguration.java and full funtionality on this commit for this file. |
 | [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/cdc5f21f2d0ccbf9f5e31cba06dc6b9c6bf5d8d1) | The security for the H2 database was implemented in these commit. |
 | [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/8f3b605d78329924e8131dce6fb52bafe3e962f5) | CSRF was added to every form from every file and the name of the backend folder was changed to that name. |
-| [5º](https://github.com/) | |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/88ba1c87606aba326a19b75227534636f8c85eaf) | Model atributes were added to ProductoController and UsuarioController. |
 
 | File | Description |
 | :----: | :---------: |
-| [1º](link del archivo) | product.html |
-| [2º](link del archivo) | productController.java |
-| [3º](link del archivo) CSRFHandlerConfiguration.java | Added implementation and full funtionality on this file as part of the security configuration of the PujaHoy web application. It is responsible for integrating CSRF protection into the application.|
-| [4º](link del archivo) | SecurityConfiguration.java |
-| [5º](link del archivo) | UserController.java |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/resources/templates/product.html) | Product template where I worked on the initial structure of the file. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/ProductController.java) | The controller, which is the file I've spent the most time working on, handles all the operations related to the product. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/security/CSRFHandlerConfiguration.java) | Added implementation and full funtionality on this file as part of the security configuration of the PujaHoy web application. It is responsible for integrating CSRF protection into the application.|
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/security/SecurityConfiguration.java) | Set up roles, role-specific URLs, login functionality, and cookies to maintain the session for one day. It's where the security for HD database was implemented. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/UserController.java) | Model atributes added to this file. |
