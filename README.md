@@ -362,7 +362,7 @@ As a summary we show the updated navigation diagram.
 | [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/5999b2fce698a0c4d7a9ddd2c16f85f9e0a27a08) |First product functionalities highlighting displaying a product and an initial feature for deleting a product. |
 | [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/995a9b940b3b498b59b4a884f82491b6affb30fd) |I add the functionality to create a transaction when a product has ended. I add validations to correctly display the products. |
 | [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/d3a254103e8da4262e1ebe3ce4888a3b168e7229) |I complete and fix all product functionalities, enable bidding by entering the desired amount, display more product information, and correctly add navigation to error pages. |
-| [4º]([https://github.com/](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/fd3d8fb07d10ce7cb1c4cd4d2f5a0b6cee96246b)) |I load the elements in the index using AJAX without the advanced algorithm. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/fd3d8fb07d10ce7cb1c4cd4d2f5a0b6cee96246b) |I load the elements in the index using AJAX without the advanced algorithm. |
 | [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/516966e0d9b31b5416ecd6a1681e922ad5c4e39d) |We update the display of products on the index using the advanced algorithm based on the type of user entering the index. |
 
 | File | Description |
