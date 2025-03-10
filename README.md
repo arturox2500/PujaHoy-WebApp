@@ -377,10 +377,10 @@ As a summary we show the updated navigation diagram.
 
 | Commit | Description |
 | :----: | :---------: |
-| [1º](https://github.com/) | |
-| [2º](https://github.com/) | |
-| [3º](https://github.com/) | CSRFHandlerConfiguration.java Added implementation and full funtionality on this commit for this file |
-| [4º](https://github.com/) | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/acf0c7a04932e4e4db12c485de9a298bee258023) | There was a problem with the bids were the seller could also bid up on his own product so it was chandged. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/c4506681b131abbdbbdc36aed07de859eeba7a8f) | CSRFHandlerConfiguration.java Added implementation and full funtionality on this commit for this file. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/cdc5f21f2d0ccbf9f5e31cba06dc6b9c6bf5d8d1) | The security for the H2 database was implemented in these commit. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/8f3b605d78329924e8131dce6fb52bafe3e962f5) | CSRF was added to every form from every file and the name of the backend folder was changed to that name. |
 | [5º](https://github.com/) | |
 
 | File | Description |
