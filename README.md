@@ -169,13 +169,15 @@ The rating entity represents the ratings given to sellers for their auctioned pr
 ## User Roles & Permissions  
 
 ### Unregistered User  
-**Can:**  
+**Can:**
+- Have access to auctions that are still ongoing.  
 - View auctioned products.  
 - Browse user profiles.  
 - View a product's bidding history.  
 
 ### Registered User  
-**Can:**  
+**Can:**
+- Have access to auctions that are still ongoing.  
 - Access their personal data.  
 - View their listed products.  
 - List products for auction.  
@@ -188,7 +190,6 @@ The rating entity represents the ratings given to sellers for their auctioned pr
 **Can:**  
 - Have access to all listed products.  
 - Ban or unban users and products.  
-- May also have regular user privileges.  
 
 ---
 
@@ -222,12 +223,13 @@ Accessible to all users. It allows registered users to enter their credentials a
 ![NewLogin](imagenes/NewLogin.jpeg)
 
 ### Account Details Page  
-Accessible to registered users and admins. Users can:  
+Accessible to registered users. Users can:  
 - Edit their profile information.  
 - View a list of products they have posted.  
 - Access a personal section displaying auctions where they have placed the highest bid.
 
-When viewing another user's profile, these personal sections will not be visible.  
+When viewing another user's profile, these personal sections will not be visible.
+When an Admin accesses another user's profile they can ban the user.
 ![NewAccountsDetails](imagenes/NewAccountsDetails.jpeg)
 
 
@@ -240,7 +242,7 @@ Available to registered users. It shows a list of auctions created by the user, 
 ![NewYourAuctions](imagenes/NewYourAuctions.jpeg)
 
 ### Edit Profile  
-Users can access this page to update their personal details such as their display name, description, profile picture, and other relevant information. It is an extension to the regular Account Details Page 
+Users can access this page to update their personal details such as their description/Bio, profile picture, and other relevant information. It is an extension to the regular Account Details Page 
 ![NewEditProfile](imagenes/NewEditProfile.jpeg)
 
 ### New Auction Page  
