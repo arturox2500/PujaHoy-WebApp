@@ -261,6 +261,11 @@ Registered users can place bids on the product.
 Admins have the ability to remove product listings to ensure compliance with platform rules.
 ![NewProductPage](imagenes/NewProductPage.jpeg)
 
+### Navigation diagram
+As a summary we show the updated navigation diagram.
+
+![NavigationDiagram](imagenes/NavigationDiagram.png)
+
 ## Instructions to Run
 
 ### Required Technologies / Applications
