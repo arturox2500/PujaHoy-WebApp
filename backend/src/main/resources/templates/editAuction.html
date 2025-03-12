@@ -1,0 +1,113 @@
+{{>header}}
+	{{#product}} 
+		<!-- BREADCRUMB -->
+		<div id="breadcrumb" class="section">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<h3 class="breadcrumb-header">Edit Auction</h3>
+						<ul class="breadcrumb-tree">
+							<li><a href="/">Home</a></li>
+							<li class="active"><a href="/user">Account</a></li>
+							<li class="active">Edit Auction</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /BREADCRUMB -->
+		
+		<!-- SECTION -->
+		<div class="section">
+			<div class="container">
+				<div class="row">
+					<form action="/user/submit_edit/{{id}}" method="POST" class="col-md-12" enctype="multipart/form-data">
+						<div class="row">
+							<div class="col-md-8">
+								<!-- Product Details Form -->
+								<div class="product-details">
+									<div class="section-title">
+										<h3 class="title">Product Information</h3>
+									</div>
+									<div class="form-group">
+										<input class="input" type="text" name="name" placeholder="Product Name" value="{{name}}" required>
+									</div>
+									<div class="form-group">
+										<textarea class="input" name="description" placeholder="Description" rows="4" required>{{description}}</textarea>
+									</div>
+									<div class="form-group">
+										<input class="input" type="number" name="iniValue" placeholder="Price" step="0.01" min="0" value="{{iniValue}}" required>
+									</div>
+									
+								</div>
+							</div>
+
+							<!-- Order Images -->
+							<div class="col-md-6 order-details" id="imgup">
+								<div class="section-title text-center">
+									<h3 class="title">Edit Product Image</h3>
+								</div>
+								<div class="upload-container">
+									<label for="product-images" class="custom-upload-btn">
+										<i class="icon-upload"></i> Choose File
+									</label>
+									<input type="file" id="product-images" name="image" accept="image/jpeg, image/jpg, image/png, image/webp">
+									<div id="file-list">You can edit the previous picture</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 text-center">
+								<button type="submit" class="primary-btn order-submit">Confirm</button>
+							</div>
+						</div>
+						<input type="hidden" name="_csrf" value="{{token}}" />
+					</form>
+				</div>
+			</div>
+		</div>
+		{{/product}}
+		<!-- /SECTION -->
+
+		<script>
+			document.getElementById('product-images').addEventListener('change', function(event) {
+				const fileList = document.getElementById('file-list');
+				fileList.innerHTML = ''; // Limpiar lista anterior
+
+				if (this.files.length > 0) {
+					for (let file of this.files) {
+						let listItem = document.createElement('p');
+						listItem.textContent = file.name;
+						fileList.appendChild(listItem);
+					}
+				}
+			});
+
+		document.querySelector("form").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const imageInput = document.getElementById("product-images");
+        const form = event.target; 
+
+        if (imageInput.files.length > 0) {
+            const file = imageInput.files[0];
+
+            if (file.type.startsWith("image/")) {
+                const fileInput = document.createElement("input");
+                fileInput.setAttribute("type", "file");
+                fileInput.setAttribute("name", "image");
+                fileInput.files = imageInput.files;
+                fileInput.style.display = "none"; 
+                form.appendChild(fileInput);
+                form.submit();
+            } else {
+                alert("Please select a valid image file (JPEG, JPG, PNG, WEBP).");
+                window.location.reload(); 
+            }
+        } else {
+			form.submit();
+		}
+    });
+		</script>
+
+{{>footer}}

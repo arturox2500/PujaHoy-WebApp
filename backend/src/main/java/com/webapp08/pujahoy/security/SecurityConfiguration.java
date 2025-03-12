@@ -68,6 +68,9 @@ public class SecurityConfiguration {
 				.requestMatchers("/product/*").permitAll()
 				.requestMatchers("/permitsError").permitAll()
 				// PRIVATE PAGES
+				
+				.requestMatchers("/user/editProduct/*").hasAnyRole("USER", "ADMIN")
+				.requestMatchers("/user/submit_edit/*").hasAnyRole("USER", "ADMIN")
 				.requestMatchers("/product/*/delete").hasAnyRole("ADMIN")
 				.requestMatchers("/product/{id_product}/place-bid").hasAnyRole("USER")
 				.requestMatchers("/user").hasAnyRole("USER", "ADMIN")

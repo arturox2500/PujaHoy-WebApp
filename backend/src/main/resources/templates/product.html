@@ -90,6 +90,7 @@
                             <input type="hidden" name="_csrf" value="{{token}}" />
                         </form>
                         {{/admin}}
+                        
                     </div>
                     <div class="add-to-cart">
                         {{#buyer}}
@@ -98,6 +99,18 @@
                             <input type="hidden" name="_csrf" value="{{token}}" />
                         </form>
                         {{/buyer}}
+                    </div>
+                    <div class="add-to-cart">
+                        
+                        
+                        {{#admin}}
+                            <button type="button" class="add-to-cart-btn" onclick="window.location.href='/user/editProduct/{{id}}'">Edit</button>
+                        {{/admin}}
+
+                        {{#isSeller}}
+                            <button type="button" class="add-to-cart-btn" onclick="window.location.href='/user/editProduct/{{id}}'">Edit</button>
+                        {{/isSeller}}
+                        
                     </div>
                 </div>
             </div>
