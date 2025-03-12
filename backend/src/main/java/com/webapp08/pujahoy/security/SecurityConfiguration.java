@@ -100,8 +100,6 @@ public class SecurityConfiguration {
             	.accessDeniedPage("/permitsError") // Redirect to /pageError if have error 403
         	);
 			
-		http.headers().frameOptions().sameOrigin();
-
 		return http.build();
 	}
 
