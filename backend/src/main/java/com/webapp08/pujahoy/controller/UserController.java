@@ -380,7 +380,7 @@ public class UserController {
         Optional<Product> oldProd = productService.findById(id);
         Principal principal = request.getUserPrincipal();
         Optional<UserModel> user = userService.findByName(principal.getName());
-        if (oldProd.get().getSeller().getId() != user.get().getId()){
+        if (!(oldProd.get().getSeller().getId() == user.get().getId() || user.get().determineUserType().equals("Administrator"))) {
             model.addAttribute("text", " This product is not yours");
             model.addAttribute("url", "/");
             return "pageError";
