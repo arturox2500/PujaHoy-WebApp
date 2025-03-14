@@ -236,6 +236,7 @@ public class ProductController {
                 boolean esAdmin = "Administrator".equalsIgnoreCase(user.determineUserType());
                 model.addAttribute("admin", esAdmin);
                 model.addAttribute("authenticated_user", true);
+                model.addAttribute("banned", user.isActive());
 
                 // Check product state and offer status for the user
                 if (product.getState().equals("Finished") || product.getState().equals("Delivered")) {

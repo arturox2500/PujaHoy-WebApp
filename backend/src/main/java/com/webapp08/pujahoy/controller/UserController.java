@@ -299,6 +299,11 @@ public class UserController {
             Optional<UserModel> user = userService.findByName(username);
 
             if (user.isPresent()) {
+                if (!user.get().isActive()){
+                    model.addAttribute("text", " You are banned");
+                    model.addAttribute("url", "/user");
+                    return "pageError";
+                }
                 Page<Product> products = productService.obtainPaginatedProducts(username, page, size);
                 Boolean button = true;
                 if (products.isEmpty()) {
@@ -347,10 +352,16 @@ public class UserController {
         Principal principal = request.getUserPrincipal();
 
         if (principal != null) {
+            
             String username = principal.getName(); 
             Optional<UserModel> user = userService.findByName(username);
 
             if (user.isPresent()) {
+                if (!user.get().isActive()){
+                    model.addAttribute("text", " You are banned");
+                    model.addAttribute("url", "/user");
+                    return "pageError";
+                }
                 Page<Product> products = productService.obtainProductsBuyed(username, page, size);
                 Boolean button = true;
                 if (products.isEmpty()) {
@@ -369,9 +380,16 @@ public class UserController {
     }
 
     @GetMapping("/newProduct")
-    public String newProduct(HttpSession session) {
-        session.setAttribute("after", 1);
-        return "newAuction";
+    public String newProduct(Model model, HttpSession session, HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        if (principal != null && userService.findByName(principal.getName()).get().isActive()) {
+            session.setAttribute("after", 1);
+            return "newAuction";
+        } else {
+            model.addAttribute("text", " You are banned");
+            model.addAttribute("url", "/user");
+            return "pageError";
+        }
     }
 
     @GetMapping("/editProduct/{id}")
@@ -385,7 +403,11 @@ public class UserController {
             model.addAttribute("url", "/");
             return "pageError";
         }
-
+        if (!userService.findByName(principal.getName()).get().isActive()){
+            model.addAttribute("text", " You are banned");
+            model.addAttribute("url", "/");
+            return "pageError";
+        }
         if (!oldProd.isPresent()) {
             return "pageError";
         }
@@ -416,6 +438,8 @@ public class UserController {
         Optional<Product> oldProd = productService.findById(id);
         
         if (oldProd.isEmpty()) {
+            model.addAttribute("text", " Product not found");
+            model.addAttribute("url", "/");
             return "pageError";
         }
 
@@ -431,6 +455,12 @@ public class UserController {
 
         if (user.isEmpty()) {
             model.addAttribute("text", "User not found");
+            model.addAttribute("url", "/");
+            return "pageError";
+        }
+
+        if (!user.get().isActive()){
+            model.addAttribute("text", " You are banned");
             model.addAttribute("url", "/");
             return "pageError";
         }
