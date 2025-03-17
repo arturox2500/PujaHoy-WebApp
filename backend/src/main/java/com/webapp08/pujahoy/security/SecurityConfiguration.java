@@ -71,7 +71,7 @@ public class SecurityConfiguration {
 				
 				.requestMatchers("/user/editProduct/*").hasAnyRole("USER", "ADMIN")
 				.requestMatchers("/user/submit_edit/*").hasAnyRole("USER", "ADMIN")
-				.requestMatchers("/product/*/delete").hasAnyRole("ADMIN")
+				.requestMatchers("/product/*/delete").hasAnyRole("USER","ADMIN")
 				.requestMatchers("/product/{id_product}/place-bid").hasAnyRole("USER")
 				.requestMatchers("/user").hasAnyRole("USER", "ADMIN")
 				.requestMatchers("/user/{id}/ban").hasAnyRole("ADMIN")
