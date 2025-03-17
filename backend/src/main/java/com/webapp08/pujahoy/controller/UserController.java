@@ -299,6 +299,11 @@ public class UserController {
             Optional<UserModel> user = userService.findByName(username);
 
             if (user.isPresent()) {
+                if (!user.get().isActive()){
+                    model.addAttribute("text", " You are banned");
+                    model.addAttribute("url", "/user");
+                    return "pageError";
+                }
                 Page<Product> products = productService.obtainPaginatedProducts(username, page, size);
                 Boolean button = true;
                 if (products.isEmpty()) {
@@ -347,10 +352,16 @@ public class UserController {
         Principal principal = request.getUserPrincipal();
 
         if (principal != null) {
+            
             String username = principal.getName(); 
             Optional<UserModel> user = userService.findByName(username);
 
             if (user.isPresent()) {
+                if (!user.get().isActive()){
+                    model.addAttribute("text", " You are banned");
+                    model.addAttribute("url", "/user");
+                    return "pageError";
+                }
                 Page<Product> products = productService.obtainProductsBuyed(username, page, size);
                 Boolean button = true;
                 if (products.isEmpty()) {
@@ -369,9 +380,112 @@ public class UserController {
     }
 
     @GetMapping("/newProduct")
-    public String newProduct(HttpSession session) {
+    public String newProduct(Model model, HttpSession session, HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        if (principal != null && userService.findByName(principal.getName()).get().isActive()) {
+            session.setAttribute("after", 1);
+            return "newAuction";
+        } else {
+            model.addAttribute("text", " You are banned");
+            model.addAttribute("url", "/user");
+            return "pageError";
+        }
+    }
+
+    @GetMapping("/editProduct/{id}")
+    public String editProduct(HttpSession session, @PathVariable long id, Model model, HttpServletRequest request) {
         session.setAttribute("after", 1);
-        return "newAuction";
+        Optional<Product> oldProd = productService.findById(id);
+        Principal principal = request.getUserPrincipal();
+        Optional<UserModel> user = userService.findByName(principal.getName());
+        if (!(oldProd.get().getSeller().getId() == user.get().getId() || user.get().determineUserType().equals("Administrator"))) {
+            model.addAttribute("text", " This product is not yours");
+            model.addAttribute("url", "/");
+            return "pageError";
+        }
+        if (!userService.findByName(principal.getName()).get().isActive()){
+            model.addAttribute("text", " You are banned");
+            model.addAttribute("url", "/");
+            return "pageError";
+        }
+        if (!oldProd.isPresent()) {
+            return "pageError";
+        }
+
+        Product product = oldProd.get();
+
+        if (product.getOffers().isEmpty()){
+            model.addAttribute("product", product);
+            return "editAuction";
+        } else {
+            model.addAttribute("text", " You cannot edit a product if a user placed a bid");
+            model.addAttribute("url", "/product/"+ product.getId());
+            return "pageError";
+        }
+        
+    }
+
+    @PostMapping("/submit_edit/{id}")
+    public String edit(
+        @RequestParam("name") String name,
+        @RequestParam("description") String description,
+        @RequestParam("iniValue") double prize,
+        @RequestParam("image") MultipartFile imageFile,
+        HttpServletRequest request,
+        Model model, @PathVariable long id) {
+
+        Principal principal = request.getUserPrincipal();
+        Optional<Product> oldProd = productService.findById(id);
+        
+        if (oldProd.isEmpty()) {
+            model.addAttribute("text", " Product not found");
+            model.addAttribute("url", "/");
+            return "pageError";
+        }
+
+        Product oldP = oldProd.get();
+        
+        if (principal == null) {
+            model.addAttribute("text", "User not authenticated");
+            model.addAttribute("url", "/");
+            return "pageError";
+        }
+
+        Optional<UserModel> user = userService.findByName(principal.getName());
+
+        if (user.isEmpty()) {
+            model.addAttribute("text", "User not found");
+            model.addAttribute("url", "/");
+            return "pageError";
+        }
+
+        if (!user.get().isActive()){
+            model.addAttribute("text", " You are banned");
+            model.addAttribute("url", "/");
+            return "pageError";
+        }
+
+        try {
+            
+            oldP.setName(name);
+            oldP.setDescription(description);
+            oldP.setIniValue(prize); 
+
+            if (!imageFile.isEmpty()) {
+                Blob image = BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize());
+                oldP.setImage(image);
+            }
+
+            productService.save(oldP); 
+
+            model.addAttribute("product", oldP);
+            return "redirect:/product/" + oldP.getId();
+
+        } catch (Exception e) {
+            model.addAttribute("text", "Error processing the product: " + e.getMessage());
+            model.addAttribute("url", "/");
+            return "pageError";
+        }
     }
 
     // Used for creating new listings
