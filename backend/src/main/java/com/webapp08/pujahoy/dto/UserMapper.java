@@ -16,10 +16,15 @@ public interface UserMapper {
         @Mapping(source = "visibleName", target = "visibleName"),
         @Mapping(source = "contact", target = "contact"),
         @Mapping(source = "description", target = "description"),
-        @Mapping(source = "zipCode", target = "zipCode")
+        @Mapping(source = "zipCode", target = "zipCode"),
+        @Mapping(target = "image", expression = "java(generateImageUrl(userModel.getId()))")
     })
     PublicUserDTO toDTO(UserModel userModel);
 
+    default String generateImageUrl(Long id) {
+        return "https://localhost:8080/api/users/" + id + "/image";  // URL dinámica de la imagen
+    }
+    
     //PublicUserDTO to UserModel
     @Mappings({
         @Mapping(source = "id", target = "id"),
@@ -37,9 +42,4 @@ public interface UserMapper {
         @Mapping(target = "rols", ignore = true)
     })
     UserModel toDomain(PublicUserDTO publicUserDTO);
-
-    @org.mapstruct.Named("blobToBoolean")
-    default boolean blobToBoolean(java.sql.Blob blob) {
-        return blob != null;
-    }
 }

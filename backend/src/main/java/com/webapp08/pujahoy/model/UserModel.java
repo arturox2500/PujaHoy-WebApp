@@ -15,6 +15,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 
 @Entity(name = "USERS")
@@ -30,6 +31,8 @@ public class UserModel{
     private String contact;
     private String description;
     private boolean active;
+    
+    @Lob
     private Blob profilePic;
     private int zipCode;
 

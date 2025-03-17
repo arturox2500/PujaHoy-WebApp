@@ -67,6 +67,10 @@ public class DataBaseInitializer {
 			UserModel user2 = new UserModel("Pedro", 2, "Pedrito", "pedrosimple@gmail.com", 28024, "Dedicated seller offering high-quality products at affordable prices.", true, passwordEncoder.encode("pass"), "USER");
 			UserModel user3 = new UserModel("Pablo", 3, "Pablito", "pablo@gmail.com", 28012, "Specializes in unique and handcrafted items, ensuring customer satisfaction.", true, passwordEncoder.encode("pass"), "USER");
 			UserModel user4 = new UserModel("Diego", 1, "Diegote", "Diege@gmail.com", 28044, "Known for his excellent service and a wide variety of premium products.", true, passwordEncoder.encode("pass"), "USER");
+			user1.setProfilePic(saveImageFromFile("static/img/default-profile.jpg"));
+			user2.setProfilePic(saveImageFromFile("static/img/default-profile.jpg"));
+			user3.setProfilePic(saveImageFromFile("static/img/default-profile.jpg"));
+			user4.setProfilePic(saveImageFromFile("static/img/default-profile.jpg"));
 			userRepository.save(user1);
 			userRepository.save(user2);
 			userRepository.save(user3);
