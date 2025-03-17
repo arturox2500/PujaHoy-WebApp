@@ -1,6 +1,6 @@
-package main.java.com.webapp08.pujahoy.dto;
+package com.webapp08.pujahoy.dto;
 
-public class UserDTO {
+public class UserDTO { //User without password, rols, profilePic, products, reputation, active
     private String email;
     private String password;
     private String zipCode;
