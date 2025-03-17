@@ -75,18 +75,17 @@ public class UserRestController {
     }
 
     @PostMapping("/{user_id}/products/{product_id}/ratings") //Rate user
-	public ResponseEntity<RatingDTO> rateProduct(@PathVariable long user_id, @PathVariable long product_id, @RequestBody RatingDTO RatingDTO) {
+	public ResponseEntity<RatingDTO> rateProduct(@PathVariable long user_id, @PathVariable long product_id, @RequestBody int rating) {
 
-        Optional<UserModel> user = userService.findById(RatingDTO.getIdSeller());
-        Optional<Product> product = productService.findById(RatingDTO.getIdProduct());
+        Optional<UserModel> user = userService.findById(user_id);
+        Optional<Product> product = productService.findById(product_id);
 
-        if (user.isPresent() && product.isPresent() && user.get().getId() == product.get().getSeller().getId() && RatingDTO.getRating() >= 1 && RatingDTO.getRating() <= 5 && user.get().getId() == user_id && product.get().getId() == product_id) { //User is the seller of the product
-            Optional<Rating> test1 = ratingService.findById(RatingDTO.getId());
-            Optional<Rating> test2 = ratingService.findByProduct(productService.findById(RatingDTO.getIdProduct()).get());
-            if (test1.isPresent() || test2.isPresent()) {
-                return ResponseEntity.badRequest().build(); //Id for the new Rating already exists or the product is already rated
+        if (user.isPresent() && product.isPresent() && user.get().getId() == product.get().getSeller().getId() && rating >= 1 && rating <= 5) { //User is the seller of the product
+            Optional<Rating> test = ratingService.findByProduct(product.get());
+            if (test.isPresent()) {
+                return ResponseEntity.badRequest().build(); //the product is already rated
             }
-            RatingDTO = ratingService.createRating(RatingDTO);
+            RatingDTO RatingDTO = ratingService.createRating(rating, user.get(), product.get());
             this.updateRating(user.get());
             URI location = fromCurrentRequest().path("/{id}").buildAndExpand(RatingDTO.getId()).toUri();
 

@@ -42,13 +42,13 @@ public class RatingService {
       deleteById(id);
     }
 
-    public RatingDTO createRating(RatingDTO ratingDTO) {
+    public RatingDTO createRating(int rating, UserModel seller, Product product) {
 
-      Rating rating = mapper.toDomain(ratingDTO);
+      Rating newRating = new Rating(seller, product, rating);
+      
+      repository.save(newRating);
   
-      repository.save(rating);
-  
-      return mapper.toDTO(rating);
+      return mapper.toDTO(newRating);
     }
 
 }
