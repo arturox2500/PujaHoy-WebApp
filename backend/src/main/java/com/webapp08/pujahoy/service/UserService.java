@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,25 @@ public class UserService {
 		}
 	}
 
+	public PublicUserDTO replaceUser(long id, PublicUserDTO updatedPostDTO) throws SQLException {
+
+		UserModel oldPost = repository.findById(id).orElseThrow();
+		UserModel updatedPost = mapper.toDomain(updatedPostDTO);
+		updatedPost.setId(id);
+
+		if (oldPost.getImage() != null) {
+
+			//Set the image in the updated post
+			updatedPost.setProfilePic(BlobProxy.generateProxy(oldPost.getProfilePic().getBinaryStream(),
+					oldPost.getProfilePic().length()));
+			updatedPost.setImage(oldPost.getImage());
+		}
+
+		repository.save(updatedPost);
+
+		return mapper.toDTO(updatedPost);
+	}
+
     public Optional<UserModel> findById(Long id) {
 		return repository.findById(id);
 	}
@@ -54,4 +74,5 @@ public class UserService {
 	public Optional<UserModel> findByProducts(Product product){
 		return repository.findByProducts(product);
 	}
+	
 }
