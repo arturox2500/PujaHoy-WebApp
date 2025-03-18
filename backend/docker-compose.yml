@@ -19,8 +19,8 @@ services:
     container_name: mysql_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mi_base
+      MYSQL_ROOT_PASSWORD: Password0]
+      MYSQL_DATABASE: pujahoy
     ports:
       - "3306:3306"
     volumes:
