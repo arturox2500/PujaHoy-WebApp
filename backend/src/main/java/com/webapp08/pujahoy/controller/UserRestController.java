@@ -1,5 +1,6 @@
 package com.webapp08.pujahoy.controller;
 
+import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.dto.RatingDTO;
 import com.webapp08.pujahoy.model.Product;
@@ -38,6 +39,16 @@ public class UserRestController {
     @GetMapping("/{id}")
     public PublicUserDTO getUserById(@PathVariable Long id) { //Get user by id
         return userService.findUser(id);
+    }
+
+    @GetMapping("/{id}/products")
+    public List<ProductBasicDTO> getUserProducts(@PathVariable Long id) { //Get user by id
+        return productService.findProductsByUser(id);
+    }
+
+    @GetMapping("/{id}/boughtProducts")
+    public List<ProductBasicDTO> getBoughtProducts(@PathVariable Long id) { //Get user by id
+        return productService.findBoughtProductsByUser(id);
     }
 
     

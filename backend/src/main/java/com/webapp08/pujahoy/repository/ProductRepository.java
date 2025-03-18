@@ -19,12 +19,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findById(Long id);
     Page<Product> findBySeller_Name(String name, Pageable pageable);
     List<Product> findBySeller(UserModel user);
+    List<Product> findBySeller_Id(Long id);
 
     @Query("SELECT p FROM Product p " +
        "JOIN Transaction t ON t.product = p " +
        "JOIN t.buyer u " +
        "WHERE u.name = :buyerName")
     Page<Product> findBoughtProductsByUser(@Param("buyerName") String buyerName, Pageable pageable);
+
+    @Query("SELECT p FROM Product p " +
+       "JOIN Transaction t ON t.product = p " +
+       "JOIN t.buyer u " +
+       "WHERE u.id = :buyerId")
+    List<Product> findBoughtProductsByUserID(@Param("buyerId") Long buyerId);
 
     Page<Product> findAll(Pageable pageable);
 

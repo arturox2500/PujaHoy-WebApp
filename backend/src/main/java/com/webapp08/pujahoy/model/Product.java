@@ -26,6 +26,7 @@ public class Product {
         private Date endHour;
         private String state;
         private Blob image;
+        private String imgURL;
 
         @OneToMany(mappedBy="product")
         private List<Offer> offers;
@@ -135,6 +136,14 @@ public class Product {
 
         public void addOffer(Offer offer){
             this.offers.add(offer);
+        }
+
+        public String getImgURL() {
+            return imgURL;
+        }
+
+        public void setImgURL(String imgURL) {
+            this.imgURL = imgURL;
         }
 
 }

@@ -3,6 +3,7 @@ package com.webapp08.pujahoy.controller;
 import java.security.Principal;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 
+import com.webapp08.pujahoy.dto.ProductBasicDTO;
+import com.webapp08.pujahoy.dto.ProductDTO;
+import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.service.ProductService;
@@ -31,34 +35,19 @@ public class ProductRestController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public ResponseEntity<Page<Product>> getProducts(HttpServletRequest request, 
-                                                     @RequestParam(defaultValue = "0") int page,
-                                                     @RequestParam(defaultValue = "10") int size) {
-        Principal principal = request.getUserPrincipal();
-        Page<Product> products;
-        if (principal != null) {
-            String username = principal.getName();
-            Optional<UserModel> userOpt = userService.findByName(username);
-            if (!userOpt.isPresent()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            }
-            UserModel user = userOpt.get();
-            products = "Administrator".equalsIgnoreCase(user.determineUserType())
-                    ? productService.obtainAllProductOrdersByReputation(page, size)
-                    : productService.obtainAllProductOrdersInProgressByReputation(page, size);
-        } else {
-            products = productService.obtainAllProductOrdersInProgressByReputation(page, size);
-        }
-        return ResponseEntity.ok(products);
-    }
 
     @GetMapping("/{id_product}")
-    public ResponseEntity<Product> getProduct(@PathVariable long id_product) {
-        return productService.findById(id_product)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ProductDTO getProduct(@PathVariable long id_product) {
+        return productService.findProduct(id_product);
     }
+
+    @GetMapping
+    public List<ProductBasicDTO> getProducts() {
+        return productService.findProducts();
+    }
+
+    
+
 
     @DeleteMapping("/{id_product}")
     public ResponseEntity<Void> deleteProduct(@PathVariable long id_product) {
