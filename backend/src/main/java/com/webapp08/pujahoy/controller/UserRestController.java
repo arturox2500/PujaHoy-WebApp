@@ -53,10 +53,10 @@ public class UserRestController {
 
 	}
 
-    @PutMapping("/{id}") //Update user
-	public PublicUserDTO replacePost(@PathVariable long id, @RequestBody PublicUserDTO updatedUserDTO) throws SQLException {
-
-		return userService.replaceUser(id, updatedUserDTO);
+    @PutMapping("") //Update user
+	public PublicUserDTO replacePost(@RequestBody PublicUserDTO updatedUserDTO) throws SQLException {
+        //FALTA COMPROBAR QUE DATOS SE CAMBIAN Y QUIEN HACE EL CAMBIO
+		return userService.replaceUser(updatedUserDTO.getId(), updatedUserDTO);
 	}
 
     public void updateRating(UserModel user) { // Responsible for updating the reputation of a user
