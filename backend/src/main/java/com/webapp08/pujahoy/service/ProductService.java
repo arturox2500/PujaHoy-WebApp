@@ -8,6 +8,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
+import com.webapp08.pujahoy.dto.ProductBasicDTO;
+import com.webapp08.pujahoy.dto.ProductBasicMapper;
+import com.webapp08.pujahoy.dto.ProductDTO;
+import com.webapp08.pujahoy.dto.ProductMapper;
+import com.webapp08.pujahoy.dto.PublicUserDTO;
+import com.webapp08.pujahoy.dto.UserMapper;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.repository.ProductRepository;
@@ -17,6 +23,10 @@ public class ProductService {
 
     @Autowired
 	private ProductRepository repository;
+	@Autowired
+	private ProductMapper mapper;
+	@Autowired
+	private ProductBasicMapper basicMapper;
     
     public Optional<Product> findById(long id) {
 		return repository.findById(id);
@@ -63,5 +73,21 @@ public class ProductService {
 		Pageable pageable = PageRequest.of(page, size);
         return repository.findBoughtProductsByUser(buyerName, pageable);
     }
+
+	public ProductDTO findProduct(Long id) {
+		return mapper.toDTO(repository.findById(id).get());
+	}
+
+	public List<ProductBasicDTO> findProducts() {
+		return basicMapper.toDTOList(repository.findAll());
+	}
+
+	public List<ProductBasicDTO> findProductsByUser(Long id) {
+		return basicMapper.toDTOList(repository.findBySeller_Id(id));
+	}
+
+	public List<ProductBasicDTO> findBoughtProductsByUser(Long id) {
+		return basicMapper.toDTOList(repository.findBoughtProductsByUserID(id));
+	}
 
 }

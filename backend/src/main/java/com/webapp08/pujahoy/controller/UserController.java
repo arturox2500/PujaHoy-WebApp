@@ -526,7 +526,9 @@ public class UserController {
 
             Product product = new Product(name, description, prize, iniHour, endHour, "In progress", image,
                     user.get());
-    
+            
+            
+            product.setImgURL("/product/" + product.getId() +"/image");
             productService.save(product);
 
             model.addAttribute("product", product);

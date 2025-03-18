@@ -1,4 +1,4 @@
-package main.java.com.webapp08.pujahoy.dto;
+package com.webapp08.pujahoy.dto;
 
 public class UserDTO {
     private String email;
