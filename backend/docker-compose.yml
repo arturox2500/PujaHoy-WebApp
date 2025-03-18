@@ -4,7 +4,7 @@ services:
     restart: always
     container_name: spring_app
     ports:
-      - "8443:8443"
+      - "443:8443"
     depends_on:
       - db
     environment:
