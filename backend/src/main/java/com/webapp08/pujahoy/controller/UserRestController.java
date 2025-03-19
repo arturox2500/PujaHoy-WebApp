@@ -139,7 +139,7 @@ public class UserRestController {
             if(!trans.isPresent() && user.get() != trans.get().getBuyer()) {
                 return ResponseEntity.badRequest().build(); //the product is not sold or the user is not the buyer
             }
-            RatingDTO newRatingDTO = ratingService.createRating(ratingDTO.getRating(), user.get(), product.get());
+            RatingDTO newRatingDTO = ratingService.createRating(ratingDTO.getRating(), seller.get(), product.get());
             this.updateRating(seller.get());
             URI location = fromCurrentRequest().path("/{id}").buildAndExpand(newRatingDTO.getId()).toUri();
 
