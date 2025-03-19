@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
@@ -78,16 +79,24 @@ public class ProductService {
 		return mapper.toDTO(repository.findById(id).get());
 	}
 
-	public List<ProductBasicDTO> findProducts() {
-		return basicMapper.toDTOList(repository.findAll());
+
+	public Page<ProductBasicDTO> findProducts(Pageable pageable) {
+    Page<Product> productPage = repository.findAll(pageable);
+    List<ProductBasicDTO> dtoList = basicMapper.toDTOList(productPage.getContent());
+    return new PageImpl<>(dtoList, pageable, productPage.getTotalElements());
 	}
 
-	public List<ProductBasicDTO> findProductsByUser(Long id) {
-		return basicMapper.toDTOList(repository.findBySeller_Id(id));
+
+	public Page<ProductBasicDTO> findProductsByUser(Pageable pageable, Long id) {
+		Page<Product> productPage = repository.findBySeller_Id(pageable, id);
+		List<ProductBasicDTO> dtoList = basicMapper.toDTOList(productPage.getContent());
+		return new PageImpl<>(dtoList, pageable, productPage.getTotalElements());
 	}
 
-	public List<ProductBasicDTO> findBoughtProductsByUser(Long id) {
-		return basicMapper.toDTOList(repository.findBoughtProductsByUserID(id));
+	public Page<ProductBasicDTO> findBoughtProductsByUser(Pageable pageable, Long id) {
+		Page<Product> productPage = repository.findBoughtProductsByUserID(pageable, id);
+		List<ProductBasicDTO> dtoList = basicMapper.toDTOList(productPage.getContent());
+		return new PageImpl<>(dtoList, pageable, productPage.getTotalElements());
 	}
 
 }

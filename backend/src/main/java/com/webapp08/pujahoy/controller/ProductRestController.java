@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -42,8 +44,10 @@ public class ProductRestController {
     }
 
     @GetMapping
-    public List<ProductBasicDTO> getProducts() {
-        return productService.findProducts();
+    public Page<ProductBasicDTO> getProducts(@RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productService.findProducts(pageable);
     }
 
     
