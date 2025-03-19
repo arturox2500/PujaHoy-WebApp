@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -42,8 +44,10 @@ public class ProductRestController {
     }
 
     @GetMapping
-    public List<ProductBasicDTO> getProducts() {
-        return productService.findProducts();
+    public Page<ProductBasicDTO> getProducts(@RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productService.findProducts(pageable);
     }
 
     
@@ -61,15 +65,11 @@ public class ProductRestController {
     }
 
     @GetMapping("/{id}/image")
-    public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException {
-        Optional<Product> op = productService.findById(id);
-        if (op.isPresent() && op.get().getImage() != null) {
-            Blob image = op.get().getImage();
-            Resource file = new InputStreamResource(image.getBinaryStream());
-            return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-                    .contentLength(image.length()).body(file);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Resource> getPostImage(@PathVariable long id) throws SQLException {
+        Resource postImage = productService.getPostImage(id);
+        
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") // Ajusta el tipo según la imagen
+                .body(postImage);
     }
 }

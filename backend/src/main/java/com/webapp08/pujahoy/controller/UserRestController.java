@@ -13,6 +13,9 @@ import com.webapp08.pujahoy.service.TransactionService;
 import com.webapp08.pujahoy.service.UserService;
 import java.security.Principal;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -22,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import java.io.IOException;
 import java.net.URI;
@@ -61,13 +65,20 @@ public class UserRestController {
     }
 
     @GetMapping("/{id}/products")
-    public List<ProductBasicDTO> getUserProducts(@PathVariable Long id) { //Get user by id
-        return productService.findProductsByUser(id);
+    public Page<ProductBasicDTO> getUserProducts(@PathVariable Long id,
+                                                @RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productService.findProductsByUser(pageable, id);
     }
 
+
     @GetMapping("/{id}/boughtProducts")
-    public List<ProductBasicDTO> getBoughtProducts(@PathVariable Long id) { //Get user by id
-        return productService.findBoughtProductsByUser(id);
+    public Page<ProductBasicDTO> getBoughtProducts(@PathVariable Long id,
+                                                @RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productService.findBoughtProductsByUser(pageable, id);
     }
 
     

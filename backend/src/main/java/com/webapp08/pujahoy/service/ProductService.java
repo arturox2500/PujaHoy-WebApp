@@ -1,9 +1,13 @@
 package com.webapp08.pujahoy.service;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +21,8 @@ import com.webapp08.pujahoy.dto.UserMapper;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.repository.ProductRepository;
+
+import org.springframework.core.io.Resource;
 
 @Service
 public class ProductService {
@@ -78,16 +84,34 @@ public class ProductService {
 		return mapper.toDTO(repository.findById(id).get());
 	}
 
-	public List<ProductBasicDTO> findProducts() {
-		return basicMapper.toDTOList(repository.findAll());
+	public Resource getPostImage(long id) throws SQLException {
+    Product product = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Post no encontrado"));
+
+    if (product.getImage() != null) {
+        return new InputStreamResource(product.getImage().getBinaryStream());
+    } else {
+        throw new NoSuchElementException("El post no tiene imagen");
+    }
 	}
 
-	public List<ProductBasicDTO> findProductsByUser(Long id) {
-		return basicMapper.toDTOList(repository.findBySeller_Id(id));
+
+	public Page<ProductBasicDTO> findProducts(Pageable pageable) {
+    Page<Product> productPage = repository.findAll(pageable);
+    List<ProductBasicDTO> dtoList = basicMapper.toDTOList(productPage.getContent());
+    return new PageImpl<>(dtoList, pageable, productPage.getTotalElements());
 	}
 
-	public List<ProductBasicDTO> findBoughtProductsByUser(Long id) {
-		return basicMapper.toDTOList(repository.findBoughtProductsByUserID(id));
+
+	public Page<ProductBasicDTO> findProductsByUser(Pageable pageable, Long id) {
+		Page<Product> productPage = repository.findBySeller_Id(pageable, id);
+		List<ProductBasicDTO> dtoList = basicMapper.toDTOList(productPage.getContent());
+		return new PageImpl<>(dtoList, pageable, productPage.getTotalElements());
+	}
+
+	public Page<ProductBasicDTO> findBoughtProductsByUser(Pageable pageable, Long id) {
+		Page<Product> productPage = repository.findBoughtProductsByUserID(pageable, id);
+		List<ProductBasicDTO> dtoList = basicMapper.toDTOList(productPage.getContent());
+		return new PageImpl<>(dtoList, pageable, productPage.getTotalElements());
 	}
 
 }
