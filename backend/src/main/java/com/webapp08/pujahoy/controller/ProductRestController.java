@@ -65,15 +65,11 @@ public class ProductRestController {
     }
 
     @GetMapping("/{id}/image")
-    public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException {
-        Optional<Product> op = productService.findById(id);
-        if (op.isPresent() && op.get().getImage() != null) {
-            Blob image = op.get().getImage();
-            Resource file = new InputStreamResource(image.getBinaryStream());
-            return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-                    .contentLength(image.length()).body(file);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Resource> getPostImage(@PathVariable long id) throws SQLException {
+        Resource postImage = productService.getPostImage(id);
+        
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") // Ajusta el tipo según la imagen
+                .body(postImage);
     }
 }

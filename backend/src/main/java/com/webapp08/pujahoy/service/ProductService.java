@@ -1,8 +1,11 @@
 package com.webapp08.pujahoy.service;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +21,8 @@ import com.webapp08.pujahoy.dto.UserMapper;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.repository.ProductRepository;
+
+import org.springframework.core.io.Resource;
 
 @Service
 public class ProductService {
@@ -77,6 +82,16 @@ public class ProductService {
 
 	public ProductDTO findProduct(Long id) {
 		return mapper.toDTO(repository.findById(id).get());
+	}
+
+	public Resource getPostImage(long id) throws SQLException {
+    Product product = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Post no encontrado"));
+
+    if (product.getImage() != null) {
+        return new InputStreamResource(product.getImage().getBinaryStream());
+    } else {
+        throw new NoSuchElementException("El post no tiene imagen");
+    }
 	}
 
 
