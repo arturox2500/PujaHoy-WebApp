@@ -70,19 +70,23 @@ public class SecurityConfiguration {
 		http
 			.authorizeHttpRequests(authorize -> authorize
                     // PRIVATE ENDPOINTS
-                    .requestMatchers(HttpMethod.POST,"/api/user/").hasRole("USER")
-                    .requestMatchers(HttpMethod.GET,"/api/products/{id_product}/").hasRole("USER")
-                    .requestMatchers(HttpMethod.GET,"/api/products/").hasRole("USER")
-					.requestMatchers(HttpMethod.DELETE,"/api/products/{id_product}/").hasRole("USER")
-					.requestMatchers(HttpMethod.GET,"/api/products//{id}/image").hasRole("USER")
-					.requestMatchers(HttpMethod.GET,"/api/users/{id}").hasRole("USER")
-					.requestMatchers(HttpMethod.GET,"/api/users/{id}/products").hasRole("USER")
-					.requestMatchers(HttpMethod.GET,"/api/users/{id}/boughtProducts").hasRole("USER")
-					.requestMatchers(HttpMethod.GET,"/api/users/{id}/image").hasRole("USER")
-					.requestMatchers(HttpMethod.PUT,"/api/users").hasRole("USER")
-					.requestMatchers(HttpMethod.POST,"/{user_id}/products/{product_id}/ratings").hasRole("USER")
+                    
 					// PUBLIC ENDPOINTS
 					.requestMatchers(HttpMethod.POST,"/api/auth/user").permitAll()
+					.requestMatchers(HttpMethod.POST,"/api/auth/login").permitAll()
+					.requestMatchers(HttpMethod.POST,"/api/auth/refresh").permitAll()
+					.requestMatchers(HttpMethod.POST,"/api/auth/logout").permitAll()
+					.requestMatchers(HttpMethod.GET,"/api/products/").permitAll()
+					.requestMatchers(HttpMethod.POST,"/api/user/").permitAll()
+                    .requestMatchers(HttpMethod.GET,"/api/products/{id_product}/").permitAll()
+					.requestMatchers(HttpMethod.DELETE,"/api/products/{id_product}/").permitAll()
+					.requestMatchers(HttpMethod.GET,"/api/products//{id}/image").permitAll()
+					.requestMatchers(HttpMethod.GET,"/api/users/{id}").permitAll()
+					.requestMatchers(HttpMethod.GET,"/api/users/{id}/products").permitAll()
+					.requestMatchers(HttpMethod.GET,"/api/users/{id}/boughtProducts").permitAll()
+					.requestMatchers(HttpMethod.GET,"/api/users/{id}/image").permitAll()
+					.requestMatchers(HttpMethod.PUT,"/api/users").permitAll()
+					.requestMatchers(HttpMethod.POST,"/{user_id}/products/{product_id}/ratings").permitAll()
 					
 			);
 		
