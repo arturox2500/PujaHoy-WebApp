@@ -17,7 +17,7 @@ import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.repository.UserModelRepository;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 public class LoginRestController {
 	
 	@Autowired
