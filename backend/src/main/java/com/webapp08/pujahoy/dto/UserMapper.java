@@ -22,7 +22,7 @@ public interface UserMapper {
     PublicUserDTO toDTO(UserModel userModel);
 
     default String generateImageUrl(Long id) {
-        return "https://localhost:8443/api/users/" + id + "/image";  // URL dinámica de la imagen
+        return "https://localhost:8443/api/v1/users/" + id + "/image";  // URL dinámica de la imagen
     }
     
     //PublicUserDTO to UserModel
@@ -35,6 +35,7 @@ public interface UserMapper {
         @Mapping(source = "description", target = "description"),
         @Mapping(target = "profilePic", ignore = true),
         @Mapping(source = "zipCode", target = "zipCode"),
+        @Mapping(source = "image", target = "image"),
         @Mapping(target = "products", ignore = true),
         @Mapping(target = "encodedPassword", ignore = true),
         @Mapping(target = "pass", ignore = true),
