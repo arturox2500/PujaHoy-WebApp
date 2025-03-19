@@ -91,18 +91,18 @@ public class ProductService {
 	}
 
 	public Resource getPostImage(long id) throws SQLException {
-		Product product = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Post no encontrado"));
+		Product product = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Post not found"));
 
 		if (product.getImage() != null) {
 			return new InputStreamResource(product.getImage().getBinaryStream());
 		} else {
-			throw new NoSuchElementException("El post no tiene imagen");
+			throw new NoSuchElementException("No image");
 		}
 	}
 
 	public void savePostImage(long id, MultipartFile imageFile) throws IOException {
 		Product post = repository.findById(id)
-				.orElseThrow(() -> new NoSuchElementException("Post no encontrado"));
+				.orElseThrow(() -> new NoSuchElementException("Not found"));
 
 		byte[] imageBytes = imageFile.getBytes();
 		try {
@@ -110,7 +110,7 @@ public class ProductService {
 			post.setImage(imageBlob);
 			repository.save(post); 
 		} catch (SQLException e) {
-			throw new IOException("Error al guardar la imagen en la base de datos", e);
+			throw new IOException("Error", e);
 		}
 	}
 

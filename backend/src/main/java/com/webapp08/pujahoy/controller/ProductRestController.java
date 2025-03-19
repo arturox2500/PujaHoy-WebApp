@@ -72,7 +72,7 @@ public class ProductRestController {
         Resource postImage = productService.getPostImage(id);
         
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") // Ajusta el tipo según la imagen
+                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") 
                 .body(postImage);
     }
 
@@ -80,11 +80,11 @@ public class ProductRestController {
     public ResponseEntity<String> uploadPostImage(@PathVariable long id, @RequestParam("image") MultipartFile imageFile) {
         try {
             productService.savePostImage(id, imageFile);
-            return ResponseEntity.ok("Imagen subida correctamente.");
+            return ResponseEntity.ok("ok");
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al procesar la imagen.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error");
         }
     }
 }
