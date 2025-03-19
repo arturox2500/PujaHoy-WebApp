@@ -53,6 +53,10 @@ public class UserService {
 					oldPost.getProfilePic().length()));
 			updatedPost.setImage(oldPost.getImage());
 		}
+		updatedPost.setRols(oldPost.getRols());
+		updatedPost.setProducts(oldPost.getProducts());
+		updatedPost.setPass(oldPost.getEncodedPassword());
+		updatedPost.setActive(oldPost.isActive());
 
 		repository.save(updatedPost);
 

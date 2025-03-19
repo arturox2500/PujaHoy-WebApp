@@ -22,8 +22,6 @@ import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductBasicMapper;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.ProductMapper;
-import com.webapp08.pujahoy.dto.PublicUserDTO;
-import com.webapp08.pujahoy.dto.UserMapper;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.repository.ProductRepository;

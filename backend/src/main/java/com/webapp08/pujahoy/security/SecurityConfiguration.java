@@ -75,23 +75,6 @@ public class SecurityConfiguration {
 					.requestMatchers(HttpMethod.POST,"/api/**").permitAll()
 					.requestMatchers(HttpMethod.PUT,"/api/**").permitAll()
 					.requestMatchers(HttpMethod.DELETE,"/api/**").permitAll()
-					/*.requestMatchers(HttpMethod.POST,"/api/auth/user").permitAll()
-					.requestMatchers(HttpMethod.POST,"/api/auth/login").permitAll()
-					.requestMatchers(HttpMethod.POST,"/api/auth/refresh").permitAll()
-					.requestMatchers(HttpMethod.POST,"/api/auth/logout").permitAll()
-					.requestMatchers(HttpMethod.GET,"/api/products").permitAll()
-					.requestMatchers(HttpMethod.POST,"/api/user/").permitAll()
-                    .requestMatchers(HttpMethod.GET,"/api/products/{id_product}/").permitAll()
-					.requestMatchers(HttpMethod.DELETE,"/api/products/{id_product}/").permitAll()
-					.requestMatchers(HttpMethod.GET,"/api/products/{id}/image").permitAll()
-					.requestMatchers(HttpMethod.POST,"/api/products/{id}/image").permitAll()
-					.requestMatchers(HttpMethod.GET,"/api/users/{id}").permitAll()
-					.requestMatchers(HttpMethod.GET,"/api/users/{id}/products").permitAll()
-					.requestMatchers(HttpMethod.GET,"/api/users/{id}/boughtProducts").permitAll()
-					.requestMatchers(HttpMethod.GET,"/api/users/{id}/image").permitAll()
-					.requestMatchers(HttpMethod.PUT,"/api/users").permitAll()
-					.requestMatchers(HttpMethod.POST,"/{user_id}/products/{product_id}/ratings").permitAll()*/
-					
 			);
 		
         // Disable Form login Authentication
