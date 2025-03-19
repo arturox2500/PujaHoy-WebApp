@@ -1,8 +1,13 @@
 package com.webapp08.pujahoy.service;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import javax.sql.rowset.serial.SerialBlob;
+import java.sql.Blob;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -10,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.data.domain.Pageable;
 
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
@@ -85,14 +91,29 @@ public class ProductService {
 	}
 
 	public Resource getPostImage(long id) throws SQLException {
-    Product product = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Post no encontrado"));
+		Product product = repository.findById(id).orElseThrow(() -> new NoSuchElementException("Post not found"));
 
-    if (product.getImage() != null) {
-        return new InputStreamResource(product.getImage().getBinaryStream());
-    } else {
-        throw new NoSuchElementException("El post no tiene imagen");
-    }
+		if (product.getImage() != null) {
+			return new InputStreamResource(product.getImage().getBinaryStream());
+		} else {
+			throw new NoSuchElementException("No image");
+		}
 	}
+
+	public void savePostImage(long id, MultipartFile imageFile) throws IOException {
+		Product post = repository.findById(id)
+				.orElseThrow(() -> new NoSuchElementException("Not found"));
+
+		byte[] imageBytes = imageFile.getBytes();
+		try {
+			Blob imageBlob = new SerialBlob(imageBytes); 
+			post.setImage(imageBlob);
+			repository.save(post); 
+		} catch (SQLException e) {
+			throw new IOException("Error", e);
+		}
+	}
+
 
 
 	public Page<ProductBasicDTO> findProducts(Pageable pageable) {

@@ -1,9 +1,11 @@
 package com.webapp08.pujahoy.controller;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 
@@ -69,7 +72,19 @@ public class ProductRestController {
         Resource postImage = productService.getPostImage(id);
         
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") // Ajusta el tipo según la imagen
+                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") 
                 .body(postImage);
+    }
+
+    @PostMapping("/{id}/image")
+    public ResponseEntity<String> uploadPostImage(@PathVariable long id, @RequestParam("image") MultipartFile imageFile) {
+        try {
+            productService.savePostImage(id, imageFile);
+            return ResponseEntity.ok("ok");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error");
+        }
     }
 }

@@ -84,6 +84,7 @@ public class SecurityConfiguration {
                     .requestMatchers(HttpMethod.GET,"/api/products/{id_product}/").permitAll()
 					.requestMatchers(HttpMethod.DELETE,"/api/products/{id_product}/").permitAll()
 					.requestMatchers(HttpMethod.GET,"/api/products/{id}/image").permitAll()
+					.requestMatchers(HttpMethod.POST,"/api/products/{id}/image").permitAll()
 					.requestMatchers(HttpMethod.GET,"/api/users/{id}").permitAll()
 					.requestMatchers(HttpMethod.GET,"/api/users/{id}/products").permitAll()
 					.requestMatchers(HttpMethod.GET,"/api/users/{id}/boughtProducts").permitAll()
