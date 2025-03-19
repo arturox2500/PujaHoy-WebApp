@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.webapp08.pujahoy.repository.UserModelRepository;
 import com.webapp08.pujahoy.security.jwt.JwtRequestFilter;
 import com.webapp08.pujahoy.security.jwt.UnauthorizedHandlerJwt;
 import com.webapp08.pujahoy.service.RepositoryUserDetailsService;
@@ -72,7 +71,11 @@ public class SecurityConfiguration {
                     // PRIVATE ENDPOINTS
                     
 					// PUBLIC ENDPOINTS
-					.requestMatchers(HttpMethod.POST,"/api/auth/user").permitAll()
+					.requestMatchers(HttpMethod.GET,"/api/**").permitAll()
+					.requestMatchers(HttpMethod.POST,"/api/**").permitAll()
+					.requestMatchers(HttpMethod.PUT,"/api/**").permitAll()
+					.requestMatchers(HttpMethod.DELETE,"/api/**").permitAll()
+					/*.requestMatchers(HttpMethod.POST,"/api/auth/user").permitAll()
 					.requestMatchers(HttpMethod.POST,"/api/auth/login").permitAll()
 					.requestMatchers(HttpMethod.POST,"/api/auth/refresh").permitAll()
 					.requestMatchers(HttpMethod.POST,"/api/auth/logout").permitAll()
@@ -86,7 +89,7 @@ public class SecurityConfiguration {
 					.requestMatchers(HttpMethod.GET,"/api/users/{id}/boughtProducts").permitAll()
 					.requestMatchers(HttpMethod.GET,"/api/users/{id}/image").permitAll()
 					.requestMatchers(HttpMethod.PUT,"/api/users").permitAll()
-					.requestMatchers(HttpMethod.POST,"/{user_id}/products/{product_id}/ratings").permitAll()
+					.requestMatchers(HttpMethod.POST,"/{user_id}/products/{product_id}/ratings").permitAll()*/
 					
 			);
 		
@@ -116,7 +119,9 @@ public class SecurityConfiguration {
 		
 		http
 			.authorizeHttpRequests(authorize -> authorize
+				.anyRequest().permitAll()
 				// PUBLIC PAGES
+				/*
 				.requestMatchers("/").permitAll()
 				.requestMatchers("/css/**").permitAll()
 				.requestMatchers("/img/**").permitAll()
@@ -136,12 +141,12 @@ public class SecurityConfiguration {
 				.requestMatchers("/user/{id}/profilePic").permitAll()
 				.requestMatchers("/product/*").permitAll()
 				.requestMatchers("/permitsError").permitAll()
-				.requestMatchers("/api/**").permitAll()
+				.requestMatchers("/api/**").permitAll()*/
 				// PRIVATE PAGES
-				
+				/*
 				.requestMatchers("/user/editProduct/*").hasAnyRole("USER", "ADMIN")
 				.requestMatchers("/user/submit_edit/*").hasAnyRole("USER", "ADMIN")
-				.requestMatchers("/product/*/delete").hasAnyRole("USER","ADMIN")
+				.requestMatchers("/product/*//*delete").hasAnyRole("USER","ADMIN")
 				.requestMatchers("/product/{id_product}/place-bid").hasAnyRole("USER")
 				.requestMatchers("/user").hasAnyRole("USER", "ADMIN")
 				.requestMatchers("/user/{id}/ban").hasAnyRole("ADMIN")
@@ -152,7 +157,7 @@ public class SecurityConfiguration {
 				.requestMatchers("/user/seeBuys").hasAnyRole("USER")
 				.requestMatchers("/user/seeProducts").hasAnyRole("USER")
 				.requestMatchers("/user/{id}/rated").hasAnyRole("USER")
-				.requestMatchers("/product/{id_product}/finish").hasAnyRole("USER")
+				.requestMatchers("/product/{id_product}/finish").hasAnyRole("USER")*/
 			)
 			.formLogin(formLogin -> formLogin
 				.loginPage("/login")					

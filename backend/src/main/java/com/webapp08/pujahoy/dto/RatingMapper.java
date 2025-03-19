@@ -2,6 +2,7 @@ package com.webapp08.pujahoy.dto;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 import com.webapp08.pujahoy.model.Rating;
 
@@ -9,12 +10,13 @@ import com.webapp08.pujahoy.model.Rating;
 public interface RatingMapper {
 
     //Rating to RatingDTO
-    @Mapping(target = "idSeller", expression = "java(rating.getSeller().getId())") 
-    @Mapping(target = "idProduct", expression = "java(rating.getProduct().getId())")
+    @Mapping(source = "rating", target = "rating")
     RatingDTO toDTO(Rating rating);
 
     //RatingDTO to Rating
-    @Mapping(source = "idSeller", target = "seller.id")
-    @Mapping(source = "idProduct", target = "product.id")
+    @Mappings({
+        @Mapping(target = "product", ignore = true),
+        @Mapping(target = "seller", ignore = true)
+    })
     Rating toDomain(RatingDTO ratingDTO);
 }

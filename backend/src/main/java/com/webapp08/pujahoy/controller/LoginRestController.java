@@ -24,7 +24,7 @@ import com.webapp08.pujahoy.security.jwt.UserLoginService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 public class LoginRestController {
 	
 	@Autowired
