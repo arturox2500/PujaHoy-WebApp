@@ -68,6 +68,16 @@ public class ProductService {
 		Pageable pageable = PageRequest.of(page, size);
         return repository.findByStateInProgressOrderedBySellerReputation(pageable);
     }
+	//Search all
+    public Page<ProductBasicDTO> obtainAllProductOrdersByReputationDTO(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+        return repository.findAllOrderedBySellerReputation(pageable).map(this::toDTO);
+    }
+	//Search only In progress
+	public Page<ProductBasicDTO> obtainAllProductOrdersInProgressByReputationDTO(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+        return repository.findByStateInProgressOrderedBySellerReputation(pageable).map(this::toDTO);
+    }
 
 	public Page<Product> obtainAllProducts(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size);
@@ -131,6 +141,14 @@ public class ProductService {
 		Page<Product> productPage = repository.findBoughtProductsByUserID(pageable, id);
 		List<ProductBasicDTO> dtoList = basicMapper.toDTOList(productPage.getContent());
 		return new PageImpl<>(dtoList, pageable, productPage.getTotalElements());
+	}
+
+	private ProductBasicDTO toDTO(Product product){
+		return basicMapper.toDTO(product);
+	}
+
+	private Product toDomain(ProductBasicDTO productDTO){
+		return basicMapper.toDomain(productDTO);
 	}
 
 }

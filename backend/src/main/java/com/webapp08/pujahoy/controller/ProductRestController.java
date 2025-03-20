@@ -30,6 +30,7 @@ public class ProductRestController {
     @Autowired
     private ProductService productService;
 
+
     @GetMapping("/{id_product}")
     public ProductDTO getProduct(@PathVariable long id_product) {
         return productService.findProduct(id_product);
@@ -38,8 +39,8 @@ public class ProductRestController {
     @GetMapping
     public Page<ProductBasicDTO> getProducts(@RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return productService.findProducts(pageable);
+        
+        return productService.obtainAllProductOrdersInProgressByReputationDTO(page,size);
     }
 
     
@@ -100,4 +101,6 @@ public class ProductRestController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error");
         }
     }
+
+    
 }

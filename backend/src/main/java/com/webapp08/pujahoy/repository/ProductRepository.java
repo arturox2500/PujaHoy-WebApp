@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.UserModel;
 
@@ -42,4 +43,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     //Advanced search algorithm only In progress
     @Query("SELECT p FROM Product p WHERE p.state = 'In progress' ORDER BY p.seller.reputation DESC")
     Page<Product> findByStateInProgressOrderedBySellerReputation(Pageable pageable);
+
+   
 }
