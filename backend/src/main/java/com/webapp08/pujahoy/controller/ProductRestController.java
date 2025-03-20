@@ -2,6 +2,7 @@ package com.webapp08.pujahoy.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -63,6 +64,30 @@ public class ProductRestController {
                 .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") 
                 .body(postImage);
     }
+
+    @PutMapping("/{id}/image")
+    public ResponseEntity<?> updatePostImage(@PathVariable long id, @RequestParam("image") MultipartFile imageFile) {
+        if (imageFile.isEmpty()) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", "No image uploaded"));
+        }
+
+        Optional<Product> optionalProduct = productService.findById(id);
+        if (optionalProduct.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("error", "Product not found"));
+        }
+
+        try {
+            productService.savePostImage(id, imageFile);
+
+            return ResponseEntity.ok(Collections.singletonMap("message", "ok"));
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "Error updating image: " + e.getMessage()));
+        }
+    }
+
+    
 
     @PostMapping("/{id}/image")
     public ResponseEntity<String> uploadPostImage(@PathVariable long id, @RequestParam("image") MultipartFile imageFile) {

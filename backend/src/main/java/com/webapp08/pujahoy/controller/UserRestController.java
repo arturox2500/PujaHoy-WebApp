@@ -1,6 +1,8 @@
 package com.webapp08.pujahoy.controller;
 
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
+import com.webapp08.pujahoy.dto.ProductDTO;
+import com.webapp08.pujahoy.dto.ProductMapper;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.dto.RatingDTO;
 import com.webapp08.pujahoy.model.Product;
@@ -17,15 +19,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.sql.Blob;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+
 import java.io.IOException;
 import java.net.URI;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
@@ -62,6 +71,95 @@ public class UserRestController {
     public PublicUserDTO getUserById(@PathVariable Long id) { //Get user by id
         return userService.findUser(id);
     }
+
+    @PostMapping("/{id}/product")
+        public ResponseEntity<?> publishProduct(@RequestBody ProductDTO productDTO, Principal principal) {
+
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Collections.singletonMap("error", "User not authenticated"));
+        }
+
+        Optional<UserModel> user = userService.findByName(principal.getName());
+
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("error", "User not found"));
+        }
+
+        try {
+            
+            Date iniHour = new Date(System.currentTimeMillis());
+            Date endHour = new Date(iniHour.getTime() + (long) 7 * 24 * 60 * 60 * 1000);
+
+            Product product = new Product(
+                    productDTO.getName(), 
+                    productDTO.getDescription(), 
+                    productDTO.getIniValue(), 
+                    iniHour, 
+                    endHour, 
+                    "In progress",
+                    null, 
+                    user.get()
+            );
+
+            
+            product.setImgURL("/api/products/" + product.getId() + "/image");
+            productService.save(product);
+
+            ProductDTO responseDTO = ProductMapper.INSTANCE.toDTO(product);
+            URI location = fromCurrentRequest().path("/products/{id}").buildAndExpand(responseDTO.getId()).toUri();
+
+            return ResponseEntity.created(location).body(responseDTO);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "Error processing the product: " + e.getMessage()));
+        }
+    }
+
+    @PutMapping("/{id}/products/{pid}")
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @PathVariable Long pid, @RequestBody ProductDTO productDTO, Principal principal) {
+        
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Collections.singletonMap("error", "User not authenticated"));
+        }
+
+        Optional<UserModel> user = userService.findByName(principal.getName());
+
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("error", "User not found"));
+        }
+
+        Optional<Product> existingProduct = productService.findById(pid);
+
+        if (existingProduct.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("error", "Product not found"));
+        }
+
+        try {
+            Product product = existingProduct.get();
+
+            // Solo actualizamos los campos que se permiten modificar
+            product.setName(productDTO.getName());
+            product.setDescription(productDTO.getDescription());
+            product.setIniValue(productDTO.getIniValue());
+
+            productService.save(product);
+
+            ProductDTO responseDTO = ProductMapper.INSTANCE.toDTO(product);
+
+            return ResponseEntity.ok(responseDTO);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "Error updating the product: " + e.getMessage()));
+        }
+    }
+    
 
     @GetMapping("/{id}/products")
     public Page<ProductBasicDTO> getUserProducts(@PathVariable Long id,
