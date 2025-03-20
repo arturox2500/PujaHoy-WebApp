@@ -1,6 +1,7 @@
 package com.webapp08.pujahoy.dto;
 
 import java.sql.Date;
+import java.util.List;
 
 
 public class ProductDTO {
@@ -13,7 +14,7 @@ public class ProductDTO {
     private String state;
     private String imgURL;
     private Long sellerId;
-    //private List<OfferBasicDTO> offers;
+    private List<OfferBasicDTO> offers;
     
 
     public long getId() {
@@ -70,6 +71,12 @@ public class ProductDTO {
     public void setSellerId(Long sellerId) {
         this.sellerId = sellerId;
     } 
+    public List<OfferBasicDTO> getOffers() {
+        return offers;
+    }
+    public void setOffers(List<OfferBasicDTO> offers) {
+        this.offers = offers;
+    }
     
     
 }
