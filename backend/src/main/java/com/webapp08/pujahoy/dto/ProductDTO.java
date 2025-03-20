@@ -2,6 +2,7 @@ package com.webapp08.pujahoy.dto;
 
 import java.sql.Date;
 
+
 public class ProductDTO {
     private long id;
     private String name;
@@ -12,7 +13,9 @@ public class ProductDTO {
     private String state;
     private String imgURL;
     private Long sellerId;
+    //private List<OfferBasicDTO> offers;
     
+
     public long getId() {
         return id;
     }
@@ -67,5 +70,6 @@ public class ProductDTO {
     public void setSellerId(Long sellerId) {
         this.sellerId = sellerId;
     } 
+    
     
 }
