@@ -73,7 +73,7 @@ public class UserRestController {
     }
 
     @PostMapping("/{id}/product")
-        public ResponseEntity<?> publishProduct(@RequestBody ProductDTO productDTO, Principal principal) {
+        public ResponseEntity<?> publishProduct(@RequestBody ProductDTO productDTO, Principal principal, @PathVariable Long id) {
 
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -85,6 +85,11 @@ public class UserRestController {
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Collections.singletonMap("error", "User not found"));
+        }
+
+        if (!user.get().getId().equals(id)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("error", "You are not allowed to publish products for another user"));
         }
 
         if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
