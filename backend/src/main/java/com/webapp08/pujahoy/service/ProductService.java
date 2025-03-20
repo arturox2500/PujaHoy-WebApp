@@ -125,22 +125,16 @@ public class ProductService {
 
 
 	public Page<ProductBasicDTO> findProducts(Pageable pageable) {
-    Page<Product> productPage = repository.findAll(pageable);
-    List<ProductBasicDTO> dtoList = basicMapper.toDTOList(productPage.getContent());
-    return new PageImpl<>(dtoList, pageable, productPage.getTotalElements());
+    return repository.findAll(pageable).map(this::toDTO);   
 	}
 
 
 	public Page<ProductBasicDTO> findProductsByUser(Pageable pageable, Long id) {
-		Page<Product> productPage = repository.findBySeller_Id(pageable, id);
-		List<ProductBasicDTO> dtoList = basicMapper.toDTOList(productPage.getContent());
-		return new PageImpl<>(dtoList, pageable, productPage.getTotalElements());
+		return repository.findBySeller_Id(pageable, id).map(this::toDTO);		
 	}
 
 	public Page<ProductBasicDTO> findBoughtProductsByUser(Pageable pageable, Long id) {
-		Page<Product> productPage = repository.findBoughtProductsByUserID(pageable, id);
-		List<ProductBasicDTO> dtoList = basicMapper.toDTOList(productPage.getContent());
-		return new PageImpl<>(dtoList, pageable, productPage.getTotalElements());
+		return repository.findBoughtProductsByUserID(pageable, id).map(this::toDTO);
 	}
 
 	private ProductBasicDTO toDTO(Product product){

@@ -20,7 +20,7 @@ public interface ProductBasicMapper {
     List<ProductBasicDTO> toDTOList(List<Product> products);
 
     default String generateImageUrl(Long id) {
-        return "https://localhost:8443/api/products/" + id + "/image";  // URL dinámica de la imagen
+        return "https://localhost:8443/api/v1/products/" + id + "/image";  // URL dinámica de la imagen
     }
 
     @Mappings({

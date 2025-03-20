@@ -19,18 +19,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import java.sql.Blob;
+
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.engine.jdbc.BlobProxy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -87,10 +87,18 @@ public class UserRestController {
                     .body(Collections.singletonMap("error", "User not found"));
         }
 
+        if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
+            productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
+            productDTO.getDuration() == null || productDTO.getIniValue() == null) {
+            
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error", "All fields must be filled"));
+        }
+
         try {
             
             Date iniHour = new Date(System.currentTimeMillis());
-            Date endHour = new Date(iniHour.getTime() + (long) 7 * 24 * 60 * 60 * 1000);
+            Date endHour = new Date(iniHour.getTime() + (Long) productDTO.getDuration() * 24 * 60 * 60 * 1000);
 
             Product product = new Product(
                     productDTO.getName(), 
@@ -127,10 +135,31 @@ public class UserRestController {
         }
 
         Optional<UserModel> user = userService.findByName(principal.getName());
-
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Collections.singletonMap("error", "User not found"));
+        }
+
+        Optional<Product> optionalProduct = productService.findById(pid);
+        if (optionalProduct.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("error", "Product not found"));
+        }
+
+        Product product = optionalProduct.get();
+        UserModel loggedInUser = user.get();
+
+        if (!(product.getSeller().getId().equals(loggedInUser.getId()) || loggedInUser.determineUserType().equals("Administrator"))) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("error", "You do not have permission to modify this product"));
+        }
+
+        if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
+            productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
+            productDTO.getDuration() == null || productDTO.getIniValue() == null) {
+            
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error", "All fields must be filled"));
         }
 
         Optional<Product> existingProduct = productService.findById(pid);
@@ -141,9 +170,6 @@ public class UserRestController {
         }
 
         try {
-            Product product = existingProduct.get();
-
-            // Solo actualizamos los campos que se permiten modificar
             product.setName(productDTO.getName());
             product.setDescription(productDTO.getDescription());
             product.setIniValue(productDTO.getIniValue());
@@ -160,7 +186,6 @@ public class UserRestController {
         }
     }
     
-
     @GetMapping("/{id}/products")
     public Page<ProductBasicDTO> getUserProducts(@PathVariable Long id,
                                                 @RequestParam(defaultValue = "0") int page,
