@@ -36,16 +36,38 @@ public class ProductRestController {
     @Autowired
     private UserService userService;
 
+    
     @GetMapping("/{id_product}")
-    public ProductDTO getProduct(@PathVariable long id_product) {
-        return productService.findProduct(id_product);
+    public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
+    Optional<Product> product = productService.findById(id_product);
+    if (product.isPresent()) {
+        ProductDTO prod=productService.findProduct(id_product);
+        return ResponseEntity.ok(prod);
+    } else {
+        return ResponseEntity.notFound().build();
     }
+}
 
     @GetMapping
-    public Page<ProductBasicDTO> getProducts(@RequestParam(defaultValue = "0") int page,
-                                            @RequestParam(defaultValue = "10") int size) {
+    public Page<ProductBasicDTO> getProducts(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, HttpServletRequest request) {
         
+        Principal principal = request.getUserPrincipal();
+        if(principal != null) {
+			Optional<UserModel> useraux = userService.findByName(principal.getName());
+            if (useraux.isPresent()) {
+                UserModel user= useraux.get();
+                
+                //isAdmin
+                if("Administrator".equalsIgnoreCase(user.determineUserType())){
+                    return productService.obtainAllProductOrdersByReputationDTO(page,size);
+                }else{//Registered
+                    return productService.obtainAllProductOrdersInProgressByReputationDTO(page,size); 
+                }
+            }
+        }
+        //Not registered
         return productService.obtainAllProductOrdersInProgressByReputationDTO(page,size);
+        
     }
 
     
