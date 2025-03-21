@@ -158,4 +158,11 @@ public class Product {
             this.duration = duration;
         } 
 
+        public boolean isActive() {
+        long currentTime = System.currentTimeMillis();
+        Date currentDate = new Date(currentTime); 
+
+        return iniHour != null && endHour != null && !currentDate.before(iniHour) && !currentDate.after(endHour);
+}
+
 }

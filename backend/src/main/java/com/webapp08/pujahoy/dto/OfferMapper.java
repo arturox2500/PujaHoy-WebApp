@@ -4,24 +4,32 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 import com.webapp08.pujahoy.model.Offer;
 
 @Mapper(componentModel = "spring")
 public interface OfferMapper {
 
-    // Offer --------> OfferBasicDTO
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "cost", target = "cost")
-    OfferBasicDTO toDTO(Offer offer);
+    // Offer --------> OfferDTO
+    @Mappings({
+        @Mapping(source = "id", target = "id"),
+        @Mapping(source = "cost", target = "cost"),
+        @Mapping(source = "hour", target = "hour"),
+        @Mapping(source = "user", target = "user"),
+        @Mapping(source = "product", target = "product")
+    })
+    OfferDTO toDTO(Offer offer);
 
-    List<OfferBasicDTO> toDTOList(List<Offer> offers);
+    List<OfferDTO> toDTOList(List<Offer> offers);
 
-    //  OfferBasicDTO -------> Offer 
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "cost", target = "cost")
-    @Mapping(target = "user", ignore = true)    
-    @Mapping(target = "product", ignore = true) 
-    @Mapping(target = "hour", ignore = true)    
-    Offer toDomain(OfferBasicDTO offerBasicDTO);
+    //  OfferDTO -------> Offer 
+    @Mappings({
+        @Mapping(source = "id", target = "id"),
+        @Mapping(source = "cost", target = "cost"),   
+        @Mapping(source = "hour", target = "hour"),
+        @Mapping(source = "user", target = "user"),
+        @Mapping(source = "product", target = "product")
+    }) 
+    Offer toDomain(OfferDTO offerDTO);
 }

@@ -1,7 +1,9 @@
 package com.webapp08.pujahoy.controller;
 
 import java.io.IOException;
+import java.net.URI;
 import java.security.Principal;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Collections;
 
@@ -12,18 +14,25 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException.Forbidden;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 
+import com.webapp08.pujahoy.dto.OfferDTO;
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
+import com.webapp08.pujahoy.dto.RatingDTO;
+import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.UserModel;
+import com.webapp08.pujahoy.service.OfferService;
 import com.webapp08.pujahoy.service.ProductService;
 import com.webapp08.pujahoy.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
+
 
 
 @RestController
@@ -35,6 +44,9 @@ public class ProductRestController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private OfferService offerService;
 
     
     @GetMapping("/{id_product}")
@@ -69,6 +81,75 @@ public class ProductRestController {
         return productService.obtainAllProductOrdersInProgressByReputationDTO(page,size);
         
     }
+    @PostMapping("/{id_product}/Offer")
+    public ResponseEntity<OfferDTO> PlaceBid(@PathVariable long id_product, @RequestBody OfferDTO offerDTO,HttpServletRequest request) {
+
+        Principal principal = request.getUserPrincipal();
+        if(principal == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        Optional<UserModel> user = userService.findByName(principal.getName());
+        if (!user.isPresent()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Optional<UserModel> bidder = userService.findById(user.get().getId());
+        Optional<Product> product = productService.findById(id_product);
+
+        //User Comprobation
+        if(bidder.isPresent()){
+            if("Administrator".equalsIgnoreCase(bidder.get().determineUserType())){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+            if(!bidder.get().isActive()){
+                return ResponseEntity.badRequest().build();
+            }
+        }else{
+            return ResponseEntity.badRequest().build();
+        }
+
+        //Product Comprobation
+        if (product.isPresent()) {
+            if(!product.get().isActive()){
+                return ResponseEntity.badRequest().build();
+            }
+        }else{
+            return ResponseEntity.badRequest().build();
+        }
+
+        // bidder not the seller
+        if(bidder.get().getId()==product.get().getSeller().getId()){
+            return ResponseEntity.badRequest().build();
+        }
+
+
+        //Get last bid
+        Offer lastOffer = offerService.findLastOfferByProduct(id_product);
+        //Set min cost
+        double actualPrice;
+        if (lastOffer != null) {
+            actualPrice = lastOffer.getCost();
+        } else {
+            actualPrice = product.get().getIniValue() - 1;
+        }
+        if(offerDTO.cost()>actualPrice){
+            long currentTime = System.currentTimeMillis();
+            Date currentDate = new Date(currentTime); 
+            Offer newOffer=new Offer(bidder.get(),product.get(),offerDTO.cost(),currentDate);
+
+            product.get().getOffers().add(newOffer); 
+            offerService.save(newOffer);
+            productService.save(product.get());
+            OfferDTO offer=offerService.toDTO(newOffer);
+            
+            URI location = fromCurrentRequest().path("/{id}").buildAndExpand(offer.id()).toUri();
+
+            return ResponseEntity.created(location).body(offer);
+        }else{
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
 
     
 

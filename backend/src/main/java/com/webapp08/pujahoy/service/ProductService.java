@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.data.domain.Pageable;
 
+import com.webapp08.pujahoy.dto.OfferBasicMapper;
+import com.webapp08.pujahoy.dto.OfferMapper;
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductBasicMapper;
 import com.webapp08.pujahoy.dto.ProductDTO;
@@ -37,6 +39,10 @@ public class ProductService {
 	private ProductMapper mapper;
 	@Autowired
 	private ProductBasicMapper basicMapper;
+	@Autowired
+	private OfferBasicMapper offerBasicMapper;
+	@Autowired
+	private OfferMapper offerMapper;
     
     public Optional<Product> findById(long id) {
 		return repository.findById(id);
