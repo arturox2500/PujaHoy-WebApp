@@ -20,8 +20,7 @@ public interface OfferMapper {
         @Mapping(source = "product", target = "product")
     })
     OfferDTO toDTO(Offer offer);
-
-    List<OfferDTO> toDTOList(List<Offer> offers);
+    List<OfferDTO> toDTOList(List<Offer> offersDTO);
 
     //  OfferDTO -------> Offer 
     @Mappings({

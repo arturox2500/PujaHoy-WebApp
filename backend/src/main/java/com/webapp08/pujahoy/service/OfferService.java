@@ -1,6 +1,7 @@
 package com.webapp08.pujahoy.service;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,11 @@ public class OfferService {
       return mapper.toDTO(offer);
     }
 
-    private Offer toDomain(OfferDTO offerDTO){
+    public Offer toDomain(OfferDTO offerDTO){
 		return mapper.toDomain(offerDTO);
+	}
+
+    public List<OfferDTO> toDTOs(List<Offer> offersDTO){
+		return mapper.toDTOList(offersDTO);
 	}
 }
