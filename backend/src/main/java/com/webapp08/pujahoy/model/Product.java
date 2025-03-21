@@ -22,10 +22,11 @@ public class Product {
     
         private String name;
         private String description;
-        private double iniValue;
+        private Double iniValue;
         private Date iniHour;
         private Date endHour;
         private String state;
+        private Long duration;
         
         @Lob
         private Blob image;
@@ -41,7 +42,7 @@ public class Product {
     
         }
 
-        public Product(String name,String description,double iniValue, Date iniHour,Date endHour, String state, Blob image, UserModel seller){
+        public Product(String name,String description,Double iniValue, Date iniHour,Date endHour, String state, Blob image, UserModel seller){
             this.name = name;
             this.description = description;
             this.iniValue = iniValue;
@@ -81,11 +82,11 @@ public class Product {
         }
 
        
-        public double getIniValue() {
+        public Double getIniValue() {
             return iniValue;
         }
 
-        public void setIniValue(double iniValue) {
+        public void setIniValue(Double iniValue) {
             this.iniValue = iniValue;
         }
 
@@ -148,5 +149,13 @@ public class Product {
         public void setImgURL(String imgURL) {
             this.imgURL = imgURL;
         }
+
+        public Long getDuration() {
+            return duration;
+        }
+
+        public void setDuration(Long duration) {
+            this.duration = duration;
+        } 
 
 }

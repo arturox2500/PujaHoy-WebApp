@@ -32,7 +32,7 @@ public class LoginRestController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-        @Autowired
+    @Autowired
 	private UserLoginService userService;
 
 	@PostMapping("/login")

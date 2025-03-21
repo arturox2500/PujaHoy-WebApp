@@ -26,7 +26,7 @@ public interface ProductMapper {
     ProductDTO toDTO(Product product);
 
     default String generateImageUrl(Long id) {
-        return "https://localhost:8443/api/products/" + id + "/image";  // URL dinámica de la imagen
+        return "https://localhost:8443/api/v1/products/" + id + "/image";  
     }
 
     // ProductDTO -> Product
@@ -39,9 +39,9 @@ public interface ProductMapper {
         @Mapping(source = "endHour", target = "endHour"),
         @Mapping(source = "state", target = "state"),
         @Mapping(source = "imgURL", target = "imgURL"), 
-        @Mapping(target = "image", ignore = true), // Ignore Blob
+        @Mapping(target = "image", ignore = true), 
         @Mapping(target = "offers", ignore = true), 
-        @Mapping(target = "seller", ignore = true) // Se debe asignar manualmente desde el ID
+        @Mapping(target = "seller", ignore = true) 
     })
     Product toDomain(ProductDTO productDTO);
 }

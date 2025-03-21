@@ -8,12 +8,14 @@ public class ProductDTO {
     private long id;
     private String name;
     private String description;
-    private double iniValue;
+    private Double iniValue;
     private Date iniHour;
     private Date endHour;
     private String state;
     private String imgURL;
     private Long sellerId;
+    private Long duration;
+    
     private List<OfferBasicDTO> offers;
     
 
@@ -35,10 +37,10 @@ public class ProductDTO {
     public void setDescription(String description) {
         this.description = description;
     }
-    public double getIniValue() {
+    public Double getIniValue() {
         return iniValue;
     }
-    public void setIniValue(double iniValue) {
+    public void setIniValue(Double iniValue) {
         this.iniValue = iniValue;
     }
     public Date getIniHour() {
@@ -76,6 +78,13 @@ public class ProductDTO {
     }
     public void setOffers(List<OfferBasicDTO> offers) {
         this.offers = offers;
+    }
+
+    public Long getDuration() {
+        return duration;
+    }
+    public void setDuration(Long duration) {
+        this.duration = duration;
     }
     
     
