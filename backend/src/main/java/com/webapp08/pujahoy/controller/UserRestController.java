@@ -223,9 +223,26 @@ public class UserRestController {
 	}
 
     @PutMapping("") //Update user
-	public PublicUserDTO replacePost(@RequestBody PublicUserDTO updatedUserDTO) throws SQLException {
-        //FALTA COMPROBAR QUE DATOS SE CAMBIAN Y QUIEN HACE EL CAMBIO
-		return userService.replaceUser(updatedUserDTO.getId(), updatedUserDTO);
+	public ResponseEntity<PublicUserDTO> replacePost(@RequestBody PublicUserDTO updatedUserDTO, HttpServletRequest request) throws SQLException {
+        Principal principal = request.getUserPrincipal();
+        if(principal != null) {
+			Optional<UserModel> user = userService.findByName(principal.getName());
+            if (user.isPresent()) {
+                if (user.get().determineUserType() == "Administrator") { //Administrator = Banned user
+                    Optional<PublicUserDTO> newUser = userService.bannedUser(updatedUserDTO.getId(), updatedUserDTO);
+                    if (newUser.isPresent()){
+                        return ResponseEntity.ok(userService.findUser(newUser.get().getId()));
+                    } else {
+                        return ResponseEntity.badRequest().build(); //There is not user authenticated
+                    }
+                } else { //Registered User = edit own profile
+                    //userService.replaceUser(updatedUserDTO.getId(), updatedUserDTO);
+                }
+            }
+        } else {
+            return ResponseEntity.badRequest().build(); //There is not user authenticated
+        }        
+        return null;
 	}
 
     public void updateRating(UserModel user) { // Responsible for updating the reputation of a user

@@ -40,6 +40,36 @@ public class UserService {
 		}
 	}
 
+	public Optional<PublicUserDTO> bannedUser(long id, PublicUserDTO updatedUserDTO) throws SQLException {
+
+		Optional<UserModel> oldUserOpt = repository.findById(id);
+		if (!oldUserOpt.isPresent()){
+			return Optional.empty(); //The user dont exist
+		}
+		UserModel oldUser = oldUserOpt.get();
+		UserModel updatedUser = mapper.toDomain(updatedUserDTO);
+		updatedUser.setId(id);
+		if (mapper.toDTO(oldUser).changes(updatedUserDTO) == 0){
+
+			if (oldUser.getImage() != null) {
+
+				//Set the image in the updated post
+				updatedUser.setProfilePic(BlobProxy.generateProxy(oldUser.getProfilePic().getBinaryStream(),
+					oldUser.getProfilePic().length()));
+				updatedUser.setImage(oldUser.getImage());
+			}
+			updatedUser.setRols(oldUser.getRols());
+			updatedUser.setProducts(oldUser.getProducts());
+			updatedUser.setPass(oldUser.getEncodedPassword());
+			updatedUser.setActive(!oldUser.isActive());
+
+			repository.save(updatedUser);
+
+			return Optional.of(mapper.toDTO(updatedUser));
+		}
+		return Optional.empty(); //The changes is not for banned user
+	}
+
 	public PublicUserDTO replaceUser(long id, PublicUserDTO updatedPostDTO) throws SQLException {
 
 		UserModel oldPost = repository.findById(id).orElseThrow();
