@@ -56,15 +56,16 @@ public class UserRestController {
     private RatingService ratingService;
 
     @GetMapping("")
-    public PublicUserDTO me(HttpServletRequest request) { //Get his own details
+    public ResponseEntity<PublicUserDTO> me(HttpServletRequest request) { //Get his own details
         Principal principal = request.getUserPrincipal();
         if(principal != null) {
 			Optional<UserModel> user = userService.findByName(principal.getName());
             if (user.isPresent()) {
-                return userService.findUser(user.get().getId());
+                URI location = fromCurrentRequest().path("/").buildAndExpand(user.get().getId()).toUri();
+                return ResponseEntity.created(location).body(userService.findUser(user.get().getId()));
             }
         }
-        return null; //The user is not logged in or the user is not found
+        return ResponseEntity.badRequest().build(); //The user is not logged in or the user is not found
     }
     
     @GetMapping("/{id}")
