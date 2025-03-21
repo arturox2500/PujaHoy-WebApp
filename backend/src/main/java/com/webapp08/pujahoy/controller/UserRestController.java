@@ -93,12 +93,28 @@ public class UserRestController {
                     .body(Collections.singletonMap("error", "You are not allowed to publish products for another user"));
         }
 
+        UserModel loggedInUser = user.get();
+        if (loggedInUser.determineUserType().equals("Administrator")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("error", "Administrators are not allowed to publish products"));
+        }
+
+        if (!loggedInUser.isActive()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("error", "Banned user"));
+        }
+
         if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
             productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
             productDTO.getDuration() == null || productDTO.getIniValue() == null) {
             
             return ResponseEntity.badRequest()
                     .body(Collections.singletonMap("error", "All fields must be filled"));
+        }
+
+        if (productDTO.getDuration() < 1){
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error", "The duration field must contain a number higher or equal to 1."));
         }
 
         try {
@@ -155,9 +171,15 @@ public class UserRestController {
         Product product = optionalProduct.get();
         UserModel loggedInUser = user.get();
 
+
         if (!(product.getSeller().getId().equals(loggedInUser.getId()) || loggedInUser.determineUserType().equals("Administrator"))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "You do not have permission to modify this product"));
+        }
+
+        if (!loggedInUser.isActive()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("error", "Banned user"));
         }
 
         if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
@@ -166,6 +188,11 @@ public class UserRestController {
             
             return ResponseEntity.badRequest()
                     .body(Collections.singletonMap("error", "All fields must be filled"));
+        }
+
+        if (productDTO.getDuration() < 1){
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error", "The duration field must contain a number higher or equal to 1."));
         }
 
         Optional<Product> existingProduct = productService.findById(pid);
@@ -193,20 +220,60 @@ public class UserRestController {
     }
     
     @GetMapping("/{id}/products")
-    public Page<ProductBasicDTO> getUserProducts(@PathVariable Long id,
-                                                @RequestParam(defaultValue = "0") int page,
-                                                @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<?> getUserProducts(@PathVariable Long id,
+                                         @RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "10") int size,
+                                         Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Collections.singletonMap("error", "User not authenticated"));
+        }
+
+        Optional<UserModel> user = userService.findByName(principal.getName());
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("error", "User not found"));
+        }
+
+        UserModel loggedInUser = user.get();
+        if (!loggedInUser.isActive()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("error", "Banned user"));
+        }
+
         Pageable pageable = PageRequest.of(page, size);
-        return productService.findProductsByUser(pageable, id);
-    }
+        Page<ProductBasicDTO> products = productService.findProductsByUser(pageable, id);
+
+        return ResponseEntity.ok(products);
+}
 
 
     @GetMapping("/{id}/boughtProducts")
-    public Page<ProductBasicDTO> getBoughtProducts(@PathVariable Long id,
-                                                @RequestParam(defaultValue = "0") int page,
-                                                @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<?> getBoughtProducts(@PathVariable Long id,
+                                            @RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "10") int size,
+                                            Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Collections.singletonMap("error", "User not authenticated"));
+        }
+
+        Optional<UserModel> user = userService.findByName(principal.getName());
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("error", "User not found"));
+        }
+
+        UserModel loggedInUser = user.get();
+        if (!loggedInUser.isActive()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("error", "Banned user"));
+        }
+
         Pageable pageable = PageRequest.of(page, size);
-        return productService.findBoughtProductsByUser(pageable, id);
+        Page<ProductBasicDTO> boughtProducts = productService.findBoughtProductsByUser(pageable, id);
+
+        return ResponseEntity.ok(boughtProducts);
     }
 
     

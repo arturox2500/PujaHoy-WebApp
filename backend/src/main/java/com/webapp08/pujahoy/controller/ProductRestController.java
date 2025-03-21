@@ -203,6 +203,12 @@ public class ProductRestController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "You do not have permission to modify this product"));
         }
+
+        if (!loggedInUser.isActive()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("error", "Banned user"));
+        }
+
         try {
             productService.savePostImage(id, imageFile);
             Resource postImage = productService.getPostImage(id);
@@ -246,10 +252,14 @@ public class ProductRestController {
         Product product = optionalProduct.get();
         UserModel loggedInUser = user.get();
 
-        // Verificar que el usuario autenticado sea el dueño del producto
         if (!product.getSeller().getId().equals(loggedInUser.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "You do not have permission to upload an image for this product"));
+        }
+
+        if (!loggedInUser.isActive()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("error", "Banned user"));
         }
 
         try {
