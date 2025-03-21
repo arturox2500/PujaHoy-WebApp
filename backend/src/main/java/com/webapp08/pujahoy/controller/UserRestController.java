@@ -119,6 +119,11 @@ public class UserRestController {
                     .body(Collections.singletonMap("error", "The duration field must contain a number higher or equal to 1."));
         }
 
+        if (productDTO.getIniValue() < 1){
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error", "The iniValue field must contain a number higher or equal to 1."));
+        }
+
         try {
             
             Date iniHour = new Date(System.currentTimeMillis());
@@ -197,6 +202,11 @@ public class UserRestController {
         if (productDTO.getDuration() < 1){
             return ResponseEntity.badRequest()
                     .body(Collections.singletonMap("error", "The duration field must contain a number higher or equal to 1."));
+        }
+
+        if (productDTO.getIniValue() < 1){
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error", "The iniValue field must contain a number higher or equal to 1."));
         }
 
         Optional<Product> existingProduct = productService.findById(pid);
