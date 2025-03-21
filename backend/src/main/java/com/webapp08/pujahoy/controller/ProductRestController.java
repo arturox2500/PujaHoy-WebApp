@@ -6,15 +6,15 @@ import java.security.Principal;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Collections;
-
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException.Forbidden;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -22,7 +22,6 @@ import org.springframework.data.domain.Page;
 import com.webapp08.pujahoy.dto.OfferDTO;
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
-import com.webapp08.pujahoy.dto.RatingDTO;
 import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.UserModel;
@@ -51,14 +50,14 @@ public class ProductRestController {
     
     @GetMapping("/{id_product}")
     public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
-    Optional<Product> product = productService.findById(id_product);
-    if (product.isPresent()) {
-        ProductDTO prod=productService.findProduct(id_product);
-        return ResponseEntity.ok(prod);
-    } else {
-        return ResponseEntity.notFound().build();
+        Optional<Product> product = productService.findById(id_product);
+        if (product.isPresent()) {
+            ProductDTO prod=productService.findProduct(id_product);
+            return ResponseEntity.ok(prod);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
-}
 
     @GetMapping
     public Page<ProductBasicDTO> getProducts(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, HttpServletRequest request) {
@@ -147,6 +146,18 @@ public class ProductRestController {
             return ResponseEntity.created(location).body(offer);
         }else{
             return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/{id_product}/Offers")
+    public ResponseEntity<List<OfferDTO>> getOffers(@PathVariable long id_product) {
+        Optional<Product> product = productService.findById(id_product);
+        
+        if (product.isPresent()) {
+            List<OfferDTO> offerDTOs = offerService.toDTOs(product.get().getOffers());
+            return ResponseEntity.ok(offerDTOs); 
+        } else {
+            return ResponseEntity.notFound().build(); 
         }
     }
     
