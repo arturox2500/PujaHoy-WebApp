@@ -166,15 +166,36 @@ public class ProductRestController {
 
 
     @DeleteMapping("/{id_product}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable long id_product) {
-        Optional<Product> product = productService.findById(id_product);
-        if (product.isPresent()) {
-            productService.deleteById(id_product);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+public ResponseEntity<Void> deleteProduct(@PathVariable long id_product, HttpServletRequest request) {
+    Optional<Product> product = productService.findById(id_product);
+
+    if (product.isEmpty()) {
+        return ResponseEntity.notFound().build();
     }
+
+    Principal principal = request.getUserPrincipal();
+    if (principal == null) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    Optional<UserModel> user = userService.findByName(principal.getName());
+    if (user.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    UserModel loggedInUser = user.get();
+    Product existingProduct = product.get();
+
+    // Verificar si es administrador o dueño del producto
+    if (!"Administrator".equalsIgnoreCase(loggedInUser.determineUserType()) &&
+        !existingProduct.getSeller().getId().equals(loggedInUser.getId())) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
+    productService.deleteById(id_product);
+    return ResponseEntity.noContent().build();
+}
+
 
     @GetMapping("/{id}/image")
     public ResponseEntity<Resource> getPostImage(@PathVariable long id) throws SQLException {
