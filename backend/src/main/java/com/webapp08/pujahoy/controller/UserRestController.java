@@ -74,7 +74,9 @@ public class UserRestController {
     }
 
     @PostMapping("/{id}/product")
-        public ResponseEntity<?> publishProduct(@RequestBody ProductDTO productDTO, Principal principal, @PathVariable Long id) {
+        public ResponseEntity<?> publishProduct(@RequestBody ProductDTO productDTO, HttpServletRequest request, @PathVariable Long id) {
+        
+        Principal principal = request.getUserPrincipal();
 
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -149,8 +151,10 @@ public class UserRestController {
     }
 
     @PutMapping("/{id}/products/{pid}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long id, @PathVariable Long pid, @RequestBody ProductDTO productDTO, Principal principal) {
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @PathVariable Long pid, @RequestBody ProductDTO productDTO, HttpServletRequest request) {
         
+        Principal principal = request.getUserPrincipal();
+
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Collections.singletonMap("error", "User not authenticated"));
@@ -223,7 +227,9 @@ public class UserRestController {
     public ResponseEntity<?> getUserProducts(@PathVariable Long id,
                                          @RequestParam(defaultValue = "0") int page,
                                          @RequestParam(defaultValue = "10") int size,
-                                         Principal principal) {
+                                         HttpServletRequest request) {
+
+        Principal principal = request.getUserPrincipal();
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Collections.singletonMap("error", "User not authenticated"));
@@ -252,7 +258,9 @@ public class UserRestController {
     public ResponseEntity<?> getBoughtProducts(@PathVariable Long id,
                                             @RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "10") int size,
-                                            Principal principal) {
+                                            HttpServletRequest request) {
+                                                
+        Principal principal = request.getUserPrincipal();                                        
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Collections.singletonMap("error", "User not authenticated"));
