@@ -334,10 +334,8 @@ public class UserRestController {
                     //userService.replaceUser(updatedUserDTO.getId(), updatedUserDTO);
                 }
             }
-        } else {
-            return ResponseEntity.badRequest().build(); //There is not user authenticated
-        }        
-        return null;
+        }
+        return ResponseEntity.badRequest().build(); //There is not user authenticated    
 	}
 
     public void updateRating(UserModel user) { // Responsible for updating the reputation of a user
