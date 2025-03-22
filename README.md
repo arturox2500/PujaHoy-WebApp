@@ -300,7 +300,9 @@ As a summary we show the updated navigation diagram.
 | [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/security/SecurityConfiguration.java) | Set up roles, role-specific URLs, login functionality, and cookies to maintain the session for one day. It's where the security for HD database was implemented. |
 | [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/UserController.java) | Model atributes added to this file. |
 
-## Contributors tag 2 //   Falta actualizar
+## Contributors tag 2 
+
+//   Falta actualizar
 
 ### Jorge Andrés Echevarría
 
