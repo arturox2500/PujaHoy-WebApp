@@ -217,6 +217,11 @@ public class ProductRestController {
                     .body(Collections.singletonMap("error", "Product not found"));
         }
 
+        if (!optionalProduct.get().getOffers().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("error", "You cannot edit a product if a user placed a bid"));
+        }
+
         Principal principal = request.getUserPrincipal();
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
