@@ -12,14 +12,11 @@ import java.sql.Blob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.data.domain.Pageable;
 
-import com.webapp08.pujahoy.dto.OfferBasicMapper;
-import com.webapp08.pujahoy.dto.OfferMapper;
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductBasicMapper;
 import com.webapp08.pujahoy.dto.ProductDTO;
@@ -39,10 +36,6 @@ public class ProductService {
 	private ProductMapper mapper;
 	@Autowired
 	private ProductBasicMapper basicMapper;
-	@Autowired
-	private OfferBasicMapper offerBasicMapper;
-	@Autowired
-	private OfferMapper offerMapper;
     
     public Optional<Product> findById(long id) {
 		return repository.findById(id);
@@ -145,10 +138,6 @@ public class ProductService {
 
 	private ProductBasicDTO toDTO(Product product){
 		return basicMapper.toDTO(product);
-	}
-
-	private Product toDomain(ProductBasicDTO productDTO){
-		return basicMapper.toDomain(productDTO);
 	}
 
 }

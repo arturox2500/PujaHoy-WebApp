@@ -68,13 +68,32 @@ public class SecurityConfiguration {
 		
 		http
 			.authorizeHttpRequests(authorize -> authorize
-                    // PRIVATE ENDPOINTS
-                    
-					// PUBLIC ENDPOINTS
-					.requestMatchers(HttpMethod.GET,"/api/**").permitAll()
-					.requestMatchers(HttpMethod.POST,"/api/**").permitAll()
-					.requestMatchers(HttpMethod.PUT,"/api/**").permitAll()
-					.requestMatchers(HttpMethod.DELETE,"/api/**").permitAll()
+                    // PUBLIC ENDPOINTS
+                    .requestMatchers(HttpMethod.GET,"/api/v1/users/*").permitAll()
+					.requestMatchers(HttpMethod.GET,"/api/v1/users/*/image").permitAll()
+					.requestMatchers(HttpMethod.GET,"/api/v1/products/*").permitAll()
+					.requestMatchers(HttpMethod.GET,"/api/v1/products").permitAll()
+					.requestMatchers(HttpMethod.GET,"/api/v1/products/*/image").permitAll()
+					//.requestMatchers(HttpMethod.GET,"/api/v1/products/*/transactions").permitAll()
+
+					.requestMatchers(HttpMethod.POST,"/api/v1/auth/*").permitAll()
+
+					// PRIVATE ENDPOINTS
+					.requestMatchers(HttpMethod.GET,"/api/v1/users").hasAnyRole("USER")
+					.requestMatchers(HttpMethod.GET,"/api/v1/users/*/products").hasAnyRole("USER")
+					.requestMatchers(HttpMethod.GET,"/api/v1/users/*/boughtProducts").hasAnyRole("USER")
+					.requestMatchers(HttpMethod.GET,"/api/v1/products/*/offers").hasAnyRole("USER")
+					
+					.requestMatchers(HttpMethod.POST,"/api/v1/users/*/products").hasAnyRole("USER")
+					.requestMatchers(HttpMethod.POST,"/api/v1/users/*/products/*/ratings").hasAnyRole("USER")
+					.requestMatchers(HttpMethod.POST,"/api/v1/products/*/offers").hasAnyRole("USER")
+					.requestMatchers(HttpMethod.POST,"/api/v1/products/*/image").hasAnyRole("USER")
+
+					.requestMatchers(HttpMethod.PUT,"/api/v1/users/*/products/*").hasAnyRole("USER", "ADMIN")
+					.requestMatchers(HttpMethod.PUT,"/api/v1/users").hasAnyRole("USER", "ADMIN")
+					.requestMatchers(HttpMethod.PUT,"/api/v1/products/*/image").hasAnyRole("USER", "ADMIN")
+					
+					.requestMatchers(HttpMethod.DELETE,"/api/v1/products/*").hasAnyRole("USER", "ADMIN")
 			);
 		
         // Disable Form login Authentication
@@ -103,9 +122,7 @@ public class SecurityConfiguration {
 		
 		http
 			.authorizeHttpRequests(authorize -> authorize
-				.anyRequest().permitAll()
 				// PUBLIC PAGES
-				/*
 				.requestMatchers("/").permitAll()
 				.requestMatchers("/css/**").permitAll()
 				.requestMatchers("/img/**").permitAll()
@@ -125,12 +142,11 @@ public class SecurityConfiguration {
 				.requestMatchers("/user/{id}/profilePic").permitAll()
 				.requestMatchers("/product/*").permitAll()
 				.requestMatchers("/permitsError").permitAll()
-				.requestMatchers("/api/**").permitAll()*/
+				.requestMatchers("/api/**").permitAll()
 				// PRIVATE PAGES
-				/*
 				.requestMatchers("/user/editProduct/*").hasAnyRole("USER", "ADMIN")
 				.requestMatchers("/user/submit_edit/*").hasAnyRole("USER", "ADMIN")
-				.requestMatchers("/product/*//*delete").hasAnyRole("USER","ADMIN")
+				.requestMatchers("/product/*/delete").hasAnyRole("USER","ADMIN")
 				.requestMatchers("/product/{id_product}/place-bid").hasAnyRole("USER")
 				.requestMatchers("/user").hasAnyRole("USER", "ADMIN")
 				.requestMatchers("/user/{id}/ban").hasAnyRole("ADMIN")
@@ -141,7 +157,7 @@ public class SecurityConfiguration {
 				.requestMatchers("/user/seeBuys").hasAnyRole("USER")
 				.requestMatchers("/user/seeProducts").hasAnyRole("USER")
 				.requestMatchers("/user/{id}/rated").hasAnyRole("USER")
-				.requestMatchers("/product/{id_product}/finish").hasAnyRole("USER")*/
+				.requestMatchers("/product/{id_product}/finish").hasAnyRole("USER")
 			)
 			.formLogin(formLogin -> formLogin
 				.loginPage("/login")					

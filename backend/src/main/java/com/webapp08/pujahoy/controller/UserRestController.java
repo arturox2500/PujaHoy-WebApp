@@ -69,11 +69,11 @@ public class UserRestController {
     }
     
     @GetMapping("/{id}")
-    public PublicUserDTO getUserById(@PathVariable Long id) { //Get user by id
+    public PublicUserDTO getSeller(@PathVariable Long id) { //Get user by id
         return userService.findUser(id);
     }
 
-    @PostMapping("/{id}/product")
+    @PostMapping("/{id}/products")
         public ResponseEntity<?> publishProduct(@RequestBody ProductDTO productDTO, HttpServletRequest request, @PathVariable Long id) {
         
         Principal principal = request.getUserPrincipal();
