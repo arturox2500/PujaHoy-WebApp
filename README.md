@@ -51,18 +51,8 @@
    - [Class and Templates Diagram](#class-and-templates-diagram)
 
 10. **[Contributors tag 1](#contributors-tag-1)**
-    - [Jorge Andrés Echevarría](#jorge-andrés-echevarría)
-    - [Arturo Enrique Gutierrez Mirandona](#arturo-enrique-gutierrez-mirandona)
-    - [Iván Gutierrez González](#iván-gutierrez-gonzález)
-    - [Victor Bartolomé Letosa](#victor-bartolomé-letosa)
-    - [Miguel Pradillo Bartolomé](#miguel-pradillo-bartolomé)
 
-11. **[Contributors tag 1](#contributors-tag-2)**
-    - [Jorge Andrés Echevarría](#jorge-andrés-echevarría)
-    - [Arturo Enrique Gutierrez Mirandona](#arturo-enrique-gutierrez-mirandona)
-    - [Iván Gutierrez González](#iván-gutierrez-gonzález)
-    - [Victor Bartolomé Letosa](#victor-bartolomé-letosa)
-    - [Miguel Pradillo Bartolomé](#miguel-pradillo-bartolomé)
+11. **[Contributors tag 2](#contributors-tag-2)**
     
     
 
