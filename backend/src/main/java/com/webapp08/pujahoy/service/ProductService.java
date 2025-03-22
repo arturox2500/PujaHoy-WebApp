@@ -21,7 +21,9 @@ import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductBasicMapper;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.ProductMapper;
+import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
+import com.webapp08.pujahoy.model.Transaction;
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.repository.ProductRepository;
 
@@ -36,20 +38,28 @@ public class ProductService {
 	private ProductMapper mapper;
 	@Autowired
 	private ProductBasicMapper basicMapper;
+	@Autowired
+    private TransactionService transactionService;
+	@Autowired
+    private OfferService offerService;
     
     public Optional<Product> findById(long id) {
 		return repository.findById(id);
 	}
-
-	public Optional<Product> findById(Long id) {
-		return repository.findById(id);
-	}	
 
 	public Product save(Product product) {
 		return repository.save(product);
 	}
 
 	public void deleteById(long id_product) {
+		Optional<Product> existingProduct = this.findById(id_product);
+		Optional<Transaction> trans = transactionService.findByProduct(existingProduct.get());
+        if (trans.isPresent()){
+            transactionService.deleteById(trans.get().getId());  
+        }
+		for (Offer offer : existingProduct.get().getOffers()) {
+			offerService.delete(offer);
+		}
         repository.deleteById(id_product);
     }
 

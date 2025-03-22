@@ -23,9 +23,11 @@ import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
+import com.webapp08.pujahoy.model.Transaction;
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.service.OfferService;
 import com.webapp08.pujahoy.service.ProductService;
+import com.webapp08.pujahoy.service.TransactionService;
 import com.webapp08.pujahoy.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -79,7 +81,7 @@ public class ProductRestController {
         return productService.obtainAllProductOrdersInProgressByReputationDTO(page,size);
         
     }
-    @PostMapping("/{id_product}/Offer")
+    @PostMapping("/{id_product}/offers")
     public ResponseEntity<OfferDTO> PlaceBid(@PathVariable long id_product, @RequestBody OfferDTO offerDTO,HttpServletRequest request) {
 
         Principal principal = request.getUserPrincipal();
@@ -148,7 +150,7 @@ public class ProductRestController {
         }
     }
 
-    @GetMapping("/{id_product}/Offers")
+    @GetMapping("/{id_product}/offers")
     public ResponseEntity<List<OfferDTO>> getOffers(@PathVariable long id_product) {
         Optional<Product> product = productService.findById(id_product);
         
@@ -165,35 +167,33 @@ public class ProductRestController {
 
 
     @DeleteMapping("/{id_product}")
-public ResponseEntity<Void> deleteProduct(@PathVariable long id_product, HttpServletRequest request) {
-    Optional<Product> product = productService.findById(id_product);
+    public ResponseEntity<Void> deleteProduct(@PathVariable long id_product, HttpServletRequest request) {
+        Optional<Product> product = productService.findById(id_product);
 
-    if (product.isEmpty()) {
-        return ResponseEntity.notFound().build();
+        if (product.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Principal principal = request.getUserPrincipal();
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Optional<UserModel> user = userService.findByName(principal.getName());
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        UserModel loggedInUser = user.get();
+        Product existingProduct = product.get();
+
+        // Check if is a User and he is the owner
+        if ("Registered User".equalsIgnoreCase(loggedInUser.determineUserType()) && !existingProduct.getSeller().getId().equals(loggedInUser.getId())){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        productService.deleteById(id_product);
+        return ResponseEntity.noContent().build();
     }
-
-    Principal principal = request.getUserPrincipal();
-    if (principal == null) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
-
-    Optional<UserModel> user = userService.findByName(principal.getName());
-    if (user.isEmpty()) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
-
-    UserModel loggedInUser = user.get();
-    Product existingProduct = product.get();
-
-    // Verificar si es administrador o dueño del producto
-    if (!"Administrator".equalsIgnoreCase(loggedInUser.determineUserType()) &&
-        !existingProduct.getSeller().getId().equals(loggedInUser.getId())) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
-
-    productService.deleteById(id_product);
-    return ResponseEntity.noContent().build();
-}
 
 
     @GetMapping("/{id}/image")
