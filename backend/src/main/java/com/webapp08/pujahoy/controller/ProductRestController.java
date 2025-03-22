@@ -23,11 +23,9 @@ import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
-import com.webapp08.pujahoy.model.Transaction;
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.service.OfferService;
 import com.webapp08.pujahoy.service.ProductService;
-import com.webapp08.pujahoy.service.TransactionService;
 import com.webapp08.pujahoy.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;

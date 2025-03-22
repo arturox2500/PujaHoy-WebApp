@@ -1,6 +1,7 @@
 package com.webapp08.pujahoy.service;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import org.springframework.core.io.Resource;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.dto.UserMapper;
 import com.webapp08.pujahoy.model.Product;
+import com.webapp08.pujahoy.model.Rating;
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.repository.UserModelRepository;
 
@@ -21,6 +23,9 @@ public class UserService {
 
     @Autowired
 	private UserModelRepository repository;
+
+	@Autowired
+	private RatingService ratingService;
 
 	@Autowired
 	private UserMapper mapper;
@@ -69,6 +74,21 @@ public class UserService {
 		}
 		return Optional.empty(); //The changes is not for banned user
 	}
+
+	public void updateRating(UserModel user) { // Responsible for updating the reputation of a user
+        List<Rating> ratings = ratingService.findAllBySeller(user);
+        if (ratings.isEmpty()) {
+            return; 
+        }
+        int amount = 0;
+        for (Rating val : ratings) {
+            amount += val.getRating();
+        }
+        double mean = (double) amount / ratings.size();
+
+        user.setReputation(mean);
+        this.save(user);
+    }
 
 	public PublicUserDTO replaceUser(long id, PublicUserDTO updatedPostDTO) throws SQLException {
 

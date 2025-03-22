@@ -579,21 +579,6 @@ public class UserController {
         return "pageError";
     }
 
-    public void updateRating(UserModel user) { // Responsible for updating the reputation of a user
-        List<Rating> ratings = ratingService.findAllBySeller(user);
-        if (ratings.isEmpty()) {
-            return; 
-        }
-        int amount = 0;
-        for (Rating val : ratings) {
-            amount += val.getRating();
-        }
-        double mean = (double) amount / ratings.size();
-
-        user.setReputation(mean);
-        userService.save(user);
-    }
-
     @PostMapping("/{id}/rated") // Responsible for verifying that the parameters passed are valid and, if so, saving them in the database
     public String rateProduct(Model model, @PathVariable long id, @RequestParam int rating) {
         if (rating < 1 || rating > 5) {
@@ -611,7 +596,7 @@ public class UserController {
             }
             Rating val = new Rating(product.get().getSeller(), product.get(), rating);
             ratingService.save(val);
-            this.updateRating(product.get().getSeller());
+            userService.updateRating(product.get().getSeller());
             model.addAttribute("id", product.get().getId());
             return "productRated";
         } else {

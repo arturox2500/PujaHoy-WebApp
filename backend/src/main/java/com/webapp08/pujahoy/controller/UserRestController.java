@@ -23,7 +23,6 @@ import org.springframework.data.domain.PageRequest;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -338,21 +337,6 @@ public class UserRestController {
         return ResponseEntity.badRequest().build(); //There is not user authenticated    
 	}
 
-    public void updateRating(UserModel user) { // Responsible for updating the reputation of a user
-        List<Rating> ratings = ratingService.findAllBySeller(user);
-        if (ratings.isEmpty()) {
-            return; 
-        }
-        int amount = 0;
-        for (Rating val : ratings) {
-            amount += val.getRating();
-        }
-        double mean = (double) amount / ratings.size();
-
-        user.setReputation(mean);
-        userService.save(user);
-    }
-
     @PostMapping("/{user_id}/products/{product_id}/ratings") //Rate user
 	public ResponseEntity<RatingDTO> rateProduct(@PathVariable long user_id, @PathVariable long product_id, @RequestBody RatingDTO ratingDTO, HttpServletRequest request) {
         //Check if the user can rate this product
@@ -378,7 +362,7 @@ public class UserRestController {
                 return ResponseEntity.badRequest().build(); //the product is not sold or the user is not the buyer
             }
             RatingDTO newRatingDTO = ratingService.createRating(ratingDTO.getRating(), seller.get(), product.get());
-            this.updateRating(seller.get());
+            userService.updateRating(seller.get());
             URI location = fromCurrentRequest().path("/{id}").buildAndExpand(newRatingDTO.getId()).toUri();
 
             return ResponseEntity.created(location).body(newRatingDTO);
