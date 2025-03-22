@@ -1,12 +1,11 @@
 # webapp08
-# Aplicación web de subastas "PujaHoy"
-## Integrantes
+# Auction Application (PUJAHOY)
+## Contributors
 ### Jorge Andrés Echevarría j.andres.2022@alumnos.urjc.es jae9104
 ### Arturo Enrique Gutierrez Mirandona ae.gutierrez.2022@alumnos.urjc.es arturox2500
 ### Iván Gutiérrez González i.gutierrez.2022@alumnos.urjc.es IvanGutierrrez
 ### Víctor Bartolomé Letosa v.bartolome.2022@alumnos.urjc.es victorino2324
 ### Miguel Pradillo Bartolomé	m.pradillo.2020@alumnos.urjc.es	MikePradiBart
-# Auction Application (PUJAHOY)
 
 # Index
 
@@ -51,12 +50,20 @@
    - 
    - [Class and Templates Diagram](#class-and-templates-diagram)
 
-10. **[Contributors](#contributors)**
+10. **[Contributors tag 1](#contributors-tag-1)**
     - [Jorge Andrés Echevarría](#jorge-andrés-echevarría)
     - [Arturo Enrique Gutierrez Mirandona](#arturo-enrique-gutierrez-mirandona)
     - [Iván Gutierrez González](#iván-gutierrez-gonzález)
     - [Victor Bartolomé Letosa](#victor-bartolomé-letosa)
     - [Miguel Pradillo Bartolomé](#miguel-pradillo-bartolomé)
+
+11. **[Contributors tag 1](#contributors-tag-2)**
+    - [Jorge Andrés Echevarría](#jorge-andrés-echevarría)
+    - [Arturo Enrique Gutierrez Mirandona](#arturo-enrique-gutierrez-mirandona)
+    - [Iván Gutierrez González](#iván-gutierrez-gonzález)
+    - [Victor Bartolomé Letosa](#victor-bartolomé-letosa)
+    - [Miguel Pradillo Bartolomé](#miguel-pradillo-bartolomé)
+    
     
 
 
