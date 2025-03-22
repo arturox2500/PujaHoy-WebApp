@@ -69,7 +69,7 @@ public class UserRestController {
     }
     
     @GetMapping("/{id}")
-    public PublicUserDTO getSeller(@PathVariable Long id) { //Get user by id
+    public PublicUserDTO getUserById(@PathVariable Long id) { //Get user by id
         return userService.findUser(id);
     }
 
@@ -251,6 +251,11 @@ public class UserRestController {
                     .body(Collections.singletonMap("error", "User not found"));
         }
 
+        if (!user.get().getId().equals(id)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("error", "You are not allowed to publish products for another user"));
+        }
+
         UserModel loggedInUser = user.get();
         if (!loggedInUser.isActive()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
@@ -280,6 +285,11 @@ public class UserRestController {
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Collections.singletonMap("error", "User not found"));
+        }
+
+        if (!user.get().getId().equals(id)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("error", "You are not allowed to publish products for another user"));
         }
 
         UserModel loggedInUser = user.get();
