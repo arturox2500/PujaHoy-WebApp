@@ -199,6 +199,21 @@ As a summary we show the updated navigation diagram.
 - Go to https://localhost:8443
 - If you encounter security warnings, select Advanced options and then Proceed to the website
 
+### Steps with Docker
+- Install Docker from official site
+- Install Docker Compose
+- Run Docker
+- Clone or download the repository
+- Go to folder that contains docker-compose.hml
+- Execute Pujahoy with Docker Compose: "docker compose up"
+- Open your browser
+- Go to https://localhost:8443
+- If you encounter security warnings, select Advanced options and then Proceed to the website
+
+### Steps with Virtual Machine
+
+### Steps for bulding Docker Image
+
 ## Documentation
 
 ### Diagram with the database entities
