@@ -326,6 +326,24 @@ As a summary we show the updated navigation diagram.
 
 | Commit | Description |
 | :----: | :---------: |
+| [1º]() | |
+| [2º]() | |
+| [3º]() | |
+| [4º]() | |
+| [5º]() | |
+
+| File | Description |
+| :----: | :---------: |
+| [1º]() | |
+| [2º]() | |
+| [3º]() | |
+| [4º]() | |
+| [5º]() | |
+
+### Iván Gutierrez González
+
+| Commit | Description |
+| :----: | :---------: |
 | [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/ec491deb05405de1f91562b44402927ba0ca046a) | Add the basic functionality to rate a product. |
 | [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/77d4089925cda2463efc42842af6a728bf0a782b) | Add the NoSuchElementExceptionCA, the PublicUserDTO, its corresponding mapper, and the basic GET user data function. |
 | [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/a05287491e559747ba0f65c18f260ac55b506fa0) | Add the basic function for banning and unbanning users by the administrator. |
@@ -339,24 +357,6 @@ As a summary we show the updated navigation diagram.
 | [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/PublicUserDTO.java) | Add the DTO to view the visible fields of the user. |
 | [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/UserMapper.java) | Specify the toDTO and toDomain methods between UserModel and PublicUserDTO, specifying attributes and the image URL. |
 | [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/NoSuchElementExceptionCA.java) | Controller that handles the 404 Not Found exception. |
-
-### Iván Gutierrez González
-
-| Commit | Description |
-| :----: | :---------: |
-| [1º]() | |
-| [2º]() | |
-| [3º]() | |
-| [4º]() | |
-| [5º]() | |
-
-| File | Description |
-| :----: | :---------: |
-| [1º]() | |
-| [2º]() | |
-| [3º]() | |
-| [4º]() | |
-| [5º]() | |
 
 ### Victor Bartolomé Letosa
 
