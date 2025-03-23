@@ -333,11 +333,11 @@ As a summary we show the updated navigation diagram.
 
 | File | Description |
 | :----: | :---------: |
-| [1º]() | |
-| [2º]() | |
-| [3º]() | |
-| [4º]() | |
-| [5º]() | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/UserRestController.java) | Added functionality for creating and editing auctions, including the necessary verifications for edge cases with appropriate error responses. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/ProductRestController.java) | Added GET methods for retrieving all products and specific products, as well as GET, POST, and PUT methods for product images, including their respective error responses. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/service/ProductService.java) | Added pagination functionality for all product listings, including bought products, the user's products, and the general product list. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/ProductDTO.java) | Created the necessary ProductDTO class and added all the required attributes, along with their getters and setters. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/ProductMapper.java) | Created the ProductMapper class with the necessary attributes and mappings.|
 
 ### Jorge Andrés Echevarría
 
