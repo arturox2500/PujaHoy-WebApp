@@ -205,8 +205,8 @@ As a summary we show the updated navigation diagram.
 ![BBDD Class Diagram](imagenes/BBDDClassDiagram.png)
 
 
-### Class and Templates Diagram  //   Falta actualizar
-![Class and Templates Diagram ](imagenes/ClassTemplatesDiagramP2.png)
+### Class and Templates Diagram
+![Class and Templates Diagram ](imagenes/ClassTemplatesDiagramP2White.png)
 
 ## Contributors tag 1
 
