@@ -326,19 +326,19 @@ As a summary we show the updated navigation diagram.
 
 | Commit | Description |
 | :----: | :---------: |
-| [1º]() | |
-| [2º]() | |
-| [3º]() | |
-| [4º]() | |
-| [5º]() | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/ec491deb05405de1f91562b44402927ba0ca046a) | Add the basic functionality to rate a product. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/77d4089925cda2463efc42842af6a728bf0a782b) | Add the NoSuchElementExceptionCA, the PublicUserDTO, its corresponding mapper, and the basic GET user data function. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/a05287491e559747ba0f65c18f260ac55b506fa0) | Add the basic function for banning and unbanning users by the administrator. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/29f747572f54bcfe725e277c6949eafbcfedf46e) | Once security with JWT is added, update the created methods to verify who is making the request. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/e76b0ae6001d002f6e74eb6425334eb1b6d91bd2) | Add security to each URL, differentiating them based on the type of request and who can access them. |
 
 | File | Description |
 | :----: | :---------: |
-| [1º]() | |
-| [2º]() | |
-| [3º]() | |
-| [4º]() | |
-| [5º]() | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/UserRestController.java) | Add GET own data for the user, GET user data by ID, PUT to ban and unban users, and POST for rating. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/service/UserService.java) | Add the methods to ban and unban users, and remove the duplicated code between the web and REST. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/PublicUserDTO.java) | Add the DTO to view the visible fields of the user. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/UserMapper.java) | Specify the toDTO and toDomain methods between UserModel and PublicUserDTO, specifying attributes and the image URL. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/NoSuchElementExceptionCA.java) | Controller that handles the 404 Not Found exception. |
 
 ### Iván Gutierrez González
 
