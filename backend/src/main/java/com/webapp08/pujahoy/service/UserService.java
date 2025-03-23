@@ -16,8 +16,10 @@ import org.springframework.core.io.Resource;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.dto.UserDTO;
 import com.webapp08.pujahoy.dto.UserMapper;
+import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.Rating;
+import com.webapp08.pujahoy.model.Transaction;
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.repository.UserModelRepository;
 
@@ -29,6 +31,15 @@ public class UserService {
 
 	@Autowired
 	private RatingService ratingService;
+
+	@Autowired
+	private ProductService productService;
+
+	@Autowired
+	private OfferService offerService;
+
+	@Autowired
+	private TransactionService transactionService;
 
 	@Autowired
 	private UserMapper mapper;
@@ -47,6 +58,39 @@ public class UserService {
 			throw new NoSuchElementException();
 		}
 	}
+
+	  public void finishProductsForUser(UserModel user) { // Responsible for finishing all the products of a user if he is banned
+        List<Product> products = productService.findBySeller(user);
+        for (Product product : products) {
+            if (product.getState().equals("In progress")) {
+                if (!product.getOffers().isEmpty()) {
+                    for (Offer offer : product.getOffers()) {
+                        offerService.delete(offer);
+                    }
+                }
+                product.setOffers(null);
+                product.setState("Finished");
+                productService.save(product);
+            }
+        }
+    }
+
+    public void deleteProducts(UserModel user) { // Responsible for deleting all products from a user if he is unbanned
+        List<Product> products = productService.findBySeller(user);
+        for (Product product : products) {
+            if (!product.getOffers().isEmpty()) {
+                for (Offer offer : product.getOffers()) {
+                    offerService.deleteById(offer.getId());
+                }
+            }
+            Optional<Transaction> trans = transactionService.findByProduct(product);
+            if (trans.isPresent()) {
+                transactionService.deleteById(trans.get().getId());
+            }
+            productService.deleteById(product.getId());
+        }
+    }
+
 
 	public Optional<PublicUserDTO> bannedUser(long id, PublicUserDTO updatedUserDTO) throws SQLException {
 
@@ -69,6 +113,11 @@ public class UserService {
 			updatedUser.setRols(oldUser.getRols());
 			updatedUser.setProducts(oldUser.getProducts());
 			updatedUser.setPass(oldUser.getEncodedPassword());
+			if (oldUser.isActive()){
+				this.finishProductsForUser(updatedUser);
+			} else {
+				this.deleteProducts(updatedUser);
+			}
 			updatedUser.setActive(!oldUser.isActive());
 
 			repository.save(updatedUser);
