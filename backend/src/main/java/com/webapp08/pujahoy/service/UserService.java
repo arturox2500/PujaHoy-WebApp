@@ -1,5 +1,7 @@
 package com.webapp08.pujahoy.service;
 
+import java.io.InputStream;
+import java.net.URI;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.core.io.Resource;
 
 import com.webapp08.pujahoy.dto.PublicUserDTO;
+import com.webapp08.pujahoy.dto.UserDTO;
 import com.webapp08.pujahoy.dto.UserMapper;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.Rating;
@@ -21,7 +24,7 @@ import com.webapp08.pujahoy.repository.UserModelRepository;
 @Service
 public class UserService {
 
-    @Autowired
+	@Autowired
 	private UserModelRepository repository;
 
 	@Autowired
@@ -29,7 +32,7 @@ public class UserService {
 
 	@Autowired
 	private UserMapper mapper;
-    
+
 	public PublicUserDTO findUser(Long id) {
 		return mapper.toDTO(repository.findById(id).get());
 	}
@@ -48,19 +51,19 @@ public class UserService {
 	public Optional<PublicUserDTO> bannedUser(long id, PublicUserDTO updatedUserDTO) throws SQLException {
 
 		Optional<UserModel> oldUserOpt = repository.findById(id);
-		if (!oldUserOpt.isPresent()){
-			return Optional.empty(); //The user dont exist
+		if (!oldUserOpt.isPresent()) {
+			return Optional.empty(); // The user dont exist
 		}
 		UserModel oldUser = oldUserOpt.get();
 		UserModel updatedUser = mapper.toDomain(updatedUserDTO);
 		updatedUser.setId(id);
-		if (mapper.toDTO(oldUser).changes(updatedUserDTO) == 0){
+		if (mapper.toDTO(oldUser).changes(updatedUserDTO) == 0) {
 
 			if (oldUser.getImage() != null) {
 
-				//Set the image in the updated post
+				// Set the image in the updated post
 				updatedUser.setProfilePic(BlobProxy.generateProxy(oldUser.getProfilePic().getBinaryStream(),
-					oldUser.getProfilePic().length()));
+						oldUser.getProfilePic().length()));
 				updatedUser.setImage(oldUser.getImage());
 			}
 			updatedUser.setRols(oldUser.getRols());
@@ -72,48 +75,60 @@ public class UserService {
 
 			return Optional.of(mapper.toDTO(updatedUser));
 		}
-		return Optional.empty(); //The changes is not for banned user
+		return Optional.empty(); // The changes is not for banned user
 	}
 
 	public void updateRating(UserModel user) { // Responsible for updating the reputation of a user
-        List<Rating> ratings = ratingService.findAllBySeller(user);
-        if (ratings.isEmpty()) {
-            return; 
-        }
-        int amount = 0;
-        for (Rating val : ratings) {
-            amount += val.getRating();
-        }
-        double mean = (double) amount / ratings.size();
-
-        user.setReputation(mean);
-        this.save(user);
-    }
-
-	public PublicUserDTO replaceUser(long id, PublicUserDTO updatedPostDTO) throws SQLException {
-
-		UserModel oldPost = repository.findById(id).orElseThrow();
-		UserModel updatedPost = mapper.toDomain(updatedPostDTO);
-		updatedPost.setId(id);
-
-		if (oldPost.getImage() != null) {
-
-			//Set the image in the updated post
-			updatedPost.setProfilePic(BlobProxy.generateProxy(oldPost.getProfilePic().getBinaryStream(),
-					oldPost.getProfilePic().length()));
-			updatedPost.setImage(oldPost.getImage());
+		List<Rating> ratings = ratingService.findAllBySeller(user);
+		if (ratings.isEmpty()) {
+			return;
 		}
-		updatedPost.setRols(oldPost.getRols());
-		updatedPost.setProducts(oldPost.getProducts());
-		updatedPost.setPass(oldPost.getEncodedPassword());
-		updatedPost.setActive(oldPost.isActive());
+		int amount = 0;
+		for (Rating val : ratings) {
+			amount += val.getRating();
+		}
+		double mean = (double) amount / ratings.size();
 
-		repository.save(updatedPost);
-
-		return mapper.toDTO(updatedPost);
+		user.setReputation(mean);
+		this.save(user);
 	}
 
-    public Optional<UserModel> findById(Long id) {
+	public PublicUserDTO replaceUser(PublicUserDTO updatedPostDTO) throws SQLException {
+
+		UserModel oldPost = repository.findById(updatedPostDTO.getId()).orElseThrow();
+		UserModel updatedPost = mapper.toDomain(updatedPostDTO);
+
+		// Check and update the zip code
+		if (updatedPost.getZipCode() != null && !updatedPost.getZipCode().equals(oldPost.getZipCode()) && updatedPost.getZipCode().toString().matches("\\d{5}")) {
+			oldPost.setZipCode(updatedPost.getZipCode());
+		}
+
+		// Check and update the contact
+		if (updatedPost.getContact() != null && !updatedPost.getContact().equals(oldPost.getContact()) && updatedPost.getContact().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+			oldPost.setContact(updatedPost.getContact());
+		}
+
+		// Check and update the description
+		if (updatedPost.getDescription() != null && !updatedPost.getDescription().equals(oldPost.getDescription())) {
+			oldPost.setDescription(updatedPost.getDescription());
+		}
+
+		// Save the updated user
+		repository.save(oldPost);
+
+		return mapper.toDTO(oldPost);
+	}
+
+	public void replaceUserImage(long id, InputStream inputStream, long size) {
+		UserModel user = repository.findById(id).orElseThrow();
+		if(user.getImage() == null){
+			throw new NoSuchElementException();
+		}
+		user.setProfilePic(BlobProxy.generateProxy(inputStream, size));
+		repository.save(user);
+	   }
+
+	public Optional<UserModel> findById(Long id) {
 		return repository.findById(id);
 	}
 
@@ -125,8 +140,8 @@ public class UserService {
 		return repository.findByName(name);
 	}
 
-	public Optional<UserModel> findByProducts(Product product){
+	public Optional<UserModel> findByProducts(Product product) {
 		return repository.findByProducts(product);
 	}
-	
+
 }

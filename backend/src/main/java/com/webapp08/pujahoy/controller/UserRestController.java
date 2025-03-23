@@ -19,17 +19,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Optional;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -41,7 +39,7 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserRestController {
-    
+
     @Autowired
     private UserService userService;
 
@@ -55,26 +53,27 @@ public class UserRestController {
     private RatingService ratingService;
 
     @GetMapping("")
-    public ResponseEntity<PublicUserDTO> me(HttpServletRequest request) { //Get his own details
+    public ResponseEntity<PublicUserDTO> me(HttpServletRequest request) { // Get his own details
         Principal principal = request.getUserPrincipal();
-        if(principal != null) {
-			Optional<UserModel> user = userService.findByName(principal.getName());
+        if (principal != null) {
+            Optional<UserModel> user = userService.findByName(principal.getName());
             if (user.isPresent()) {
                 URI location = fromCurrentRequest().path("/").buildAndExpand(user.get().getId()).toUri();
                 return ResponseEntity.created(location).body(userService.findUser(user.get().getId()));
             }
         }
-        return ResponseEntity.badRequest().build(); //The user is not logged in or the user is not found
+        return ResponseEntity.badRequest().build(); // The user is not logged in or the user is not found
     }
-    
+
     @GetMapping("/{id}")
-    public PublicUserDTO getUserById(@PathVariable Long id) { //Get user by id
+    public PublicUserDTO getUserById(@PathVariable Long id) { // Get user by id
         return userService.findUser(id);
     }
 
     @PostMapping("/{id}/products")
-        public ResponseEntity<?> publishProduct(@RequestBody ProductDTO productDTO, HttpServletRequest request, @PathVariable Long id) {
-        
+    public ResponseEntity<?> publishProduct(@RequestBody ProductDTO productDTO, HttpServletRequest request,
+            @PathVariable Long id) {
+
         Principal principal = request.getUserPrincipal();
 
         if (principal == null) {
@@ -91,7 +90,8 @@ public class UserRestController {
 
         if (!user.get().getId().equals(id)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Collections.singletonMap("error", "You are not allowed to publish products for another user"));
+                    .body(Collections.singletonMap("error",
+                            "You are not allowed to publish products for another user"));
         }
 
         UserModel loggedInUser = user.get();
@@ -106,40 +106,40 @@ public class UserRestController {
         }
 
         if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
-            productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
-            productDTO.getDuration() == null || productDTO.getIniValue() == null) {
-            
+                productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
+                productDTO.getDuration() == null || productDTO.getIniValue() == null) {
+
             return ResponseEntity.badRequest()
                     .body(Collections.singletonMap("error", "All fields must be filled"));
         }
 
-        if (productDTO.getDuration() < 1){
+        if (productDTO.getDuration() < 1) {
             return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error", "The duration field must contain a number higher or equal to 1."));
+                    .body(Collections.singletonMap("error",
+                            "The duration field must contain a number higher or equal to 1."));
         }
 
-        if (productDTO.getIniValue() < 1){
+        if (productDTO.getIniValue() < 1) {
             return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error", "The iniValue field must contain a number higher or equal to 1."));
+                    .body(Collections.singletonMap("error",
+                            "The iniValue field must contain a number higher or equal to 1."));
         }
 
         try {
-            
+
             Date iniHour = new Date(System.currentTimeMillis());
             Date endHour = new Date(iniHour.getTime() + (Long) productDTO.getDuration() * 24 * 60 * 60 * 1000);
 
             Product product = new Product(
-                    productDTO.getName(), 
-                    productDTO.getDescription(), 
-                    productDTO.getIniValue(), 
-                    iniHour, 
-                    endHour, 
+                    productDTO.getName(),
+                    productDTO.getDescription(),
+                    productDTO.getIniValue(),
+                    iniHour,
+                    endHour,
                     "In progress",
-                    null, 
-                    user.get()
-            );
+                    null,
+                    user.get());
 
-            
             product.setImgURL("/api/products/" + product.getId() + "/image");
             productService.save(product);
 
@@ -155,8 +155,9 @@ public class UserRestController {
     }
 
     @PutMapping("/{id}/products/{pid}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long id, @PathVariable Long pid, @RequestBody ProductDTO productDTO, HttpServletRequest request) {
-        
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @PathVariable Long pid,
+            @RequestBody ProductDTO productDTO, HttpServletRequest request) {
+
         Principal principal = request.getUserPrincipal();
 
         if (principal == null) {
@@ -176,62 +177,59 @@ public class UserRestController {
                     .body(Collections.singletonMap("error", "Product not found"));
         }
 
-        
-
-
         Product product = optionalProduct.get();
         UserModel loggedInUser = user.get();
-
-
-        
 
         if (!loggedInUser.isActive()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "Banned user"));
         }
 
-        Optional<Transaction> trans = transactionService.findByProduct(product); 
+        Optional<Transaction> trans = transactionService.findByProduct(product);
 
-        if (trans.isPresent()){
-            if (trans.get().getBuyer().getId().equals(loggedInUser.getId())){
+        if (trans.isPresent()) {
+            if (trans.get().getBuyer().getId().equals(loggedInUser.getId())) {
                 if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
-                productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
-                productDTO.getDuration() == null || productDTO.getIniValue() == null){
-                    if (productDTO.getState().equals("Delivered")){
+                        productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
+                        productDTO.getDuration() == null || productDTO.getIniValue() == null) {
+                    if (productDTO.getState().equals("Delivered")) {
                         product.setState("Delivered");
                         ProductDTO responseDTO = ProductMapper.INSTANCE.toDTO(product);
                         return ResponseEntity.ok(responseDTO);
                     }
                 }
-            } 
-            return ResponseEntity.badRequest().body(Collections.singletonMap("error", "The state field contains an incorrect value"));
+            }
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error", "The state field contains an incorrect value"));
         } else {
             if (!optionalProduct.get().getOffers().isEmpty()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body(Collections.singletonMap("error", "You cannot edit a product if a user placed a bid"));
             }
-            if (!(product.getSeller().getId().equals(loggedInUser.getId()) || loggedInUser.determineUserType().equals("Administrator"))) {
+            if (!(product.getSeller().getId().equals(loggedInUser.getId())
+                    || loggedInUser.determineUserType().equals("Administrator"))) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body(Collections.singletonMap("error", "You do not have permission to modify this product"));
             }
 
-
             if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
-            productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
-            productDTO.getDuration() == null || productDTO.getIniValue() == null) {
-            
-            return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error", "All fields must be filled"));
+                    productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
+                    productDTO.getDuration() == null || productDTO.getIniValue() == null) {
+
+                return ResponseEntity.badRequest()
+                        .body(Collections.singletonMap("error", "All fields must be filled"));
             }
 
-            if (productDTO.getDuration() < 1){
+            if (productDTO.getDuration() < 1) {
                 return ResponseEntity.badRequest()
-                        .body(Collections.singletonMap("error", "The duration field must contain a number higher or equal to 1."));
+                        .body(Collections.singletonMap("error",
+                                "The duration field must contain a number higher or equal to 1."));
             }
 
-            if (productDTO.getIniValue() < 1){
+            if (productDTO.getIniValue() < 1) {
                 return ResponseEntity.badRequest()
-                        .body(Collections.singletonMap("error", "The iniValue field must contain a number higher or equal to 1."));
+                        .body(Collections.singletonMap("error",
+                                "The iniValue field must contain a number higher or equal to 1."));
             }
 
             Optional<Product> existingProduct = productService.findById(pid);
@@ -258,14 +256,13 @@ public class UserRestController {
             }
         }
 
-        
     }
-    
+
     @GetMapping("/{id}/products")
     public ResponseEntity<?> getUserProducts(@PathVariable Long id,
-                                         @RequestParam(defaultValue = "0") int page,
-                                         @RequestParam(defaultValue = "10") int size,
-                                         HttpServletRequest request) {
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            HttpServletRequest request) {
 
         Principal principal = request.getUserPrincipal();
         if (principal == null) {
@@ -281,7 +278,8 @@ public class UserRestController {
 
         if (!user.get().getId().equals(id)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Collections.singletonMap("error", "You are not allowed to publish products for another user"));
+                    .body(Collections.singletonMap("error",
+                            "You are not allowed to publish products for another user"));
         }
 
         UserModel loggedInUser = user.get();
@@ -294,16 +292,15 @@ public class UserRestController {
         Page<ProductBasicDTO> products = productService.findProductsByUser(pageable, id);
 
         return ResponseEntity.ok(products);
-}
-
+    }
 
     @GetMapping("/{id}/boughtProducts")
     public ResponseEntity<?> getBoughtProducts(@PathVariable Long id,
-                                            @RequestParam(defaultValue = "0") int page,
-                                            @RequestParam(defaultValue = "10") int size,
-                                            HttpServletRequest request) {
-                                                
-        Principal principal = request.getUserPrincipal();                                        
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            HttpServletRequest request) {
+
+        Principal principal = request.getUserPrincipal();
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Collections.singletonMap("error", "User not authenticated"));
@@ -317,7 +314,8 @@ public class UserRestController {
 
         if (!user.get().getId().equals(id)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Collections.singletonMap("error", "You are not allowed to publish products for another user"));
+                    .body(Collections.singletonMap("error",
+                            "You are not allowed to publish products for another user"));
         }
 
         UserModel loggedInUser = user.get();
@@ -332,45 +330,67 @@ public class UserRestController {
         return ResponseEntity.ok(boughtProducts);
     }
 
-    
-    @GetMapping("/{id}/image")//Get user image
+    @GetMapping("/{id}/image") // Get user image
     public ResponseEntity<Object> getPostImage(@PathVariable long id) throws SQLException, IOException {
 
-		Resource postImage = userService.getPostImage(id);
+        Resource postImage = userService.getPostImage(id);
 
-		return ResponseEntity
-				.ok()
-				.header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-				.body(postImage);
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                .body(postImage);
 
-	}
+    }
 
-    @PutMapping("") //Update user
-	public ResponseEntity<PublicUserDTO> replacePost(@RequestBody PublicUserDTO updatedUserDTO, HttpServletRequest request) throws SQLException {
+    @PutMapping("/{id}/image")
+    public ResponseEntity<Object> editUserImage(@PathVariable long id, @RequestParam MultipartFile imageFile,HttpServletRequest request) throws IOException {
         Principal principal = request.getUserPrincipal();
-        if(principal != null) {
-			Optional<UserModel> user = userService.findByName(principal.getName());
+        if (principal == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Optional<UserModel> user = userService.findByName(principal.getName());
+        if (!user.isPresent()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (!user.get().getId().equals(id)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("error", "You are not allowed to upload images for another user"));
+        }
+        
+        userService.replaceUserImage(id, imageFile.getInputStream(), imageFile.getSize());
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("") // Update user
+    public ResponseEntity<PublicUserDTO> replaceUserPost(@RequestBody PublicUserDTO updatedUserDTO,HttpServletRequest request) throws SQLException {
+        Principal principal = request.getUserPrincipal();
+        if (principal != null) {
+            Optional<UserModel> user = userService.findByName(principal.getName());
             if (user.isPresent()) {
-                if (user.get().determineUserType() == "Administrator") { //Administrator = Banned user
+                if (user.get().determineUserType() == "Administrator") { // Administrator = Banned user
                     Optional<PublicUserDTO> newUser = userService.bannedUser(updatedUserDTO.getId(), updatedUserDTO);
-                    if (newUser.isPresent()){
+                    if (newUser.isPresent()) {
                         return ResponseEntity.ok(userService.findUser(newUser.get().getId()));
                     } else {
-                        return ResponseEntity.badRequest().build(); //There is not user authenticated
+                        return ResponseEntity.badRequest().build(); // There is not user authenticated
                     }
-                } else { //Registered User = edit own profile
-                    //userService.replaceUser(updatedUserDTO.getId(), updatedUserDTO);
+                } else if (user.get().determineUserType().equals("Registered User") && user.get().getId() == updatedUserDTO.getId()) {
+                    PublicUserDTO userUpdated = userService.replaceUser(updatedUserDTO);
+                    return ResponseEntity.ok(userUpdated);
                 }
             }
         }
-        return ResponseEntity.badRequest().build(); //There is not user authenticated    
-	}
+        return ResponseEntity.badRequest().build(); // There is not user authenticated
+    }
 
-    @PostMapping("/{user_id}/products/{product_id}/ratings") //Rate user
-	public ResponseEntity<RatingDTO> rateProduct(@PathVariable long user_id, @PathVariable long product_id, @RequestBody RatingDTO ratingDTO, HttpServletRequest request) {
-        //Check if the user can rate this product
+    @PostMapping("/{user_id}/products/{product_id}/ratings") // Rate user
+    public ResponseEntity<RatingDTO> rateProduct(@PathVariable long user_id, @PathVariable long product_id,
+            @RequestBody RatingDTO ratingDTO, HttpServletRequest request) {
+        // Check if the user can rate this product
         Principal principal = request.getUserPrincipal();
-        if(principal == null) {
+        if (principal == null) {
             return ResponseEntity.badRequest().build();
         }
         Optional<UserModel> user = userService.findByName(principal.getName());
@@ -381,22 +401,23 @@ public class UserRestController {
         Optional<UserModel> seller = userService.findById(user_id);
         Optional<Product> product = productService.findById(product_id);
 
-        if (seller.isPresent() && product.isPresent() && seller.get().getId() == product.get().getSeller().getId() && ratingDTO.getRating() >= 1 && ratingDTO.getRating() <= 5) { //User is the seller of the product
+        if (seller.isPresent() && product.isPresent() && seller.get().getId() == product.get().getSeller().getId()
+                && ratingDTO.getRating() >= 1 && ratingDTO.getRating() <= 5) { // User is the seller of the product
             Optional<Rating> test = ratingService.findByProduct(product.get());
             if (test.isPresent()) {
-                return ResponseEntity.badRequest().build(); //the product is already rated
+                return ResponseEntity.badRequest().build(); // the product is already rated
             }
             Optional<Transaction> trans = transactionService.findByProduct(product.get());
-            if(!trans.isPresent() && user.get() != trans.get().getBuyer()) {
-                return ResponseEntity.badRequest().build(); //the product is not sold or the user is not the buyer
+            if (!trans.isPresent() && user.get() != trans.get().getBuyer()) {
+                return ResponseEntity.badRequest().build(); // the product is not sold or the user is not the buyer
             }
             RatingDTO newRatingDTO = ratingService.createRating(ratingDTO.getRating(), seller.get(), product.get());
             userService.updateRating(seller.get());
             URI location = fromCurrentRequest().path("/{id}").buildAndExpand(newRatingDTO.getId()).toUri();
 
             return ResponseEntity.created(location).body(newRatingDTO);
-        } else { //User is not the seller of the product
+        } else { // User is not the seller of the product
             return ResponseEntity.badRequest().build();
         }
-	}
+    }
 }

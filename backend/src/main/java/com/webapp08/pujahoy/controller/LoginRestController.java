@@ -26,20 +26,20 @@ import jakarta.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/api/v1/auth")
 public class LoginRestController {
-	
+
 	@Autowired
 	private UserModelRepository userRepository;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-    @Autowired
+	@Autowired
 	private UserLoginService userService;
 
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse> login(
 			@RequestBody LoginRequest loginRequest,
 			HttpServletResponse response) {
-		
+
 		return userService.login(response, loginRequest);
 	}
 
@@ -58,24 +58,27 @@ public class LoginRestController {
 	@PostMapping("/user")
 	public ResponseEntity<?> register(@RequestBody UserDTO userDTO) {
 
-                if (userRepository.findByName(userDTO.getUsername()).isPresent() || userDTO.getEmail().isBlank() || userDTO.getPassword().isBlank()
-                        || userDTO.getZipCode().isBlank() || userDTO.getUsername().isBlank() || userDTO.getVisibleName().isBlank()) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                            .body(Map.of("error", "Wrong fields or user already exists"));
-                }
-            
-                if (!userDTO.getZipCode().matches("\\d{5}")) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                            .body(Map.of("error", "The zip code must be a 5-digit number"));
-                }
-            
-                UserModel user = new UserModel(userDTO.getUsername(), 0, userDTO.getVisibleName(), userDTO.getEmail(), Integer.parseInt(userDTO.getZipCode()), userDTO.getDescription(), true,
-                        passwordEncoder.encode(userDTO.getPassword()), "USER");
-                userRepository.save(user);
-            
-                Map<String, String> response = new HashMap<>();
-                response.put("message", "User registered successfully");
-            
-                return ResponseEntity.status(HttpStatus.CREATED).body(response);
-            }
+		if (userRepository.findByName(userDTO.getUsername()).isPresent() || userDTO.getEmail().isBlank()
+				|| userDTO.getPassword().isBlank()
+				|| userDTO.getZipCode().isBlank() || userDTO.getUsername().isBlank()
+				|| userDTO.getVisibleName().isBlank()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(Map.of("error", "Wrong fields or user already exists"));
+		}
+
+		if (!userDTO.getZipCode().matches("\\d{5}") || !userDTO.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(Map.of("error", "The zip or email is not valid"));
+		}
+
+		UserModel user = new UserModel(userDTO.getUsername(), 0, userDTO.getVisibleName(), userDTO.getEmail(),
+				Integer.parseInt(userDTO.getZipCode()), userDTO.getDescription(), true,
+				passwordEncoder.encode(userDTO.getPassword()), "USER");
+		userRepository.save(user);
+
+		Map<String, String> response = new HashMap<>();
+		response.put("message", "User registered successfully");
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
+	}
 }

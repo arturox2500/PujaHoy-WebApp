@@ -69,7 +69,7 @@ public class UserModel{
         return id;
     }
 
-    public int getZipCode() {
+    public Integer getZipCode() {
         return zipCode;
     }
 
