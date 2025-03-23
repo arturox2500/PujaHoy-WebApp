@@ -206,7 +206,7 @@ As a summary we show the updated navigation diagram.
 
 
 ### Class and Templates Diagram  //   Falta actualizar
-![Class and Templates Diagram ](imagenes/ClassTemDiagram.jpg)
+![Class and Templates Diagram ](imagenes/ClassTemplatesDiagramP2.png)
 
 ## Contributors tag 1
 
