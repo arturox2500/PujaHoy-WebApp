@@ -325,11 +325,11 @@ As a summary we show the updated navigation diagram.
 
 | Commit | Description |
 | :----: | :---------: |
-| [1º]() | |
-| [2º]() | |
-| [3º]() | |
-| [4º]() | |
-| [5º]() | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/0b2b8b3e62e39f778b29fcadc3fe57d50a7a2244) | Creation of files required for this phase such a product mapper and DTO classes. Also essential methods were written |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/0088293af54cc418db52914c6c8c99f5c48c5a49) | Main logic for post and put methods for products and their respective images created|
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/e04914861a3fcb297618b43f05c5c9b114d55f98) | Added better responses for requests in the user and product rest controllers |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/c60ce0606352f7bddc74b3aa24e56256a61ab5c8) | Added a particular type of post request for when a auction is finished and a transaction occurs |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/32229ded12b9cad0501f7f20c7ee1b346930fce6) | Added pagination functionality to product listings |
 
 | File | Description |
 | :----: | :---------: |
