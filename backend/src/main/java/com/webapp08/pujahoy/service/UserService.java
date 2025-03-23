@@ -1,7 +1,6 @@
 package com.webapp08.pujahoy.service;
 
 import java.io.InputStream;
-import java.net.URI;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.core.io.Resource;
 
 import com.webapp08.pujahoy.dto.PublicUserDTO;
-import com.webapp08.pujahoy.dto.UserDTO;
 import com.webapp08.pujahoy.dto.UserMapper;
 import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
