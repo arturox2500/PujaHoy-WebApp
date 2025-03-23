@@ -21,6 +21,10 @@ import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.Rating;
 import com.webapp08.pujahoy.model.Transaction;
 import com.webapp08.pujahoy.model.UserModel;
+import com.webapp08.pujahoy.repository.OfferRepository;
+import com.webapp08.pujahoy.repository.ProductRepository;
+import com.webapp08.pujahoy.repository.RatingRepository;
+import com.webapp08.pujahoy.repository.TransactionRepository;
 import com.webapp08.pujahoy.repository.UserModelRepository;
 
 @Service
@@ -30,16 +34,16 @@ public class UserService {
 	private UserModelRepository repository;
 
 	@Autowired
-	private RatingService ratingService;
+	private RatingRepository  ratingRepository;
 
 	@Autowired
-	private ProductService productService;
+	private ProductRepository productRepository;
 
 	@Autowired
-	private OfferService offerService;
+	private OfferRepository offerRepository;
 
 	@Autowired
-	private TransactionService transactionService;
+	private TransactionRepository transactionRepository;
 
 	@Autowired
 	private UserMapper mapper;
@@ -60,34 +64,34 @@ public class UserService {
 	}
 
 	  public void finishProductsForUser(UserModel user) { // Responsible for finishing all the products of a user if he is banned
-        List<Product> products = productService.findBySeller(user);
+        List<Product> products = productRepository.findBySeller(user);
         for (Product product : products) {
             if (product.getState().equals("In progress")) {
                 if (!product.getOffers().isEmpty()) {
                     for (Offer offer : product.getOffers()) {
-                        offerService.delete(offer);
+                        offerRepository.delete(offer);
                     }
                 }
                 product.setOffers(null);
                 product.setState("Finished");
-                productService.save(product);
+                productRepository.save(product);
             }
         }
     }
 
     public void deleteProducts(UserModel user) { // Responsible for deleting all products from a user if he is unbanned
-        List<Product> products = productService.findBySeller(user);
+        List<Product> products = productRepository.findBySeller(user);
         for (Product product : products) {
             if (!product.getOffers().isEmpty()) {
                 for (Offer offer : product.getOffers()) {
-                    offerService.deleteById(offer.getId());
+                    offerRepository.deleteById(offer.getId());
                 }
             }
-            Optional<Transaction> trans = transactionService.findByProduct(product);
+            Optional<Transaction> trans = transactionRepository.findByProduct(product);
             if (trans.isPresent()) {
-                transactionService.deleteById(trans.get().getId());
+                transactionRepository.deleteById(trans.get().getId());
             }
-            productService.deleteById(product.getId());
+            productRepository.deleteById(product.getId());
         }
     }
 
@@ -128,7 +132,7 @@ public class UserService {
 	}
 
 	public void updateRating(UserModel user) { // Responsible for updating the reputation of a user
-		List<Rating> ratings = ratingService.findAllBySeller(user);
+		List<Rating> ratings = ratingRepository.findAllBySeller(user);
 		if (ratings.isEmpty()) {
 			return;
 		}

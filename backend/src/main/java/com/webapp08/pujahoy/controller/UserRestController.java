@@ -364,7 +364,7 @@ public class UserRestController {
     }
 
     @PutMapping("") // Update user
-    public ResponseEntity<PublicUserDTO> replaceUserPost(@RequestBody PublicUserDTO updatedUserDTO,HttpServletRequest request) throws SQLException {
+    public ResponseEntity<?> replaceUserPost(@RequestBody PublicUserDTO updatedUserDTO,HttpServletRequest request) throws SQLException {
         Principal principal = request.getUserPrincipal();
         if (principal != null) {
             Optional<UserModel> user = userService.findByName(principal.getName());
@@ -387,7 +387,7 @@ public class UserRestController {
 	}
 
     @PostMapping("/{user_id}/products/{product_id}/ratings") // Rate user
-    public ResponseEntity<RatingDTO> rateProduct(@PathVariable long user_id, @PathVariable long product_id,
+    public ResponseEntity<?> rateProduct(@PathVariable long user_id, @PathVariable long product_id,
             @RequestBody RatingDTO ratingDTO, HttpServletRequest request) {
         // Check if the user can rate this product
         Principal principal = request.getUserPrincipal();

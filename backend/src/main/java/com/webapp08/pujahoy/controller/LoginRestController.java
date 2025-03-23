@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.webapp08.pujahoy.dto.UserDTO;
 import com.webapp08.pujahoy.model.UserModel;
-import com.webapp08.pujahoy.repository.UserModelRepository;
 import com.webapp08.pujahoy.security.jwt.AuthResponse;
 import com.webapp08.pujahoy.security.jwt.AuthResponse.Status;
 import com.webapp08.pujahoy.security.jwt.LoginRequest;
 import com.webapp08.pujahoy.security.jwt.UserLoginService;
+import com.webapp08.pujahoy.service.UserService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -28,37 +28,38 @@ import jakarta.servlet.http.HttpServletResponse;
 public class LoginRestController {
 
 	@Autowired
-	private UserModelRepository userRepository;
+	private UserService userService;
+	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@Autowired
-	private UserLoginService userService;
+    @Autowired
+	private UserLoginService userLoginService;
 
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse> login(
 			@RequestBody LoginRequest loginRequest,
 			HttpServletResponse response) {
-
-		return userService.login(response, loginRequest);
+		
+		return userLoginService.login(response, loginRequest);
 	}
 
 	@PostMapping("/refresh")
 	public ResponseEntity<AuthResponse> refreshToken(
 			@CookieValue(name = "RefreshToken", required = false) String refreshToken, HttpServletResponse response) {
 
-		return userService.refresh(response, refreshToken);
+		return userLoginService.refresh(response, refreshToken);
 	}
 
 	@PostMapping("/logout")
 	public ResponseEntity<AuthResponse> logOut(HttpServletResponse response) {
-		return ResponseEntity.ok(new AuthResponse(Status.SUCCESS, userService.logout(response)));
+		return ResponseEntity.ok(new AuthResponse(Status.SUCCESS, userLoginService.logout(response)));
 	}
 
 	@PostMapping("/user")
 	public ResponseEntity<?> register(@RequestBody UserDTO userDTO) {
 
-		if (userRepository.findByName(userDTO.getUsername()).isPresent() || userDTO.getEmail().isBlank()
+		if (userService.findByName(userDTO.getUsername()).isPresent() || userDTO.getEmail().isBlank()
 				|| userDTO.getPassword().isBlank()
 				|| userDTO.getZipCode().isBlank() || userDTO.getUsername().isBlank()
 				|| userDTO.getVisibleName().isBlank()) {
@@ -74,7 +75,7 @@ public class LoginRestController {
 		UserModel user = new UserModel(userDTO.getUsername(), 0, userDTO.getVisibleName(), userDTO.getEmail(),
 				Integer.parseInt(userDTO.getZipCode()), userDTO.getDescription(), true,
 				passwordEncoder.encode(userDTO.getPassword()), "USER");
-		userRepository.save(user);
+				userService.save(user);
 
 		Map<String, String> response = new HashMap<>();
 		response.put("message", "User registered successfully");

@@ -25,7 +25,9 @@ import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.Transaction;
 import com.webapp08.pujahoy.model.UserModel;
+import com.webapp08.pujahoy.repository.OfferRepository;
 import com.webapp08.pujahoy.repository.ProductRepository;
+import com.webapp08.pujahoy.repository.TransactionRepository;
 
 import org.springframework.core.io.Resource;
 
@@ -39,9 +41,9 @@ public class ProductService {
 	@Autowired
 	private ProductBasicMapper basicMapper;
 	@Autowired
-    private TransactionService transactionService;
+    private TransactionRepository transactionRepository;
 	@Autowired
-    private OfferService offerService;
+    private OfferRepository offerRepository;
     
     public Optional<Product> findById(long id) {
 		return repository.findById(id);
@@ -53,12 +55,12 @@ public class ProductService {
 
 	public void deleteById(long id_product) {
 		Optional<Product> existingProduct = this.findById(id_product);
-		Optional<Transaction> trans = transactionService.findByProduct(existingProduct.get());
+		Optional<Transaction> trans = transactionRepository.findByProduct(existingProduct.get());
         if (trans.isPresent()){
-            transactionService.deleteById(trans.get().getId());  
+            transactionRepository.deleteById(trans.get().getId());  
         }
 		for (Offer offer : existingProduct.get().getOffers()) {
-			offerService.delete(offer);
+			offerRepository.delete(offer);
 		}
         repository.deleteById(id_product);
     }
