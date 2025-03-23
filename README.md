@@ -186,6 +186,8 @@ As a summary we show the updated navigation diagram.
 - Spring Boot 3.4.3
 - MySQL Installer 8.0.33 or higher
 - MySQL Workbench 8.0.33 or higher
+- Docker
+- Docker Compose
 
 ### Steps
 - Download the ZIP from this GitHub repository
