@@ -321,24 +321,6 @@ As a summary we show the updated navigation diagram.
 
 //   Falta actualizar
 
-### Jorge Andrés Echevarría
-
-| Commit | Description |
-| :----: | :---------: |
-| [1º]() | |
-| [2º]() | |
-| [3º]() | |
-| [4º]() | |
-| [5º]() | |
-
-| File | Description |
-| :----: | :---------: |
-| [1º]() | |
-| [2º]() | |
-| [3º]() | |
-| [4º]() | |
-| [5º]() | |
-
 ### Arturo Enrique Gutierrez Mirandona 
 
 | Commit | Description |
@@ -356,6 +338,24 @@ As a summary we show the updated navigation diagram.
 | [3º]() | |
 | [4º]() | |
 | [5º]() | |
+
+### Jorge Andrés Echevarría
+
+| Commit | Description |
+| :----: | :---------: |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/b2304d7c467f4cdefe522513f1c087fd84a15ca6) | Added EditProfileImage and EditProfile with all its respective requiremets. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/4e7428a10fcbb7e341910f6158cff14514631299) | Added the register functionality to the loginRestControler which allows users to POST to create a profile.|
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/7dfbb692c3c518e936208926cae7067261f633c3) | Added basic functionalities related to docker file and docker compose|
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/0df28f39c9af3776b4ef6f45c32d10aa3a29483d) | Added basic schema for product rest controller|
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/71dea2390324137a7b04659389b4755d6d9c5b67) | Added basic schema for user rest controller|
+
+| File | Description |
+| :----: | :---------: |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/docker-compose.yml) | Added the docker compose file and made sure it worked.|
+| [2º](backend/src/main/java/com/webapp08/pujahoy/controller/LoginRestController.java) | In charge of making sure all funcionality related to login and register was on point and working. |
+| [3º](backend/src/main/java/com/webapp08/pujahoy/controller/UserRestController.java) | In charge of editing a user and its profile pic via the API |
+| [4º](backend/src/main/java/com/webapp08/pujahoy/service/UserService.java) | In charge of editing a user and its profile pic via the API |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/Dockerfile) | Added the dockerfile and made sure it worked.|
 
 ### Iván Gutierrez González
 
