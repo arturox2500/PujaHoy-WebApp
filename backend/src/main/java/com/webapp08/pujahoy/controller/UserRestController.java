@@ -176,60 +176,89 @@ public class UserRestController {
                     .body(Collections.singletonMap("error", "Product not found"));
         }
 
+        
+
+
         Product product = optionalProduct.get();
         UserModel loggedInUser = user.get();
 
 
-        if (!(product.getSeller().getId().equals(loggedInUser.getId()) || loggedInUser.determineUserType().equals("Administrator"))) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Collections.singletonMap("error", "You do not have permission to modify this product"));
-        }
+        
 
         if (!loggedInUser.isActive()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "Banned user"));
         }
 
-        if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
+        Optional<Transaction> trans = transactionService.findByProduct(product); 
+
+        if (trans.isPresent()){
+            if (trans.get().getBuyer().getId().equals(loggedInUser.getId())){
+                if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
+                productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
+                productDTO.getDuration() == null || productDTO.getIniValue() == null){
+                    if (productDTO.getState().equals("Delivered")){
+                        product.setState("Delivered");
+                        ProductDTO responseDTO = ProductMapper.INSTANCE.toDTO(product);
+                        return ResponseEntity.ok(responseDTO);
+                    }
+                }
+            } 
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", "The state field contains an incorrect value"));
+        } else {
+            if (!optionalProduct.get().getOffers().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(Collections.singletonMap("error", "You cannot edit a product if a user placed a bid"));
+            }
+            if (!(product.getSeller().getId().equals(loggedInUser.getId()) || loggedInUser.determineUserType().equals("Administrator"))) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(Collections.singletonMap("error", "You do not have permission to modify this product"));
+            }
+
+
+            if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
             productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
             productDTO.getDuration() == null || productDTO.getIniValue() == null) {
             
             return ResponseEntity.badRequest()
                     .body(Collections.singletonMap("error", "All fields must be filled"));
+            }
+
+            if (productDTO.getDuration() < 1){
+                return ResponseEntity.badRequest()
+                        .body(Collections.singletonMap("error", "The duration field must contain a number higher or equal to 1."));
+            }
+
+            if (productDTO.getIniValue() < 1){
+                return ResponseEntity.badRequest()
+                        .body(Collections.singletonMap("error", "The iniValue field must contain a number higher or equal to 1."));
+            }
+
+            Optional<Product> existingProduct = productService.findById(pid);
+
+            if (existingProduct.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Collections.singletonMap("error", "Product not found"));
+            }
+
+            try {
+                product.setName(productDTO.getName());
+                product.setDescription(productDTO.getDescription());
+                product.setIniValue(productDTO.getIniValue());
+
+                productService.save(product);
+
+                ProductDTO responseDTO = ProductMapper.INSTANCE.toDTO(product);
+
+                return ResponseEntity.ok(responseDTO);
+
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(Collections.singletonMap("error", "Error updating the product: " + e.getMessage()));
+            }
         }
 
-        if (productDTO.getDuration() < 1){
-            return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error", "The duration field must contain a number higher or equal to 1."));
-        }
-
-        if (productDTO.getIniValue() < 1){
-            return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error", "The iniValue field must contain a number higher or equal to 1."));
-        }
-
-        Optional<Product> existingProduct = productService.findById(pid);
-
-        if (existingProduct.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Collections.singletonMap("error", "Product not found"));
-        }
-
-        try {
-            product.setName(productDTO.getName());
-            product.setDescription(productDTO.getDescription());
-            product.setIniValue(productDTO.getIniValue());
-
-            productService.save(product);
-
-            ProductDTO responseDTO = ProductMapper.INSTANCE.toDTO(product);
-
-            return ResponseEntity.ok(responseDTO);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap("error", "Error updating the product: " + e.getMessage()));
-        }
+        
     }
     
     @GetMapping("/{id}/products")
