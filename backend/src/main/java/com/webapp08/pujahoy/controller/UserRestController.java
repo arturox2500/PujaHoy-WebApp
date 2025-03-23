@@ -55,16 +55,16 @@ public class UserRestController {
     private RatingService ratingService;
 
     @GetMapping("")
-    public ResponseEntity<PublicUserDTO> me(HttpServletRequest request) { //Get his own details
+    public ResponseEntity<?> me(HttpServletRequest request) { //Get his own details
         Principal principal = request.getUserPrincipal();
         if(principal != null) {
 			Optional<UserModel> user = userService.findByName(principal.getName());
             if (user.isPresent()) {
-                URI location = fromCurrentRequest().path("/").buildAndExpand(user.get().getId()).toUri();
-                return ResponseEntity.created(location).body(userService.findUser(user.get().getId()));
+                return ResponseEntity.ok(userService.findUser(user.get().getId()));
             }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-        return ResponseEntity.badRequest().build(); //The user is not logged in or the user is not found
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You must be authenticated");
     }
     
     @GetMapping("/{id}")
@@ -317,36 +317,37 @@ public class UserRestController {
 	}
 
     @PutMapping("") //Update user
-	public ResponseEntity<PublicUserDTO> replacePost(@RequestBody PublicUserDTO updatedUserDTO, HttpServletRequest request) throws SQLException {
+	public ResponseEntity<?> replacePost(@RequestBody PublicUserDTO updatedUserDTO, HttpServletRequest request) throws SQLException {
         Principal principal = request.getUserPrincipal();
         if(principal != null) {
 			Optional<UserModel> user = userService.findByName(principal.getName());
             if (user.isPresent()) {
-                if (user.get().determineUserType() == "Administrator") { //Administrator = Banned user
+                if (user.get().determineUserType() == "Administrator") { //If the user is an administrator he want to ban the user
                     Optional<PublicUserDTO> newUser = userService.bannedUser(updatedUserDTO.getId(), updatedUserDTO);
                     if (newUser.isPresent()){
                         return ResponseEntity.ok(userService.findUser(newUser.get().getId()));
                     } else {
-                        return ResponseEntity.badRequest().build(); //There is not user authenticated
+                        return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Filds incorrect"));
                     }
                 } else { //Registered User = edit own profile
                     //userService.replaceUser(updatedUserDTO.getId(), updatedUserDTO);
                 }
             }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
-        return ResponseEntity.badRequest().build(); //There is not user authenticated    
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You must be authenticated");   
 	}
 
     @PostMapping("/{user_id}/products/{product_id}/ratings") //Rate user
-	public ResponseEntity<RatingDTO> rateProduct(@PathVariable long user_id, @PathVariable long product_id, @RequestBody RatingDTO ratingDTO, HttpServletRequest request) {
+	public ResponseEntity<?> rateProduct(@PathVariable long user_id, @PathVariable long product_id, @RequestBody RatingDTO ratingDTO, HttpServletRequest request) {
         //Check if the user can rate this product
         Principal principal = request.getUserPrincipal();
         if(principal == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You must be authenticated");
         }
         Optional<UserModel> user = userService.findByName(principal.getName());
         if (!user.isPresent()) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
 
         Optional<UserModel> seller = userService.findById(user_id);
@@ -355,11 +356,11 @@ public class UserRestController {
         if (seller.isPresent() && product.isPresent() && seller.get().getId() == product.get().getSeller().getId() && ratingDTO.getRating() >= 1 && ratingDTO.getRating() <= 5) { //User is the seller of the product
             Optional<Rating> test = ratingService.findByProduct(product.get());
             if (test.isPresent()) {
-                return ResponseEntity.badRequest().build(); //the product is already rated
+                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "The product is already rated")); 
             }
             Optional<Transaction> trans = transactionService.findByProduct(product.get());
             if(!trans.isPresent() && user.get() != trans.get().getBuyer()) {
-                return ResponseEntity.badRequest().build(); //the product is not sold or the user is not the buyer
+                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "The product is not sold or you are not the buyer"));
             }
             RatingDTO newRatingDTO = ratingService.createRating(ratingDTO.getRating(), seller.get(), product.get());
             userService.updateRating(seller.get());
@@ -367,7 +368,12 @@ public class UserRestController {
 
             return ResponseEntity.created(location).body(newRatingDTO);
         } else { //User is not the seller of the product
-            return ResponseEntity.badRequest().build();
+            if (!(ratingDTO.getRating() >= 1 && ratingDTO.getRating() <= 5)){
+                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "The rating must be between 1 and 5"));
+            } else if (!product.isPresent()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Seller not found");
         }
 	}
 }
