@@ -92,6 +92,7 @@ public class SecurityConfiguration {
 					.requestMatchers(HttpMethod.PUT,"/api/v1/users/*/products/*").hasAnyRole("USER", "ADMIN")
 					.requestMatchers(HttpMethod.PUT,"/api/v1/users").hasAnyRole("USER", "ADMIN")
 					.requestMatchers(HttpMethod.PUT,"/api/v1/products/*/image").hasAnyRole("USER", "ADMIN")
+					.requestMatchers(HttpMethod.PUT,"/api/v1/users/*/image").hasAnyRole("USER", "ADMIN")
 					
 					.requestMatchers(HttpMethod.DELETE,"/api/v1/products/*").hasAnyRole("USER", "ADMIN")
 			);
