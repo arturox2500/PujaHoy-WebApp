@@ -172,6 +172,14 @@ public class ProductRestController {
             return ResponseEntity.notFound().build();
         }
 
+        Product existingProduct = product.get();
+
+        // Check if the product has registered bids
+        if (!existingProduct.getOffers().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(null); // Error 409: Conflict, cannot be deleted if there are bids
+        }
+
         Principal principal = request.getUserPrincipal();
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -183,15 +191,17 @@ public class ProductRestController {
         }
 
         UserModel loggedInUser = user.get();
-        Product existingProduct = product.get();
 
-        // Check if is a User and he is the owner
-        if ("Registered User".equalsIgnoreCase(loggedInUser.determineUserType()) && !existingProduct.getSeller().getId().equals(loggedInUser.getId())){
+        // Check if you are an administrator or owner of the product
+        if (!"Administrator".equalsIgnoreCase(loggedInUser.determineUserType()) &&
+            !existingProduct.getSeller().getId().equals(loggedInUser.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+
         productService.deleteById(id_product);
         return ResponseEntity.noContent().build();
     }
+
 
 
     @GetMapping("/{id}/image")
