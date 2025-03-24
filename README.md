@@ -200,19 +200,38 @@ As a summary we show the updated navigation diagram.
 - If you encounter security warnings, select Advanced options and then Proceed to the website
 
 ### Steps with Docker
-- Install Docker from official site
+- Install Docker 
 - Install Docker Compose
 - Run Docker
 - Clone or download the repository
-- Go to folder that contains docker-compose.hml
+- Go to "backend" folder
 - Execute Pujahoy with Docker Compose: "docker compose up"
 - Open your browser
 - Go to https://localhost:8443
 - If you encounter security warnings, select Advanced options and then Proceed to the website
 
-### Steps with Virtual Machine
-
 ### Steps for bulding Docker Image
+-  Install Docker
+-  Run Docker
+-  Clone or download the repository
+-  Go to "backend" folder
+-  Execute:
+chmod +x create_image.sh && ./create_image.sh
+chmod +x publish_image.sh && ./publish_image.sh
+
+### Steps with Virtual Machine
+- Open terminal
+- Execute:
+ssh -i ssh-keys/appWeb08.key vmuser@10.100.139.202
+or
+ssh -i ssh-keys/appWeb08.key vmuser@appWeb08.dawgis.etsii.urjc.es
+- Clone or download the repository
+- Go to "backend" folder
+- Build the app with:
+Docker compose up
+- GO to https://10.100.139.202:443
+- Ultimately dont forget to execute this command after finished using to save energy :) :
+Docker compose down
 
 ## Documentation
 
