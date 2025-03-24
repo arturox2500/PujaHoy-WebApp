@@ -426,9 +426,9 @@ Docker compose down
 
 | File | Description |
 | :----: | :---------: |
-| [1º]() | |
-| [2º]() | |
-| [3º]() | |
-| [4º]() | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/ProductRestController.java) | |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/TransactionDTO.java) | |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/TransactionMapper.java) | |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/service/TransactionService.java) | |
 | [5º]() | |
 
