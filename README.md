@@ -412,7 +412,7 @@ Docker compose down
 | [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/service/ProductService.java) | It contains the product business logic. |
 | [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/security/SecurityConfiguration.java) | File containing the web's filters and security measures |
 | [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/LoginRestController.java) | Controller for system login, logout, and cookie refresh. |
-| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/model/Product.java) | Model with product information, I added methods and used it to configure the DTOs.  |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/model/Product.java) | Model with product information, I added methods and used it to configure the DTOs. |
 
 ### Miguel Pradillo Bartolomé
 
@@ -426,9 +426,9 @@ Docker compose down
 
 | File | Description |
 | :----: | :---------: |
-| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/ProductRestController.java) | |
-| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/TransactionDTO.java) | |
-| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/TransactionMapper.java) | |
-| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/service/TransactionService.java) | |
-| [5º]() | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/ProductRestController.java) | This file defines a Spring REST controller to handle requests related to products in the application |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/TransactionDTO.java) | This file defines an immutable data transfer object (DTO) named TransactionDTO for representing a transaction's basic details. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/TransactionMapper.java) | This file defines a MapStruct mapper interface TransactionMapper for converting between Transaction entities and their corresponding TransactionDTO objects. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/service/TransactionService.java) | This file defines a Spring service TransactionService to manage transactions, including finding, saving, deleting, and creating transactions, as well as converting them to DTOs using the TransactionMapper. |
+| [5º]() |  |
 
