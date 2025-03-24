@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.sql.Blob;
-
+import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -44,6 +44,8 @@ public class ProductService {
     private TransactionRepository transactionRepository;
 	@Autowired
     private OfferRepository offerRepository;
+	@Autowired
+    private OfferService offerService;
     
     public Optional<Product> findById(long id) {
 		return repository.findById(id);
@@ -152,4 +154,27 @@ public class ProductService {
 		return basicMapper.toDTO(product);
 	}
 
+	public Offer PlaceABid(Product product,double cost, UserModel bidder) {
+		//Get last bid
+        Offer lastOffer = offerService.findLastOfferByProduct(product.getId());
+        //Set min cost
+        double actualPrice;
+        if (lastOffer != null) {
+            actualPrice = lastOffer.getCost();
+        } else {
+            actualPrice = product.getIniValue() - 1;
+        }
+        if(cost>actualPrice){
+            long currentTime = System.currentTimeMillis();
+            Date currentDate = new Date(currentTime); 
+            Offer newOffer=new Offer(bidder,product,cost,currentDate);
+
+            product.getOffers().add(newOffer); 
+            offerService.save(newOffer);
+            this.save(product);
+			return newOffer;
+		}else{
+			return null;
+		}
+	}
 }
