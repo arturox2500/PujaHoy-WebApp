@@ -547,6 +547,27 @@ paths:
           description: Not Found
         "200":
           description: OK
+  /api/v1/products/{id_product}/transaction:
+    get:
+      tags:
+      - product-rest-controller
+      operationId: getTransaction
+      parameters:
+      - name: id_product
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "404":
+          description: Not Found
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TransactionDTO"
 components:
   schemas:
     PublicUserDTO:
@@ -693,12 +714,16 @@ components:
     PageProductBasicDTO:
       type: object
       properties:
-        totalElements:
-          type: integer
-          format: int64
         totalPages:
           type: integer
           format: int32
+        totalElements:
+          type: integer
+          format: int64
+        first:
+          type: boolean
+        last:
+          type: boolean
         size:
           type: integer
           format: int32
@@ -711,10 +736,6 @@ components:
           format: int32
         sort:
           $ref: "#/components/schemas/SortObject"
-        first:
-          type: boolean
-        last:
-          type: boolean
         numberOfElements:
           type: integer
           format: int32
@@ -730,7 +751,7 @@ components:
           format: int64
         sort:
           $ref: "#/components/schemas/SortObject"
-        paged:
+        unpaged:
           type: boolean
         pageSize:
           type: integer
@@ -738,14 +759,29 @@ components:
         pageNumber:
           type: integer
           format: int32
-        unpaged:
+        paged:
           type: boolean
     SortObject:
       type: object
       properties:
         empty:
           type: boolean
-        sorted:
-          type: boolean
         unsorted:
           type: boolean
+        sorted:
+          type: boolean
+    TransactionDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        product:
+          $ref: "#/components/schemas/ProductBasicDTO"
+        seller:
+          $ref: "#/components/schemas/UserBasicDTO"
+        buyer:
+          $ref: "#/components/schemas/UserBasicDTO"
+        cost:
+          type: number
+          format: double

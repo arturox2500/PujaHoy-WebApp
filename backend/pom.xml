@@ -131,10 +131,19 @@
 							<artifactId>mapstruct-processor</artifactId>
 							<version>1.6.3</version>
 						</path>
-						<!-- other annotation processors -->
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>7.3.0</version> 
+				<configuration>
+					<skipValidateSpec>true</skipValidateSpec>
+					<apiDocsUrl>https://localhost:8443/v3/api-docs.yaml</apiDocsUrl>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
