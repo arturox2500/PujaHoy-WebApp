@@ -24,6 +24,7 @@ import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.TransactionDTO;
 import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
+import com.webapp08.pujahoy.model.Transaction;
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.service.OfferService;
 import com.webapp08.pujahoy.service.ProductService;
@@ -57,6 +58,10 @@ public class ProductRestController {
         Optional<Product> product = productService.findById(id_product);
         if (product.isPresent()) {
             ProductDTO prod=productService.findProduct(id_product);
+            Optional<Transaction> trans = transactionService.findByProduct(product.get());
+            if(!prod.getState().equals("In progress") && !trans.isPresent()){
+                transactionService.createTransaction(product.get());
+            }
             return ResponseEntity.ok(prod);
         } else {
             return ResponseEntity.notFound().build();
