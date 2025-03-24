@@ -130,10 +130,24 @@ public class ProductRestController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        //Make the bid
-        Offer newOffer =productService.PlaceABid(product.get(), offerDTO.cost(), bidder.get());
-        
-        if(newOffer != null){
+
+        //Get last bid
+        Offer lastOffer = offerService.findLastOfferByProduct(id_product);
+        //Set min cost
+        double actualPrice;
+        if (lastOffer != null) {
+            actualPrice = lastOffer.getCost();
+        } else {
+            actualPrice = product.get().getIniValue() - 1;
+        }
+        if(offerDTO.cost()>actualPrice){
+            long currentTime = System.currentTimeMillis();
+            Date currentDate = new Date(currentTime); 
+            Offer newOffer=new Offer(bidder.get(),product.get(),offerDTO.cost(),currentDate);
+
+            product.get().getOffers().add(newOffer); 
+            offerService.save(newOffer);
+            productService.save(product.get());
             OfferDTO offer=offerService.toDTO(newOffer);
             
             URI location = fromCurrentRequest().path("/{id}").buildAndExpand(offer.id()).toUri();

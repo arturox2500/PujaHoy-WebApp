@@ -68,7 +68,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("/") // Displays the list of products, considering user authentication and role.
     public String productList(Model model, HttpServletRequest request, @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         
@@ -108,7 +108,7 @@ public class ProductController {
         return "index";
     }
 
-    @GetMapping("/product_template_index")
+    @GetMapping("/product_template_index") // Displays products on a dedicated template, with session handling.
     public String seeProducts(Model model, HttpServletRequest request, @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size, HttpSession session) {
 
@@ -141,7 +141,7 @@ public class ProductController {
 
     }
 
-    @PostMapping("/product/{id_product}/delete")
+    @PostMapping("/product/{id_product}/delete") // Deletes a product after verifying the user is authorized to do so.
     public String deleteProduct(Model model,HttpServletRequest request, @PathVariable long id_product) {
 
         Optional<Product> product = productService.findById(id_product);
@@ -184,7 +184,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/product/{id_product}")
+    @GetMapping("/product/{id_product}") // Shows detailed information of a specific product, including its offers.
     public String showProduct(@PathVariable long id_product, Model model, HttpServletRequest request, HttpSession session) {
         Optional<Product> productOpt = productService.findById(id_product);
         if (!productOpt.isPresent()) {
@@ -301,7 +301,7 @@ public class ProductController {
         return "product";
     }
 
-    @PostMapping("/product/{id_product}/place-bid")
+    @PostMapping("/product/{id_product}/place-bid") // Places a bid on a product, ensuring bid validity and user authentication.
     public String placeBid(@PathVariable long id_product, @RequestParam double bid_amount, HttpServletRequest request,
             Model model) {
 
@@ -383,7 +383,7 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/product/{id_product}/finish")
+    @PostMapping("/product/{id_product}/finish") // Marks a product as delivered, completing the transaction.
     public String finishProduct(Model model, @PathVariable long id_product) {
         Optional<Product> product = productService.findById(id_product);
 

@@ -338,9 +338,7 @@ Docker compose down
 | [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/security/SecurityConfiguration.java) | Set up roles, role-specific URLs, login functionality, and cookies to maintain the session for one day. It's where the security for HD database was implemented. |
 | [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/UserController.java) | Model atributes added to this file. |
 
-## Contributors tag 2 
-
-//   Falta actualizar
+## Contributors tag 2
 
 ### Arturo Enrique Gutierrez Mirandona 
 
@@ -412,23 +410,23 @@ Docker compose down
 | [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/service/ProductService.java) | It contains the product business logic. |
 | [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/security/SecurityConfiguration.java) | File containing the web's filters and security measures |
 | [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/LoginRestController.java) | Controller for system login, logout, and cookie refresh. |
-| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/model/Product.java) | Model with product information, I added methods and used it to configure the DTOs.  |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/model/Product.java) | Model with product information, I added methods and used it to configure the DTOs. |
 
 ### Miguel Pradillo Bartolomé
 
 | Commit | Description |
 | :----: | :---------: |
-| [1º]() | |
-| [2º]() | |
-| [3º]() | |
-| [4º]() | |
-| [5º]() | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/2c7292a6b8e35ce672a98d90565c50d600d2f1ce) | Added and implemented first full version of GetTransaction for ProductRestController. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/2b951b14ee51f1eca64b86cd1b4944a1acb7d695) | Added AeleteProduct to ProductRestController. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/8c9fc6c0be0dbabc1eda74fc58f2996db08c4f90) | In this commit the file TransactionDTO was completely updated to its final and functional version. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/2160d2b6825c2a337d7e02124a5bcfd2f0d2d956) | Added TransactionMapper file. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/64df9c2deebab3a18ff27da71bec88f6e2424fcb) | Added createTransaction method to TransactionService. |
 
 | File | Description |
 | :----: | :---------: |
-| [1º]() | |
-| [2º]() | |
-| [3º]() | |
-| [4º]() | |
-| [5º]() | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/ProductRestController.java) | This file defines a Spring REST controller to handle requests related to products in the application |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/TransactionDTO.java) | This file defines an immutable data transfer object (DTO) named TransactionDTO for representing a transaction's basic details. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/TransactionMapper.java) | This file defines a MapStruct mapper interface TransactionMapper for converting between Transaction entities and their corresponding TransactionDTO objects. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/service/TransactionService.java) | This file defines a Spring service TransactionService to manage transactions, including finding, saving, deleting, and creating transactions, as well as converting them to DTOs using the TransactionMapper. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/ProductController.java) | Comments about the functionality of the methods added to this file which defines a Spring MVC controller to manage product-related operations in the web application. |
 
