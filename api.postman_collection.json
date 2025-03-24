@@ -49,6 +49,28 @@
 			"response": []
 		},
 		{
+			"name": "Imagen producto 2",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/products/2/image",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"products",
+						"2",
+						"image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Ofertas del producto 2",
 			"request": {
 				"auth": {
@@ -194,6 +216,28 @@
 			"response": []
 		},
 		{
+			"name": "Imagen de tu perfil",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users/2/image",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"2",
+						"image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Editar perfil",
 			"request": {
 				"auth": {
@@ -236,7 +280,7 @@
 						{
 							"key": "imageFile",
 							"type": "file",
-							"src": "/C:/Users/PcVIP/Pictures/Imagen de WhatsApp 2025-02-16 a las 15.57.41_0155e25a.jpg"
+							"src": []
 						}
 					]
 				},
@@ -352,7 +396,7 @@
 						{
 							"key": "image",
 							"type": "file",
-							"src": "/C:/Users/PcVIP/Pictures/Screenshots/Captura de pantalla 2025-02-11 184257.png"
+							"src": []
 						}
 					]
 				},
@@ -643,7 +687,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"PRODUCTO ACTUALIZADO 1: Edicion de Pedro\",\r\n    \"description\": \"Edicion de pedfro\",\r\n    \"iniValue\": 9000,\r\n    \"duration\": 30\r\n}",
+					"raw": "{\r\n    \"name\": \"PRODUCTO ACTUALIZADO 1: Edicion de admin\",\r\n    \"description\": \"Edicion de admin\",\r\n    \"iniValue\": 9000,\r\n    \"duration\": 30\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -679,10 +723,7 @@
 						{
 							"key": "image",
 							"type": "file",
-							"src": [
-								"/C:/Users/PcVIP/Pictures/Screenshots/Captura de pantalla 2025-02-13 160939.png",
-								"/C:/Users/PcVIP/Pictures/Screenshots/Captura de pantalla 2025-02-11 184257.png"
-							]
+							"src": []
 						}
 					]
 				},
