@@ -22,7 +22,7 @@ public interface UserMapper {
     PublicUserDTO toDTO(UserModel userModel);
 
     default String generateImageUrl(Long id) {
-        return "https://localhost:8443/api/v1/users/" + id + "/image";
+        return "/users/" + id + "/image";
     }
     
     //PublicUserDTO to UserModel
