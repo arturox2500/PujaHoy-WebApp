@@ -144,6 +144,8 @@ public class SecurityConfiguration {
 				.requestMatchers("/product/*").permitAll()
 				.requestMatchers("/permitsError").permitAll()
 				.requestMatchers("/api/**").permitAll()
+				.requestMatchers("/v3/**").permitAll()
+				.requestMatchers("/swagger-ui/**").permitAll()
 				// PRIVATE PAGES
 				.requestMatchers("/user/editProduct/*").hasAnyRole("USER", "ADMIN")
 				.requestMatchers("/user/submit_edit/*").hasAnyRole("USER", "ADMIN")
