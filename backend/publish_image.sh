@@ -1,15 +1,12 @@
 #!/bin/bash
 
-set -e
-
-# Image name
-IMAGE_NAME="pujahoy/pujahoy"
+IMAGE_NAME="pujahoy"
 IMAGE_TAG="latest"
 
-echo "🔑 Login in Docker Hub..."
-docker login
+read -p "Docker Hub username: " DOCKER_USER
 
-echo "📤 Publishing image in Docker Hub..."
-docker push $IMAGE_NAME:$IMAGE_TAG
+docker login -u $DOCKER_USER
 
-echo "✅ Image Published: $IMAGE_NAME:$IMAGE_TAG"
+docker tag $IMAGE_NAME:$IMAGE_TAG $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG
+
+docker push $DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG
