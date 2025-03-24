@@ -60,7 +60,7 @@ public class UserModel{
         this.active = active;
         this.visibleName = visibleName;
         this.products = null;
-        this.image = "https://localhost:8443/api/v1/users/" + this.id + "/image";
+        this.image = "/users/" + this.id + "/image";
         this.profilePic= UploadStandardProfilePic();
         this.zipCode = zipCode;
     }
