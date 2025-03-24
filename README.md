@@ -220,6 +220,8 @@ chmod +x create_image.sh && ./create_image.sh
 chmod +x publish_image.sh && ./publish_image.sh
 
 ### Steps with Virtual Machine
+It is required to be connected to URJC network to be able to access VM
+
 - Open terminal
 - Execute:
 ssh -i ssh-keys/appWeb08.key vmuser@10.100.139.202
