@@ -21,11 +21,13 @@ import org.springframework.data.domain.Page;
 import com.webapp08.pujahoy.dto.OfferDTO;
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
+import com.webapp08.pujahoy.dto.TransactionDTO;
 import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.service.OfferService;
 import com.webapp08.pujahoy.service.ProductService;
+import com.webapp08.pujahoy.service.TransactionService;
 import com.webapp08.pujahoy.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,6 +47,9 @@ public class ProductRestController {
 
     @Autowired
     private OfferService offerService;
+
+    @Autowired
+    private TransactionService transactionService;
 
     
     @GetMapping("/{id_product}")
@@ -322,41 +327,38 @@ public class ProductRestController {
         }
     }
 
-    // @GetMapping("/{id_product}/transaction") 
-// public ResponseEntity<TransactionDTO> getTransaction(  
-//         @PathVariable long id_product,  
-//         HttpServletRequest request) {  
+    @GetMapping("/{id_product}/transaction") 
+    public ResponseEntity<TransactionDTO> getTransaction(  
+            @PathVariable long id_product,  
+            HttpServletRequest request) {  
 
-//     Principal principal = request.getUserPrincipal(); 
-//     if (principal == null) { 
-//         return ResponseEntity.status(HttpStatus.UNAUTHORIZED) 
-//                 .body(null); 
-//     }
+        Principal principal = request.getUserPrincipal(); 
+        if (principal == null) { 
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED) 
+                    .body(null); 
+        }
 
-//     Optional<UserModel> user = userService.findByName(principal.getName()); 
-//     if (user.isEmpty()) { 
-//         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); 
-//     }
+        Optional<UserModel> user = userService.findByName(principal.getName()); 
+        if (user.isEmpty()) { 
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); 
+        }
 
-//     Optional<Product> product = productService.findById(id_product); 
-//     if (product.isEmpty() || !product.get().isActive()) { 
-//         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); 
-//     }
+        Optional<Product> product = productService.findById(id_product); 
+        if (product.isEmpty() || !product.get().isActive()) { 
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); 
+        }
 
-//     Optional<Transaction> transaction = transactionService.findByProductId(id_product); 
-//     if (transaction.isEmpty()) { 
-//         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); 
-//     }
+        TransactionDTO transactionDTO = transactionService.findTransactionDTO(product.get());
+        if (transactionDTO == null) { 
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); 
+        } 
 
-//     UserModel loggedInUser = user.get(); 
-//     if (!transaction.get().getBuyer().getId().equals(loggedInUser.getId()) &&  
-//         !product.get().getSeller().getId().equals(loggedInUser.getId())) { 
-//         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); 
-//     }
-
-//     TransactionDTO transactionDTO = transactionService.toDTO(transaction.get()); 
-//     return ResponseEntity.ok(transactionDTO); 
-// }
+        if (transactionDTO.buyer().id() != user.get().getId() && transactionDTO.seller().id() != user.get().getId() && !"Administrator".equalsIgnoreCase(user.get().determineUserType())) { 
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); 
+        }
+        
+        return ResponseEntity.ok(transactionDTO); 
+    }
 
 
     
