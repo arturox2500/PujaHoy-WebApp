@@ -181,7 +181,7 @@ public class SecurityConfiguration {
 			.exceptionHandling(exceptionHandling -> exceptionHandling
             	.accessDeniedPage("/permitsError") // Redirect to /pageError if have error 403
         	);
-			
+			http.csrf(csrf -> csrf.disable());
 		return http.build();
 	}
 
