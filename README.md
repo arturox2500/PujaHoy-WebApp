@@ -400,19 +400,19 @@ Docker compose down
 
 | Commit | Description |
 | :----: | :---------: |
-| [1º]() | |
-| [2º]() | |
-| [3º]() | |
-| [4º]() | |
-| [5º]() | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/bf86631a6b2def932760f286ab1703cc869e9478) | Add application security through cookies. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/4b93e309754009fae2d4f29a3b7319dcb258999b) | Add queries for all products and for an individual product, performing the necessary checks. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/f1c372e71c5e7c357b133ec74ae7eb6c5ffcfbb1) | Add the method to create a bid for a specific product. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/788fc30110f84038a22652bfb938db13dd9deef3) | Add a GET method to view the offers for a specific product. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/ecd92bcb559eb0198c9911ed998e8c54596a640b) | All the business logic from the controller is moved to the service. |
 
 | File | Description |
 | :----: | :---------: |
-| [1º]() | |
-| [2º]() | |
-| [3º]() | |
-| [4º]() | |
-| [5º]() | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/ProductRestController.java) | The file I've worked on the most contains the API logic for our application's products. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/service/ProductService.java) | It contains the product business logic. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/security/SecurityConfiguration.java) | File containing the web's filters and security measures |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/LoginRestController.java) | Controller for system login, logout, and cookie refresh. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/model/Product.java) | Model with product information, I added methods and used it to configure the DTOs.  |
 
 ### Miguel Pradillo Bartolomé
 
