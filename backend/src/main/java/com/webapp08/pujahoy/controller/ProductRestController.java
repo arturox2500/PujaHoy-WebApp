@@ -84,11 +84,11 @@ public class ProductRestController {
 
         Principal principal = request.getUserPrincipal();
         if(principal == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         Optional<UserModel> user = userService.findByName(principal.getName());
         if (!user.isPresent()) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         Optional<UserModel> bidder = userService.findById(user.get().getId());
@@ -97,27 +97,27 @@ public class ProductRestController {
         //User Comprobation
         if(bidder.isPresent()){
             if("Administrator".equalsIgnoreCase(bidder.get().determineUserType())){
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
             if(!bidder.get().isActive()){
-                return ResponseEntity.badRequest().build();
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
         }else{
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         //Product Comprobation
         if (product.isPresent()) {
             if(!product.get().isActive()){
-                return ResponseEntity.badRequest().build();
+                return ResponseEntity.status(HttpStatus.GONE).build();
             }
         }else{
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         // bidder not the seller
         if(bidder.get().getId()==product.get().getSeller().getId()){
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
 
@@ -144,7 +144,7 @@ public class ProductRestController {
 
             return ResponseEntity.created(location).body(offer);
         }else{
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build(); //Bid is too low
         }
     }
 
@@ -322,7 +322,7 @@ public class ProductRestController {
         }
     }
 
-    // @GetMapping("/transactions/{id_product}") 
+    // @GetMapping("/{id_product}/transaction") 
 // public ResponseEntity<TransactionDTO> getTransaction(  
 //         @PathVariable long id_product,  
 //         HttpServletRequest request) {  
