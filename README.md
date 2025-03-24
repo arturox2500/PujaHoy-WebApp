@@ -418,11 +418,11 @@ Docker compose down
 
 | Commit | Description |
 | :----: | :---------: |
-| [1º]() | |
-| [2º]() | |
-| [3º]() | |
-| [4º]() | |
-| [5º]() | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/2c7292a6b8e35ce672a98d90565c50d600d2f1ce) | Added and implemented first full version of GetTransaction for ProductRestController. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/2b951b14ee51f1eca64b86cd1b4944a1acb7d695) | Added AeleteProduct to ProductRestController. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/8c9fc6c0be0dbabc1eda74fc58f2996db08c4f90) | In this commit the file TransactionDTO was completely updated to its final and functional version. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/2160d2b6825c2a337d7e02124a5bcfd2f0d2d956) | Added TransactionMapper file. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/64df9c2deebab3a18ff27da71bec88f6e2424fcb) | Added createTransaction method to TransactionService. |
 
 | File | Description |
 | :----: | :---------: |
