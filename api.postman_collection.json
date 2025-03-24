@@ -1,0 +1,711 @@
+{
+	"info": {
+		"_postman_id": "58717a5d-37c1-4829-95ac-f7c42fc01ab7",
+		"name": "Demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43165430",
+		"_collection_link": "https://pujahoy.postman.co/workspace/PujaHoy-Workspace~a5174928-1c80-4d97-8a0c-b8f24b523092/collection/43165430-58717a5d-37c1-4829-95ac-f7c42fc01ab7?action=share&source=collection_link&creator=43165430"
+	},
+	"item": [
+		{
+			"name": "Ver productos",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/products",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Producto 2",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/products/2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"products",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Vendedor del producto 2",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users/3",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Imagen del vendedor del producto 2",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users/3/image",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"3",
+						"image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registrarse",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"test@test.com\", \r\n    \"password\": 1234,\r\n    \"zipCode\": 28028,\r\n    \"username\": \"elcolega\",\r\n    \"visibleName\": \"elcolega\",\r\n    \"description\": \"\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/auth/user",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"auth",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login con Pedro",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Pedro\",\r\n    \"password\": \"pass\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/auth/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ver propio perfil (Pedro)",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar perfil",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Pedro\",\r\n    \"reputation\": 2.0,\r\n    \"visibleName\": \"Pedrito\",\r\n    \"contact\": \"ejemplo@gmail.com\",\r\n    \"description\": \"DDescripcion cambiada\",\r\n    \"zipCode\": 28024,\r\n    \"image\": \"https://localhost:8443/api/v1/users/2/image\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/users",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar imagen Pedro",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "imageFile",
+							"type": "file",
+							"src": "/C:/Users/PcVIP/Pictures/Imagen de WhatsApp 2025-02-16 a las 15.57.41_0155e25a.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/users/2/image",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"2",
+						"image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ver tus productos, de Pedro",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users/2/products",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"2",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Intentar pujar en tu producto",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"cost\":\"250\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/products/1/offers",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"products",
+						"1",
+						"offers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear producto",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Sonic Screns\",\r\n    \"description\": \"New product\",\r\n    \"iniValue\": 9000,\r\n    \"duration\": 30\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/users/2/products",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"2",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear foto del producto 16",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/PcVIP/Pictures/Screenshots/Captura de pantalla 2025-02-11 184257.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/products/16/image",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"products",
+						"16",
+						"image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ver productos comprados",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users/2/boughtProducts",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"2",
+						"boughtProducts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Valorar iphone",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"rating\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/users/3/products/3/ratings",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"3",
+						"products",
+						"3",
+						"ratings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Checkout Iphone de Pedro",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"state\": \"Delivered\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/users/3/products/3",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"3",
+						"products",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar producto",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Nueva Actualizacion Television LG2\",\r\n    \"description\": \"Smart TV 4K 55 inches with HDR and surround sound.\",\r\n    \"iniValue\": 9000,\r\n    \"duration\": 30\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/users/2/products/16",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"2",
+						"products",
+						"16"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear oferta",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"cost\":\"250\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/products/2/offers",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"products",
+						"2",
+						"offers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Comprobar que la puja se ha creado",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/products/2 ",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"products",
+						"2 "
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar producto ",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/products/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Log out",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/auth/logout",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Log in Juan (admin)",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Juan\",\r\n    \"password\": \"pass\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/auth/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ver productos como admin",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/products",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar producto",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"PRODUCTO ACTUALIZADO 1: Edicion de Pedro\",\r\n    \"description\": \"Edicion de pedfro\",\r\n    \"iniValue\": 9000,\r\n    \"duration\": 30\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/users/2/products/16",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"2",
+						"products",
+						"16"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar imagen del producto",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": [
+								"/C:/Users/PcVIP/Pictures/Screenshots/Captura de pantalla 2025-02-13 160939.png",
+								"/C:/Users/PcVIP/Pictures/Screenshots/Captura de pantalla 2025-02-11 184257.png"
+							]
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/products/16/image",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"products",
+						"16",
+						"image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Banear/desbanear a Pedro",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Pedro\",\r\n    \"reputation\": 2.0,\r\n    \"visibleName\": \"Pedrito\",\r\n    \"contact\": \"pedrosimple@gmail.com\",\r\n    \"description\": \"Dedicated seller offering high-quality products at affordable prices.\",\r\n    \"zipCode\": 28024,\r\n    \"image\": \"https://localhost:8443/api/v1/users/2/image\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/users",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

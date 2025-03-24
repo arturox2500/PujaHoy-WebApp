@@ -19,12 +19,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findById(Long id);
     Page<Product> findBySeller_Name(String name, Pageable pageable);
     List<Product> findBySeller(UserModel user);
+    Page<Product> findBySeller_Id(Pageable pageable, Long id);
 
     @Query("SELECT p FROM Product p " +
        "JOIN Transaction t ON t.product = p " +
        "JOIN t.buyer u " +
        "WHERE u.name = :buyerName")
     Page<Product> findBoughtProductsByUser(@Param("buyerName") String buyerName, Pageable pageable);
+
+    @Query("SELECT p FROM Product p " +
+       "JOIN Transaction t ON t.product = p " +
+       "JOIN t.buyer u " +
+       "WHERE u.id = :buyerId")
+    Page<Product> findBoughtProductsByUserID(Pageable pageable, @Param("buyerId") Long buyerId);
 
     Page<Product> findAll(Pageable pageable);
 
@@ -35,4 +42,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     //Advanced search algorithm only In progress
     @Query("SELECT p FROM Product p WHERE p.state = 'In progress' ORDER BY p.seller.reputation DESC")
     Page<Product> findByStateInProgressOrderedBySellerReputation(Pageable pageable);
+
+   
 }

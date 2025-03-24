@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -53,12 +54,13 @@ public class UserModel{
         this.name = name;
         this.reputation = reputation;
         this.encodedPassword = encodedPassword;
-        this.rols = List.of(rols);
+        this.rols = rols != null ? List.of(rols) : Collections.emptyList();
         this.contact = contact;
         this.description = description;
         this.active = active;
         this.visibleName = visibleName;
         this.products = null;
+        this.image = "https://localhost:8443/api/v1/users/" + this.id + "/image";
         this.profilePic= UploadStandardProfilePic();
         this.zipCode = zipCode;
     }
@@ -67,7 +69,7 @@ public class UserModel{
         return id;
     }
 
-    public int getZipCode() {
+    public Integer getZipCode() {
         return zipCode;
     }
 

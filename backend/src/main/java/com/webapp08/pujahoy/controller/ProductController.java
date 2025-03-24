@@ -142,25 +142,37 @@ public class ProductController {
     }
 
     @PostMapping("/product/{id_product}/delete")
-    public String deleteProduct(Model model, @PathVariable long id_product) {
+    public String deleteProduct(Model model,HttpServletRequest request, @PathVariable long id_product) {
+
         Optional<Product> product = productService.findById(id_product);
+        Principal principal = request.getUserPrincipal();
+        Optional<UserModel> user = userService.findByName(principal.getName());
 
         if (product.isPresent()) {
+            if(!(product.get().getSeller().getId()== user.get().getId() || user.get().determineUserType().equals("Administrator"))){
+                model.addAttribute("text", " This product is not yours");
+                model.addAttribute("url", "/");
+                return "pageError";
+            }
             //Offer verification
             if (!product.get().getOffers().isEmpty()) {
-                for (Offer oferta : product.get().getOffers()) {
-                    offerService.deleteById(oferta.getId());
-                }
+                model.addAttribute("text", " You cannot delete the product.");
+                model.addAttribute("url", "/");
+                return "pageError";
             }
             //Transaction verification
             Optional<Transaction> trans = transactionService.findByProduct(product.get());
             if (trans.isPresent()) {
-                transactionService.deleteById(trans.get().getId());
+                model.addAttribute("text", " You cannot delete the product.");
+                model.addAttribute("url", "/");
+                return "pageError";
             }
             //Rating verification
             Optional<Rating> rate = ratingService.findByProduct(product.get());
             if (rate.isPresent()) {
-                rate.get().setProduct(null);
+                model.addAttribute("text", " You cannot delete the product.");
+                model.addAttribute("url", "/");
+                return "pageError";
             }
             //delete
             productService.deleteById(id_product);

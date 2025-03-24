@@ -92,6 +92,15 @@
                             <input type="hidden" name="_csrf" value="{{token}}" />
                         </form>
                         {{/admin}}
+
+                        {{^admin}}
+                        {{#isSeller}}
+                        <form action="/product/{{id}}/delete" method="post" style="display:inline;">
+                            <button type="submit" class="add-to-cart-btn">Delete</button>
+                            <input type="hidden" name="_csrf" value="{{token}}" />
+                        </form>
+                        {{/isSeller}}
+                        {{/admin}}
                         
                     </div>
                     <div class="add-to-cart">

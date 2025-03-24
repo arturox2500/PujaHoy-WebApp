@@ -90,7 +90,11 @@ public class DataBaseInitializer {
 			Product product2 = new Product("European coins", "Collection of old coins from different European countries.", 199.99, date24, date25M, "In progress", saveImageFromFile("static/img/product02.jpg"), user3);
 			Product product3 = new Product("Iphone 13", "iPhone 13 with 128GB, dual camera and A15 Bionic chip in excellent condition.", 359.99, date24, date25, "Finished", saveImageFromFile("static/img/product03.jpg"), user3);		
 			Product product4 = new Product("Office computer", "PC ideal for office with i5 processor, 8GB RAM and 256GB SSD.", 399.99, date24, date25, "Finished", saveImageFromFile("static/img/product04.jpg"), user4);
-			
+			product1.setDuration(28L);
+			product2.setDuration(28L);
+			product3.setDuration(1L);
+			product4.setDuration(1L);
+
 			Offer newOffer = new Offer(user2, product3, 360.00, date24);
 			product3.getOffers().add(newOffer);
 
@@ -142,6 +146,18 @@ public class DataBaseInitializer {
 			Product product14 = new Product("Wine vintage 2008", "Aged red wine with fruity notes and barrel-aged.", 129.99, date24, date25M, "In progress", saveImageFromFile("static/img/product14.webp"), user2);
 			Product product15 = new Product("Ship in a bottle", "Handcrafted miniature ship inside a glass bottle.", 59.99, date24, date25M, "In progress", saveImageFromFile("static/img/product15.jpg"), user4);
 			
+			product5.setDuration(28L);
+			product6.setDuration(28L);
+			product7.setDuration(28L);
+			product8.setDuration(28L);
+			product9.setDuration(28L);
+			product10.setDuration(28L);
+			product11.setDuration(28L);
+			product12.setDuration(28L);
+			product13.setDuration(28L);
+			product14.setDuration(28L);
+			product15.setDuration(28L);
+
 			productRepository.save(product5);
 			productRepository.save(product6);
 			productRepository.save(product7);

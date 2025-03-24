@@ -1,4 +1,5 @@
 package com.webapp08.pujahoy.dto;
+import java.util.Objects;
 
 public class PublicUserDTO {
     private Long id;
@@ -57,5 +58,18 @@ public class PublicUserDTO {
     }
     public void setZipCode(int zipCode) {
         this.zipCode = zipCode;
+    }
+    public int changes(PublicUserDTO old) {
+        int cambios = 0;
+
+        if (!Objects.equals(this.name, old.name)) cambios++;
+        if (Double.compare(this.reputation, old.reputation) != 0) cambios++;
+        if (!Objects.equals(this.visibleName, old.visibleName)) cambios++;
+        if (!Objects.equals(this.contact, old.contact)) cambios++;
+        if (!Objects.equals(this.description, old.description)) cambios++;
+        if (this.zipCode != old.zipCode) cambios++;
+        if (!Objects.equals(this.image, old.image)) cambios++;
+
+        return cambios;
     }
 }

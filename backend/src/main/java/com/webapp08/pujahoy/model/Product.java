@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -21,11 +22,15 @@ public class Product {
     
         private String name;
         private String description;
-        private double iniValue;
+        private Double iniValue;
         private Date iniHour;
         private Date endHour;
         private String state;
+        private Long duration;
+        
+        @Lob
         private Blob image;
+        private String imgURL;
 
         @OneToMany(mappedBy="product")
         private List<Offer> offers;
@@ -37,7 +42,7 @@ public class Product {
     
         }
 
-        public Product(String name,String description,double iniValue, Date iniHour,Date endHour, String state, Blob image, UserModel seller){
+        public Product(String name,String description,Double iniValue, Date iniHour,Date endHour, String state, Blob image, UserModel seller){
             this.name = name;
             this.description = description;
             this.iniValue = iniValue;
@@ -77,11 +82,11 @@ public class Product {
         }
 
        
-        public double getIniValue() {
+        public Double getIniValue() {
             return iniValue;
         }
 
-        public void setIniValue(double iniValue) {
+        public void setIniValue(Double iniValue) {
             this.iniValue = iniValue;
         }
 
@@ -136,5 +141,28 @@ public class Product {
         public void addOffer(Offer offer){
             this.offers.add(offer);
         }
+
+        public String getImgURL() {
+            return imgURL;
+        }
+
+        public void setImgURL(String imgURL) {
+            this.imgURL = imgURL;
+        }
+
+        public Long getDuration() {
+            return duration;
+        }
+
+        public void setDuration(Long duration) {
+            this.duration = duration;
+        } 
+
+        public boolean isActive() {
+        long currentTime = System.currentTimeMillis();
+        Date currentDate = new Date(currentTime); 
+
+        return iniHour != null && endHour != null && !currentDate.before(iniHour) && !currentDate.after(endHour);
+}
 
 }

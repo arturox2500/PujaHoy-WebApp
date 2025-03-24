@@ -1,6 +1,5 @@
 package com.webapp08.pujahoy.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -32,10 +31,8 @@ import java.sql.SQLException;
 
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.service.UserService;
-import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.Transaction;
-import com.webapp08.pujahoy.service.OfferService;
 import com.webapp08.pujahoy.service.ProductService;
 import com.webapp08.pujahoy.model.Rating;
 import com.webapp08.pujahoy.service.RatingService;
@@ -58,9 +55,6 @@ public class UserController {
 
     @Autowired
     private TransactionService transactionService;
-
-    @Autowired
-    private OfferService offerService;
 
     @ModelAttribute // Responsible for adding the attributes to the model in every request
     public void addAttributes(Model model, HttpServletRequest request) {
@@ -200,38 +194,6 @@ public class UserController {
         return "redirect:/user"; 
     }
 
-    private void finishProductsForUser(UserModel user) { // Responsible for finishing all the products of a user if he is banned
-        List<Product> products = productService.findBySeller(user);
-        for (Product product : products) {
-            if (product.getState().equals("In progress")) {
-                if (!product.getOffers().isEmpty()) {
-                    for (Offer offer : product.getOffers()) {
-                        offerService.delete(offer);
-                    }
-                }
-                product.setOffers(null);
-                product.setState("Finished");
-                productService.save(product);
-            }
-        }
-    }
-
-    private void deleteProducts(UserModel user) { // Responsible for deleting all products from a user if he is unbanned
-        List<Product> products = productService.findBySeller(user);
-        for (Product product : products) {
-            if (!product.getOffers().isEmpty()) {
-                for (Offer offer : product.getOffers()) {
-                    offerService.deleteById(offer.getId());
-                }
-            }
-            Optional<Transaction> trans = transactionService.findByProduct(product);
-            if (trans.isPresent()) {
-                transactionService.deleteById(trans.get().getId());
-            }
-            productService.deleteById(product.getId());
-        }
-    }
-
     @PostMapping("/{id}/ban") // Responsible for verifying that the parameters passed are valid and, if so, banning or unbanning the user
     public String bannedUser(Model model, @PathVariable String id, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
@@ -245,9 +207,9 @@ public class UserController {
                 userService.save(user.get());
                 if (active) {
                     model.addAttribute("text", "User banned. All his products have been finished.");
-                    this.finishProductsForUser(user.get());
+                    userService.finishProductsForUser(user.get());
                 } else {
-                    this.deleteProducts(user.get());
+                    userService.deleteProducts(user.get());
                     model.addAttribute("text", "User unbanned. All his products have been removed.");
                 }
                 return "bannedProfile";
@@ -526,7 +488,9 @@ public class UserController {
 
             Product product = new Product(name, description, prize, iniHour, endHour, "In progress", image,
                     user.get());
-    
+            
+            
+            product.setImgURL("/product/" + product.getId() +"/image");
             productService.save(product);
 
             model.addAttribute("product", product);
@@ -577,21 +541,6 @@ public class UserController {
         return "pageError";
     }
 
-    public void updateRating(UserModel user) { // Responsible for updating the reputation of a user
-        List<Rating> ratings = ratingService.findAllBySeller(user);
-        if (ratings.isEmpty()) {
-            return; 
-        }
-        int amount = 0;
-        for (Rating val : ratings) {
-            amount += val.getRating();
-        }
-        double mean = (double) amount / ratings.size();
-
-        user.setReputation(mean);
-        userService.save(user);
-    }
-
     @PostMapping("/{id}/rated") // Responsible for verifying that the parameters passed are valid and, if so, saving them in the database
     public String rateProduct(Model model, @PathVariable long id, @RequestParam int rating) {
         if (rating < 1 || rating > 5) {
@@ -609,7 +558,7 @@ public class UserController {
             }
             Rating val = new Rating(product.get().getSeller(), product.get(), rating);
             ratingService.save(val);
-            this.updateRating(product.get().getSeller());
+            userService.updateRating(product.get().getSeller());
             model.addAttribute("id", product.get().getId());
             return "productRated";
         } else {

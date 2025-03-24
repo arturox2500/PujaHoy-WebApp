@@ -1,100 +1,11 @@
 # webapp08
-# Aplicación web de subastas "PujaHoy"
-## Integrantes
+# Auction Application (PUJAHOY)
+## Contributors
 ### Jorge Andrés Echevarría j.andres.2022@alumnos.urjc.es jae9104
 ### Arturo Enrique Gutierrez Mirandona ae.gutierrez.2022@alumnos.urjc.es arturox2500
 ### Iván Gutiérrez González i.gutierrez.2022@alumnos.urjc.es IvanGutierrrez
 ### Víctor Bartolomé Letosa v.bartolome.2022@alumnos.urjc.es victorino2324
 ### Miguel Pradillo Bartolomé	m.pradillo.2020@alumnos.urjc.es	MikePradiBart
-## Aspectos principales
-### Entidades:
-#### Usuario
-Guarda el rol, el id y si es usuario registrado guardará su reputación, su método de pago y sus productos públicados.
-#### Producto
-Guarda todas las ofertas que se realizan sobre el, la transacción final, la hora inicial y final, el precio inicial, los datos del producto (imagen, nombre, etc) y el estado de este (sin verificar, verificado, terminado y vetado).
-#### Oferta
-Guardará el precio de la puja, la hora a la que se realiza, el usuario que la efectua y el identificador del producto.
-#### Transacción
-Guarda el precio final, el usuario que vende el producto y el que lo compra y el identificador del producto.
-### Tipos de Usuarios:
-#### Usuario no registrado
-Visualiza los productos, los perfiles de usuarios y el historial de las ofertas.
-#### Usuario registrado
-Puede publicar productos para subasta, hacer ofertas, realizar transacciones (compra o venta) y valorar a otros usuarios.
-#### Administrador
-Valida productos y banear o desbanear usuarios y productos.
-### Permisos de los usuarios:
-Los usuarios registrados pueden ver sus productos publicados (vendidos o no), sus datos personales, los productos sobre los que ha realizado una o varias ofertas y ver el precio de estas.
-Y los administradores tendrán acceso a los productos publicados y a las ofertas realizadas de todos los usuarios registrados.
-### Imágenes:
-Los usuarios pueden subir una o varias imágenes sobre los productos que publican.
-### Gráficos:
-Los usuarios podrán consultar los gráficos que muestran el historial de ofertas de cada producto publicado.
-### Tecnología complementaria:
-La aplicación web utilizará Auth0 para la gestión de autentificación y autorización.
-### Algoritmo o consulta avanzada:
-Al ver los productos publicados se mostrarán en orden según la valoración que tenga el usuario que lo publica.
-## Diagrama de la base de datos de la aplicación
-![Diagrama de la base de datos de la aplicación](imagenes/DAW_BBDD.png)
-## Imagenes
-A continuación explicaremos las páginas de nuestra web, en caso de ser necesario, según el tipo de usuario que acceda a ellas. En todas las páginas en caso de ser un usuario no registrado el boton de My Account se sustituíria por el de Log in para registrarse.
-### Imagen index
-![index](imagenes/Index.png)
-### Imagen Store
-![Store](imagenes/Store.png)
-### Imagen Product
-En está pagina saldrán unos botones u otros según quien acceda a ella:
-
-Usuario no registrado: solo le saldrá el botón de "Seller" para ir a al perfil del vendedor.
-
-Usuario registrado que posee el producto: le saldrá la opción de eliminarlo con el botón "Delete".
-
-Usuario registrado que quiere comprar: Le saldrá el botón "Place a bid" para hacer una oferta y el botón "Seller" antes mencionado.
-
-Administrador: Tendrá acceso a los botones "Seller" y "Delete".
-
-Y como aclaración las Reviews mostradás son del perfil del usuario, realizadas por aquellos usuarios que hayan comprado productos suyos en alguna ocasión.
-
-![Product](imagenes/CapturaProduct.jpg)
-### Imagen Login
-![Login](imagenes/CapturaLogin.PNG)
-### Imagen Profile
-En la pagina del perfil se mostra´ra más o menos información y se podrán realizar ciertas acciones según tipo de usuario:
-
-Usuario no registrado: solo podrá ver la información de "Full Name", "User" y "User Rating" y no podrá realizar ninguna acción.
-
-Usuario registrado que accede a su propia cuenta: podrá ver toda la información y tendrá acceso a todas las funciones menos la del botón "Ban User".
-
-Usuario registrado que accede a la cuenta de otro usuario: tendrá el mismo acceso que un usuario no registrado más información de contacto como "Email" y/o "Phone".
-
-Administrador: Tendrá acceso a todos los datos y solo al botón de "Ban User" y "Your Auctions" para banear al usuario o eliminar alguno de sus productos.
-
-![Profile](imagenes/Profile.png)
-### Imagen New Auction
-![New Auction](imagenes/NewAuction.png)
-### Imagen Edit Profile
-![Edit Porfile](imagenes/EditProfile.png)
-### Imagen Your Winning Bids y Imagen Your products
-Está página se divirá en dos, según la acción que realize el usuario registrado en su perfil, ya sea ver sus apuestas ganadas  o sus productos publicados (está página también la podrá ver un admionistrador) mostrando el botón de "Rate" y "Eliminate" respectivamente.
-
-![Your winnigns bids y Your products](imagenes/YourWinningsBids.png)
-### Diagrama de navegación
-![Diagrama de pantallas](imagenes/DiagramaPantallas.png)
-
-Aclaraciones:
-
-Flechas amarillas = todos los usuarios.
-
-Flechas verdes = administradores y usuarios registrados quie acceden a su perfil.
-
-Flechas azules = usuarios registrados ajenos a la perfil.
-
-
----
-
----
-
-# Auction Application (PUJAHOY)
 
 # Index
 
@@ -139,12 +50,10 @@ Flechas azules = usuarios registrados ajenos a la perfil.
    - 
    - [Class and Templates Diagram](#class-and-templates-diagram)
 
-10. **[Contributors](#contributors)**
-    - [Jorge Andrés Echevarría](#jorge-andrés-echevarría)
-    - [Arturo Enrique Gutierrez Mirandona](#arturo-enrique-gutierrez-mirandona)
-    - [Iván Gutierrez González](#iván-gutierrez-gonzález)
-    - [Victor Bartolomé Letosa](#victor-bartolomé-letosa)
-    - [Miguel Pradillo Bartolomé](#miguel-pradillo-bartolomé)
+10. **[Contributors tag 1](#contributors-tag-1)**
+
+11. **[Contributors tag 2](#contributors-tag-2)**
+    
     
 
 
@@ -268,7 +177,7 @@ As a summary we show the updated navigation diagram.
 
 ![NavigationDiagram](imagenes/NavigationDiagram.png)
 
-## Instructions to Run
+## Instructions to Run //   Falta actualizar
 
 ### Required Technologies / Applications
 - VSCode (or any preferred IDE like IntelliJ IDEA or Eclipse)
@@ -277,6 +186,8 @@ As a summary we show the updated navigation diagram.
 - Spring Boot 3.4.3
 - MySQL Installer 8.0.33 or higher
 - MySQL Workbench 8.0.33 or higher
+- Docker
+- Docker Compose
 
 ### Steps
 - Download the ZIP from this GitHub repository
@@ -288,6 +199,21 @@ As a summary we show the updated navigation diagram.
 - Go to https://localhost:8443
 - If you encounter security warnings, select Advanced options and then Proceed to the website
 
+### Steps with Docker
+- Install Docker from official site
+- Install Docker Compose
+- Run Docker
+- Clone or download the repository
+- Go to folder that contains docker-compose.hml
+- Execute Pujahoy with Docker Compose: "docker compose up"
+- Open your browser
+- Go to https://localhost:8443
+- If you encounter security warnings, select Advanced options and then Proceed to the website
+
+### Steps with Virtual Machine
+
+### Steps for bulding Docker Image
+
 ## Documentation
 
 ### Diagram with the database entities
@@ -296,10 +222,10 @@ As a summary we show the updated navigation diagram.
 ![BBDD Class Diagram](imagenes/BBDDClassDiagram.png)
 
 
-### Class and Templates Diagram 
-![Class and Templates Diagram ](imagenes/ClassTemDiagram.jpg)
+### Class and Templates Diagram
+![Class and Templates Diagram ](imagenes/ClassTemplatesDiagramP2White.png)
 
-## Contributors
+## Contributors tag 1
 
 ### Jorge Andrés Echevarría
 
@@ -390,3 +316,98 @@ As a summary we show the updated navigation diagram.
 | [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/security/CSRFHandlerConfiguration.java) | Added implementation and full funtionality on this file as part of the security configuration of the PujaHoy web application. It is responsible for integrating CSRF protection into the application.|
 | [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/security/SecurityConfiguration.java) | Set up roles, role-specific URLs, login functionality, and cookies to maintain the session for one day. It's where the security for HD database was implemented. |
 | [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/UserController.java) | Model atributes added to this file. |
+
+## Contributors tag 2 
+
+//   Falta actualizar
+
+### Arturo Enrique Gutierrez Mirandona 
+
+| Commit | Description |
+| :----: | :---------: |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/0b2b8b3e62e39f778b29fcadc3fe57d50a7a2244) | Creation of files required for this phase such a product mapper and DTO classes. Also essential methods were written |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/0088293af54cc418db52914c6c8c99f5c48c5a49) | Main logic for post and put methods for products and their respective images created|
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/e04914861a3fcb297618b43f05c5c9b114d55f98) | Added better responses for requests in the user and product rest controllers |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/c60ce0606352f7bddc74b3aa24e56256a61ab5c8) | Added a particular type of post request for when a auction is finished and a transaction occurs |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/32229ded12b9cad0501f7f20c7ee1b346930fce6) | Added pagination functionality to product listings |
+
+| File | Description |
+| :----: | :---------: |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/UserRestController.java) | Added functionality for creating and editing auctions, including the necessary verifications for edge cases with appropriate error responses. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/ProductRestController.java) | Added GET methods for retrieving all products and specific products, as well as GET, POST, and PUT methods for product images, including their respective error responses. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/service/ProductService.java) | Added pagination functionality for all product listings, including bought products, the user's products, and the general product list. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/ProductDTO.java) | Created the necessary ProductDTO class and added all the required attributes, along with their getters and setters. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/ProductMapper.java) | Created the ProductMapper class with the necessary attributes and mappings.|
+
+### Jorge Andrés Echevarría
+
+| Commit | Description |
+| :----: | :---------: |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/b2304d7c467f4cdefe522513f1c087fd84a15ca6) | Added EditProfileImage and EditProfile with all its respective requiremets. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/4e7428a10fcbb7e341910f6158cff14514631299) | Added the register functionality to the loginRestControler which allows users to POST to create a profile.|
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/7dfbb692c3c518e936208926cae7067261f633c3) | Added basic functionalities related to docker file and docker compose|
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/0df28f39c9af3776b4ef6f45c32d10aa3a29483d) | Added basic schema for product rest controller|
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/71dea2390324137a7b04659389b4755d6d9c5b67) | Added basic schema for user rest controller|
+
+| File | Description |
+| :----: | :---------: |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/docker-compose.yml) | Added the docker compose file and made sure it worked.|
+| [2º](backend/src/main/java/com/webapp08/pujahoy/controller/LoginRestController.java) | In charge of making sure all funcionality related to login and register was on point and working. |
+| [3º](backend/src/main/java/com/webapp08/pujahoy/controller/UserRestController.java) | In charge of editing a user and its profile pic via the API |
+| [4º](backend/src/main/java/com/webapp08/pujahoy/service/UserService.java) | In charge of editing a user and its profile pic via the API |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/Dockerfile) | Added the dockerfile and made sure it worked.|
+
+### Iván Gutierrez González
+
+| Commit | Description |
+| :----: | :---------: |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/ec491deb05405de1f91562b44402927ba0ca046a) | Add the basic functionality to rate a product. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/77d4089925cda2463efc42842af6a728bf0a782b) | Add the NoSuchElementExceptionCA, the PublicUserDTO, its corresponding mapper, and the basic GET user data function. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/a05287491e559747ba0f65c18f260ac55b506fa0) | Add the basic function for banning and unbanning users by the administrator. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/29f747572f54bcfe725e277c6949eafbcfedf46e) | Once security with JWT is added, update the created methods to verify who is making the request. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/e76b0ae6001d002f6e74eb6425334eb1b6d91bd2) | Add security to each URL, differentiating them based on the type of request and who can access them. |
+
+| File | Description |
+| :----: | :---------: |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/UserRestController.java) | Add GET own data for the user, GET user data by ID, PUT to ban and unban users, and POST for rating. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/service/UserService.java) | Add the methods to ban and unban users, and remove the duplicated code between the web and REST. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/PublicUserDTO.java) | Add the DTO to view the visible fields of the user. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/dto/UserMapper.java) | Specify the toDTO and toDomain methods between UserModel and PublicUserDTO, specifying attributes and the image URL. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/NoSuchElementExceptionCA.java) | Controller that handles the 404 Not Found exception. |
+
+### Victor Bartolomé Letosa
+
+| Commit | Description |
+| :----: | :---------: |
+| [1º]() | |
+| [2º]() | |
+| [3º]() | |
+| [4º]() | |
+| [5º]() | |
+
+| File | Description |
+| :----: | :---------: |
+| [1º]() | |
+| [2º]() | |
+| [3º]() | |
+| [4º]() | |
+| [5º]() | |
+
+### Miguel Pradillo Bartolomé
+
+| Commit | Description |
+| :----: | :---------: |
+| [1º]() | |
+| [2º]() | |
+| [3º]() | |
+| [4º]() | |
+| [5º]() | |
+
+| File | Description |
+| :----: | :---------: |
+| [1º]() | |
+| [2º]() | |
+| [3º]() | |
+| [4º]() | |
+| [5º]() | |
+
