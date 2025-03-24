@@ -74,6 +74,7 @@ public class SecurityConfiguration {
 					.requestMatchers(HttpMethod.GET,"/api/v1/products/*").permitAll()
 					.requestMatchers(HttpMethod.GET,"/api/v1/products").permitAll()
 					.requestMatchers(HttpMethod.GET,"/api/v1/products/*/image").permitAll()
+					.requestMatchers(HttpMethod.GET,"/api/v1/products/*/offers").permitAll()
 					//.requestMatchers(HttpMethod.GET,"/api/v1/products/*/transactions").permitAll()
 
 					.requestMatchers(HttpMethod.POST,"/api/v1/auth/*").permitAll()
@@ -82,7 +83,6 @@ public class SecurityConfiguration {
 					.requestMatchers(HttpMethod.GET,"/api/v1/users").hasAnyRole("USER")
 					.requestMatchers(HttpMethod.GET,"/api/v1/users/*/products").hasAnyRole("USER")
 					.requestMatchers(HttpMethod.GET,"/api/v1/users/*/boughtProducts").hasAnyRole("USER")
-					.requestMatchers(HttpMethod.GET,"/api/v1/products/*/offers").hasAnyRole("USER")
 					
 					.requestMatchers(HttpMethod.POST,"/api/v1/users/*/products").hasAnyRole("USER")
 					.requestMatchers(HttpMethod.POST,"/api/v1/users/*/products/*/ratings").hasAnyRole("USER")

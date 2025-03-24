@@ -49,6 +49,28 @@
 			"response": []
 		},
 		{
+			"name": "Ofertas del producto 2",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/products/2/offers",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"products",
+						"2",
+						"offers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Vendedor del producto 2",
 			"request": {
 				"auth": {
