@@ -18,12 +18,10 @@ import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.dto.UserMapper;
 import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
-import com.webapp08.pujahoy.model.Rating;
 import com.webapp08.pujahoy.model.Transaction;
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.repository.OfferRepository;
 import com.webapp08.pujahoy.repository.ProductRepository;
-import com.webapp08.pujahoy.repository.RatingRepository;
 import com.webapp08.pujahoy.repository.TransactionRepository;
 import com.webapp08.pujahoy.repository.UserModelRepository;
 
@@ -32,9 +30,6 @@ public class UserService {
 
 	@Autowired
 	private UserModelRepository repository;
-
-	@Autowired
-	private RatingRepository  ratingRepository;
 
 	@Autowired
 	private ProductRepository productRepository;
@@ -132,21 +127,6 @@ public class UserService {
 			return Optional.of(mapper.toDTO(updatedUser));
 		}
 		return Optional.empty(); // The changes is not for banned user
-	}
-
-	public void updateRating(UserModel user) { // Responsible for updating the reputation of a user
-		List<Rating> ratings = ratingRepository.findAllBySeller(user);
-		if (ratings.isEmpty()) {
-			return;
-		}
-		int amount = 0;
-		for (Rating val : ratings) {
-			amount += val.getRating();
-		}
-		double mean = (double) amount / ratings.size();
-
-		user.setReputation(mean);
-		this.save(user);
 	}
 
 	public PublicUserDTO replaceUser(PublicUserDTO updatedPostDTO) throws SQLException {

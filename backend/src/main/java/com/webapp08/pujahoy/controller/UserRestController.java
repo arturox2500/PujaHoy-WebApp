@@ -4,13 +4,10 @@ import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.ProductMapper;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
-import com.webapp08.pujahoy.dto.RatingDTO;
 import com.webapp08.pujahoy.model.Product;
-import com.webapp08.pujahoy.model.Rating;
 import com.webapp08.pujahoy.model.Transaction;
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.service.ProductService;
-import com.webapp08.pujahoy.service.RatingService;
 import com.webapp08.pujahoy.service.TransactionService;
 import com.webapp08.pujahoy.service.UserService;
 import java.security.Principal;
@@ -48,9 +45,6 @@ public class UserRestController {
 
     @Autowired
     private TransactionService transactionService;
-
-    @Autowired
-    private RatingService ratingService;
 
     @GetMapping("")
     public ResponseEntity<?> me(HttpServletRequest request) { //Get his own details
@@ -401,45 +395,4 @@ public class UserRestController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You must be authenticated");   
 	}
-
-    @PostMapping("/{user_id}/products/{product_id}/ratings") // Rate user
-    public ResponseEntity<?> rateProduct(@PathVariable long user_id, @PathVariable long product_id,
-            @RequestBody RatingDTO ratingDTO, HttpServletRequest request) {
-        // Check if the user can rate this product
-        Principal principal = request.getUserPrincipal();
-        if(principal == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You must be authenticated");
-        }
-        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
-        if (!user.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
-
-        Optional<UserModel> seller = userService.findByIdOLD(user_id);
-        Optional<Product> product = productService.findByIdOLD(product_id);
-
-        if (seller.isPresent() && product.isPresent() && seller.get().getId() == product.get().getSeller().getId()
-                && ratingDTO.getRating() >= 1 && ratingDTO.getRating() <= 5) { // User is the seller of the product
-            Optional<Rating> test = ratingService.findByProduct(product.get());
-            if (test.isPresent()) {
-                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "The product is already rated")); 
-            }
-            Optional<Transaction> trans = transactionService.findByProduct(product.get());
-            if(!trans.isPresent() && user.get() != trans.get().getBuyer()) {
-                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "The product is not sold or you are not the buyer"));
-            }
-            RatingDTO newRatingDTO = ratingService.createRating(ratingDTO.getRating(), seller.get(), product.get());
-            userService.updateRating(seller.get());
-            URI location = fromCurrentRequest().path("/{id}").buildAndExpand(newRatingDTO.getId()).toUri();
-
-            return ResponseEntity.created(location).body(newRatingDTO);
-        } else { //User is not the seller of the product
-            if (!(ratingDTO.getRating() >= 1 && ratingDTO.getRating() <= 5)){
-                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "The rating must be between 1 and 5"));
-            } else if (!product.isPresent()){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
-            }
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Seller not found");
-        }
-    }
 }

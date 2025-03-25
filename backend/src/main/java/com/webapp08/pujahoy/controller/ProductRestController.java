@@ -21,6 +21,8 @@ import org.springframework.data.domain.Page;
 import com.webapp08.pujahoy.dto.OfferDTO;
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
+import com.webapp08.pujahoy.dto.PublicUserDTO;
+import com.webapp08.pujahoy.dto.RatingDTO;
 import com.webapp08.pujahoy.dto.TransactionDTO;
 import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
@@ -28,6 +30,7 @@ import com.webapp08.pujahoy.model.Transaction;
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.service.OfferService;
 import com.webapp08.pujahoy.service.ProductService;
+import com.webapp08.pujahoy.service.RatingService;
 import com.webapp08.pujahoy.service.TransactionService;
 import com.webapp08.pujahoy.service.UserService;
 
@@ -51,6 +54,9 @@ public class ProductRestController {
 
     @Autowired
     private TransactionService transactionService;
+
+    @Autowired
+    private RatingService ratingService;
 
     
     @GetMapping("/{id_product}")
@@ -365,6 +371,42 @@ public class ProductRestController {
         return ResponseEntity.ok(transactionDTO); 
     }
 
+    @PostMapping("{product_id}/ratings") // Rate user
+    public ResponseEntity<?> rateProduct(@PathVariable long product_id,
+            @RequestBody RatingDTO rating, HttpServletRequest request) {
+        // Check if the user can rate this product
+        Principal principal = request.getUserPrincipal();
+        if(principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You must be authenticated");
+        }
+        Optional<PublicUserDTO> user = userService.findByName(principal.getName());
+        if (!user.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
 
+        Optional<ProductDTO> product = productService.findById(product_id);
+        if (product.isPresent()){
+            Optional<?> respuesta = ratingService.rateProduct(rating.getRating(),product.get(),user.get());
+            if (respuesta.get() instanceof RatingDTO){
+                RatingDTO newRatingDTO = (RatingDTO) respuesta.get();
+                URI location = fromCurrentRequest().path("/{id}").buildAndExpand(newRatingDTO.getId()).toUri();
+                return ResponseEntity.created(location).body(newRatingDTO);
+            } else {
+                int value = (int) respuesta.get();
+                switch (value) {
+                    case 0:
+                    return ResponseEntity.badRequest().body(Collections.singletonMap("error", "The rating must be between 1 and 5"));
+                    case 1:
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Transaction not found");
+                    case 2:
+                    return ResponseEntity.badRequest().body(Collections.singletonMap("error", "You are not the buyer"));
+                    case 3:
+                        return ResponseEntity.badRequest().body(Collections.singletonMap("error", "The product is already rated"));
+                }
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        
+    }
     
 }

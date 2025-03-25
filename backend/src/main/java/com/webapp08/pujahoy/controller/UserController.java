@@ -33,12 +33,10 @@ import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.service.UserService;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
+import com.webapp08.pujahoy.dto.RatingDTO;
 import com.webapp08.pujahoy.model.Product;
-import com.webapp08.pujahoy.model.Transaction;
 import com.webapp08.pujahoy.service.ProductService;
-import com.webapp08.pujahoy.model.Rating;
 import com.webapp08.pujahoy.service.RatingService;
-import com.webapp08.pujahoy.service.TransactionService;
 
 import org.springframework.ui.Model;
 
@@ -54,9 +52,6 @@ public class UserController {
 
     @Autowired
     private RatingService ratingService;
-
-    @Autowired
-    private TransactionService transactionService;
 
     @ModelAttribute // Responsible for adding the attributes to the model in every request
     public void addAttributes(Model model, HttpServletRequest request) {
@@ -521,67 +516,55 @@ public class UserController {
     }
 
     @GetMapping("/{id}/rate") // Responsible for verifying that the parameters passed are valid and, if so, redirecting to the rating page
-    public String gotoRate(Model model, @PathVariable long id, HttpServletRequest request) {
-        Optional<Product> product = productService.findByIdOLD(id);
-        if (product.isPresent()) {
-            Principal principal = request.getUserPrincipal();
-            if (principal == null) {
-                model.addAttribute("text", "you must be logged in");
-                model.addAttribute("url", "/product/" + id);
-                return "pageError";
-            }
-            Optional<Transaction> trans = transactionService.findByProduct(product.get());
-            if (trans.isEmpty()) {
-                model.addAttribute("text", "this product has not been sold");
-                model.addAttribute("url", "/product/" + id);
-                return "pageError";
-            }
-            Optional<UserModel> user = userService.findByIdOLD(trans.get().getBuyer().getId());
-            Optional<UserModel> user1 = userService.findByNameOLD(principal.getName());
-            if (user.isPresent() && user1.isPresent()) {
-                if (user.get().determineUserType().equals("Registered User")
-                        && user1.get().getId().equals(user.get().getId())) {
-                    model.addAttribute("id", id);
-                    return "ratingProduct";
-                } else {
-                    model.addAttribute("text", "this product is not yours");
-                    model.addAttribute("url", "/product/" + id);
-                }
-            } else {
-                model.addAttribute("text", "buyer not exist");
-                model.addAttribute("url", "/");
-            }
-        } else {
-            model.addAttribute("text", "product not found");
-            model.addAttribute("url", "/");
-        }
-        return "pageError";
+    public String gotoRate(Model model, @PathVariable long id) {
+        model.addAttribute("id", id);
+        return "ratingProduct";
     }
 
     @PostMapping("/{id}/rated") // Responsible for verifying that the parameters passed are valid and, if so, saving them in the database
-    public String rateProduct(Model model, @PathVariable long id, @RequestParam int rating) {
-        if (rating < 1 || rating > 5) {
-            model.addAttribute("text", " the rated must be between 1 and 5");
-            model.addAttribute("url", "/producto/" + id + "/rate");
+    public String rateProduct(Model model, @PathVariable long id, @RequestParam int rating, HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        if(principal == null) {
+            model.addAttribute("text", " You must be authenticated");
+            model.addAttribute("url", "/product/" + id);
             return "pageError";
         }
-        Optional<Product> product = productService.findByIdOLD(id);
-        if (product.isPresent()) {
-            Optional<Rating> existingVal = ratingService.findByProduct(product.get());
-            if (existingVal.isPresent()) {
-                model.addAttribute("text", " This product has already been rated");
-                model.addAttribute("url", "/product/" + id);
-                return "pageError";
-            }
-            Rating val = new Rating(product.get().getSeller(), product.get(), rating);
-            ratingService.save(val);
-            userService.updateRating(product.get().getSeller());
-            model.addAttribute("id", product.get().getId());
-            return "productRated";
-        } else {
-            model.addAttribute("text", " product not found");
-            model.addAttribute("url", "/");
+        Optional<PublicUserDTO> user = userService.findByName(principal.getName());
+        if (!user.isPresent()) {
+            model.addAttribute("text", " User not found");
+            model.addAttribute("url", "/product/" + id);
+            return "pageError";
         }
+        Optional<ProductDTO> product = productService.findById(id);
+        if (product.isPresent()){
+            Optional<?> respuesta = ratingService.rateProduct(rating,product.get(),user.get());
+            if (respuesta.get() instanceof RatingDTO){
+                model.addAttribute("id", product.get().getId());
+                return "productRated";
+            } else {
+                int value = (int) respuesta.get();
+                switch (value) {
+                    case 0:
+                    model.addAttribute("text", " The rating must be between 1 and 5");
+                    model.addAttribute("url", "/product/" + id);
+                    return "pageError";
+                    case 1:
+                    model.addAttribute("text", " Transaction not found");
+                    model.addAttribute("url", "/product/" + id);
+                    return "pageError";
+                    case 2:
+                    model.addAttribute("text", " You are not the buye");
+                    model.addAttribute("url", "/product/" + id);
+                    return "pageError";
+                    case 3:
+                    model.addAttribute("text", " The product is already rated");
+                    model.addAttribute("url", "/product/" + id);
+                    return "pageError";
+                }
+            }
+        }
+        model.addAttribute("text", " Product not found");
+        model.addAttribute("url", "/");
         return "pageError";
     }
 }
