@@ -47,8 +47,17 @@ public class ProductService {
 	@Autowired
     private OfferService offerService;
     
-    public Optional<Product> findById(long id) {
+    public Optional<Product> findByIdOLD(long id) {
 		return repository.findById(id);
+	}
+
+	public Optional<ProductDTO> findById(long id) {
+		Optional<Product> prod = repository.findById(id);
+		if (prod.isPresent()){
+			return Optional.of(mapper.toDTO(prod.get()));
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	public Product save(Product product) {
@@ -56,7 +65,7 @@ public class ProductService {
 	}
 
 	public void deleteById(long id_product) {
-		Optional<Product> existingProduct = this.findById(id_product);
+		Optional<Product> existingProduct = this.findByIdOLD(id_product);
 		Optional<Transaction> trans = transactionRepository.findByProduct(existingProduct.get());
         if (trans.isPresent()){
             transactionRepository.deleteById(trans.get().getId());  

@@ -55,7 +55,7 @@ public class ProductRestController {
     
     @GetMapping("/{id_product}")
     public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
-        Optional<Product> product = productService.findById(id_product);
+        Optional<Product> product = productService.findByIdOLD(id_product);
         if (product.isPresent()) {
             ProductDTO prod=productService.findProduct(id_product);
             Optional<Transaction> trans = transactionService.findByProduct(product.get());
@@ -73,7 +73,7 @@ public class ProductRestController {
         
         Principal principal = request.getUserPrincipal();
         if(principal != null) {
-			Optional<UserModel> useraux = userService.findByName(principal.getName());
+			Optional<UserModel> useraux = userService.findByNameOLD(principal.getName());
             if (useraux.isPresent()) {
                 UserModel user= useraux.get();
                 
@@ -96,13 +96,13 @@ public class ProductRestController {
         if(principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        Optional<UserModel> user = userService.findByName(principal.getName());
+        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
         if (!user.isPresent()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        Optional<UserModel> bidder = userService.findById(user.get().getId());
-        Optional<Product> product = productService.findById(id_product);
+        Optional<UserModel> bidder = userService.findByIdOLD(user.get().getId());
+        Optional<Product> product = productService.findByIdOLD(id_product);
 
         //User Comprobation
         if(bidder.isPresent()){
@@ -160,7 +160,7 @@ public class ProductRestController {
 
     @GetMapping("/{id_product}/offers")
     public ResponseEntity<List<OfferDTO>> getOffers(@PathVariable long id_product) {
-        Optional<Product> product = productService.findById(id_product);
+        Optional<Product> product = productService.findByIdOLD(id_product);
         
         if (product.isPresent()) {
             List<OfferDTO> offerDTOs = offerService.toDTOs(product.get().getOffers());
@@ -176,7 +176,7 @@ public class ProductRestController {
 
     @DeleteMapping("/{id_product}")
     public ResponseEntity<Void> deleteProduct(@PathVariable long id_product, HttpServletRequest request) {
-        Optional<Product> product = productService.findById(id_product);
+        Optional<Product> product = productService.findByIdOLD(id_product);
 
         if (product.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -195,7 +195,7 @@ public class ProductRestController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        Optional<UserModel> user = userService.findByName(principal.getName());
+        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -231,7 +231,7 @@ public class ProductRestController {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "No image uploaded"));
         }
 
-        Optional<Product> optionalProduct = productService.findById(id);
+        Optional<Product> optionalProduct = productService.findByIdOLD(id);
         if (optionalProduct.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Collections.singletonMap("error", "Product not found"));
@@ -248,7 +248,7 @@ public class ProductRestController {
                     .body(Collections.singletonMap("error", "User not authenticated"));
         }
 
-        Optional<UserModel> user = userService.findByName(principal.getName());
+        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
 
         Product product = optionalProduct.get();
         UserModel loggedInUser = user.get();
@@ -289,7 +289,7 @@ public class ProductRestController {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "No image uploaded"));
         }
 
-        Optional<Product> optionalProduct = productService.findById(id);
+        Optional<Product> optionalProduct = productService.findByIdOLD(id);
         if (optionalProduct.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Collections.singletonMap("error", "Product not found"));
@@ -301,7 +301,7 @@ public class ProductRestController {
                     .body(Collections.singletonMap("error", "User not authenticated"));
         }
 
-        Optional<UserModel> user = userService.findByName(principal.getName());
+        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
 
         Product product = optionalProduct.get();
         UserModel loggedInUser = user.get();
@@ -343,12 +343,12 @@ public class ProductRestController {
                     .body(null); 
         }
 
-        Optional<UserModel> user = userService.findByName(principal.getName()); 
+        Optional<UserModel> user = userService.findByNameOLD(principal.getName()); 
         if (user.isEmpty()) { 
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); 
         }
 
-        Optional<Product> product = productService.findById(id_product); 
+        Optional<Product> product = productService.findByIdOLD(id_product); 
         if (product.isEmpty() || !product.get().isActive()) { 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); 
         }

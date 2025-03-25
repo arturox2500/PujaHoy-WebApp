@@ -76,7 +76,7 @@ public class ProductController {
         Principal principal = request.getUserPrincipal();
         if (principal != null) { // registered
             String username = principal.getName();
-            Optional<UserModel> userOpt = userService.findByName(username);
+            Optional<UserModel> userOpt = userService.findByNameOLD(username);
 
             //Error
             if (!userOpt.isPresent()) {
@@ -116,7 +116,7 @@ public class ProductController {
                 Principal principal = request.getUserPrincipal();
                 if (principal != null) {
                     String username = principal.getName();
-                    Optional<UserModel> userOpt = userService.findByName(username);
+                    Optional<UserModel> userOpt = userService.findByNameOLD(username);
                     
                     //Error
                     if (!userOpt.isPresent()) {
@@ -144,9 +144,9 @@ public class ProductController {
     @PostMapping("/product/{id_product}/delete") // Deletes a product after verifying the user is authorized to do so.
     public String deleteProduct(Model model,HttpServletRequest request, @PathVariable long id_product) {
 
-        Optional<Product> product = productService.findById(id_product);
+        Optional<Product> product = productService.findByIdOLD(id_product);
         Principal principal = request.getUserPrincipal();
-        Optional<UserModel> user = userService.findByName(principal.getName());
+        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
 
         if (product.isPresent()) {
             if(!(product.get().getSeller().getId()== user.get().getId() || user.get().determineUserType().equals("Administrator"))){
@@ -186,7 +186,7 @@ public class ProductController {
 
     @GetMapping("/product/{id_product}") // Shows detailed information of a specific product, including its offers.
     public String showProduct(@PathVariable long id_product, Model model, HttpServletRequest request, HttpSession session) {
-        Optional<Product> productOpt = productService.findById(id_product);
+        Optional<Product> productOpt = productService.findByIdOLD(id_product);
         if (!productOpt.isPresent()) {
             model.addAttribute("text", " Product not found");
             model.addAttribute("url", "/");
@@ -230,7 +230,7 @@ public class ProductController {
         Principal principal = request.getUserPrincipal();
         if (principal != null) {
             String username = principal.getName();
-            Optional<UserModel> userOpt = userService.findByName(username);
+            Optional<UserModel> userOpt = userService.findByNameOLD(username);
 
             if (!userOpt.isPresent()) {
                 model.addAttribute("text", " User not found");
@@ -305,7 +305,7 @@ public class ProductController {
     public String placeBid(@PathVariable long id_product, @RequestParam double bid_amount, HttpServletRequest request,
             Model model) {
 
-        Optional<Product> productOpt = productService.findById(id_product);
+        Optional<Product> productOpt = productService.findByIdOLD(id_product);
 
         if (!productOpt.isPresent()) {
             model.addAttribute("text", " Product not found");
@@ -318,7 +318,7 @@ public class ProductController {
         Principal principal = request.getUserPrincipal();
 
         String username = principal.getName();
-        Optional<UserModel> userOpt = userService.findByName(username);
+        Optional<UserModel> userOpt = userService.findByNameOLD(username);
 
         if (!userOpt.isPresent()) {
             model.addAttribute("text", " User not found.");
@@ -368,7 +368,7 @@ public class ProductController {
     @GetMapping("/product/{id}/image")
     public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException {
 
-        Optional<Product> op = productService.findById(id);
+        Optional<Product> op = productService.findByIdOLD(id);
 
         if (op.isPresent() && op.get().getImage() != null) {
 
@@ -385,7 +385,7 @@ public class ProductController {
 
     @PostMapping("/product/{id_product}/finish") // Marks a product as delivered, completing the transaction.
     public String finishProduct(Model model, @PathVariable long id_product) {
-        Optional<Product> product = productService.findById(id_product);
+        Optional<Product> product = productService.findByIdOLD(id_product);
 
         if (product.isPresent()) {
             product.get().setState("Delivered");

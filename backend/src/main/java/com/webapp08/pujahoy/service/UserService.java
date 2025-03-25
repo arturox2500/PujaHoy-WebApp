@@ -1,6 +1,7 @@
 package com.webapp08.pujahoy.service;
 
 import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -12,6 +13,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.core.io.Resource;
 
+import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.dto.UserMapper;
 import com.webapp08.pujahoy.model.Offer;
@@ -50,6 +52,11 @@ public class UserService {
 		return mapper.toDTO(repository.findById(id).get());
 	}
 
+	public Blob getImageById(long id){
+		Optional<UserModel> user = repository.findById(id);
+		return user.get().getProfilePic();
+	}
+
 	public Resource getPostImage(long id) throws SQLException {
 
 		UserModel user = repository.findById(id).orElseThrow();
@@ -60,8 +67,19 @@ public class UserService {
 			throw new NoSuchElementException();
 		}
 	}
+	
+	public boolean getActiveById(long id){
+		Optional<UserModel> user = repository.findById(id);
+		return user.get().isActive();
+	}
 
-	  public void finishProductsForUser(UserModel user) { // Responsible for finishing all the products of a user if he is banned
+	public String getTypeById(long id){
+		Optional<UserModel> user = repository.findById(id);
+		return user.get().determineUserType();
+	}
+
+
+	public void finishProductsForUser(UserModel user) { // Responsible for finishing all the products of a user if he is banned
         List<Product> products = productRepository.findBySeller(user);
         for (Product product : products) {
             if (product.getState().equals("In progress")) {
@@ -94,33 +112,20 @@ public class UserService {
     }
 
 
-	public Optional<PublicUserDTO> bannedUser(long id, PublicUserDTO updatedUserDTO) throws SQLException {
-
-		Optional<UserModel> oldUserOpt = repository.findById(id);
-		if (!oldUserOpt.isPresent()) {
-			return Optional.empty(); // The user dont exist
-		}
-		UserModel oldUser = oldUserOpt.get();
-		UserModel updatedUser = mapper.toDomain(updatedUserDTO);
-		updatedUser.setId(id);
-		if (mapper.toDTO(oldUser).changes(updatedUserDTO) == 0) {
-
-			if (oldUser.getImage() != null) {
-
-				// Set the image in the updated post
-				updatedUser.setProfilePic(BlobProxy.generateProxy(oldUser.getProfilePic().getBinaryStream(),
-						oldUser.getProfilePic().length()));
-				updatedUser.setImage(oldUser.getImage());
+	public Optional<PublicUserDTO> bannedUser(long id, PublicUserDTO user) throws SQLException {
+		Optional<UserModel> optUser = repository.findById(user.getId());
+		if (optUser.get().determineUserType() == "Administrator"){
+			Optional<UserModel> oldUserOpt = repository.findById(id);
+			if (!oldUserOpt.isPresent()) {
+				return Optional.empty(); // The user dont exist
 			}
-			updatedUser.setRols(oldUser.getRols());
-			updatedUser.setProducts(oldUser.getProducts());
-			updatedUser.setPass(oldUser.getEncodedPassword());
-			if (oldUser.isActive()){
+			UserModel updatedUser = oldUserOpt.get();
+			if (updatedUser.isActive()){
 				this.finishProductsForUser(updatedUser);
 			} else {
 				this.deleteProducts(updatedUser);
 			}
-			updatedUser.setActive(!oldUser.isActive());
+			updatedUser.setActive(!updatedUser.isActive());
 
 			repository.save(updatedUser);
 
@@ -179,20 +184,52 @@ public class UserService {
 		repository.save(user);
 	   }
 
-	public Optional<UserModel> findById(Long id) {
+	public Optional<UserModel> findByIdOLD(Long id) {
 		return repository.findById(id);
+	}
+
+	public Optional<PublicUserDTO> findById(Long id) {
+		Optional<UserModel> user = repository.findById(id);
+		if (user.isPresent()){
+			return Optional.of(mapper.toDTO(user.get()));
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	public void save(UserModel user) {
 		repository.save(user);
 	}
 
-	public Optional<UserModel> findByName(String name) {
+	public Optional<UserModel> findByNameOLD(String name) {
 		return repository.findByName(name);
 	}
 
-	public Optional<UserModel> findByProducts(Product product) {
-		return repository.findByProducts(product);
+	public Optional<PublicUserDTO> findByName(String name) {
+		Optional<UserModel> user = repository.findByName(name);
+		if (user.isPresent()){
+			return Optional.of(mapper.toDTO(user.get()));
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	public Optional<UserModel> findByProductsOLD(ProductDTO product) {
+		return repository.findByProducts(productRepository.findById(product.getId()).get());
+	}
+
+	public Optional<PublicUserDTO> findByProducts(ProductDTO product) {
+		Optional<Product> pord = productRepository.findById(product.getId());
+		if (pord.isPresent()){
+			Optional<UserModel> user = repository.findByProducts(pord.get());
+			if (user.isPresent()){
+				return Optional.of(mapper.toDTO(user.get()));
+			} else {
+				return Optional.empty();
+			}
+		} else {
+			return Optional.empty();
+		}
 	}
 
 }

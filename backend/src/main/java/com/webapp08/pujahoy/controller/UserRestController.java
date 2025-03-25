@@ -56,9 +56,9 @@ public class UserRestController {
     public ResponseEntity<?> me(HttpServletRequest request) { //Get his own details
         Principal principal = request.getUserPrincipal();
         if (principal != null) {
-            Optional<UserModel> user = userService.findByName(principal.getName());
+            Optional<PublicUserDTO> user = userService.findByName(principal.getName());
             if (user.isPresent()) {
-                return ResponseEntity.ok(userService.findUser(user.get().getId()));
+                return ResponseEntity.ok(user);
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
@@ -81,7 +81,7 @@ public class UserRestController {
                     .body(Collections.singletonMap("error", "User not authenticated"));
         }
 
-        Optional<UserModel> user = userService.findByName(principal.getName());
+        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
 
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -165,13 +165,13 @@ public class UserRestController {
                     .body(Collections.singletonMap("error", "User not authenticated"));
         }
 
-        Optional<UserModel> user = userService.findByName(principal.getName());
+        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Collections.singletonMap("error", "User not found"));
         }
 
-        Optional<Product> optionalProduct = productService.findById(pid);
+        Optional<Product> optionalProduct = productService.findByIdOLD(pid);
         if (optionalProduct.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Collections.singletonMap("error", "Product not found"));
@@ -232,7 +232,7 @@ public class UserRestController {
                                 "The iniValue field must contain a number higher or equal to 1."));
             }
 
-            Optional<Product> existingProduct = productService.findById(pid);
+            Optional<Product> existingProduct = productService.findByIdOLD(pid);
 
             if (existingProduct.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -270,7 +270,7 @@ public class UserRestController {
                     .body(Collections.singletonMap("error", "User not authenticated"));
         }
 
-        Optional<UserModel> user = userService.findByName(principal.getName());
+        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Collections.singletonMap("error", "User not found"));
@@ -306,7 +306,7 @@ public class UserRestController {
                     .body(Collections.singletonMap("error", "User not authenticated"));
         }
 
-        Optional<UserModel> user = userService.findByName(principal.getName());
+        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Collections.singletonMap("error", "User not found"));
@@ -349,7 +349,7 @@ public class UserRestController {
             return ResponseEntity.badRequest().build();
         }
 
-        Optional<UserModel> user = userService.findByName(principal.getName());
+        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
         if (!user.isPresent()) {
             return ResponseEntity.badRequest().build();
         }
@@ -367,18 +367,34 @@ public class UserRestController {
     public ResponseEntity<?> replaceUserPost(@RequestBody PublicUserDTO updatedUserDTO,HttpServletRequest request) throws SQLException {
         Principal principal = request.getUserPrincipal();
         if (principal != null) {
-            Optional<UserModel> user = userService.findByName(principal.getName());
+            Optional<UserModel> user = userService.findByNameOLD(principal.getName());
             if (user.isPresent()) {
-                if (user.get().determineUserType() == "Administrator") { //If the user is an administrator he want to ban the user
-                    Optional<PublicUserDTO> newUser = userService.bannedUser(updatedUserDTO.getId(), updatedUserDTO);
-                    if (newUser.isPresent()) {
-                        return ResponseEntity.ok(userService.findUser(newUser.get().getId()));
-                    } else {
-                        return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Filds incorrect"));
-                    }
-                } else if (user.get().determineUserType().equals("Registered User") && user.get().getId() == updatedUserDTO.getId()) {
+                if (user.get().determineUserType().equals("Registered User") && user.get().getId() == updatedUserDTO.getId()) {
                     PublicUserDTO userUpdated = userService.replaceUser(updatedUserDTO);
                     return ResponseEntity.ok(userUpdated);
+                }
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You must be authenticated");   
+	}
+
+    @PutMapping("/{id}/active") // Banned user
+    public ResponseEntity<?> bannedUser(@PathVariable long id, HttpServletRequest request) throws SQLException {
+        Principal principal = request.getUserPrincipal();
+        if (principal != null) {
+            Optional<PublicUserDTO> admin = userService.findByName(principal.getName());
+            if (admin.isPresent()) {
+                Optional<PublicUserDTO> user = userService.findById(id);
+                if(user.isPresent()){
+                    Optional<PublicUserDTO> newUser = userService.bannedUser(id, admin.get());
+                    if (newUser.isPresent()) { //If the user is an administrator he want to ban the user
+                        return ResponseEntity.ok(userService.findUser(newUser.get().getId()));
+                    } else {
+                        return ResponseEntity.badRequest().body(Collections.singletonMap("error", "You are not an admin"));
+                    }
+                } else {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
                 }
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
@@ -394,13 +410,13 @@ public class UserRestController {
         if(principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You must be authenticated");
         }
-        Optional<UserModel> user = userService.findByName(principal.getName());
+        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
         if (!user.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
 
-        Optional<UserModel> seller = userService.findById(user_id);
-        Optional<Product> product = productService.findById(product_id);
+        Optional<UserModel> seller = userService.findByIdOLD(user_id);
+        Optional<Product> product = productService.findByIdOLD(product_id);
 
         if (seller.isPresent() && product.isPresent() && seller.get().getId() == product.get().getSeller().getId()
                 && ratingDTO.getRating() >= 1 && ratingDTO.getRating() <= 5) { // User is the seller of the product

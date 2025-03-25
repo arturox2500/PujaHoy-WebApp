@@ -90,7 +90,8 @@ public class SecurityConfiguration {
 					.requestMatchers(HttpMethod.POST,"/api/v1/products/*/image").hasAnyRole("USER")
 
 					.requestMatchers(HttpMethod.PUT,"/api/v1/users/*/products/*").hasAnyRole("USER", "ADMIN")
-					.requestMatchers(HttpMethod.PUT,"/api/v1/users").hasAnyRole("USER", "ADMIN")
+					.requestMatchers(HttpMethod.PUT,"/api/v1/users").hasAnyRole("USER")
+					.requestMatchers(HttpMethod.PUT,"/api/v1/users/*/active").hasAnyRole("ADMIN")
 					.requestMatchers(HttpMethod.PUT,"/api/v1/products/*/image").hasAnyRole("USER", "ADMIN")
 					.requestMatchers(HttpMethod.PUT,"/api/v1/users/*/image").hasAnyRole("USER", "ADMIN")
 					
@@ -123,6 +124,7 @@ public class SecurityConfiguration {
 		
 		http
 			.authorizeHttpRequests(authorize -> authorize
+			.anyRequest().permitAll()/*
 				// PUBLIC PAGES
 				.requestMatchers("/").permitAll()
 				.requestMatchers("/css/**").permitAll()
@@ -144,13 +146,13 @@ public class SecurityConfiguration {
 				.requestMatchers("/product/*").permitAll()
 				.requestMatchers("/permitsError").permitAll()
 				.requestMatchers("/api/**").permitAll()
-				.requestMatchers("/v3/api-docs*/**").permitAll()
+				.requestMatchers("/v3/api-docs*//**").permitAll()
 				.requestMatchers("/swagger-ui.html").permitAll()
 				.requestMatchers("/swagger-ui/**").permitAll()
 				// PRIVATE PAGES
 				.requestMatchers("/user/editProduct/*").hasAnyRole("USER", "ADMIN")
 				.requestMatchers("/user/submit_edit/*").hasAnyRole("USER", "ADMIN")
-				.requestMatchers("/product/*/delete").hasAnyRole("USER","ADMIN")
+				.requestMatchers("/product/*//*delete").hasAnyRole("USER","ADMIN")
 				.requestMatchers("/product/{id_product}/place-bid").hasAnyRole("USER")
 				.requestMatchers("/user").hasAnyRole("USER", "ADMIN")
 				.requestMatchers("/user/{id}/ban").hasAnyRole("ADMIN")
@@ -161,7 +163,7 @@ public class SecurityConfiguration {
 				.requestMatchers("/user/seeBuys").hasAnyRole("USER")
 				.requestMatchers("/user/seeProducts").hasAnyRole("USER")
 				.requestMatchers("/user/{id}/rated").hasAnyRole("USER")
-				.requestMatchers("/product/{id_product}/finish").hasAnyRole("USER")
+				.requestMatchers("/product/{id_product}/finish").hasAnyRole("USER") */
 			)
 			.formLogin(formLogin -> formLogin
 				.loginPage("/login")					

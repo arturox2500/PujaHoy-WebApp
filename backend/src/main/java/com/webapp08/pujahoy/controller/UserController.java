@@ -31,6 +31,8 @@ import java.sql.SQLException;
 
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.service.UserService;
+import com.webapp08.pujahoy.dto.ProductDTO;
+import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.Transaction;
 import com.webapp08.pujahoy.service.ProductService;
@@ -71,14 +73,13 @@ public class UserController {
     public String profileIndex(Model model, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         if (principal != null) {
-            String username = principal.getName(); 
-            Optional<UserModel> user = userService.findByName(username); 
-            if (user.get().determineUserType().equals("Administrator")){
-                model.addAttribute("text", " you dont have a profile");
-                model.addAttribute("url", "/");
-                return "pageError";
-            }
+            Optional<PublicUserDTO> user = userService.findByName(principal.getName()); 
             if (user.isPresent()) {
+                if (userService.getTypeById(user.get().getId()).equals("Administrator")){
+                    model.addAttribute("text", " you dont have a profile");
+                    model.addAttribute("url", "/");
+                    return "pageError";
+                }
                 model.addAttribute("userInfo", user.get());
                 model.addAttribute("id", user.get().getId());
                 model.addAttribute("name", user.get().getName());
@@ -87,10 +88,9 @@ public class UserController {
                 model.addAttribute("zipCode", user.get().getZipCode());
                 model.addAttribute("contact", user.get().getContact());
                 model.addAttribute("description", user.get().getDescription());
-                model.addAttribute("profilePic", user.get().getProfilePic());
                 model.addAttribute("admin", false);
                 model.addAttribute("owner", true);
-                if (!user.get().isActive()) { 
+                if (!userService.getActiveById(user.get().getId())) {
                     model.addAttribute("banned", true);
                     model.addAttribute("registered", false);
                 } else {
@@ -108,19 +108,44 @@ public class UserController {
         return "pageError";
     }
 
+    //@GetMapping("/{id}/image")
+    //public String getMethodName(@RequestParam long id) {
+        //return new String();
+    //}
+
+    @GetMapping("{id}/profilePic")
+    public ResponseEntity<Object> getProfilePic(@PathVariable long id) throws SQLException {
+
+        Optional<PublicUserDTO> op = userService.findById(id);
+
+        if (op.isPresent() && op.get().getImage() != null) {
+
+            Blob profilePic = userService.getImageById(id);
+            try {
+                byte[] picBytes = profilePic.getBytes(1, (int) profilePic.length());
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.IMAGE_PNG);
+                return new ResponseEntity<>(picBytes, headers, HttpStatus.OK);
+            } catch (SQLException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        } 
+        return ResponseEntity.notFound().build();
+    }
+
     @GetMapping("/{id}") // Responsible for verifying that the parameters passed are valid and, if so, redirecting to the profile page of the user or show the seller's profile
     public String viewOtherProfile(Model model, @PathVariable long id, HttpServletRequest request, HttpSession session) {
-        Optional<Product> product = productService.findById(id);
+        Optional<ProductDTO> product = productService.findById(id);
         if (product.isPresent()) {
-            Optional<UserModel> seller = userService.findByProducts(product.get());
+            Optional<PublicUserDTO> seller = userService.findByProducts(product.get());
             if (seller.isPresent()) {
                 Principal principal = request.getUserPrincipal();
-                Optional<UserModel> user;
+                Optional<PublicUserDTO> user;
                 String userType;
                 if (principal != null) { 
                     String username = principal.getName();
                     user = userService.findByName(username); 
-                    userType = user.get().determineUserType();
+                    userType = userService.getTypeById(user.get().getId());
                     if (user.get().getId() == seller.get().getId()) { 
                         return "redirect:/user";
                     }
@@ -150,7 +175,7 @@ public class UserController {
                 } else { 
                     model.addAttribute("admin", false);
                 }
-                if (seller.get().isActive()) {
+                if (userService.getActiveById(seller.get().getId())) {
                     model.addAttribute("banned", false);
                 } else {
                     model.addAttribute("banned", true);
@@ -172,7 +197,7 @@ public class UserController {
             @RequestParam String description, @RequestParam String zipCode,
             @RequestParam(required = false) MultipartFile profilePic) throws IOException, SQLException { //post in charge of editing a profile form, notice the use of regular expressions
 
-        UserModel user = userService.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        UserModel user = userService.findByIdOLD(id).orElseThrow(() -> new RuntimeException("User not found"));
         
         if (!zipCode.matches("\\d{5}") || !contact.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
         ) {
@@ -195,29 +220,21 @@ public class UserController {
     }
 
     @PostMapping("/{id}/ban") // Responsible for verifying that the parameters passed are valid and, if so, banning or unbanning the user
-    public String bannedUser(Model model, @PathVariable String id, HttpServletRequest request) {
+    public String bannedUser(Model model, @PathVariable Long id, HttpServletRequest request) throws SQLException {
         Principal principal = request.getUserPrincipal();
         if (principal != null) {
-            Optional<UserModel> admin = userService.findByName(principal.getName());
-            Optional<UserModel> user = userService.findById(Long.parseLong(id));
-            String userType = admin.get().determineUserType();
-            if (user.isPresent() && userType.equals("Administrator")) {
-                Boolean active = user.get().isActive();
-                user.get().changeActive();
-                userService.save(user.get());
-                if (active) {
-                    model.addAttribute("text", "User banned. All his products have been finished.");
-                    userService.finishProductsForUser(user.get());
+            Optional<PublicUserDTO> admin = userService.findByName(principal.getName());
+            if(admin.isPresent()){
+                Optional<PublicUserDTO> bannedUser = userService.bannedUser(id, admin.get());
+                if (bannedUser.isPresent()){
+                    model.addAttribute("text", "User's active attribute has been changed");
+                    return "bannedProfile";               
                 } else {
-                    userService.deleteProducts(user.get());
-                    model.addAttribute("text", "User unbanned. All his products have been removed.");
+                    model.addAttribute("text", " profile not found");
+                    model.addAttribute("url", "/");
                 }
-                return "bannedProfile";
-            } else if (!userType.equals("Administrator")) {
-                model.addAttribute("text", " you are not allow to banned users");
-                model.addAttribute("url", "/");
             } else {
-                model.addAttribute("text", " user not found");
+                model.addAttribute("text", " profile not found");
                 model.addAttribute("url", "/");
             }
         } else {
@@ -235,7 +252,7 @@ public class UserController {
 
         if (principal != null) {
             String username = principal.getName(); 
-            Optional<UserModel> user = userService.findByName(username);
+            Optional<UserModel> user = userService.findByNameOLD(username);
 
             if (user.isPresent()) {
                 Page<Product> products = productService.obtainPaginatedProducts(username, page, size);
@@ -258,7 +275,7 @@ public class UserController {
 
         if (principal != null) {
             String username = principal.getName(); 
-            Optional<UserModel> user = userService.findByName(username);
+            Optional<UserModel> user = userService.findByNameOLD(username);
 
             if (user.isPresent()) {
                 if (!user.get().isActive()){
@@ -291,7 +308,7 @@ public class UserController {
 
         if (principal != null) {
             String username = principal.getName(); 
-            Optional<UserModel> user = userService.findByName(username); 
+            Optional<UserModel> user = userService.findByNameOLD(username); 
 
             if (user.isPresent()) {
                 Page<Product> products = productService.obtainProductsBuyed(username, page, size);
@@ -316,7 +333,7 @@ public class UserController {
         if (principal != null) {
             
             String username = principal.getName(); 
-            Optional<UserModel> user = userService.findByName(username);
+            Optional<UserModel> user = userService.findByNameOLD(username);
 
             if (user.isPresent()) {
                 if (!user.get().isActive()){
@@ -344,7 +361,7 @@ public class UserController {
     @GetMapping("/newProduct")
     public String newProduct(Model model, HttpSession session, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
-        if (principal != null && userService.findByName(principal.getName()).get().isActive()) {
+        if (principal != null && userService.findByNameOLD(principal.getName()).get().isActive()) {
             session.setAttribute("after", 1);
             return "newAuction";
         } else {
@@ -357,15 +374,15 @@ public class UserController {
     @GetMapping("/editProduct/{id}")
     public String editProduct(HttpSession session, @PathVariable long id, Model model, HttpServletRequest request) {
         session.setAttribute("after", 1);
-        Optional<Product> oldProd = productService.findById(id);
+        Optional<Product> oldProd = productService.findByIdOLD(id);
         Principal principal = request.getUserPrincipal();
-        Optional<UserModel> user = userService.findByName(principal.getName());
+        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
         if (!(oldProd.get().getSeller().getId() == user.get().getId() || user.get().determineUserType().equals("Administrator"))) {
             model.addAttribute("text", " This product is not yours");
             model.addAttribute("url", "/");
             return "pageError";
         }
-        if (!userService.findByName(principal.getName()).get().isActive()){
+        if (!userService.findByNameOLD(principal.getName()).get().isActive()){
             model.addAttribute("text", " You are banned");
             model.addAttribute("url", "/");
             return "pageError";
@@ -397,7 +414,7 @@ public class UserController {
         Model model, @PathVariable long id) {
 
         Principal principal = request.getUserPrincipal();
-        Optional<Product> oldProd = productService.findById(id);
+        Optional<Product> oldProd = productService.findByIdOLD(id);
         
         if (oldProd.isEmpty()) {
             model.addAttribute("text", " Product not found");
@@ -413,7 +430,7 @@ public class UserController {
             return "pageError";
         }
 
-        Optional<UserModel> user = userService.findByName(principal.getName());
+        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
 
         if (user.isEmpty()) {
             model.addAttribute("text", "User not found");
@@ -469,7 +486,7 @@ public class UserController {
             return "pageError";
         }
 
-        Optional<UserModel> user = userService.findByName(principal.getName());
+        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
 
         if (user.isEmpty()) {
             model.addAttribute("text", " User not found");
@@ -505,7 +522,7 @@ public class UserController {
 
     @GetMapping("/{id}/rate") // Responsible for verifying that the parameters passed are valid and, if so, redirecting to the rating page
     public String gotoRate(Model model, @PathVariable long id, HttpServletRequest request) {
-        Optional<Product> product = productService.findById(id);
+        Optional<Product> product = productService.findByIdOLD(id);
         if (product.isPresent()) {
             Principal principal = request.getUserPrincipal();
             if (principal == null) {
@@ -519,8 +536,8 @@ public class UserController {
                 model.addAttribute("url", "/product/" + id);
                 return "pageError";
             }
-            Optional<UserModel> user = userService.findById(trans.get().getBuyer().getId());
-            Optional<UserModel> user1 = userService.findByName(principal.getName());
+            Optional<UserModel> user = userService.findByIdOLD(trans.get().getBuyer().getId());
+            Optional<UserModel> user1 = userService.findByNameOLD(principal.getName());
             if (user.isPresent() && user1.isPresent()) {
                 if (user.get().determineUserType().equals("Registered User")
                         && user1.get().getId().equals(user.get().getId())) {
@@ -548,7 +565,7 @@ public class UserController {
             model.addAttribute("url", "/producto/" + id + "/rate");
             return "pageError";
         }
-        Optional<Product> product = productService.findById(id);
+        Optional<Product> product = productService.findByIdOLD(id);
         if (product.isPresent()) {
             Optional<Rating> existingVal = ratingService.findByProduct(product.get());
             if (existingVal.isPresent()) {
@@ -566,27 +583,5 @@ public class UserController {
             model.addAttribute("url", "/");
         }
         return "pageError";
-    }
-
-    @GetMapping("/{id}/profilePic")
-    public ResponseEntity<byte[]> getProfilePic(@PathVariable long id) {
-
-        Optional<UserModel> user = userService.findById(id);
-
-        if (user.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
-        Blob profilePic = user.get().getProfilePic();
-
-        try {
-            byte[] picBytes = profilePic.getBytes(1, (int) profilePic.length());
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_PNG);
-            return new ResponseEntity<>(picBytes, headers, HttpStatus.OK);
-        } catch (SQLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-
     }
 }
