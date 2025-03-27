@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.dto.UserDTO;
+import com.webapp08.pujahoy.dto.UserEditDTO;
 import com.webapp08.pujahoy.dto.UserMapper;
 import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
@@ -134,10 +135,10 @@ public class UserService {
 		return Optional.empty(); // The changes is not for banned user
 	}
 
-	public PublicUserDTO replaceUser(PublicUserDTO updatedPostDTO) throws SQLException {
+	public PublicUserDTO replaceUser(UserEditDTO updatedPostDTO) throws SQLException {
 
 		UserModel oldPost = repository.findById(updatedPostDTO.getId()).orElseThrow();
-		UserModel updatedPost = mapper.toDomain(updatedPostDTO);
+		UserModel updatedPost = mapper.toUserModelFromEdit(updatedPostDTO);
 
 		// Check and update the zip code
 		if (updatedPost.getZipCode() != null && !updatedPost.getZipCode().equals(oldPost.getZipCode()) && updatedPost.getZipCode().toString().matches("\\d{5}")) {

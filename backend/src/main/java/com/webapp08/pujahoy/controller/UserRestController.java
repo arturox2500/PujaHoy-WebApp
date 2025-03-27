@@ -4,6 +4,7 @@ import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.ProductMapper;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
+import com.webapp08.pujahoy.dto.UserEditDTO;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.Transaction;
 import com.webapp08.pujahoy.model.UserModel;
@@ -358,7 +359,7 @@ public class UserRestController {
     }
 
     @PutMapping("") // Update user
-    public ResponseEntity<?> replaceUserPost(@RequestBody PublicUserDTO updatedUserDTO,HttpServletRequest request) throws SQLException {
+    public ResponseEntity<?> replaceUserPost(@RequestBody UserEditDTO updatedUserDTO,HttpServletRequest request) throws SQLException {
         Principal principal = request.getUserPrincipal();
         if (principal != null) { 
             Optional<PublicUserDTO> user = userService.findByName(principal.getName());            

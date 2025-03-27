@@ -57,9 +57,28 @@ public interface UserMapper {
         @Mapping(target = "image", ignore = true),
         @Mapping(target = "products", ignore = true),
         @Mapping(source="password",target = "encodedPassword"),
-        @Mapping(target = "pass", ignore = true),
         @Mapping(target = "active", ignore = true),
-        @Mapping(target = "rols", ignore = true)
+        @Mapping(target = "rols", ignore = true),
+        @Mapping(target = "pass", ignore = true)
     })
     UserModel toUserModel(UserDTO userDTO);
+
+    //UserEditDTO to UserModel
+    @Mappings({
+        @Mapping(source = "id", target = "id"),
+        @Mapping(source = "contact", target = "contact"),
+        @Mapping(source = "description", target = "description"),
+        @Mapping(source = "zipCode", target = "zipCode"),
+        @Mapping(target = "active", ignore = true),
+        @Mapping(target = "image", ignore = true),
+        @Mapping(target = "name", ignore = true),
+        @Mapping(target = "pass", ignore = true),
+        @Mapping(target = "products", ignore = true),
+        @Mapping(target = "profilePic", ignore = true),
+        @Mapping(target = "reputation", ignore = true),
+        @Mapping(target = "rols", ignore = true),
+        @Mapping(target = "visibleName", ignore = true),
+        @Mapping(target = "encodedPassword", ignore = true)
+    })
+    UserModel toUserModelFromEdit(UserEditDTO userEditDTO);
 }
