@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.webapp08.pujahoy.dto.UserDTO;
-import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.security.jwt.AuthResponse;
 import com.webapp08.pujahoy.security.jwt.AuthResponse.Status;
 import com.webapp08.pujahoy.security.jwt.LoginRequest;
@@ -29,9 +27,6 @@ public class LoginRestController {
 
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 
     @Autowired
 	private UserLoginService userLoginService;
@@ -72,10 +67,7 @@ public class LoginRestController {
 					.body(Map.of("error", "The zip or email is not valid"));
 		}
 
-		UserModel user = new UserModel(userDTO.getUsername(), 0, userDTO.getVisibleName(), userDTO.getEmail(),
-				Integer.parseInt(userDTO.getZipCode()), userDTO.getDescription(), true,
-				passwordEncoder.encode(userDTO.getPassword()), "USER");
-				userService.save(user);
+		userService.createUser(userDTO);
 
 		Map<String, String> response = new HashMap<>();
 		response.put("message", "User registered successfully");

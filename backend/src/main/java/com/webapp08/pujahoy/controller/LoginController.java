@@ -3,7 +3,6 @@ package com.webapp08.pujahoy.controller;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,20 +11,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.webapp08.pujahoy.repository.UserModelRepository;
+import com.webapp08.pujahoy.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import com.webapp08.pujahoy.model.UserModel;
+import com.webapp08.pujahoy.dto.UserDTO;
 
 @Controller
 public class LoginController {
 
     @Autowired
-    private UserModelRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private UserService userService;
 
     @ModelAttribute // Responsible for adding the attributes to the model in every request
     public void addAttributes(Model model, HttpServletRequest request) {
@@ -44,23 +40,19 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public String register(Model model, @RequestParam String email, @RequestParam String password,
-            @RequestParam String zipCode, @RequestParam String username, @RequestParam String visibleName,
-            @RequestParam String description, RedirectAttributes redirectAttributes, HttpServletRequest request) { // Form post for when someone attemps to register
-        if (userRepository.findByName(username).isPresent() || email.isBlank() || password.isBlank()
-                || zipCode.isBlank() || username.isBlank() || visibleName.isBlank()) {
+    public String register(Model model, @RequestParam UserDTO userDTO, RedirectAttributes redirectAttributes, HttpServletRequest request) { // Form post for when someone attemps to register
+        if (userService.findByName(userDTO.getUsername()).isPresent() || userDTO.getEmail().isBlank() || userDTO.getPassword().isBlank()
+                || userDTO.getZipCode().isBlank() || userDTO.getUsername().isBlank() || userDTO.getVisibleName().isBlank()) {
             model.addAttribute("error", "Wrongs fields or user already exists");
             return "login";
         }
 
-        if (!zipCode.matches("\\d{5}") ) {
+        if (!userDTO.getZipCode().matches("\\d{5}") ) {
             model.addAttribute("error", "The zip code must be a 5 digit number");
             return "login"; 
         }
-
-        UserModel user = new UserModel(username, 0, visibleName, email, Integer.parseInt(zipCode), description, true,
-                passwordEncoder.encode(password), "USER");
-        userRepository.save(user);
+     
+        userService.createUser(userDTO);
 
         return "redirect:/";
     }

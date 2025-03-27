@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.core.io.Resource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
+import com.webapp08.pujahoy.dto.UserDTO;
 import com.webapp08.pujahoy.dto.UserMapper;
 import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
@@ -42,6 +44,9 @@ public class UserService {
 
 	@Autowired
 	private UserMapper mapper;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	public PublicUserDTO findUser(Long id) {
 		return mapper.toDTO(repository.findById(id).get());
@@ -210,6 +215,12 @@ public class UserService {
 		} else {
 			return Optional.empty();
 		}
+	}
+
+	public void createUser(UserDTO userDTO) {
+		UserModel user = new UserModel(userDTO.getUsername(), 0, userDTO.getVisibleName(), userDTO.getEmail(), Integer.parseInt(userDTO.getZipCode()), userDTO.getDescription(), true,
+                passwordEncoder.encode(userDTO.getPassword()), "USER");
+		repository.save(user);
 	}
 
 }

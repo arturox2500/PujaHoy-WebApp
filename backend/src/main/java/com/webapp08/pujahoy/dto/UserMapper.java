@@ -43,4 +43,23 @@ public interface UserMapper {
         @Mapping(target = "rols", ignore = true)
     })
     UserModel toDomain(PublicUserDTO publicUserDTO);
+
+    //UserDTO to UserModel
+    @Mappings({
+        @Mapping(target = "id", ignore = true),
+        @Mapping(source = "username", target = "name"),
+        @Mapping(target = "reputation", ignore = true),
+        @Mapping(source = "visibleName", target = "visibleName"),
+        @Mapping(source = "email", target = "contact"),
+        @Mapping(source = "description", target = "description"),
+        @Mapping(target = "profilePic", ignore = true),
+        @Mapping(source = "zipCode", target = "zipCode"),
+        @Mapping(target = "image", ignore = true),
+        @Mapping(target = "products", ignore = true),
+        @Mapping(source="password",target = "encodedPassword"),
+        @Mapping(target = "pass", ignore = true),
+        @Mapping(target = "active", ignore = true),
+        @Mapping(target = "rols", ignore = true)
+    })
+    UserModel toUserModel(UserDTO userDTO);
 }
