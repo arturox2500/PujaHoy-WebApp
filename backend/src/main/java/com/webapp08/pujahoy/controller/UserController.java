@@ -203,11 +203,7 @@ public class UserController {
         user.setDescription(description);
         user.setZipCode(Integer.parseInt(zipCode));
 
-        if (profilePic != null && !profilePic.isEmpty()) {
-            byte[] photoBytes = profilePic.getBytes();
-            Blob photoBlob = new SerialBlob(photoBytes);
-            user.setProfilePic(photoBlob);
-        }
+        userService.replaceUserImage(id, profilePic.getInputStream(), profilePic.getSize());
 
         userService.save(user); 
 

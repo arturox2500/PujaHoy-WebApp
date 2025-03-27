@@ -360,10 +360,10 @@ public class UserRestController {
     @PutMapping("") // Update user
     public ResponseEntity<?> replaceUserPost(@RequestBody PublicUserDTO updatedUserDTO,HttpServletRequest request) throws SQLException {
         Principal principal = request.getUserPrincipal();
-        if (principal != null) {
-            Optional<UserModel> user = userService.findByNameOLD(principal.getName());
+        if (principal != null) { 
+            Optional<PublicUserDTO> user = userService.findByName(principal.getName());            
             if (user.isPresent()) {
-                if (user.get().determineUserType().equals("Registered User") && user.get().getId() == updatedUserDTO.getId()) {
+                if (userService.getUserTypeById(user.get().getId()).equals("Registered User") && user.get().getId() == updatedUserDTO.getId()) {
                     PublicUserDTO userUpdated = userService.replaceUser(updatedUserDTO);
                     return ResponseEntity.ok(userUpdated);
                 }

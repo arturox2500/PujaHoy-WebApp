@@ -167,7 +167,7 @@ public class UserService {
 		}
 		user.setProfilePic(BlobProxy.generateProxy(inputStream, size));
 		repository.save(user);
-	   }
+	}
 
 	public Optional<UserModel> findByIdOLD(Long id) {
 		return repository.findById(id);
@@ -221,6 +221,11 @@ public class UserService {
 		UserModel user = new UserModel(userDTO.getUsername(), 0, userDTO.getVisibleName(), userDTO.getEmail(), Integer.parseInt(userDTO.getZipCode()), userDTO.getDescription(), true,
                 passwordEncoder.encode(userDTO.getPassword()), "USER");
 		repository.save(user);
+	}
+
+	public String getUserTypeById(long id) {
+		Optional<UserModel> user = repository.findById(id);
+		return user.get().determineUserType();
 	}
 
 }
