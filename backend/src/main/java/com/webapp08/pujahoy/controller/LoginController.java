@@ -40,7 +40,7 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public String register(Model model, @RequestParam UserDTO userDTO, RedirectAttributes redirectAttributes, HttpServletRequest request) { // Form post for when someone attemps to register
+    public String register(Model model, @ModelAttribute UserDTO userDTO, RedirectAttributes redirectAttributes, HttpServletRequest request) { // Form post for when someone attemps to register
         if (userService.findByName(userDTO.getUsername()).isPresent() || userDTO.getEmail().isBlank() || userDTO.getPassword().isBlank()
                 || userDTO.getZipCode().isBlank() || userDTO.getUsername().isBlank() || userDTO.getVisibleName().isBlank()) {
             model.addAttribute("error", "Wrongs fields or user already exists");
