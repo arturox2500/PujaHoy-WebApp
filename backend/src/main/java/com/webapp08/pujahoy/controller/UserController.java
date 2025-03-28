@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +35,8 @@ import com.webapp08.pujahoy.service.UserService;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.dto.RatingDTO;
+import com.webapp08.pujahoy.dto.UserDTO;
+import com.webapp08.pujahoy.dto.UserEditDTO;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.service.ProductService;
 import com.webapp08.pujahoy.service.RatingService;
@@ -188,29 +191,20 @@ public class UserController {
     }
 
     @PostMapping()
-    public String editProfile(Model model, @RequestParam long id, @RequestParam String contact,
-            @RequestParam String description, @RequestParam String zipCode,
-            @RequestParam(required = false) MultipartFile profilePic) throws IOException, SQLException { //post in charge of editing a profile form, notice the use of regular expressions
+    public String editProfile(Model model, @ModelAttribute UserEditDTO userDTO, @RequestParam(required = false) MultipartFile profilePic) throws IOException, SQLException { //post in charge of editing a profile form, notice the use of regular expressions
 
-        UserModel user = userService.findByIdOLD(id).orElseThrow(() -> new RuntimeException("User not found"));
+        userService.findByIdOLD(userDTO.getId()).orElseThrow(() -> new RuntimeException("User not found"));
         
-        if (!zipCode.matches("\\d{5}") || !contact.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
+        if (!userDTO.getZipCode().matches("\\d{5}") || !userDTO.getContact().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
         ) {
             return "redirect:/user"; 
         }
         
-        user.setContact(contact);
-        user.setDescription(description);
-        user.setZipCode(Integer.parseInt(zipCode));
+        userService.replaceUser(userDTO);
 
         if (profilePic != null && !profilePic.isEmpty()) {
-            byte[] photoBytes = profilePic.getBytes();
-            Blob photoBlob = new SerialBlob(photoBytes);
-            user.setProfilePic(photoBlob);
+            userService.replaceUserImage(userDTO.getId(), profilePic.getInputStream(), profilePic.getSize());
         }
-        
-
-        userService.save(user); 
 
         return "redirect:/user"; 
     }
