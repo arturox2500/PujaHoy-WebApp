@@ -83,7 +83,7 @@ public class DataBaseInitializer {
 			calendar.set(2025, Calendar.FEBRUARY, 25);
 			Date date25 = new Date(calendar.getTimeInMillis()); 
 
-			calendar.set(2025, Calendar.MARCH, 25);
+			calendar.set(2025, Calendar.DECEMBER, 25);
 			Date date25M = new Date(calendar.getTimeInMillis());
 
 			Product product1 = new Product("Television LG", "Smart TV 4K 55 inches with HDR and surround sound.", 129.99, date24, date25M, "In progress", saveImageFromFile("static/img/product01.jpg"), user2);

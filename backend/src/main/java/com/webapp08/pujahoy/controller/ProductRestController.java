@@ -3,7 +3,6 @@ package com.webapp08.pujahoy.controller;
 import java.io.IOException;
 import java.net.URI;
 import java.security.Principal;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
@@ -96,7 +95,7 @@ public class ProductRestController {
         
     }
     @PostMapping("/{id_product}/offers")
-    public ResponseEntity<OfferDTO> PlaceBid(@PathVariable long id_product, @RequestBody OfferDTO offerDTO,HttpServletRequest request) {
+    public ResponseEntity<?> PlaceBid(@PathVariable long id_product, @RequestBody OfferDTO offerDTO,HttpServletRequest request) {
 
         Principal principal = request.getUserPrincipal();
         if(principal == null) {
@@ -125,7 +124,7 @@ public class ProductRestController {
         //Product Comprobation
         if (product.isPresent()) {
             if(!product.get().isActive()){
-                return ResponseEntity.status(HttpStatus.GONE).build();
+                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Product is Finished"));
             }
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -137,30 +136,17 @@ public class ProductRestController {
         }
 
 
-        //Get last bid
-        Offer lastOffer = offerService.findLastOfferByProduct(id_product);
-        //Set min cost
-        double actualPrice;
-        if (lastOffer != null) {
-            actualPrice = lastOffer.getCost();
-        } else {
-            actualPrice = product.get().getIniValue() - 1;
-        }
-        if(offerDTO.cost()>actualPrice){
-            long currentTime = System.currentTimeMillis();
-            Date currentDate = new Date(currentTime); 
-            Offer newOffer=new Offer(bidder.get(),product.get(),offerDTO.cost(),currentDate);
-
-            product.get().getOffers().add(newOffer); 
-            offerService.save(newOffer);
-            productService.save(product.get());
+        //Make the bid
+        Offer newOffer =productService.PlaceABid(product.get(), offerDTO.cost(), bidder.get());
+        
+        if(newOffer != null){
             OfferDTO offer=offerService.toDTO(newOffer);
             
             URI location = fromCurrentRequest().path("/{id}").buildAndExpand(offer.id()).toUri();
 
             return ResponseEntity.created(location).body(offer);
         }else{
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build(); //Bid is too low
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Bid is to low")); //Bid is too low
         }
     }
 
