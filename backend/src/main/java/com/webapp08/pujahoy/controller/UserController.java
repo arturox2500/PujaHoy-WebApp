@@ -241,7 +241,7 @@ public class UserController {
 
         if (principal != null) {
             String username = principal.getName(); 
-            Optional<UserModel> user = userService.findByNameOLD(username);
+            Optional<PublicUserDTO> user = userService.findByName(username);
 
             if (user.isPresent()) {
                 Pageable pageable = PageRequest.of(page, size);
@@ -265,10 +265,10 @@ public class UserController {
 
         if (principal != null) {
             String username = principal.getName(); 
-            Optional<UserModel> user = userService.findByNameOLD(username);
+            Optional<PublicUserDTO> user = userService.findByName(username);
 
             if (user.isPresent()) {
-                if (!user.get().isActive()){
+                if (!userService.getActiveById(user.get().getId())){
                     model.addAttribute("text", " You are banned");
                     model.addAttribute("url", "/user");
                     return "pageError";
@@ -299,7 +299,7 @@ public class UserController {
 
         if (principal != null) {
             String username = principal.getName(); 
-            Optional<UserModel> user = userService.findByNameOLD(username); 
+            Optional<PublicUserDTO> user = userService.findByName(username); 
 
             if (user.isPresent()) {
                 Pageable pageable = PageRequest.of(page, size);
@@ -325,10 +325,10 @@ public class UserController {
         if (principal != null) {
             
             String username = principal.getName(); 
-            Optional<UserModel> user = userService.findByNameOLD(username);
+            Optional<PublicUserDTO> user = userService.findByName(username);
 
             if (user.isPresent()) {
-                if (!user.get().isActive()){
+                if (!userService.getActiveById(user.get().getId())){
                     model.addAttribute("text", " You are banned");
                     model.addAttribute("url", "/user");
                     return "pageError";

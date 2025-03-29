@@ -8,7 +8,7 @@ import java.util.Optional;
 import javax.sql.rowset.serial.SerialBlob;
 import java.sql.Blob;
 import java.sql.Date;
-
+import com.webapp08.pujahoy.repository.UserModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
@@ -34,6 +34,8 @@ import org.springframework.core.io.Resource;
 @Service
 public class ProductService {
 
+    private final UserModelRepository userModelRepository;
+
     @Autowired
 	private ProductRepository repository;
 	@Autowired
@@ -46,6 +48,10 @@ public class ProductService {
     private OfferRepository offerRepository;
 	@Autowired
     private OfferService offerService;
+
+    ProductService(UserModelRepository userModelRepository) {
+        this.userModelRepository = userModelRepository;
+    }
     
     public Optional<Product> findByIdOLD(long id) {
 		return repository.findById(id);
@@ -62,6 +68,10 @@ public class ProductService {
 
 	public Product save(Product product) {
 		return repository.save(product);
+	}
+
+	public Product save(ProductDTO product) {
+		return repository.save(mapper.toDomain(product));
 	}
 
 	public void deleteById(long id_product) {
@@ -148,7 +158,24 @@ public class ProductService {
 		}
 	}
 
+	public ProductDTO createProduct(ProductDTO productDTO, long userId){
+		Date iniHour = new Date(System.currentTimeMillis());
+		Date endHour = new Date(iniHour.getTime() + (Long) productDTO.getDuration() * 24 * 60 * 60 * 1000);
+		Product product = new Product(
+				productDTO.getName(),
+				productDTO.getDescription(),
+				productDTO.getIniValue(),
+				iniHour,
+				endHour,
+				"In progress",
+				null,
+				userModelRepository.getReferenceById(userId));
 
+		product.setImgURL("/api/products/" + product.getId() + "/image");
+		this.save(product);
+
+		return ProductMapper.INSTANCE.toDTO(product);
+	}
 
 	public Page<ProductBasicDTO> findProducts(Pageable pageable) {
     return repository.findAll(pageable).map(this::toDTO);   

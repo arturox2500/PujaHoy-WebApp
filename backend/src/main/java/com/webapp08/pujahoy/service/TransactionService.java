@@ -23,6 +23,9 @@ public class TransactionService {
 
     @Autowired
     private TransactionMapper mapper;
+    
+    @Autowired
+    private com.webapp08.pujahoy.dto.ProductMapper ProductMapper;
 
     @Autowired
     private OfferService offerService;
@@ -33,6 +36,10 @@ public class TransactionService {
     public Optional<Transaction> findByProduct(Product product) {
 		  return repository.findByProduct(product);
 	  }
+
+    //public Optional<TransactionDTO> findByProduct(ProductDTO product) {
+		//  return repository.findByProduct(ProductMapper.toDomain(product));
+	  //}
 
     public Transaction save(Transaction transaction) {
       return repository.save(transaction);
@@ -45,6 +52,7 @@ public class TransactionService {
     public TransactionDTO findTransactionDTO(Product product) {
 		  return mapper.toDTO(repository.findByProduct(product).get());
 	  }
+
 
     public void createTransaction(long id_product) {
       Offer offer = offerService.findLastOfferByProductOLD(id_product);
