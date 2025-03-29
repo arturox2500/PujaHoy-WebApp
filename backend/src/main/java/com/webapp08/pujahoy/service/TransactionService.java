@@ -5,6 +5,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.webapp08.pujahoy.dto.OfferDTO;
+import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.TransactionDTO;
 import com.webapp08.pujahoy.dto.TransactionMapper;
 import com.webapp08.pujahoy.model.Offer;
@@ -25,6 +27,9 @@ public class TransactionService {
     @Autowired
     private OfferService offerService;
 
+    @Autowired
+    private ProductService productService;
+
     public Optional<Transaction> findByProduct(Product product) {
 		  return repository.findByProduct(product);
 	  }
@@ -41,12 +46,17 @@ public class TransactionService {
 		  return mapper.toDTO(repository.findByProduct(product).get());
 	  }
 
-    public void createTransaction(Product prod) {
-      Offer offer = offerService.findLastOfferByProduct(prod.getId());
+    public void createTransaction(long id_product) {
+      Offer offer = offerService.findLastOfferByProductOLD(id_product);
+      Optional<Product> product = productService.findByIdOLD(id_product);
       double cost = offer.getCost();
       UserModel buyer = offer.getUser();
-      UserModel seller = prod.getSeller();
-      Transaction transaction = new Transaction(prod, seller, buyer, cost);
+      UserModel seller = product.get().getSeller();
+      Transaction transaction = new Transaction(product.get(), seller, buyer, cost);
       repository.save(transaction);
+    }
+
+    public void makeTransaction(Optional<ProductDTO> product, OfferDTO lastOffer) {
+        
     }
 }

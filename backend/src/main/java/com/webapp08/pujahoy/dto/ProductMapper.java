@@ -21,7 +21,7 @@ public interface ProductMapper {
         @Mapping(source = "endHour", target = "endHour"),
         @Mapping(source = "state", target = "state"),
         @Mapping(target = "imgURL", expression = "java(generateImageUrl(product.getId()))"), 
-        @Mapping(source = "seller.id", target = "sellerId") 
+        @Mapping(source = "seller", target = "seller") 
     })
     ProductDTO toDTO(Product product);
 
@@ -41,7 +41,7 @@ public interface ProductMapper {
         @Mapping(source = "imgURL", target = "imgURL"), 
         @Mapping(target = "image", ignore = true), 
         @Mapping(target = "offers", ignore = true), 
-        @Mapping(target = "seller", ignore = true) 
+        @Mapping(source =  "seller", target = "seller") 
     })
     Product toDomain(ProductDTO productDTO);
 }

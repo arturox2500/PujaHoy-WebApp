@@ -81,15 +81,19 @@ public class ProductService {
 	}
 
 	//Search all
-    public Page<Product> obtainAllProductOrdersByReputation(int page, int size) {
+    public Page<ProductBasicDTO> obtainAllProductOrdersByReputation(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size);
-        return repository.findAllOrderedBySellerReputation(pageable);
-    }
+		Page<Product> productPage = repository.findAllOrderedBySellerReputation(pageable);
+	
+		return productPage.map(basicMapper::toDTO); 
+	}
 	//Search only In progress
-	public Page<Product> obtainAllProductOrdersInProgressByReputation(int page, int size) {
+	public Page<ProductBasicDTO> obtainAllProductOrdersInProgressByReputation(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size);
-        return repository.findByStateInProgressOrderedBySellerReputation(pageable);
-    }
+		Page<Product> productPage = repository.findByStateInProgressOrderedBySellerReputation(pageable);
+	
+		return productPage.map(basicMapper::toDTO); 
+	}
 	//Search all
     public Page<ProductBasicDTO> obtainAllProductOrdersByReputationDTO(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size);
@@ -165,7 +169,7 @@ public class ProductService {
 
 	public Offer PlaceABid(Product product,double cost, UserModel bidder) {
 		//Get last bid
-        Offer lastOffer = offerService.findLastOfferByProduct(product.getId());
+        Offer lastOffer = offerService.findLastOfferByProductOLD(product.getId());
         //Set min cost
         double actualPrice;
         if (lastOffer != null) {

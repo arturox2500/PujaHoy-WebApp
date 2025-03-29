@@ -13,7 +13,7 @@ public class ProductDTO {
     private Date endHour;
     private String state;
     private String imgURL;
-    private Long sellerId;
+    private PublicUserDTO seller;
     private Long duration;
     
     private List<OfferBasicDTO> offers;
@@ -67,12 +67,12 @@ public class ProductDTO {
     public void setImgURL(String imgURL) {
         this.imgURL = imgURL;
     }
-    public Long getSellerId() {
-        return sellerId;
+    public PublicUserDTO getSeller() {
+        return seller;
     }
-    public void setSellerId(Long sellerId) {
-        this.sellerId = sellerId;
-    } 
+    public void setSeller(PublicUserDTO seller) {
+        this.seller = seller;
+    }
     public List<OfferBasicDTO> getOffers() {
         return offers;
     }

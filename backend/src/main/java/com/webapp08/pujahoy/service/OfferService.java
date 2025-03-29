@@ -22,8 +22,8 @@ public class OfferService {
     public void save(Offer offer) {
 		repository.save(offer);
 	}
-    public Offer findLastOfferByProduct(long id_product){
-        return repository.findLastOfferByProduct(id_product);
+    public OfferDTO findLastOfferByProduct(long id_product){
+        return mapper.toDTO(repository.findLastOfferByProduct(id_product));
     }
     public void deleteById(long id){
         repository.deleteById(id);
@@ -44,4 +44,7 @@ public class OfferService {
     public List<OfferDTO> toDTOs(List<Offer> offersDTO){
 		return mapper.toDTOList(offersDTO);
 	}
+    public Offer findLastOfferByProductOLD(long id) {
+        return repository.findLastOfferByProduct(id);
+    }
 }
