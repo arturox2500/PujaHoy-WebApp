@@ -247,7 +247,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Pedro\",\r\n    \"reputation\": 2.0,\r\n    \"visibleName\": \"Pedrito\",\r\n    \"contact\": \"ejemplo@gmail.com\",\r\n    \"description\": \"DDescripcion cambiada\",\r\n    \"zipCode\": 28024,\r\n    \"image\": \"https://localhost:8443/api/v1/users/2/image\"\r\n}",
+					"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Pedro\",\r\n    \"reputation\": 2.0,\r\n    \"visibleName\": \"Pedrito\",\r\n    \"contact\": \"ejemplo@gmail.com\",\r\n    \"description\": \"DDescripcion cambiada\",\r\n    \"zipCode\": 28024,\r\n    \"image\": \"host:8443/api/v1/users/2/image\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

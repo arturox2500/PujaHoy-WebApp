@@ -5,6 +5,8 @@ import java.util.Optional;
 import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,7 @@ import java.sql.SQLException;
 
 import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.service.UserService;
+import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.dto.RatingDTO;
@@ -241,7 +244,8 @@ public class UserController {
             Optional<UserModel> user = userService.findByNameOLD(username);
 
             if (user.isPresent()) {
-                Page<Product> products = productService.obtainPaginatedProducts(username, page, size);
+                Pageable pageable = PageRequest.of(page, size);
+                Page<ProductBasicDTO> products = productService.findProductsByUser(pageable, user.get().getId());
 
                 model.addAttribute("products", products); 
                 return "product_template";
@@ -269,7 +273,8 @@ public class UserController {
                     model.addAttribute("url", "/user");
                     return "pageError";
                 }
-                Page<Product> products = productService.obtainPaginatedProducts(username, page, size);
+                Pageable pageable = PageRequest.of(page, size);
+                Page<ProductBasicDTO> products = productService.findProductsByUser(pageable, user.get().getId());
                 Boolean button = true;
                 if (products.isEmpty()) {
                     button = false;
@@ -297,7 +302,8 @@ public class UserController {
             Optional<UserModel> user = userService.findByNameOLD(username); 
 
             if (user.isPresent()) {
-                Page<Product> products = productService.obtainProductsBuyed(username, page, size);
+                Pageable pageable = PageRequest.of(page, size);
+                Page<ProductBasicDTO> products = productService.findBoughtProductsByUser(pageable, user.get().getId());
 
                 model.addAttribute("products", products); 
                 return "product_template";
@@ -327,7 +333,8 @@ public class UserController {
                     model.addAttribute("url", "/user");
                     return "pageError";
                 }
-                Page<Product> products = productService.obtainProductsBuyed(username, page, size);
+                Pageable pageable = PageRequest.of(page, size);
+                Page<ProductBasicDTO> products = productService.findBoughtProductsByUser(pageable, user.get().getId());
                 Boolean button = true;
                 if (products.isEmpty()) {
                     button = false;

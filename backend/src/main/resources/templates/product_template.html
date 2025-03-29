@@ -4,12 +4,12 @@
 	<a href="/product/{{id}}" class="product-link">
 		<div class="product product-card">
 			<div class="product-img">
-				{{#image}}
-					<img src="/product/{{id}}/image" alt="Product Image">
-				{{/image}}
-				{{^image}}
+				{{#imgURL}}
+					<img src="/api/v1{{imgURL}}" alt="Product Image">
+				{{/imgURL}}
+				{{^imgURL}}
 					<img src="/img/default-product.png" alt="Image not available">
-				{{/image}}
+				{{/imgURL}}
 				<div class="product-label">
 					
 				</div>
