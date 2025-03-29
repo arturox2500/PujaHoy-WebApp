@@ -23,6 +23,7 @@ import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.dto.RatingDTO;
 import com.webapp08.pujahoy.dto.TransactionDTO;
+import com.webapp08.pujahoy.dto.UserDTO;
 import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.Transaction;
@@ -222,39 +223,29 @@ public class ProductRestController {
         if (imageFile.isEmpty()) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "No image uploaded"));
         }
-
-        Optional<Product> optionalProduct = productService.findByIdOLD(id);
+        Optional<ProductDTO> optionalProduct = productService.findById(id);
         if (optionalProduct.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Collections.singletonMap("error", "Product not found"));
         }
-
         if (!optionalProduct.get().getOffers().isEmpty()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "You cannot edit a product if a user placed a bid"));
         }
 
         Principal principal = request.getUserPrincipal();
-        if (principal == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Collections.singletonMap("error", "User not authenticated"));
-        }
+        Optional<PublicUserDTO> user = userService.findByName(principal.getName());
+        ProductDTO product = optionalProduct.get();
+        PublicUserDTO loggedInUser = user.get();
 
-        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
-
-        Product product = optionalProduct.get();
-        UserModel loggedInUser = user.get();
-
-        if (!(product.getSeller().getId().equals(loggedInUser.getId()) || loggedInUser.determineUserType().equals("Administrator"))) {
+        if (!(product.getSeller().getId().equals(loggedInUser.getId()) || userService.getUserTypeById(loggedInUser.getId()).equals("Administrator"))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "You do not have permission to modify this product"));
         }
-
-        if (!loggedInUser.isActive()) {
+        if (!userService.getActiveById(loggedInUser.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "Banned user"));
         }
-
         try {
             productService.savePostImage(id, imageFile);
             Resource postImage = productService.getPostImage(id);
@@ -281,7 +272,7 @@ public class ProductRestController {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", "No image uploaded"));
         }
 
-        Optional<Product> optionalProduct = productService.findByIdOLD(id);
+        Optional<ProductDTO> optionalProduct = productService.findById(id);
         if (optionalProduct.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Collections.singletonMap("error", "Product not found"));
@@ -293,21 +284,18 @@ public class ProductRestController {
                     .body(Collections.singletonMap("error", "User not authenticated"));
         }
 
-        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
-
-        Product product = optionalProduct.get();
-        UserModel loggedInUser = user.get();
+        Optional<PublicUserDTO> user = userService.findByName(principal.getName());
+        ProductDTO product = optionalProduct.get();
+        PublicUserDTO loggedInUser = user.get();
 
         if (!product.getSeller().getId().equals(loggedInUser.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "You do not have permission to upload an image for this product"));
         }
-
-        if (!loggedInUser.isActive()) {
+        if (!userService.getActiveById(loggedInUser.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "Banned user"));
         }
-
         try {
             productService.savePostImage(id, imageFile);
             Resource postImage = productService.getPostImage(id);

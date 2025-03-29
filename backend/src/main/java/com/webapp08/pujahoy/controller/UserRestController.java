@@ -4,6 +4,7 @@ import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.ProductMapper;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
+import com.webapp08.pujahoy.dto.UserDTO;
 import com.webapp08.pujahoy.dto.UserEditDTO;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.Transaction;
@@ -259,13 +260,7 @@ public class UserRestController {
             @RequestParam(defaultValue = "10") int size,
             HttpServletRequest request) {
 
-        Principal principal = request.getUserPrincipal();
-        if (principal == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Collections.singletonMap("error", "User not authenticated"));
-        }
-
-        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
+        Optional<PublicUserDTO> user = userService.findById(id);
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Collections.singletonMap("error", "User not found"));
@@ -274,11 +269,11 @@ public class UserRestController {
         if (!user.get().getId().equals(id)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error",
-                            "You are not allowed to publish products for another user"));
+                            "You are not allowed to see another user's product list"));
         }
 
-        UserModel loggedInUser = user.get();
-        if (!loggedInUser.isActive()) {
+        PublicUserDTO loggedInUser = user.get();
+        if (!userService.getActiveById(loggedInUser.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "Banned user"));
         }
@@ -295,13 +290,7 @@ public class UserRestController {
             @RequestParam(defaultValue = "10") int size,
             HttpServletRequest request) {
 
-        Principal principal = request.getUserPrincipal();
-        if (principal == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Collections.singletonMap("error", "User not authenticated"));
-        }
-
-        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
+        Optional<PublicUserDTO> user = userService.findById(id);
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Collections.singletonMap("error", "User not found"));
@@ -313,8 +302,8 @@ public class UserRestController {
                             "You are not allowed to publish products for another user"));
         }
 
-        UserModel loggedInUser = user.get();
-        if (!loggedInUser.isActive()) {
+        PublicUserDTO loggedInUser = user.get();
+        if (!userService.getActiveById(loggedInUser.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "Banned user"));
         }
