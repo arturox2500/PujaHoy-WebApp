@@ -65,6 +65,7 @@ public class SecurityConfiguration {
 		http
 			.authorizeHttpRequests(authorize -> authorize
 				// PUBLIC PAGES
+				
 				.requestMatchers("/").permitAll()
 				.requestMatchers("/css/**").permitAll()
 				.requestMatchers("/img/**").permitAll()

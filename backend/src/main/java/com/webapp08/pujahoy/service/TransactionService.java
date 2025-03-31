@@ -3,12 +3,14 @@ package com.webapp08.pujahoy.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.webapp08.pujahoy.dto.OfferDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.TransactionDTO;
 import com.webapp08.pujahoy.dto.TransactionMapper;
+import com.webapp08.pujahoy.dto.ProductMapper;
 import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.Transaction;
@@ -24,22 +26,26 @@ public class TransactionService {
     @Autowired
     private TransactionMapper mapper;
     
-    @Autowired
-    private com.webapp08.pujahoy.dto.ProductMapper ProductMapper;
 
     @Autowired
     private OfferService offerService;
 
+    @Lazy
     @Autowired
     private ProductService productService;
 
-    public Optional<Transaction> findByProduct(Product product) {
+    public Optional<Transaction> findByProductOLD(Product product) {
 		  return repository.findByProduct(product);
 	  }
+    public TransactionDTO findByProduct(long id_product) {
+      Optional<Product> product=productService.findByIdOLD(id_product);
+		  Optional<Transaction> trans=repository.findByProduct(product.get());
+      if(trans.isPresent()){
+        return mapper.toDTO(trans.get());
+      }
+      return null;
+	  }
 
-    //public Optional<TransactionDTO> findByProduct(ProductDTO product) {
-		//  return repository.findByProduct(ProductMapper.toDomain(product));
-	  //}
 
     public Transaction save(Transaction transaction) {
       return repository.save(transaction);

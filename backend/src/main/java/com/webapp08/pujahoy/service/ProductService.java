@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.data.domain.Pageable;
 
+import com.webapp08.pujahoy.dto.OfferDTO;
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductBasicMapper;
 import com.webapp08.pujahoy.dto.ProductDTO;
@@ -48,6 +49,8 @@ public class ProductService {
     private OfferRepository offerRepository;
 	@Autowired
     private OfferService offerService;
+	@Autowired
+    private TransactionService transactionService;
 
     ProductService(UserModelRepository userModelRepository) {
         this.userModelRepository = userModelRepository;
@@ -216,5 +219,37 @@ public class ProductService {
 		}else{
 			return null;
 		}
+	}
+
+	public void checkProduct(long id_product) {
+		Optional<Product> product=repository.findById(id_product);
+		if(product.isPresent()){
+			long actualTime = System.currentTimeMillis();
+			if (product.get().getEndHour().getTime() <= actualTime && product.get().getState().equals("In proccess")) {
+				product.get().setState("Finished");
+
+				if (!product.get().getOffers().isEmpty()) {
+					transactionService.createTransaction(id_product);
+				}
+			}
+			this.save(product.get());
+		}
+	}
+
+	public double[] getOffersToGrafic(long id_product, double[] costs) {
+		Optional<Product> product=repository.findById(id_product);
+		if(product.isPresent()){
+			List<Offer> offers = product.get().getOffers();
+			int numOffers = offers.size();
+			if (numOffers > 0) {
+				costs = new double[numOffers];
+				for (int i = 0; i < numOffers; i++) {
+					costs[i] = offers.get(i).getCost();
+				}
+			} else {
+				costs = new double[0];
+			}
+		}
+		return costs;
 	}
 }

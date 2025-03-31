@@ -26,6 +26,7 @@ import com.webapp08.pujahoy.dto.OfferDTO;
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
+import com.webapp08.pujahoy.dto.TransactionDTO;
 import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.Rating;
@@ -163,7 +164,7 @@ public class ProductController {
                 return "pageError";
             }
             //Transaction verification
-            Optional<Transaction> trans = transactionService.findByProduct(product.get());
+            Optional<Transaction> trans = transactionService.findByProductOLD(product.get());
             if (trans.isPresent()) {
                 model.addAttribute("text", " You cannot delete the product.");
                 model.addAttribute("url", "/");
@@ -186,120 +187,102 @@ public class ProductController {
         }
     }
 
-//    @GetMapping("/product/{id_product}") // Shows detailed information of a specific product, including its offers.
-//    public String showProduct(@PathVariable long id_product, Model model, HttpServletRequest request, HttpSession session) {
-//        Optional<ProductDTO> product = productService.findById(id_product);
-//        if (!product.isPresent()) {
-//            model.addAttribute("text", " Product not found");
-//            model.addAttribute("url", "/");
-//            return "pageError";
-//        }
-//
-//        //Product product = productOpt.get();
-//        model.addAttribute("product", product);
-//
-//        //Check if a product has ended or is still in progress and create transaction
-//        long actualTime = System.currentTimeMillis();
-//        if (product.get().getEndHour().getTime() <= actualTime && product.get().getState().equals("In proccess")) {
-//            product.get().setState("Finished");
-//
-//            if (!product.get().getOffers().isEmpty()) {
-//                OfferDTO lastOffer = offerService.findLastOfferByProduct(id_product);
-//                transactionService.createTransaction(id_product);
-//            }
-//        }
-//
-//        productService.save(product);
-//
-//        //Retrieve offers for the chart
-//        List<Offer> offers = product.getOffers();
-//        double[] costs;
-//        int numOffers = offers.size();
-//        if (numOffers > 0) {
-//            costs = new double[numOffers];
-//            for (int i = 0; i < numOffers; i++) {
-//                costs[i] = offers.get(i).getCost();
-//            }
-//        } else {
-//            costs = new double[0];
-//        }
-//
-//        model.addAttribute("costs", Arrays.toString(costs));
-//
-//        Principal principal = request.getUserPrincipal();
-//        if (principal != null) {
-//            String username = principal.getName();
-//            Optional<UserModel> userOpt = userService.findByNameOLD(username);
-//
-//            if (!userOpt.isPresent()) {
-//                model.addAttribute("text", " User not found");
-//                model.addAttribute("url", "/");
-//                return "pageError";
-//            }
-//
-//            UserModel user = userOpt.get();
-//            model.addAttribute("isSeller", product.getSeller().equals(user));
-//
-//            model.addAttribute("zipCode", product.getSeller().getZipCode());
-//
-//            // Check if user is logged in and handle user-related logic
-//            if (user != null) {
-//                boolean esAdmin = "Administrator".equalsIgnoreCase(user.determineUserType());
-//                model.addAttribute("admin", esAdmin);
-//                model.addAttribute("authenticated_user", true);
-//                model.addAttribute("banned", user.isActive());
-//
-//                // Check product state and offer status for the user
-//                if (product.getState().equals("Finished") || product.getState().equals("Delivered")) {
-//                    model.addAttribute("Finished", true);
-//
-//                    if (!offers.isEmpty()) {
-//                        Offer lastOffer = offers.get(offers.size() - 1);
-//                        model.addAttribute("Winner", lastOffer.getUser().equals(user));
-//                    }
-//                } else {
-//                    model.addAttribute("Finished", false);
-//                }
-//            } else {
-//                model.addAttribute("admin", false);
-//                model.addAttribute("authenticated_user", false);
-//            }
-//            if (session.getAttribute("after") != null) {
-//                int after = (int) session.getAttribute("after");
-//                if (after == 2 || after == 3) {
-//                    if (after == 2){
-//                        model.addAttribute("a2", true);
-//                    } else {
-//                        model.addAttribute("a2", false);
-//                    }
-//                    model.addAttribute("after", true);
-//                } else {
-//                    model.addAttribute("after", false);
-//                }
-//            }
-//            // Check if the user is the buyer for the product transaction
-//            Optional<Transaction> trans = transactionService.findByProduct(product);
-//            if (trans.isPresent() && trans.get().getBuyer().getName().equals(user.getName())
-//                    && !product.getState().equals("Delivered")) {
-//                model.addAttribute("buyer", true);
-//            } else {
-//                model.addAttribute("buyer", false);
-//            }
-//        }
-//
-//        //Retrieve current bidding data
-//        if (!offers.isEmpty()) {
-//            OfferDTO lastOffer = offerService.findLastOfferByProduct(id_product);
-//            model.addAttribute("Winning bid", lastOffer.cost());
-//            model.addAttribute("Winner bidder", lastOffer.user().name());
-//        } else {
-//            model.addAttribute("Winning bid", "-");
-//            model.addAttribute("Winner bidder", "-");
-//        }
-//
-//        return "product";
-//    }
+    @GetMapping("/product/{id_product}") // Shows detailed information of a specific product, including its offers.
+    public String showProduct(@PathVariable long id_product, Model model, HttpServletRequest request, HttpSession session) {
+        Optional<ProductDTO> product = productService.findById(id_product);
+        if (!product.isPresent()) {
+            model.addAttribute("text", " Product not found");
+            model.addAttribute("url", "/");
+            return "pageError";
+        }
 
+        model.addAttribute("product", product.get());
+
+        //Check if a product has ended or is still in progress and create transaction
+        productService.checkProduct(id_product);
+
+        //Retrieve offers for the chart
+        double[] costs = null;
+        costs=productService.getOffersToGrafic(id_product,costs);
+
+        model.addAttribute("costs", Arrays.toString(costs));
+
+        Principal principal = request.getUserPrincipal();
+        if (principal != null) {
+            String username = principal.getName();
+            Optional<PublicUserDTO> userOpt = userService.findByName(username);
+
+            if (!userOpt.isPresent()) {
+                model.addAttribute("text", " User not found");
+                model.addAttribute("url", "/");
+                return "pageError";
+            }
+
+            PublicUserDTO user = userOpt.get();
+            model.addAttribute("isSeller", product.get().getSeller().equals(user));
+
+            model.addAttribute("zipCode", product.get().getSeller().getZipCode());
+
+            // Check if user is logged in and handle user-related logic
+            if (user != null) {
+                boolean esAdmin = "Administrator".equalsIgnoreCase(userService.getUserTypeById(user.getId()));
+                model.addAttribute("admin", esAdmin);
+                model.addAttribute("authenticated_user", true);
+                model.addAttribute("banned", userService.getActiveById(user.getId()));
+
+                // Check product state and offer status for the user
+                if (product.get().getState().equals("Finished") || product.get().getState().equals("Delivered")) {
+                    model.addAttribute("Finished", true);
+
+                    if (!product.get().getOffers().isEmpty()) {
+                        OfferDTO lastOffer =offerService.findLastOfferByProduct(id_product);
+                        model.addAttribute("Winner", lastOffer.user().equals(user));
+                    }
+                } else {
+                    model.addAttribute("Finished", false);
+                }
+            } else {
+                model.addAttribute("admin", false);
+                model.addAttribute("authenticated_user", false);
+            }
+            if (session.getAttribute("after") != null) {
+                int after = (int) session.getAttribute("after");
+                if (after == 2 || after == 3) {
+                    if (after == 2){
+                        model.addAttribute("a2", true);
+                    } else {
+                        model.addAttribute("a2", false);
+                    }
+                    model.addAttribute("after", true);
+                } else {
+                    model.addAttribute("after", false);
+                }
+            }
+            // Check if the user is the buyer for the product transaction
+            TransactionDTO trans = transactionService.findByProduct(id_product);
+            if(trans!=null){
+                if (trans.buyer().name().equals(user.getName())
+                        && !product.get().getState().equals("Delivered")) {
+                    model.addAttribute("buyer", true);
+                } else {
+                    model.addAttribute("buyer", false);
+                }
+            }
+        }
+
+        //Retrieve current bidding data
+        if (!product.get().getOffers().isEmpty()) {
+            OfferDTO lastOffer = offerService.findLastOfferByProduct(id_product);
+            model.addAttribute("Winning bid", lastOffer.cost());
+            model.addAttribute("Winner bidder", lastOffer.user().name());
+        } else {
+            model.addAttribute("Winning bid", "-");
+            model.addAttribute("Winner bidder", "-");
+        }
+
+        return "product";
+    }
+ 
     @PostMapping("/product/{id_product}/place-bid") // Places a bid on a product, ensuring bid validity and user authentication.
     public String placeBid(@PathVariable long id_product, @RequestParam double bid_amount, HttpServletRequest request,
             Model model) {

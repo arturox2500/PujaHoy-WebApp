@@ -40,12 +40,12 @@
             <div class="col-md-5 ">
                 <div id="product-main-img">
                     <div class="product-preview">
-                        {{#image}}
-                        <img src="/product/{{id}}/image" alt="Product image">
-                        {{/image}}
-                        {{^image}}
+                        {{#imgURL}}
+                        <img src="/api/v1{{imgURL}}" alt="Product image">
+                        {{/imgURL}}
+                        {{^imgURL}}
                         <img src="/img/default-product.png" alt="Image not available">
-                        {{/image}}
+                        {{/imgURL}}
                     </div>
                 </div>
             </div>

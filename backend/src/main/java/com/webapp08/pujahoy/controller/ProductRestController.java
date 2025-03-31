@@ -64,7 +64,7 @@ public class ProductRestController {
         Optional<Product> product = productService.findByIdOLD(id_product);
         if (product.isPresent()) {
             ProductDTO prod=productService.findProduct(id_product);
-            Optional<Transaction> trans = transactionService.findByProduct(product.get());
+            Optional<Transaction> trans = transactionService.findByProductOLD(product.get());
             if(!prod.getState().equals("In progress") && !trans.isPresent()){
                 transactionService.createTransaction(product.get().getId());
             }

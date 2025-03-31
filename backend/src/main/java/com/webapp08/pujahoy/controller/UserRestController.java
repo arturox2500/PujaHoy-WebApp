@@ -138,7 +138,7 @@ public class UserRestController {
                     .body(Collections.singletonMap("error", "Banned user"));
         }
         Optional<Product> optionalProduct2 = productService.findByIdOLD(pid);
-        Optional<Transaction> trans = transactionService.findByProduct(optionalProduct2.get());
+        Optional<Transaction> trans = transactionService.findByProductOLD(optionalProduct2.get());
 
         if (trans.isPresent()) {
             if (trans.get().getBuyer().getId().equals(loggedInUser.getId())) {
