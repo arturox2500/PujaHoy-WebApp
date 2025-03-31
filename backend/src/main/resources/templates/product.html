@@ -61,9 +61,9 @@
                     <p>Status: {{state}}</p>
                     <p>{{description}}</p>
                     <div class="add-to-cart">
+                        {{#authenticated_user}}
                         {{^admin}}
                         {{^isSeller}}
-                        {{#authenticated_user}}
                         {{^Finished}}
                         {{#banned}}
                         <form action="/product/{{id}}/place-bid" method="post">
@@ -75,9 +75,9 @@
                         </form>
                         {{/banned}}
                         {{/Finished}}
-                        {{/authenticated_user}}
                         {{/isSeller}}
                         {{/admin}}
+                        {{/authenticated_user}}
                     </div>
                     <div class="add-to-cart">
                         <form action="/user/{{id}}" method="get" style="display:inline;">

@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.data.domain.Pageable;
 
 import com.webapp08.pujahoy.dto.OfferDTO;
+import com.webapp08.pujahoy.dto.OfferMapper;
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductBasicMapper;
 import com.webapp08.pujahoy.dto.ProductDTO;
@@ -43,6 +44,8 @@ public class ProductService {
 	private ProductRepository repository;
 	@Autowired
 	private ProductMapper mapper;
+	@Autowired
+	private OfferMapper offerMapper;
 	@Autowired
 	private UserMapper userMapper;
 	@Autowired
@@ -201,7 +204,7 @@ public class ProductService {
 		return basicMapper.toDTO(product);
 	}
 
-	public Offer PlaceABid(ProductDTO product,double cost, PublicUserDTO user) {
+	public OfferDTO PlaceABid(ProductDTO product,double cost, PublicUserDTO user) {
 		//Get last bid
         Offer lastOffer = offerService.findLastOfferByProductOLD(product.getId());
         //Set min cost
@@ -221,7 +224,7 @@ public class ProductService {
             prod.getOffers().add(newOffer); 
             offerService.save(newOffer);
             this.save(prod);
-			return newOffer;
+			return offerMapper.toDTO(newOffer);
 		}else{
 			return null;
 		}
@@ -281,4 +284,13 @@ public class ProductService {
 		}
 		return costs;
 	}
+
+    public void setStateDeliveredProduct(long id_product) {
+        Optional<Product> product= repository.findById(id_product);
+
+		if(product.isPresent()){
+			product.get().setState("Delivered");
+            repository.save(product.get());
+		}
+    }
 }

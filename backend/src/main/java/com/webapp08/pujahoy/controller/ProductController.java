@@ -149,12 +149,12 @@ public class ProductController {
     @PostMapping("/product/{id_product}/delete") // Deletes a product after verifying the user is authorized to do so.
     public String deleteProduct(Model model,HttpServletRequest request, @PathVariable long id_product) {
 
-        Optional<Product> product = productService.findByIdOLD(id_product);
+        Optional<ProductDTO> product = productService.findById(id_product);
         Principal principal = request.getUserPrincipal();
-        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
+        Optional<PublicUserDTO> user = userService.findByName(principal.getName());
 
-        if (product.isPresent()) {
-            if(!(product.get().getSeller().getId()== user.get().getId() || user.get().determineUserType().equals("Administrator"))){
+        if (product.isPresent() && user.isPresent()) {
+            if(!(product.get().getSeller().getId()== user.get().getId() || "Administrator".equalsIgnoreCase(userService.getUserTypeById(user.get().getId())))){
                 model.addAttribute("text", " This product is not yours");
                 model.addAttribute("url", "/");
                 return "pageError";
@@ -166,19 +166,21 @@ public class ProductController {
                 return "pageError";
             }
             //Transaction verification
-            Optional<Transaction> trans = transactionService.findByProductOLD(product.get());
-            if (trans.isPresent()) {
+            TransactionDTO trans = transactionService.findByProduct(id_product);
+            if (trans!=null) {
                 model.addAttribute("text", " You cannot delete the product.");
                 model.addAttribute("url", "/");
                 return "pageError";
             }
             //Rating verification
+            /* 
             Optional<Rating> rate = ratingService.findByProduct(product.get());
             if (rate.isPresent()) {
                 model.addAttribute("text", " You cannot delete the product.");
                 model.addAttribute("url", "/");
                 return "pageError";
             }
+            */
             //delete
             productService.deleteById(id_product);
             return "redirect:/";
@@ -311,7 +313,7 @@ public class ProductController {
             PublicUserDTO user = userOpt.get();
 
             //Get the latest offer
-            Offer newOffer =productService.PlaceABid(product.get(), bid_amount, user);
+            OfferDTO newOffer =productService.PlaceABid(product.get(), bid_amount, user);
         
             if(newOffer != null){
                 model.addAttribute("url", "/product/" + id_product);
@@ -351,11 +353,10 @@ public class ProductController {
 
     @PostMapping("/product/{id_product}/finish") // Marks a product as delivered, completing the transaction.
     public String finishProduct(Model model, @PathVariable long id_product) {
-        Optional<Product> product = productService.findByIdOLD(id_product);
+        Optional<ProductDTO> product = productService.findById(id_product);
 
         if (product.isPresent()) {
-            product.get().setState("Delivered");
-            productService.save(product.get());
+            productService.setStateDeliveredProduct(id_product);
             return "redirect:/product/" + id_product;
         } else {
             model.addAttribute("text", " Error deleting product");
