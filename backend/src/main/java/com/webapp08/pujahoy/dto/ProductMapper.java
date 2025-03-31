@@ -20,6 +20,7 @@ public interface ProductMapper {
         @Mapping(source = "iniHour", target = "iniHour"),
         @Mapping(source = "endHour", target = "endHour"),
         @Mapping(source = "state", target = "state"),
+        @Mapping(source = "duration", target = "duration"),
         @Mapping(target = "imgURL", expression = "java(generateImageUrl(product.getId()))"), 
         @Mapping(source = "seller", target = "seller") 
     })
@@ -38,10 +39,11 @@ public interface ProductMapper {
         @Mapping(source = "iniHour", target = "iniHour"),
         @Mapping(source = "endHour", target = "endHour"),
         @Mapping(source = "state", target = "state"),
+        @Mapping(source = "duration", target = "duration"),
         @Mapping(source = "imgURL", target = "imgURL"), 
         @Mapping(target = "image", ignore = true), 
         @Mapping(target = "offers", ignore = true), 
-        @Mapping(source =  "seller", target = "seller") 
+        @Mapping(source =  "seller", target = "seller")
     })
     Product toDomain(ProductDTO productDTO);
 }

@@ -217,13 +217,13 @@ public class ProductService {
         if(cost>actualPrice){
             long currentTime = System.currentTimeMillis();
             Date currentDate = new Date(currentTime); 
-			Product prod = mapper.toDomain(product);
+			Optional<Product> prod = repository.findById(product.getId());
 			UserModel us= userMapper.toDomain(user);
-            Offer newOffer=new Offer(us,prod,cost,currentDate);
+            Offer newOffer=new Offer(us,prod.get(),cost,currentDate);
 
-            prod.getOffers().add(newOffer); 
+            prod.get().getOffers().add(newOffer); 
             offerService.save(newOffer);
-            this.save(prod);
+            this.save(prod.get());
 			return offerMapper.toDTO(newOffer);
 		}else{
 			return null;
@@ -293,4 +293,13 @@ public class ProductService {
             repository.save(product.get());
 		}
     }
+
+	public void setStateFinishedProduct(long id_product) {
+		Optional<Product> product= repository.findById(id_product);
+
+		if(product.isPresent()){
+			product.get().setState("Finished");
+            repository.save(product.get());
+		}
+	}
 }

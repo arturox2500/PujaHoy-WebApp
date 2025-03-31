@@ -163,6 +163,6 @@ public class Product {
         Date currentDate = new Date(currentTime); 
 
         return iniHour != null && endHour != null && !currentDate.before(iniHour) && !currentDate.after(endHour);
-}
+        }
 
 }

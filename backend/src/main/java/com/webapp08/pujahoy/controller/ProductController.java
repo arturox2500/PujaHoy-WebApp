@@ -215,7 +215,7 @@ public class ProductController {
             }
 
             PublicUserDTO user = userOpt.get();
-            model.addAttribute("isSeller", product.get().getSeller().equals(user));
+            model.addAttribute("isSeller", product.get().getSeller().getId().equals(user.getId()));
 
             model.addAttribute("zipCode", product.get().getSeller().getZipCode());
 

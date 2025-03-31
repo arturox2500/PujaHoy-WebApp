@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 
+import com.webapp08.pujahoy.dto.OfferBasicDTO;
 import com.webapp08.pujahoy.dto.OfferDTO;
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
@@ -59,31 +60,43 @@ public class ProductRestController {
 
     
     @GetMapping("/{id_product}")
-    public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
-        Optional<Product> product = productService.findByIdOLD(id_product);
-        if (product.isPresent()) {
-            ProductDTO prod=productService.findProduct(id_product);
-            Optional<Transaction> trans = transactionService.findByProductOLD(product.get());
-            if(!prod.getState().equals("In progress") && !trans.isPresent()){
-                transactionService.createTransaction(product.get().getId());
-            }
-            return ResponseEntity.ok(prod);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
+    Optional<ProductDTO> product = productService.findById(id_product);
+
+    if (product.isEmpty()) {
+        return ResponseEntity.notFound().build();
     }
+
+    ProductDTO existingProduct = product.get();
+
+    // Si el producto ya no está activo, cambiar su estado a "Finished"
+    if (!existingProduct.isActive()) {
+        productService.setStateFinishedProduct(id_product);
+
+        // Volvemos a obtener el producto actualizado después del cambio de estado
+        existingProduct = productService.findById(id_product).orElse(existingProduct);
+    }
+
+    // Verificar si necesita una transacción
+    TransactionDTO trans = transactionService.findByProduct(existingProduct.getId());
+    if (!existingProduct.getState().equals("In progress") && trans == null) {
+        transactionService.createTransaction(existingProduct.getId());
+    }
+
+    return ResponseEntity.ok(existingProduct);
+}
 
     @GetMapping
     public Page<ProductBasicDTO> getProducts(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, HttpServletRequest request) {
         
         Principal principal = request.getUserPrincipal();
         if(principal != null) {
-			Optional<UserModel> useraux = userService.findByNameOLD(principal.getName());
+			Optional<PublicUserDTO> useraux = userService.findByName(principal.getName());
             if (useraux.isPresent()) {
-                UserModel user= useraux.get();
+                PublicUserDTO user= useraux.get();
                 
                 //isAdmin
-                if("Administrator".equalsIgnoreCase(user.determineUserType())){
+                if("Administrator".equalsIgnoreCase(userService.getTypeById(user.getId()))){
                     return productService.obtainAllProductOrdersByReputationDTO(page,size);
                 }else{//Registered
                     return productService.obtainAllProductOrdersInProgressByReputationDTO(page,size); 
@@ -101,20 +114,20 @@ public class ProductRestController {
         if(principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
+        Optional<PublicUserDTO> user = userService.findByName(principal.getName());
         if (!user.isPresent()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        Optional<UserModel> bidder = userService.findByIdOLD(user.get().getId());
-        Optional<Product> product = productService.findByIdOLD(id_product);
+        Optional<PublicUserDTO> bidder = userService.findById(user.get().getId());
+        Optional<ProductDTO> product = productService.findById(id_product);
 
         //User Comprobation
         if(bidder.isPresent()){
-            if("Administrator".equalsIgnoreCase(bidder.get().determineUserType())){
+            if("Administrator".equalsIgnoreCase(userService.getTypeById(bidder.get().getId()))){
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
-            if(!bidder.get().isActive()){
+            if(!userService.getActiveById(bidder.get().getId())){
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
         }else{
@@ -137,10 +150,9 @@ public class ProductRestController {
 
 
         //Make the bid
-        Offer newOffer =productService.PlaceABidOLD(product.get(), offerDTO.cost(), bidder.get());
+        OfferDTO offer =productService.PlaceABid(product.get(), offerDTO.cost(), bidder.get());
         
-        if(newOffer != null){
-            OfferDTO offer=offerService.toDTO(newOffer);
+        if(offer != null){
             
             URI location = fromCurrentRequest().path("/{id}").buildAndExpand(offer.id()).toUri();
 
@@ -151,11 +163,11 @@ public class ProductRestController {
     }
 
     @GetMapping("/{id_product}/offers")
-    public ResponseEntity<List<OfferDTO>> getOffers(@PathVariable long id_product) {
-        Optional<Product> product = productService.findByIdOLD(id_product);
+    public ResponseEntity<List<OfferBasicDTO>> getOffers(@PathVariable long id_product) {
+        Optional<ProductDTO> product = productService.findById(id_product);
         
         if (product.isPresent()) {
-            List<OfferDTO> offerDTOs = offerService.toDTOs(product.get().getOffers());
+            List<OfferBasicDTO> offerDTOs = product.get().getOffers();
             return ResponseEntity.ok(offerDTOs); 
         } else {
             return ResponseEntity.notFound().build(); 
@@ -167,19 +179,18 @@ public class ProductRestController {
 
 
     @DeleteMapping("/{id_product}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable long id_product, HttpServletRequest request) {
-        Optional<Product> product = productService.findByIdOLD(id_product);
+    public ResponseEntity<?> deleteProduct(@PathVariable long id_product, HttpServletRequest request) {
+        Optional<ProductDTO> product = productService.findById(id_product);
 
         if (product.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        Product existingProduct = product.get();
+        ProductDTO existingProduct = product.get();
 
         // Check if the product has registered bids
         if (!existingProduct.getOffers().isEmpty()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(null); // Error 409: Conflict, cannot be deleted if there are bids
+            return ResponseEntity.badRequest().body("You cannot delete a product that has bids.");
         }
 
         Principal principal = request.getUserPrincipal();
@@ -187,21 +198,21 @@ public class ProductRestController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
+        Optional<PublicUserDTO> user = userService.findByName(principal.getName());
         if (user.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        UserModel loggedInUser = user.get();
+        PublicUserDTO loggedInUser = user.get();
 
         // Check if you are an administrator or owner of the product
-        if (!"Administrator".equalsIgnoreCase(loggedInUser.determineUserType()) &&
+        if (!"Administrator".equalsIgnoreCase(userService.getTypeById(loggedInUser.getId())) &&
             !existingProduct.getSeller().getId().equals(loggedInUser.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         productService.deleteById(id_product);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(existingProduct);
     }
 
 
@@ -309,39 +320,6 @@ public class ProductRestController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Collections.singletonMap("error", "Error uploading image: " + e.getMessage()));
         }
-    }
-
-    @GetMapping("/{id_product}/transaction") 
-    public ResponseEntity<TransactionDTO> getTransaction(  
-            @PathVariable long id_product,  
-            HttpServletRequest request) {  
-
-        Principal principal = request.getUserPrincipal(); 
-        if (principal == null) { 
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED) 
-                    .body(null); 
-        }
-
-        Optional<UserModel> user = userService.findByNameOLD(principal.getName()); 
-        if (user.isEmpty()) { 
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); 
-        }
-
-        Optional<Product> product = productService.findByIdOLD(id_product); 
-        if (product.isEmpty() || !product.get().isActive()) { 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); 
-        }
-
-        TransactionDTO transactionDTO = transactionService.findTransactionDTO(product.get());
-        if (transactionDTO == null) { 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); 
-        } 
-
-        if (transactionDTO.buyer().id() != user.get().getId() && transactionDTO.seller().id() != user.get().getId() && !"Administrator".equalsIgnoreCase(user.get().determineUserType())) { 
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); 
-        }
-        
-        return ResponseEntity.ok(transactionDTO); 
     }
 
     @PostMapping("{product_id}/ratings") // Rate user

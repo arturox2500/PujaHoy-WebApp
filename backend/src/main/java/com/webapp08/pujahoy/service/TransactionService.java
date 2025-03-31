@@ -69,7 +69,4 @@ public class TransactionService {
       repository.save(transaction);
     }
 
-    public void makeTransaction(Optional<ProductDTO> product, OfferDTO lastOffer) {
-        
-    }
 }
