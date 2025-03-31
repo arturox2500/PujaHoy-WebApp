@@ -2,7 +2,6 @@ package com.webapp08.pujahoy.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,13 +54,7 @@ public class RatingService {
 		  return Optional.of(mapper.toDTO(rating.get()));
 	  }
 
-    public List<RatingDTO> findAllBySeller(UserModel user) {
-      List<Rating> ratings = repository.findAllBySeller(user);
-      if (ratings.isEmpty()) {
-        return List.of();
-      }
-		  return ratings.stream().map(mapper::toDTO).collect(Collectors.toList());
-	  }
+    
 
     public void deleteById(Long id){
       deleteById(id);
