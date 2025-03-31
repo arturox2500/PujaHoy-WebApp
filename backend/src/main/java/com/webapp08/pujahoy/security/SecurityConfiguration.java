@@ -31,7 +31,7 @@ public class SecurityConfiguration {
 	private JwtRequestFilter jwtRequestFilter;
 
 	@Autowired
-	RepositoryUserDetailsService userDetailsService;
+	public RepositoryUserDetailsService userDetailsService;
 
 	@Autowired
 	private UnauthorizedHandlerJwt unauthorizedHandlerJwt;
@@ -54,6 +54,71 @@ public class SecurityConfiguration {
 		authProvider.setPasswordEncoder(passwordEncoder());
 
 		return authProvider;
+	}
+
+	@Bean
+	@Order(2)
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		
+		http.authenticationProvider(authenticationProvider());
+		
+		http
+			.authorizeHttpRequests(authorize -> authorize
+				// PUBLIC PAGES
+				.requestMatchers("/").permitAll()
+				.requestMatchers("/css/**").permitAll()
+				.requestMatchers("/img/**").permitAll()
+				.requestMatchers("/js/**").permitAll()
+				.requestMatchers("/static/**").permitAll()
+				.requestMatchers("/product/{id_product}").permitAll()
+				.requestMatchers("/login").permitAll()
+				.requestMatchers("/logout").permitAll()
+				.requestMatchers("/loginerror").permitAll()
+				.requestMatchers("/register").permitAll()
+				.requestMatchers("/user/{id}").permitAll()
+				.requestMatchers("/product/{id}/image").permitAll()
+				.requestMatchers("/user/product_template").permitAll()
+				.requestMatchers("/product_template").permitAll()
+				.requestMatchers("/product_template_index").permitAll()
+				.requestMatchers("/user/profile-picture/**").permitAll()
+				.requestMatchers("/user/{id}/profilePic").permitAll()
+				.requestMatchers("/product/*").permitAll()
+				.requestMatchers("/permitsError").permitAll()
+				.requestMatchers("/api/**").permitAll()
+				.requestMatchers("/v3/api-docs*//**").permitAll()
+				.requestMatchers("/swagger-ui.html").permitAll()
+				.requestMatchers("/swagger-ui/**").permitAll()
+				// PRIVATE PAGES
+				.requestMatchers("/user/editProduct/*").hasAnyRole("USER", "ADMIN")
+				.requestMatchers("/user/submit_edit/*").hasAnyRole("USER", "ADMIN")
+				.requestMatchers("/product/*/delete").hasAnyRole("USER","ADMIN")
+				.requestMatchers("/product/{id_product}/place-bid").hasAnyRole("USER")
+				.requestMatchers("/user").hasAnyRole("USER", "ADMIN")
+				.requestMatchers("/user/{id}/ban").hasAnyRole("ADMIN")
+				.requestMatchers("/user/{id}/rate").hasAnyRole("USER")
+				.requestMatchers("/user/product_template_buys").hasAnyRole("USER")
+				.requestMatchers("/user/submit_auction").hasAnyRole("USER")
+				.requestMatchers("/user/newProduct").hasAnyRole("USER")
+				.requestMatchers("/user/seeBuys").hasAnyRole("USER")
+				.requestMatchers("/user/seeProducts").hasAnyRole("USER")
+				.requestMatchers("/user/{id}/rated").hasAnyRole("USER")
+				.requestMatchers("/product/{id_product}/finish").hasAnyRole("USER")
+			)
+			.formLogin(formLogin -> formLogin
+				.loginPage("/login")					
+				.failureUrl("/loginerror")
+				.defaultSuccessUrl("/", true)
+				.permitAll()
+			)
+			.logout(logout -> logout
+				.logoutUrl("/logout")
+				.logoutSuccessUrl("/")
+				.permitAll()
+			)
+			.exceptionHandling(exceptionHandling -> exceptionHandling
+            	.accessDeniedPage("/permitsError") // Redirect to /pageError if have error 403
+        	);
+		return http.build();
 	}
 
 	@Bean
@@ -112,75 +177,6 @@ public class SecurityConfiguration {
 		// Add JWT Token filter
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
-		return http.build();
-	}
-
-	@Bean
-	@Order(2)
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		
-		http.authenticationProvider(authenticationProvider());
-		
-		http
-			.authorizeHttpRequests(authorize -> authorize
-				// PUBLIC PAGES
-				.requestMatchers("/").permitAll()
-				.requestMatchers("/css/**").permitAll()
-				.requestMatchers("/img/**").permitAll()
-				.requestMatchers("/js/**").permitAll()
-				.requestMatchers("/static/**").permitAll()
-				.requestMatchers("/product/{id_product}").permitAll()
-				.requestMatchers("/login").permitAll()
-				.requestMatchers("/logout").permitAll()
-				.requestMatchers("/loginerror").permitAll()
-				.requestMatchers("/register").permitAll()
-				.requestMatchers("/user/{id}").permitAll()
-				.requestMatchers("/product/{id}/image").permitAll()
-				.requestMatchers("/user/product_template").permitAll()
-				.requestMatchers("/product_template").permitAll()
-				.requestMatchers("/product_template_index").permitAll()
-				.requestMatchers("/user/profile-picture/**").permitAll()
-				.requestMatchers("/user/{id}/profilePic").permitAll()
-				.requestMatchers("/product/*").permitAll()
-				.requestMatchers("/permitsError").permitAll()
-				.requestMatchers("/api/**").permitAll()
-				.requestMatchers("/v3/api-docs*//**").permitAll()
-				.requestMatchers("/swagger-ui.html").permitAll()
-				.requestMatchers("/swagger-ui/**").permitAll()
-				// PRIVATE PAGES
-				.requestMatchers("/user/editProduct/*").hasAnyRole("USER", "ADMIN")
-				.requestMatchers("/user/submit_edit/*").hasAnyRole("USER", "ADMIN")
-				.requestMatchers("/product/*/delete").hasAnyRole("USER","ADMIN")
-				.requestMatchers("/product/{id_product}/place-bid").hasAnyRole("USER")
-				.requestMatchers("/user").hasAnyRole("USER", "ADMIN")
-				.requestMatchers("/user/{id}/ban").hasAnyRole("ADMIN")
-				.requestMatchers("/user/{id}/rate").hasAnyRole("USER")
-				.requestMatchers("/user/product_template_buys").hasAnyRole("USER")
-				.requestMatchers("/user/submit_auction").hasAnyRole("USER")
-				.requestMatchers("/user/newProduct").hasAnyRole("USER")
-				.requestMatchers("/user/seeBuys").hasAnyRole("USER")
-				.requestMatchers("/user/seeProducts").hasAnyRole("USER")
-				.requestMatchers("/user/{id}/rated").hasAnyRole("USER")
-				.requestMatchers("/product/{id_product}/finish").hasAnyRole("USER")
-			)
-			.formLogin(formLogin -> formLogin
-				.loginPage("/login")					
-				.failureUrl("/loginerror")
-				.defaultSuccessUrl("/")
-				.permitAll()
-			)
-			.rememberMe(rememberMe -> rememberMe
-				.key("uniqueAndSecret")
-				.tokenValiditySeconds(86400) // 1 day active session
-			)
-			.logout(logout -> logout
-				.logoutUrl("/logout")
-				.logoutSuccessUrl("/")
-				.permitAll()
-			)
-			.exceptionHandling(exceptionHandling -> exceptionHandling
-            	.accessDeniedPage("/permitsError") // Redirect to /pageError if have error 403
-        	);
 		return http.build();
 	}
 
