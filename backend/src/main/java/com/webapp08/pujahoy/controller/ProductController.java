@@ -1,10 +1,12 @@
 package com.webapp08.pujahoy.controller;
 
+import java.net.URI;
 import java.security.Principal;
 import java.sql.Blob;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -287,63 +289,45 @@ public class ProductController {
     public String placeBid(@PathVariable long id_product, @RequestParam double bid_amount, HttpServletRequest request,
             Model model) {
 
-        Optional<Product> productOpt = productService.findByIdOLD(id_product);
-
-        if (!productOpt.isPresent()) {
+        Optional<ProductDTO> product = productService.findById(id_product);
+        if (!product.isPresent()) {
             model.addAttribute("text", " Product not found");
             model.addAttribute("url", "/");
             return "pageError";
         }
 
-        Product product = productOpt.get();
 
         Principal principal = request.getUserPrincipal();
+        if (principal != null) {
+            String username = principal.getName();
+            Optional<PublicUserDTO> userOpt = userService.findByName(username);
 
-        String username = principal.getName();
-        Optional<UserModel> userOpt = userService.findByNameOLD(username);
+            if (!userOpt.isPresent()) {
+                model.addAttribute("text", " User not found");
+                model.addAttribute("url", "/");
+                return "pageError";
+            }
 
-        if (!userOpt.isPresent()) {
-            model.addAttribute("text", " User not found.");
+            PublicUserDTO user = userOpt.get();
+
+            //Get the latest offer
+            Offer newOffer =productService.PlaceABid(product.get(), bid_amount, user);
+        
+            if(newOffer != null){
+                model.addAttribute("url", "/product/" + id_product);
+                return "placeBidOk"; 
+            }else{
+                model.addAttribute("text", " The bid have to be higher than the current price.");
+                model.addAttribute("url", "/product/" + id_product);
+                return "pageError";
+            }
+        }else{
+            model.addAttribute("text", " User not found");
             model.addAttribute("url", "/");
             return "pageError";
+
         }
-
-        UserModel user = userOpt.get();
-
-        //Get the latest offer
-        OfferDTO lastOffer = offerService.findLastOfferByProduct(id_product);
-
-        //Set min cost
-        double actualPrice;
-        if (lastOffer != null) {
-            actualPrice = lastOffer.cost();
-        } else {
-            actualPrice = product.getIniValue() - 1;
-        }
-
-        //Verification
-        if (bid_amount <= actualPrice) {
-            model.addAttribute("text", " The bid have to be higher than the current price.");
-            model.addAttribute("url", "/product/" + id_product);
-            return "pageError";
-        }
-        //Verification
-
-        //Take actual time
-        long actualTime = System.currentTimeMillis();
-        Date actualDate = new Date(actualTime);
-
-        //make bid
-        Offer newOffer = new Offer(user, product, bid_amount, actualDate);
-
-        product.getOffers().add(newOffer); 
-
-        offerService.save(newOffer);
-        productService.save(product);
-
-        model.addAttribute("url", "/product/" + id_product);
-
-        return "placeBidOk";
+        
     }
 
     // Used for downloading images from the BBDD

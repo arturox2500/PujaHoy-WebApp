@@ -138,7 +138,7 @@ public class ProductRestController {
 
 
         //Make the bid
-        Offer newOffer =productService.PlaceABid(product.get(), offerDTO.cost(), bidder.get());
+        Offer newOffer =productService.PlaceABidOLD(product.get(), offerDTO.cost(), bidder.get());
         
         if(newOffer != null){
             OfferDTO offer=offerService.toDTO(newOffer);

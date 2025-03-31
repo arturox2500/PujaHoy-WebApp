@@ -22,6 +22,8 @@ import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductBasicMapper;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.ProductMapper;
+import com.webapp08.pujahoy.dto.PublicUserDTO;
+import com.webapp08.pujahoy.dto.UserMapper;
 import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.Transaction;
@@ -41,6 +43,8 @@ public class ProductService {
 	private ProductRepository repository;
 	@Autowired
 	private ProductMapper mapper;
+	@Autowired
+	private UserMapper userMapper;
 	@Autowired
 	private ProductBasicMapper basicMapper;
 	@Autowired
@@ -197,7 +201,32 @@ public class ProductService {
 		return basicMapper.toDTO(product);
 	}
 
-	public Offer PlaceABid(Product product,double cost, UserModel bidder) {
+	public Offer PlaceABid(ProductDTO product,double cost, PublicUserDTO user) {
+		//Get last bid
+        Offer lastOffer = offerService.findLastOfferByProductOLD(product.getId());
+        //Set min cost
+        double actualPrice;
+        if (lastOffer != null) {
+            actualPrice = lastOffer.getCost();
+        } else {
+            actualPrice = product.getIniValue() - 1;
+        }
+        if(cost>actualPrice){
+            long currentTime = System.currentTimeMillis();
+            Date currentDate = new Date(currentTime); 
+			Product prod = mapper.toDomain(product);
+			UserModel us= userMapper.toDomain(user);
+            Offer newOffer=new Offer(us,prod,cost,currentDate);
+
+            prod.getOffers().add(newOffer); 
+            offerService.save(newOffer);
+            this.save(prod);
+			return newOffer;
+		}else{
+			return null;
+		}
+	}
+	public Offer PlaceABidOLD(Product product,double cost, UserModel bidder) {
 		//Get last bid
         Offer lastOffer = offerService.findLastOfferByProductOLD(product.getId());
         //Set min cost
