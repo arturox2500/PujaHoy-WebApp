@@ -1,13 +1,9 @@
 package com.webapp08.pujahoy.controller;
 
-import java.net.URI;
 import java.security.Principal;
 import java.sql.Blob;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +24,9 @@ import com.webapp08.pujahoy.dto.OfferDTO;
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
+import com.webapp08.pujahoy.dto.RatingDTO;
 import com.webapp08.pujahoy.dto.TransactionDTO;
-import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
-import com.webapp08.pujahoy.model.Rating;
-import com.webapp08.pujahoy.model.Transaction;
-import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.service.OfferService;
 import com.webapp08.pujahoy.service.ProductService;
 import com.webapp08.pujahoy.service.TransactionService;
@@ -59,10 +52,10 @@ public class ProductController {
     private OfferService offerService;
 
     @Autowired
-    private RatingService ratingService;
+    private TransactionService transactionService;
 
     @Autowired
-    private TransactionService transactionService;
+    private RatingService ratingService;
 
     @ModelAttribute // Responsible for adding the attributes to the model in every request
     public void addAttributes(Model model, HttpServletRequest request) {
@@ -173,14 +166,13 @@ public class ProductController {
                 return "pageError";
             }
             //Rating verification
-            /* 
-            Optional<Rating> rate = ratingService.findByProduct(product.get());
+            Optional<RatingDTO> rate = ratingService.findByProduct(product.get());
             if (rate.isPresent()) {
                 model.addAttribute("text", " You cannot delete the product.");
                 model.addAttribute("url", "/");
                 return "pageError";
             }
-            */
+
             //delete
             productService.deleteById(id_product);
             return "redirect:/";

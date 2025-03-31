@@ -2,6 +2,7 @@ package com.webapp08.pujahoy.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,12 +46,21 @@ public class RatingService {
 		  return repository.findById(id);
 	  }
 
-    public Optional<Rating> findByProduct(Product product) {
-		  return repository.findByProduct(product);
+    public Optional<RatingDTO> findByProduct(ProductDTO productDTO) {
+      Optional<Product> product = productRepository.findById(productDTO.getId());
+      Optional<Rating> rating = repository.findByProduct(product.get());
+      if (rating.isEmpty()) {
+        return Optional.empty();
+      }
+		  return Optional.of(mapper.toDTO(rating.get()));
 	  }
 
-    public List<Rating> findAllBySeller(UserModel user) {
-		  return repository.findAllBySeller(user);
+    public List<RatingDTO> findAllBySeller(UserModel user) {
+      List<Rating> ratings = repository.findAllBySeller(user);
+      if (ratings.isEmpty()) {
+        return List.of();
+      }
+		  return ratings.stream().map(mapper::toDTO).collect(Collectors.toList());
 	  }
 
     public void deleteById(Long id){

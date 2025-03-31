@@ -23,7 +23,6 @@ import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.dto.RatingDTO;
 import com.webapp08.pujahoy.dto.TransactionDTO;
-import com.webapp08.pujahoy.dto.UserDTO;
 import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.Transaction;

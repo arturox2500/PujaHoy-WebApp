@@ -10,7 +10,6 @@ import com.webapp08.pujahoy.dto.OfferDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.TransactionDTO;
 import com.webapp08.pujahoy.dto.TransactionMapper;
-import com.webapp08.pujahoy.dto.ProductMapper;
 import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.Transaction;

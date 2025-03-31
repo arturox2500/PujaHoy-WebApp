@@ -2,9 +2,7 @@ package com.webapp08.pujahoy.controller;
 
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
-import com.webapp08.pujahoy.dto.ProductMapper;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
-import com.webapp08.pujahoy.dto.UserDTO;
 import com.webapp08.pujahoy.dto.UserEditDTO;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.Transaction;
@@ -18,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Optional;
