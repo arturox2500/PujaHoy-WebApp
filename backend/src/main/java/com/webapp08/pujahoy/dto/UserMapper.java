@@ -17,7 +17,8 @@ public interface UserMapper {
         @Mapping(source = "contact", target = "contact"),
         @Mapping(source = "description", target = "description"),
         @Mapping(source = "zipCode", target = "zipCode"),
-        @Mapping(target = "image", expression = "java(generateImageUrl(userModel.getId()))")
+        @Mapping(target = "image", expression = "java(generateImageUrl(userModel.getId()))"),
+        @Mapping(source = "rols", target = "rols"),
     })
     PublicUserDTO toDTO(UserModel userModel);
 

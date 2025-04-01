@@ -1,4 +1,5 @@
 package com.webapp08.pujahoy.dto;
+import java.util.List;
 import java.util.Objects;
 
 public class PublicUserDTO {
@@ -10,7 +11,15 @@ public class PublicUserDTO {
     private String description;
     private int zipCode;
     private String image;
+    private List<String> rols;
 
+
+    public List<String> getRols() {
+        return rols;
+    }
+    public void setRols(List<String> rols) {
+        this.rols = rols;
+    }
     public String getImage() {
         return image;
     }

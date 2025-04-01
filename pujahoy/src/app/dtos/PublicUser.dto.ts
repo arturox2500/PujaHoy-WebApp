@@ -8,5 +8,5 @@ export interface PublicUserDto {
     name: string,
     description: string,
     zipCode: number,
-        
+    rols: string[],    
 }    

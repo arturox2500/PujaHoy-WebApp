@@ -2,7 +2,6 @@ package com.webapp08.pujahoy.controller;
 
 import java.util.Optional;
 
-import org.hibernate.engine.jdbc.BlobProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,7 +34,6 @@ import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.dto.RatingDTO;
-import com.webapp08.pujahoy.dto.UserDTO;
 import com.webapp08.pujahoy.dto.UserEditDTO;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.service.ProductService;

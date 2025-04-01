@@ -53,7 +53,7 @@ export class LoginService {
   }
 
   public isAdmin() {
-    return this.user && this.user.roles.indexOf("ADMIN") !== -1;
+    return this.user && this.user.rols.indexOf("ADMIN") !== -1;
   }
 
   currentUser() {
