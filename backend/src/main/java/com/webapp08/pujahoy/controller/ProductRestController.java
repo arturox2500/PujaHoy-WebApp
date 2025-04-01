@@ -130,6 +130,10 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
             if(!userService.getActiveById(bidder.get().getId())){
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
+            if(bidder.get().getId().equals(product.get().getSeller().getId())){
+                return ResponseEntity.badRequest().body("The seller cannot bid");
+
+            }
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

@@ -43,7 +43,7 @@ public interface ProductMapper {
         @Mapping(source = "imgURL", target = "imgURL"), 
         @Mapping(target = "image", ignore = true), 
         @Mapping(target = "offers", ignore = true), 
-        @Mapping(source =  "seller", target = "seller")
+        @Mapping(source =   "seller", target = "seller")
     })
     Product toDomain(ProductDTO productDTO);
 }
