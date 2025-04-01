@@ -184,14 +184,6 @@ public class ProductService {
 	public ProductDTO createProduct(ProductDTO productDTO, PublicUserDTO user){
 		Date iniHour = new Date(System.currentTimeMillis());
 		Date endHour = new Date(iniHour.getTime() + (Long) productDTO.getDuration() * 24 * 60 * 60 * 1000);	
-		//productDTO.setIniHour(iniHour);
-		//productDTO.setEndHour(endHour);
-		//productDTO.setState("In progress");
-		//productDTO.setDuration(productDTO.getDuration());
-		//productDTO.setSeller(user);
-		//productDTO.setImgURL("/products/" + 1 + "/image");
-		//productDTO.setOffers(new ArrayList<>());
-
 		Product product = new Product(productDTO.getName(),
 		productDTO.getDescription(), 
 		productDTO.getIniValue(), 
