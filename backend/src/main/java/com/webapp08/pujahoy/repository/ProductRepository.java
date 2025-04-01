@@ -42,6 +42,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     //Advanced search algorithm only In progress
     @Query("SELECT p FROM Product p WHERE p.state = 'In progress' ORDER BY p.seller.reputation DESC")
     Page<Product> findByStateInProgressOrderedBySellerReputation(Pageable pageable);
-
-   
+    
 }

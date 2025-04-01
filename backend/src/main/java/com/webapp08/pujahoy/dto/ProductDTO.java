@@ -5,7 +5,7 @@ import java.util.List;
 
 
 public class ProductDTO {
-    private long id;
+    private Long id;
     private String name;
     private String description;
     private Double iniValue;
@@ -19,10 +19,10 @@ public class ProductDTO {
     private List<OfferBasicDTO> offers;
     
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getName() {

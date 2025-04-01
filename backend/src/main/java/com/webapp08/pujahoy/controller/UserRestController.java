@@ -99,7 +99,7 @@ public class UserRestController {
         }
 
         try {
-            ProductDTO responseDTO = productService.createProduct(productDTO, user.get().getId());
+            ProductDTO responseDTO = productService.createProduct(productDTO, user.get());
             URI location = fromCurrentRequest().path("/products/{id}").buildAndExpand(responseDTO.getId()).toUri();
 
             return ResponseEntity.created(location).body(responseDTO);

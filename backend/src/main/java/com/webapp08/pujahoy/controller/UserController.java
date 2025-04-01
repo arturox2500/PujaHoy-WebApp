@@ -35,6 +35,7 @@ import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.dto.RatingDTO;
+import com.webapp08.pujahoy.dto.UserDTO;
 import com.webapp08.pujahoy.dto.UserEditDTO;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.service.ProductService;
@@ -401,13 +402,13 @@ public class UserController {
     public String edit(
         @RequestParam("name") String name,
         @RequestParam("description") String description,
-        @RequestParam("iniValue") double prize,
+        @RequestParam("iniValue") double iniValue,
         @RequestParam("image") MultipartFile imageFile,
         HttpServletRequest request,
         Model model, @PathVariable long id) {
 
         Principal principal = request.getUserPrincipal();
-        Optional<Product> oldProd = productService.findByIdOLD(id);
+        Optional<ProductDTO> oldProd = productService.findById(id);
         
         if (oldProd.isEmpty()) {
             model.addAttribute("text", " Product not found");
@@ -415,7 +416,7 @@ public class UserController {
             return "pageError";
         }
 
-        Product oldP = oldProd.get();
+        ProductDTO oldP = oldProd.get();
         
         if (principal == null) {
             model.addAttribute("text", "User not authenticated");
@@ -438,19 +439,14 @@ public class UserController {
         }
 
         try {
+            ProductDTO pdto = new ProductDTO();
+            pdto.setName(name);
+            pdto.setDescription(description);
+            pdto.setIniValue(iniValue);
             
-            oldP.setName(name);
-            oldP.setDescription(description);
-            oldP.setIniValue(prize); 
+            productService.updateProduct(id, pdto, imageFile); 
 
-            if (!imageFile.isEmpty()) {
-                Blob image = BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize());
-                oldP.setImage(image);
-            }
-
-            productService.save(oldP); 
-
-            model.addAttribute("product", oldP);
+            model.addAttribute("product", pdto);
             return "redirect:/product/" + oldP.getId();
 
         } catch (Exception e) {
@@ -465,8 +461,8 @@ public class UserController {
     public String publishProduct(
             @RequestParam("name") String name,
             @RequestParam("description") String description,
-            @RequestParam("iniValue") double prize,
-            @RequestParam("time") int time,
+            @RequestParam("iniValue") double iniValue,
+            @RequestParam("time") Long time,
             @RequestParam("image") MultipartFile imageFile,
             HttpServletRequest request,
             Model model) {
@@ -479,7 +475,7 @@ public class UserController {
             return "pageError";
         }
 
-        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
+        Optional<PublicUserDTO> user = userService.findByName(principal.getName());
 
         if (user.isEmpty()) {
             model.addAttribute("text", " User not found");
@@ -490,21 +486,17 @@ public class UserController {
         try {
             Date iniHour = new Date(System.currentTimeMillis());
             Date endHour = new Date(iniHour.getTime() + (long) time * 24 * 60 * 60 * 1000);
+            ProductDTO pdto = new ProductDTO();
+            pdto.setName(name);
+            pdto.setDescription(description);
+            pdto.setDuration(time);
+            pdto.setIniValue(iniValue);
+            pdto.setIniHour(iniHour);
+            pdto.setEndHour(endHour);            
 
-            Blob image = null;
-            if (!imageFile.isEmpty()) {
-                image = BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize());
-            }
-
-            Product product = new Product(name, description, prize, iniHour, endHour, "In progress", image,
-                    user.get());
-            
-            
-            product.setImgURL("/product/" + product.getId() +"/image");
-            productService.save(product);
-
-            model.addAttribute("product", product);
-            return "redirect:/product/" + product.getId();
+            ProductDTO response = productService.createProduct(pdto, user.get());
+            productService.savePostImage(response.getId(), imageFile);
+            return "redirect:/product/" + response.getId();
 
         } catch (Exception e) {
             model.addAttribute("text", " Error processing the product: " + e.getMessage());

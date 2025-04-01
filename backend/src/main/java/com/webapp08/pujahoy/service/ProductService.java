@@ -1,6 +1,7 @@
 package com.webapp08.pujahoy.service;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -168,20 +169,34 @@ public class ProductService {
 		}
 	}
 
-	public ProductDTO createProduct(ProductDTO productDTO, long userId){
-		Date iniHour = new Date(System.currentTimeMillis());
-		Date endHour = new Date(iniHour.getTime() + (Long) productDTO.getDuration() * 24 * 60 * 60 * 1000);
-		Product product = new Product(
-				productDTO.getName(),
-				productDTO.getDescription(),
-				productDTO.getIniValue(),
-				iniHour,
-				endHour,
-				"In progress",
-				null,
-				userModelRepository.getReferenceById(userId));
+	public ProductDTO updateProduct(long id, ProductDTO pdto, MultipartFile imageFile) throws IOException{
+		Product product = repository.getReferenceById(id);
+		product.setName(pdto.getName());
+		product.setDescription(pdto.getDescription());
+		product.setIniValue(pdto.getIniValue());
+		if (!imageFile.isEmpty()) {
+			this.savePostImage(id, imageFile);
+		}
+		this.save(product);
+		return ProductMapper.INSTANCE.toDTO(product);
+	}
 
-		product.setImgURL("/api/products/" + product.getId() + "/image");
+	public ProductDTO createProduct(ProductDTO productDTO, PublicUserDTO user){
+		Date iniHour = new Date(System.currentTimeMillis());
+		Date endHour = new Date(iniHour.getTime() + (Long) productDTO.getDuration() * 24 * 60 * 60 * 1000);	
+		//productDTO.setIniHour(iniHour);
+		//productDTO.setEndHour(endHour);
+		//productDTO.setState("In progress");
+		//productDTO.setDuration(productDTO.getDuration());
+		//productDTO.setSeller(user);
+		//productDTO.setImgURL("/products/" + 1 + "/image");
+		//productDTO.setOffers(new ArrayList<>());
+
+		Product product = new Product(productDTO.getName(),
+		productDTO.getDescription(), 
+		productDTO.getIniValue(), 
+		iniHour, endHour, 
+		"In progress", null, userModelRepository.getReferenceById(user.getId()));
 		this.save(product);
 
 		return ProductMapper.INSTANCE.toDTO(product);

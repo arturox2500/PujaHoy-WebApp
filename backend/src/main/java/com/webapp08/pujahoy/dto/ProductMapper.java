@@ -46,4 +46,5 @@ public interface ProductMapper {
         @Mapping(source =   "seller", target = "seller")
     })
     Product toDomain(ProductDTO productDTO);
+    
 }
