@@ -38,6 +38,10 @@ export class LoginService {
     );
   }
 
+  public register(userDto: UserDto) {
+    return this.http.post(BASE_URL + "/user", userDto, { withCredentials: true });
+  }
+
   public logOut() {
     return this.http
       .post(BASE_URL + "/logout", { withCredentials: true })
