@@ -247,7 +247,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Pedro\",\r\n    \"reputation\": 2.0,\r\n    \"visibleName\": \"Pedrito\",\r\n    \"contact\": \"ejemplo@gmail.com\",\r\n    \"description\": \"DDescripcion cambiada\",\r\n    \"zipCode\": 28024,\r\n    \"image\": \"host:8443/api/v1/users/2/image\"\r\n}",
+					"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Pedro\",\r\n    \"reputation\": 2.0,\r\n    \"visibleName\": \"Pedrito\",\r\n    \"contact\": \"ejemplo@gmail.com\",\r\n    \"description\": \"DDescripcion cambiada\",\r\n    \"zipCode\": 28024\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -369,13 +369,11 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/users/2/products",
+					"raw": "{{url}}/products",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
-						"users",
-						"2",
 						"products"
 					]
 				}
@@ -454,13 +452,11 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/users/3/products/3/ratings",
+					"raw": "{{url}}/products/3/ratings",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
-						"users",
-						"3",
 						"products",
 						"3",
 						"ratings"
@@ -487,13 +483,11 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/users/3/products/3",
+					"raw": "{{url}}/products/3",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
-						"users",
-						"3",
 						"products",
 						"3"
 					]
@@ -519,13 +513,11 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/users/2/products/16",
+					"raw": "{{url}}/products/16",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
-						"users",
-						"2",
 						"products",
 						"16"
 					]
@@ -543,7 +535,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"cost\":\"250\"}",
+					"raw": "{\"cost\":\"25000\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -695,13 +687,11 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/users/2/products/16",
+					"raw": "{{url}}/products/16",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
-						"users",
-						"2",
 						"products",
 						"16"
 					]
@@ -751,7 +741,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Pedro\",\r\n    \"reputation\": 2.0,\r\n    \"visibleName\": \"Pedrito\",\r\n    \"contact\": \"pedrosimple@gmail.com\",\r\n    \"description\": \"Dedicated seller offering high-quality products at affordable prices.\",\r\n    \"zipCode\": 28024,\r\n    \"image\": \"https://localhost:8443/api/v1/users/2/image\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -759,12 +749,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/users",
+					"raw": "{{url}}/users/2/active",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
-						"users"
+						"users",
+						"2",
+						"active"
 					]
 				}
 			},
