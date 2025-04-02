@@ -3,10 +3,8 @@ package com.webapp08.pujahoy.controller;
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
+import com.webapp08.pujahoy.dto.TransactionDTO;
 import com.webapp08.pujahoy.dto.UserEditDTO;
-import com.webapp08.pujahoy.model.Product;
-import com.webapp08.pujahoy.model.Transaction;
-import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.service.ProductService;
 import com.webapp08.pujahoy.service.TransactionService;
 import com.webapp08.pujahoy.service.UserService;
@@ -134,11 +132,11 @@ public class UserRestController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "Banned user"));
         }
-        Optional<Product> optionalProduct2 = productService.findByIdOLD(pid);
-        Optional<Transaction> trans = transactionService.findByProductOLD(optionalProduct2.get());
+        Optional<ProductDTO> optionalProduct2 = productService.findById(pid);
+        Optional<TransactionDTO> trans = transactionService.findByProduct(optionalProduct2.get().getId());
 
         if (trans.isPresent()) {
-            if (trans.get().getBuyer().getId().equals(loggedInUser.getId())) {
+            if (trans.get().buyer().id().equals(loggedInUser.getId())) {
                 if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
                         productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
                         productDTO.getDuration() == null || productDTO.getIniValue() == null) {
@@ -275,7 +273,7 @@ public class UserRestController {
             return ResponseEntity.badRequest().build();
         }
 
-        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
+        Optional<PublicUserDTO> user = userService.findByName(principal.getName());
         if (!user.isPresent()) {
             return ResponseEntity.badRequest().build();
         }

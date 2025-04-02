@@ -28,14 +28,12 @@ import java.sql.Blob;
 import java.sql.Date;
 import java.sql.SQLException;
 
-import com.webapp08.pujahoy.model.UserModel;
 import com.webapp08.pujahoy.service.UserService;
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.dto.RatingDTO;
 import com.webapp08.pujahoy.dto.UserEditDTO;
-import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.service.ProductService;
 import com.webapp08.pujahoy.service.RatingService;
 
@@ -103,11 +101,6 @@ public class UserController {
         model.addAttribute("url", "/");
         return "pageError";
     }
-
-    //@GetMapping("/{id}/image")
-    //public String getMethodName(@RequestParam long id) {
-        //return new String();
-    //}
 
     @GetMapping("{id}/profilePic")
     public ResponseEntity<Object> getProfilePic(@PathVariable long id) throws SQLException {
@@ -191,7 +184,7 @@ public class UserController {
     @PostMapping()
     public String editProfile(Model model, @ModelAttribute UserEditDTO userDTO, @RequestParam(required = false) MultipartFile profilePic) throws IOException, SQLException { //post in charge of editing a profile form, notice the use of regular expressions
 
-        userService.findByIdOLD(userDTO.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+        userService.findById(userDTO.getId()).orElseThrow(() -> new RuntimeException("User not found"));
         
         if (!userDTO.getZipCode().matches("\\d{5}") || !userDTO.getContact().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
         ) {
@@ -353,7 +346,7 @@ public class UserController {
     @GetMapping("/newProduct")
     public String newProduct(Model model, HttpSession session, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
-        if (principal != null && userService.findByNameOLD(principal.getName()).get().isActive()) {
+        if (principal != null && userService.getActiveById(userService.findByName(principal.getName()).get().getId())) {
             session.setAttribute("after", 1);
             return "newAuction";
         } else {
@@ -366,15 +359,15 @@ public class UserController {
     @GetMapping("/editProduct/{id}")
     public String editProduct(HttpSession session, @PathVariable long id, Model model, HttpServletRequest request) {
         session.setAttribute("after", 1);
-        Optional<Product> oldProd = productService.findByIdOLD(id);
+        Optional<ProductDTO> oldProd = productService.findById(id);
         Principal principal = request.getUserPrincipal();
-        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
-        if (!(oldProd.get().getSeller().getId() == user.get().getId() || user.get().determineUserType().equals("Administrator"))) {
+        Optional<PublicUserDTO> user = userService.findByName(principal.getName());
+        if (!(oldProd.get().getSeller().getId() == user.get().getId() || userService.getUserTypeById(user.get().getId()).equals("Administrator"))) {
             model.addAttribute("text", " This product is not yours");
             model.addAttribute("url", "/");
             return "pageError";
         }
-        if (!userService.findByNameOLD(principal.getName()).get().isActive()){
+        if (!userService.getActiveById(userService.findByName(principal.getName()).get().getId())){
             model.addAttribute("text", " You are banned");
             model.addAttribute("url", "/");
             return "pageError";
@@ -383,7 +376,7 @@ public class UserController {
             return "pageError";
         }
 
-        Product product = oldProd.get();
+        ProductDTO product = oldProd.get();
 
         if (product.getOffers().isEmpty()){
             model.addAttribute("product", product);
@@ -422,7 +415,7 @@ public class UserController {
             return "pageError";
         }
 
-        Optional<UserModel> user = userService.findByNameOLD(principal.getName());
+        Optional<PublicUserDTO> user = userService.findByName(principal.getName());
 
         if (user.isEmpty()) {
             model.addAttribute("text", "User not found");
@@ -430,7 +423,7 @@ public class UserController {
             return "pageError";
         }
 
-        if (!user.get().isActive()){
+        if (!userService.getActiveById(user.get().getId())){
             model.addAttribute("text", " You are banned");
             model.addAttribute("url", "/");
             return "pageError";

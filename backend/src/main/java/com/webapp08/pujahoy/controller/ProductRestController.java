@@ -24,7 +24,6 @@ import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.dto.RatingDTO;
 import com.webapp08.pujahoy.dto.TransactionDTO;
-import com.webapp08.pujahoy.service.OfferService;
 import com.webapp08.pujahoy.service.ProductService;
 import com.webapp08.pujahoy.service.RatingService;
 import com.webapp08.pujahoy.service.TransactionService;
@@ -44,9 +43,6 @@ public class ProductRestController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private OfferService offerService;
 
     @Autowired
     private TransactionService transactionService;
@@ -74,8 +70,8 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
     }
 
     // Verificar si necesita una transacción
-    TransactionDTO trans = transactionService.findByProduct(existingProduct.getId());
-    if (!existingProduct.getState().equals("In progress") && trans == null) {
+    Optional<TransactionDTO> trans = transactionService.findByProduct(existingProduct.getId());
+    if (!existingProduct.getState().equals("In progress") && trans.isEmpty()) {
         transactionService.createTransaction(existingProduct.getId());
     }
 

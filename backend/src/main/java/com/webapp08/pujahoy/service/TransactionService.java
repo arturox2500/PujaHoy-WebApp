@@ -12,6 +12,8 @@ import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.Transaction;
 import com.webapp08.pujahoy.model.UserModel;
+import com.webapp08.pujahoy.repository.OfferRepository;
+import com.webapp08.pujahoy.repository.ProductRepository;
 import com.webapp08.pujahoy.repository.TransactionRepository;
 
 @Service
@@ -25,22 +27,22 @@ public class TransactionService {
     
 
     @Autowired
-    private OfferService offerService;
+    private OfferRepository offerRepository;
 
     @Lazy
     @Autowired
-    private ProductService productService;
+    private ProductRepository productRepository;
 
     public Optional<Transaction> findByProductOLD(Product product) {
 		  return repository.findByProduct(product);
 	  }
-    public TransactionDTO findByProduct(long id_product) {
-      Optional<Product> product=productService.findByIdOLD(id_product);
+    public Optional<TransactionDTO> findByProduct(long id_product) {
+      Optional<Product> product=productRepository.findById(id_product);
 		  Optional<Transaction> trans=repository.findByProduct(product.get());
       if(trans.isPresent()){
-        return mapper.toDTO(trans.get());
+        return Optional.of(mapper.toDTO(trans.get()));
       }
-      return null;
+      return Optional.empty();
 	  }
 
 
@@ -58,8 +60,8 @@ public class TransactionService {
 
 
     public void createTransaction(long id_product) {
-      Offer offer = offerService.findLastOfferByProductOLD(id_product);
-      Optional<Product> product = productService.findByIdOLD(id_product);
+      Offer offer = offerRepository.findLastOfferByProduct(id_product);
+      Optional<Product> product = productRepository.findById(id_product);
       double cost = offer.getCost();
       UserModel buyer = offer.getUser();
       UserModel seller = product.get().getSeller();

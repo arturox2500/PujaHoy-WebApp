@@ -44,7 +44,4 @@ public class OfferService {
     public List<OfferDTO> toDTOs(List<Offer> offersDTO){
 		return mapper.toDTOList(offersDTO);
 	}
-    public Offer findLastOfferByProductOLD(long id) {
-        return repository.findLastOfferByProduct(id);
-    }
 }

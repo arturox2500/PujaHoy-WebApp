@@ -55,17 +55,11 @@ public class ProductService {
 	@Autowired
     private OfferRepository offerRepository;
 	@Autowired
-    private OfferService offerService;
-	@Autowired
     private TransactionService transactionService;
 
     ProductService(UserModelRepository userModelRepository) {
         this.userModelRepository = userModelRepository;
     }
-    
-    public Optional<Product> findByIdOLD(long id) {
-		return repository.findById(id);
-	}
 
 	public Optional<ProductDTO> findById(long id) {
 		Optional<Product> prod = repository.findById(id);
@@ -85,7 +79,7 @@ public class ProductService {
 	}
 
 	public void deleteById(long id_product) {
-		Optional<Product> existingProduct = this.findByIdOLD(id_product);
+		Optional<Product> existingProduct = repository.findById(id_product);
 		Optional<Transaction> trans = transactionRepository.findByProduct(existingProduct.get());
         if (trans.isPresent()){
             transactionRepository.deleteById(trans.get().getId());  
@@ -212,7 +206,7 @@ public class ProductService {
 
 	public OfferDTO PlaceABid(ProductDTO product,double cost, PublicUserDTO user) {
 		//Get last bid
-        Offer lastOffer = offerService.findLastOfferByProductOLD(product.getId());
+        Offer lastOffer = offerRepository.findLastOfferByProduct(product.getId());
         //Set min cost
         double actualPrice;
         if (lastOffer != null) {
@@ -228,32 +222,9 @@ public class ProductService {
             Offer newOffer=new Offer(us,prod.get(),cost,currentDate);
 
             prod.get().getOffers().add(newOffer); 
-            offerService.save(newOffer);
+            offerRepository.save(newOffer);
             this.save(prod.get());
 			return offerMapper.toDTO(newOffer);
-		}else{
-			return null;
-		}
-	}
-	public Offer PlaceABidOLD(Product product,double cost, UserModel bidder) {
-		//Get last bid
-        Offer lastOffer = offerService.findLastOfferByProductOLD(product.getId());
-        //Set min cost
-        double actualPrice;
-        if (lastOffer != null) {
-            actualPrice = lastOffer.getCost();
-        } else {
-            actualPrice = product.getIniValue() - 1;
-        }
-        if(cost>actualPrice){
-            long currentTime = System.currentTimeMillis();
-            Date currentDate = new Date(currentTime); 
-            Offer newOffer=new Offer(bidder,product,cost,currentDate);
-
-            product.getOffers().add(newOffer); 
-            offerService.save(newOffer);
-            this.save(product);
-			return newOffer;
 		}else{
 			return null;
 		}

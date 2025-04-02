@@ -170,10 +170,6 @@ public class UserService {
 		repository.save(user);
 	}
 
-	public Optional<UserModel> findByIdOLD(Long id) {
-		return repository.findById(id);
-	}
-
 	public Optional<PublicUserDTO> findById(Long id) {
 		Optional<UserModel> user = repository.findById(id);
 		if (user.isPresent()){
@@ -187,10 +183,6 @@ public class UserService {
 		repository.save(user);
 	}
 
-	public Optional<UserModel> findByNameOLD(String name) {
-		return repository.findByName(name);
-	}
-
 	public Optional<PublicUserDTO> findByName(String name) {
 		Optional<UserModel> user = repository.findByName(name);
 		if (user.isPresent()){
@@ -198,10 +190,6 @@ public class UserService {
 		} else {
 			return Optional.empty();
 		}
-	}
-
-	public Optional<UserModel> findByProductsOLD(ProductDTO product) {
-		return repository.findByProducts(productRepository.findById(product.getId()).get());
 	}
 
 	public Optional<PublicUserDTO> findByProducts(ProductDTO product) {

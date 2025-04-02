@@ -1,13 +1,12 @@
 package com.webapp08.pujahoy.controller;
 
+import java.io.IOException;
 import java.security.Principal;
-import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,7 +25,6 @@ import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
 import com.webapp08.pujahoy.dto.RatingDTO;
 import com.webapp08.pujahoy.dto.TransactionDTO;
-import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.service.OfferService;
 import com.webapp08.pujahoy.service.ProductService;
 import com.webapp08.pujahoy.service.TransactionService;
@@ -159,8 +157,8 @@ public class ProductController {
                 return "pageError";
             }
             //Transaction verification
-            TransactionDTO trans = transactionService.findByProduct(id_product);
-            if (trans!=null) {
+            Optional<TransactionDTO> trans = transactionService.findByProduct(id_product);
+            if (trans.isPresent()) {
                 model.addAttribute("text", " You cannot delete the product.");
                 model.addAttribute("url", "/");
                 return "pageError";
@@ -255,9 +253,9 @@ public class ProductController {
                 }
             }
             // Check if the user is the buyer for the product transaction
-            TransactionDTO trans = transactionService.findByProduct(id_product);
-            if(trans!=null){
-                if (trans.buyer().name().equals(user.getName())
+            Optional<TransactionDTO> trans = transactionService.findByProduct(id_product);
+            if(trans.isPresent()){
+                if (trans.get().buyer().name().equals(user.getName())
                         && !product.get().getState().equals("Delivered")) {
                     model.addAttribute("buyer", true);
                 } else {
@@ -326,21 +324,20 @@ public class ProductController {
 
     // Used for downloading images from the BBDD
     @GetMapping("/product/{id}/image")
-    public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException {
+    public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException, IOException {
 
-        Optional<Product> op = productService.findByIdOLD(id);
+        Optional<ProductDTO> op = productService.findById(id);
 
-        if (op.isPresent() && op.get().getImage() != null) {
+        if (op.isPresent()) {
+            Resource file = productService.getPostImage(op.get().getId());
 
-            Blob image = op.get().getImage();
-            Resource file = new InputStreamResource(image.getBinaryStream());
+            if (file != null) {
+                return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                        .contentLength(file.contentLength()).body(file);
+            }
 
-            return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
-                    .contentLength(image.length()).body(file);
-
-        } else {
-            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/product/{id_product}/finish") // Marks a product as delivered, completing the transaction.
