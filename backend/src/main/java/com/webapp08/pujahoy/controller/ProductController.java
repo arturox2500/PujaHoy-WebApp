@@ -235,9 +235,6 @@ public class ProductController {
                 } else {
                     model.addAttribute("Finished", false);
                 }
-            } else {
-                model.addAttribute("admin", false);
-                model.addAttribute("authenticated_user", false);
             }
             if (session.getAttribute("after") != null) {
                 int after = (int) session.getAttribute("after");
@@ -262,6 +259,9 @@ public class ProductController {
                     model.addAttribute("buyer", false);
                 }
             }
+        } else {
+            model.addAttribute("admin", false);
+            model.addAttribute("authenticated_user", false);
         }
 
         //Retrieve current bidding data
