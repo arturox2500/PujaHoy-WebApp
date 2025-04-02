@@ -295,8 +295,12 @@ public class UserRestController {
             if (user.isPresent()) {
                 if (userService.getUserTypeById(user.get().getId()).equals("Registered User") && user.get().getId() == updatedUserDTO.getId()) {
                     PublicUserDTO userUpdated = userService.replaceUser(updatedUserDTO);
+                    if (userUpdated == null) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not updated due to bad request parameters");
+                    }
                     return ResponseEntity.ok(userUpdated);
                 }
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User is only allowed to change his own data");
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
