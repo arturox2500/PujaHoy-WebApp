@@ -150,28 +150,29 @@ public class ProductController {
                 model.addAttribute("url", "/");
                 return "pageError";
             }
-            //Offer verification
-            if (!product.get().getOffers().isEmpty()) {
-                model.addAttribute("text", " You cannot delete the product.");
-                model.addAttribute("url", "/");
-                return "pageError";
+            if (product.get().getState().equals("In progress")){
+                //Offer verification
+                if (!product.get().getOffers().isEmpty()) {
+                    model.addAttribute("text", " You cannot delete the product.");
+                    model.addAttribute("url", "/");
+                    return "pageError";
+                }
+                //Transaction verification
+                Optional<TransactionDTO> trans = transactionService.findByProduct(id_product);
+                if (trans.isPresent()) {
+                    model.addAttribute("text", " You cannot delete the product.");
+                    model.addAttribute("url", "/");
+                    return "pageError";
+                }
+                //Rating verification
+                Optional<RatingDTO> rate = ratingService.findByProduct(product.get());
+                if (rate.isPresent()) {
+                    model.addAttribute("text", " You cannot delete the product.");
+                    model.addAttribute("url", "/");
+                    return "pageError";
+                }
             }
-            //Transaction verification
-            Optional<TransactionDTO> trans = transactionService.findByProduct(id_product);
-            if (trans.isPresent()) {
-                model.addAttribute("text", " You cannot delete the product.");
-                model.addAttribute("url", "/");
-                return "pageError";
-            }
-            //Rating verification
-            Optional<RatingDTO> rate = ratingService.findByProduct(product.get());
-            if (rate.isPresent()) {
-                model.addAttribute("text", " You cannot delete the product.");
-                model.addAttribute("url", "/");
-                return "pageError";
-            }
-
-            //delete
+            
             productService.deleteById(id_product);
             return "redirect:/";
         } else {

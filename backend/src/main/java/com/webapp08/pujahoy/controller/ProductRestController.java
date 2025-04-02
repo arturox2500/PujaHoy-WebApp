@@ -310,11 +310,6 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
 
         ProductDTO existingProduct = product.get();
 
-        // Check if the product has registered bids
-        if (!existingProduct.getOffers().isEmpty()) {
-            return ResponseEntity.badRequest().body("You cannot delete a product that has bids.");
-        }
-
         Principal principal = request.getUserPrincipal();
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -326,12 +321,17 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
         }
 
         PublicUserDTO loggedInUser = user.get();
+        // Check if the product has registered bids
 
-        // Check if you are an administrator or owner of the product
-        if (!"Administrator".equalsIgnoreCase(userService.getTypeById(loggedInUser.getId())) &&
-            !existingProduct.getSeller().getId().equals(loggedInUser.getId())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+        if(product.get().getState().equals("In progress")){
+            if (!existingProduct.getOffers().isEmpty() ) {
+                return ResponseEntity.badRequest().body("You cannot delete a product that has bids.");
+            }
+            if (!"Administrator".equalsIgnoreCase(userService.getTypeById(loggedInUser.getId())) &&
+                !existingProduct.getSeller().getId().equals(loggedInUser.getId())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }   
 
         productService.deleteById(id_product);
         return ResponseEntity.ok(existingProduct);
