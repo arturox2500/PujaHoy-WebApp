@@ -65,7 +65,6 @@ public class SecurityConfiguration {
 		http
 			.authorizeHttpRequests(authorize -> authorize
 				// PUBLIC PAGES
-				
 				.requestMatchers("/").permitAll()
 				.requestMatchers("/css/**").permitAll()
 				.requestMatchers("/img/**").permitAll()
@@ -149,12 +148,12 @@ public class SecurityConfiguration {
 					.requestMatchers(HttpMethod.GET,"/api/v1/users/*/products").hasAnyRole("USER")
 					.requestMatchers(HttpMethod.GET,"/api/v1/users/*/boughtProducts").hasAnyRole("USER")
 					
-					.requestMatchers(HttpMethod.POST,"/api/v1/users/*/products").hasAnyRole("USER")
+					.requestMatchers(HttpMethod.POST,"/api/v1/products").hasAnyRole("USER")
 					.requestMatchers(HttpMethod.POST,"/api/v1/products/*/ratings").hasAnyRole("USER")
 					.requestMatchers(HttpMethod.POST,"/api/v1/products/*/offers").hasAnyRole("USER")
 					.requestMatchers(HttpMethod.POST,"/api/v1/products/*/image").hasAnyRole("USER")
 
-					.requestMatchers(HttpMethod.PUT,"/api/v1/users/*/products/*").hasAnyRole("USER", "ADMIN")
+					.requestMatchers(HttpMethod.PUT,"/api/v1/products/*").hasAnyRole("USER", "ADMIN")
 					.requestMatchers(HttpMethod.PUT,"/api/v1/users").hasAnyRole("USER")
 					.requestMatchers(HttpMethod.PUT,"/api/v1/users/*/active").hasAnyRole("ADMIN")
 					.requestMatchers(HttpMethod.PUT,"/api/v1/products/*/image").hasAnyRole("USER", "ADMIN")
