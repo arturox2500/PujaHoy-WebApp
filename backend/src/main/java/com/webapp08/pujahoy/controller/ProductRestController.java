@@ -169,11 +169,133 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
             return ResponseEntity.notFound().build(); 
         }
     }
+
+    @PostMapping("")
+    public ResponseEntity<?> publishProduct(@RequestBody ProductDTO productDTO, HttpServletRequest request) {
+
+        Principal principal = request.getUserPrincipal();
+        Optional<PublicUserDTO> user = userService.findByName(principal.getName());
+
+        PublicUserDTO loggedInUser = user.get();
+        if (!userService.getActiveById(loggedInUser.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("error", "Banned user"));
+        }
+        if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
+                productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
+                productDTO.getDuration() == null || productDTO.getIniValue() == null) {
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error", "All fields must be filled"));
+        }
+        if (productDTO.getDuration() < 1) {
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error",
+                            "The duration field must contain a number higher or equal to 1."));
+        }
+        if (productDTO.getIniValue() < 1) {
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error",
+                            "The iniValue field must contain a number higher or equal to 1."));
+        }
+
+        try {
+            ProductDTO responseDTO = productService.createProduct(productDTO, user.get());
+            URI location = fromCurrentRequest().path("/products/{id}").buildAndExpand(responseDTO.getId()).toUri();
+
+            return ResponseEntity.created(location).body(responseDTO);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "Error processing the product: " + e.getMessage()));
+        }
+    }
     
+    @PutMapping("/{pid}")
+    public ResponseEntity<?> updateProduct(@PathVariable Long pid,
+            @RequestBody ProductDTO productDTO, HttpServletRequest request) {
 
+        Principal principal = request.getUserPrincipal();
+
+        Optional<PublicUserDTO> user = userService.findByName(principal.getName());
+        if (user.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("error", "User not found"));
+        }
+        Optional<ProductDTO> optionalProduct = productService.findById(pid);
+        if (optionalProduct.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonMap("error", "Product not found"));
+        }
+
+        ProductDTO product = optionalProduct.get();
+        PublicUserDTO loggedInUser = user.get();
+
+        if (!userService.getActiveById(loggedInUser.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Collections.singletonMap("error", "Banned user"));
+        }
+        Optional<ProductDTO> optionalProduct2 = productService.findById(pid);
+        Optional<TransactionDTO> trans = transactionService.findByProduct(optionalProduct2.get().getId());
+
+        if (trans.isPresent()) {
+            if (trans.get().buyer().id().equals(loggedInUser.getId())) {
+                if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
+                        productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
+                        productDTO.getDuration() == null || productDTO.getIniValue() == null) {
+                    if (productDTO.getState().equals("Delivered")) {
+                        productService.setStateDeliveredProduct(pid);
+                        return ResponseEntity.ok(product);
+                    }
+                }
+            }
+            return ResponseEntity.badRequest()
+                    .body(Collections.singletonMap("error", "The state field contains an incorrect value"));
+        } else {
+            if (!optionalProduct.get().getOffers().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(Collections.singletonMap("error", "You cannot edit a product if a user placed a bid"));
+            }
+            if (!(product.getSeller().getId().equals(loggedInUser.getId())
+                    || userService.getUserTypeById(loggedInUser.getId()).equals("Administrator"))) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(Collections.singletonMap("error", "You do not have permission to modify this product"));
+            }
+
+            if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
+                    productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
+                    productDTO.getDuration() == null || productDTO.getIniValue() == null) {
+
+                return ResponseEntity.badRequest()
+                        .body(Collections.singletonMap("error", "All fields must be filled"));
+            }
+
+            if (productDTO.getDuration() < 1) {
+                return ResponseEntity.badRequest()
+                        .body(Collections.singletonMap("error",
+                                "The duration field must contain a number higher or equal to 1."));
+            }
+
+            if (productDTO.getIniValue() < 1) {
+                return ResponseEntity.badRequest()
+                        .body(Collections.singletonMap("error",
+                                "The iniValue field must contain a number higher or equal to 1."));
+            }
+            try {
+                product.setName(productDTO.getName());
+                product.setDescription(productDTO.getDescription());
+                product.setIniValue(productDTO.getIniValue());
+                productService.save(product);
+
+                return ResponseEntity.ok(product);
+
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(Collections.singletonMap("error", "Error updating the product: " + e.getMessage()));
+            }
+        }
+
+    }
     
-
-
     @DeleteMapping("/{id_product}")
     public ResponseEntity<?> deleteProduct(@PathVariable long id_product, HttpServletRequest request) {
         Optional<ProductDTO> product = productService.findById(id_product);
