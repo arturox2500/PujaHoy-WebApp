@@ -243,8 +243,12 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
                         productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
                         productDTO.getDuration() == null || productDTO.getIniValue() == null) {
                     if (productDTO.getState().equals("Delivered")) {
-                        productService.setStateDeliveredProduct(pid);
-                        return ResponseEntity.ok(product);
+                        Optional<ProductDTO> prod2= productService.setStateDeliveredProduct(pid);
+                        if (prod2.isPresent()){
+                            return ResponseEntity.ok(prod2.get());
+                        }
+                        return ResponseEntity.badRequest()
+                        .body(Collections.singletonMap("error", "Error"));
                     }
                 }
             }

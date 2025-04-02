@@ -262,13 +262,16 @@ public class ProductService {
 		return costs;
 	}
 
-    public void setStateDeliveredProduct(long id_product) {
+    public Optional<ProductDTO> setStateDeliveredProduct(long id_product) {
         Optional<Product> product= repository.findById(id_product);
-
 		if(product.isPresent()){
-			product.get().setState("Delivered");
-            repository.save(product.get());
+			Product prod = product.get();
+			prod.setState("Delivered");
+            repository.save(prod);
+			return Optional.of(mapper.toDTO(prod));
 		}
+		return Optional.empty();
+		
     }
 
 	public void setStateFinishedProduct(long id_product) {
