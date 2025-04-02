@@ -1,12 +1,9 @@
 package com.webapp08.pujahoy.controller;
 
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
-import com.webapp08.pujahoy.dto.ProductDTO;
 import com.webapp08.pujahoy.dto.PublicUserDTO;
-import com.webapp08.pujahoy.dto.TransactionDTO;
 import com.webapp08.pujahoy.dto.UserEditDTO;
 import com.webapp08.pujahoy.service.ProductService;
-import com.webapp08.pujahoy.service.TransactionService;
 import com.webapp08.pujahoy.service.UserService;
 import java.security.Principal;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,8 +24,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
-import java.net.URI;
-import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -39,9 +34,6 @@ public class UserRestController {
 
     @Autowired
     private ProductService productService;
-
-    @Autowired
-    private TransactionService transactionService;
 
     @GetMapping("")
     public ResponseEntity<?> me(HttpServletRequest request) { //Get his own details
@@ -59,139 +51,6 @@ public class UserRestController {
     @GetMapping("/{id}")
     public PublicUserDTO getUserById(@PathVariable Long id) { // Get user by id
         return userService.findUser(id);
-    }
-
-    @PostMapping("/{id}/products")
-    public ResponseEntity<?> publishProduct(@RequestBody ProductDTO productDTO, HttpServletRequest request,
-            @PathVariable Long id) {
-
-        Principal principal = request.getUserPrincipal();
-        Optional<PublicUserDTO> user = userService.findByName(principal.getName());
-
-        if (!user.get().getId().equals(id)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Collections.singletonMap("error",
-                            "You are not allowed to publish products for another user"));
-        }
-
-        PublicUserDTO loggedInUser = user.get();
-        if (!userService.getActiveById(loggedInUser.getId())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Collections.singletonMap("error", "Banned user"));
-        }
-        if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
-                productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
-                productDTO.getDuration() == null || productDTO.getIniValue() == null) {
-            return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error", "All fields must be filled"));
-        }
-        if (productDTO.getDuration() < 1) {
-            return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error",
-                            "The duration field must contain a number higher or equal to 1."));
-        }
-        if (productDTO.getIniValue() < 1) {
-            return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error",
-                            "The iniValue field must contain a number higher or equal to 1."));
-        }
-
-        try {
-            ProductDTO responseDTO = productService.createProduct(productDTO, user.get());
-            URI location = fromCurrentRequest().path("/products/{id}").buildAndExpand(responseDTO.getId()).toUri();
-
-            return ResponseEntity.created(location).body(responseDTO);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap("error", "Error processing the product: " + e.getMessage()));
-        }
-    }
-
-    @PutMapping("/{id}/products/{pid}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long id, @PathVariable Long pid,
-            @RequestBody ProductDTO productDTO, HttpServletRequest request) {
-
-        Principal principal = request.getUserPrincipal();
-
-        Optional<PublicUserDTO> user = userService.findByName(principal.getName());
-        if (user.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Collections.singletonMap("error", "User not found"));
-        }
-        Optional<ProductDTO> optionalProduct = productService.findById(pid);
-        if (optionalProduct.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Collections.singletonMap("error", "Product not found"));
-        }
-
-        ProductDTO product = optionalProduct.get();
-        PublicUserDTO loggedInUser = user.get();
-
-        if (!userService.getActiveById(loggedInUser.getId())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Collections.singletonMap("error", "Banned user"));
-        }
-        Optional<ProductDTO> optionalProduct2 = productService.findById(pid);
-        Optional<TransactionDTO> trans = transactionService.findByProduct(optionalProduct2.get().getId());
-
-        if (trans.isPresent()) {
-            if (trans.get().buyer().id().equals(loggedInUser.getId())) {
-                if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
-                        productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
-                        productDTO.getDuration() == null || productDTO.getIniValue() == null) {
-                    if (productDTO.getState().equals("Delivered")) {
-                        product.setState("Delivered");
-                        return ResponseEntity.ok(product);
-                    }
-                }
-            }
-            return ResponseEntity.badRequest()
-                    .body(Collections.singletonMap("error", "The state field contains an incorrect value"));
-        } else {
-            if (!optionalProduct.get().getOffers().isEmpty()) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body(Collections.singletonMap("error", "You cannot edit a product if a user placed a bid"));
-            }
-            if (!(product.getSeller().getId().equals(loggedInUser.getId())
-                    || userService.getUserTypeById(loggedInUser.getId()).equals("Administrator"))) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body(Collections.singletonMap("error", "You do not have permission to modify this product"));
-            }
-
-            if (productDTO.getName() == null || productDTO.getName().trim().isEmpty() ||
-                    productDTO.getDescription() == null || productDTO.getDescription().trim().isEmpty() ||
-                    productDTO.getDuration() == null || productDTO.getIniValue() == null) {
-
-                return ResponseEntity.badRequest()
-                        .body(Collections.singletonMap("error", "All fields must be filled"));
-            }
-
-            if (productDTO.getDuration() < 1) {
-                return ResponseEntity.badRequest()
-                        .body(Collections.singletonMap("error",
-                                "The duration field must contain a number higher or equal to 1."));
-            }
-
-            if (productDTO.getIniValue() < 1) {
-                return ResponseEntity.badRequest()
-                        .body(Collections.singletonMap("error",
-                                "The iniValue field must contain a number higher or equal to 1."));
-            }
-            try {
-                product.setName(productDTO.getName());
-                product.setDescription(productDTO.getDescription());
-                product.setIniValue(productDTO.getIniValue());
-                productService.save(product);
-
-                return ResponseEntity.ok(product);
-
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(Collections.singletonMap("error", "Error updating the product: " + e.getMessage()));
-            }
-        }
-
     }
 
     @GetMapping("/{id}/products")

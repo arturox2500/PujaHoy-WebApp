@@ -230,7 +230,7 @@ public class ProductController {
 
                     if (!product.get().getOffers().isEmpty()) {
                         OfferDTO lastOffer =offerService.findLastOfferByProduct(id_product);
-                        model.addAttribute("Winner", lastOffer.user().equals(user));
+                        model.addAttribute("Winner", lastOffer.user().id() == user.getId());
                     }
                 } else {
                     model.addAttribute("Finished", false);
@@ -348,7 +348,7 @@ public class ProductController {
             productService.setStateDeliveredProduct(id_product);
             return "redirect:/product/" + id_product;
         } else {
-            model.addAttribute("text", " Error deleting product");
+            model.addAttribute("text", " Product not found");
             model.addAttribute("url", "/product/" + id_product);
             return "pageError";
         }
