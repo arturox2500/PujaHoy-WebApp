@@ -327,6 +327,7 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
             if (!existingProduct.getOffers().isEmpty() ) {
                 return ResponseEntity.badRequest().body("You cannot delete a product that has bids.");
             }
+            
             if (!"Administrator".equalsIgnoreCase(userService.getTypeById(loggedInUser.getId())) &&
                 !existingProduct.getSeller().getId().equals(loggedInUser.getId())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
