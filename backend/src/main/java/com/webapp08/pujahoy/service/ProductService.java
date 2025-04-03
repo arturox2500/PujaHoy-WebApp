@@ -54,8 +54,6 @@ public class ProductService {
     private TransactionRepository transactionRepository;
 	@Autowired
     private OfferRepository offerRepository;
-	@Autowired
-    private TransactionService transactionService;
 
     ProductService(UserModelRepository userModelRepository) {
         this.userModelRepository = userModelRepository;
@@ -230,6 +228,16 @@ public class ProductService {
 		}
 	}
 
+	public void createTransaction(long id_product) {
+		Offer offer = offerRepository.findLastOfferByProduct(id_product);
+		Optional<Product> product = repository.findById(id_product);
+		double cost = offer.getCost();
+		UserModel buyer = offer.getUser();
+		UserModel seller = product.get().getSeller();
+		Transaction transaction = new Transaction(product.get(), seller, buyer, cost);
+		transactionRepository.save(transaction);
+	}
+
 	public void checkProduct(long id_product) {
 		Optional<Product> product=repository.findById(id_product);
 		if(product.isPresent()){
@@ -238,7 +246,7 @@ public class ProductService {
 				product.get().setState("Finished");
 
 				if (!product.get().getOffers().isEmpty()) {
-					transactionService.createTransaction(id_product);
+					this.createTransaction(id_product);
 				}
 			}
 			this.save(product.get());

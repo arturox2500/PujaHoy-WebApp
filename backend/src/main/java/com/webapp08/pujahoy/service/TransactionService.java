@@ -8,11 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.webapp08.pujahoy.dto.TransactionDTO;
 import com.webapp08.pujahoy.dto.TransactionMapper;
-import com.webapp08.pujahoy.model.Offer;
 import com.webapp08.pujahoy.model.Product;
 import com.webapp08.pujahoy.model.Transaction;
-import com.webapp08.pujahoy.model.UserModel;
-import com.webapp08.pujahoy.repository.OfferRepository;
 import com.webapp08.pujahoy.repository.ProductRepository;
 import com.webapp08.pujahoy.repository.TransactionRepository;
 
@@ -24,10 +21,6 @@ public class TransactionService {
 
     @Autowired
     private TransactionMapper mapper;
-    
-
-    @Autowired
-    private OfferRepository offerRepository;
 
     @Lazy
     @Autowired
@@ -57,16 +50,5 @@ public class TransactionService {
     public TransactionDTO findTransactionDTO(Product product) {
 		  return mapper.toDTO(repository.findByProduct(product).get());
 	  }
-
-
-    public void createTransaction(long id_product) {
-      Offer offer = offerRepository.findLastOfferByProduct(id_product);
-      Optional<Product> product = productRepository.findById(id_product);
-      double cost = offer.getCost();
-      UserModel buyer = offer.getUser();
-      UserModel seller = product.get().getSeller();
-      Transaction transaction = new Transaction(product.get(), seller, buyer, cost);
-      repository.save(transaction);
-    }
 
 }

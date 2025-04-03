@@ -72,7 +72,7 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
     // Verificar si necesita una transacción
     Optional<TransactionDTO> trans = transactionService.findByProduct(existingProduct.getId());
     if (!existingProduct.getState().equals("In progress") && trans.isEmpty() && userService.getActiveById(existingProduct.getSeller().getId())) {
-        transactionService.createTransaction(existingProduct.getId());
+        productService.createTransaction(existingProduct.getId());
     }
 
     return ResponseEntity.ok(existingProduct);
