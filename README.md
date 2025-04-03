@@ -47,7 +47,6 @@
 
 9. **[Documentation](#documentation)**
    - [Diagram with the database entities](#diagram-with-the-database-entities)
-   - 
    - [Class and Templates Diagram](#class-and-templates-diagram)
 
 10. **[Contributors tag 1](#contributors-tag-1)**
@@ -244,7 +243,7 @@ Docker compose down
 
 
 ### Class and Templates Diagram
-![Class and Templates Diagram ](imagenes/ClassTemplatesDiagramP2White.png)
+![Class and Templates Diagram ](imagenes/ClassTemplatesDiagramP2BlancoRecu.png)
 
 ## Contributors tag 1
 
