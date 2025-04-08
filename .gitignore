@@ -1,2 +1,5 @@
 backend/target/
 .vscode
+forntend/.angular/
+frontend/node_modules/
+frontend/angular.json
