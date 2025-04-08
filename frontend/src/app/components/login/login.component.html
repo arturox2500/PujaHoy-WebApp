@@ -1,10 +1,10 @@
-<div class="container">
+<!--<div class="container">
     <h2 id="form-title">{{ isRegister ? 'Sign Up' : 'Login' }}</h2>
   
     <form (ngSubmit)="onSubmit()">
       <img style="max-width: 200px; margin-bottom: 15px" src="./assets/img/logo.png" />
   
-      <!-- Campos comunes para login y registro -->
+      //Campos comunes para login y registro
       <input
         type="text"
         name="username"
@@ -20,7 +20,7 @@
         required
       />
   
-      <!-- Campos adicionales para registro -->
+      //Campos adicionales para registro
       <div *ngIf="isRegister">
         <input
           type="email"
@@ -51,17 +51,17 @@
         />
       </div>
   
-      <!-- Botón de envío -->
+      //Botón de envío
       <button type="submit">{{ isRegister ? 'Sign Up' : 'Log In' }}</button>
     </form>
   
-    <!-- Botón para alternar entre login y registro -->
+    //Botón para alternar entre login y registro
     <button (click)="toggleForm()">
       {{ isRegister ? 'Already have an account? Log in' : "Don't have an account? Sign up" }}
     </button>
   
-    <!-- Mensaje de error -->
+    //Mensaje de error
     <div *ngIf="errorMessage" style="color: red;">
       <p>{{ errorMessage }}</p>
     </div>
-  </div>
+  </div> -->

@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { LoginService } from '../../services/login.service';
-import { UserDto } from '../../dtos/User.dto';
+//import { LoginService } from '../../services/login.service';
+//import { UserDto } from '../../dtos/User.dto';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  template: '<h1>Hola mundo</h1>'//./login.component.html',
+  //styleUrls: ['./login.component.css'],
 })
-export class LoginComponent {
+export class LoginComponent {/*
   public isRegister: boolean = false; // Alternar entre login y registro
   public userDto: UserDto = { username: '', password: '', email: '', zipCode: '', visibleName: '' }; // DTO para login/registro
   public errorMessage: string | null = null; // Mensaje de error
@@ -47,5 +47,5 @@ export class LoginComponent {
         }
       );
     }
-  }
+  }*/
 }
