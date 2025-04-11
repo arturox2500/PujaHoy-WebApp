@@ -1,9 +1,12 @@
 <app-header></app-header>
 
-<main>
-  <router-outlet></router-outlet>
-</main>
+<ng-container *ngIf="router.url === '/'">
+  <!-- Solo visible en la ruta principal -->
+  <div class="landing-content">
+    <h1>PANTALLA PRINCIPAL</h1>
+  </div>
+</ng-container>
 
-<h1>PANTALLA PRINCIPAL</h1>
+<router-outlet></router-outlet>
 
 <app-footer></app-footer>

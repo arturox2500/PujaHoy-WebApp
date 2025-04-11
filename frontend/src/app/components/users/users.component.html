@@ -1,0 +1,14 @@
+<div *ngIf="user; else errorTemplate">
+    <h2>{{ user.visibleName }}</h2>
+    <p>{{ user.description }}</p>
+    <p>{{ user.contact }}</p>
+    <p>{{ user.reputation }}</p>
+    <p>{{ user.zipCode }}</p>
+    <button routerLink="/" class="btn btn-primary">Go to Home</button>
+</div>
+
+<ng-template #errorTemplate>
+    <p *ngIf="errorMessage">{{ errorMessage }}</p>
+    <p *ngIf="!errorMessage">Loading...</p>
+    <button routerLink="/" class="btn btn-primary">Go to Home</button>
+</ng-template>

@@ -62,7 +62,8 @@
               "buildTarget": "pujahoy:build:production"
             },
             "development": {
-              "buildTarget": "pujahoy:build:development"
+              "buildTarget": "pujahoy:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
