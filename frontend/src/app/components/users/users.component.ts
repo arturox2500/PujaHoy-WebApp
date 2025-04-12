@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PublicUserDto } from '../../dtos/PublicUser.dto';
 import { usersService } from '../../services/users.service';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-users',
@@ -11,7 +12,8 @@ export class UserComponent implements OnInit {
     errorMessage: string | undefined;
   
     constructor(private usersService: usersService) {}
-  
+
+    
     ngOnInit() {
         this.usersService.getProfile().subscribe(
           (response) => {
@@ -23,5 +25,7 @@ export class UserComponent implements OnInit {
             console.error('Error loading user profile:', error);
           }
         );
-      }
+      } 
+
+
 }

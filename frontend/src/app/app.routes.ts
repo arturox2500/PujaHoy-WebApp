@@ -4,7 +4,7 @@ import { UserComponent } from './components/users/users.component';
 
 const routes: Routes = [
   { path: 'users', component: UserComponent },
-  //{ path: 'auth/login', component: LoginComponent },
+  { path: 'auth/login', component: LoginComponent },
   { path: '**', redirectTo: 'auth/login' }
 ];
 
