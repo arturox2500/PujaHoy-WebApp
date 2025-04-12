@@ -18,6 +18,6 @@ import { LoginComponent } from './components/login/login.component';
     UserComponent
   ],
   imports: [BrowserModule, FormsModule, HttpClientModule, routing],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule  {}

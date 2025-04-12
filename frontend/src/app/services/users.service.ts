@@ -27,14 +27,23 @@ export class usersService {
   }
 
   public getProfile(): Observable<PublicUserDto> { //Falta hacer q devulva el usuario logueado
-    return this.http.get<PublicUserDto>('/api/v1/users/7', { withCredentials: true })
+    return this.http.get<PublicUserDto>('/api/v1/users', { withCredentials: true })
       .pipe(
         catchError(this.handleError)
       );
   }
 
   private handleError(error: HttpErrorResponse) {
-    if (error.status === 404) {
+    if (error.status === 400) {
+        console.error('Error 400: Bad request');
+        return throwError('Bad request, please check your input');
+    } else if (error.status === 401) {
+      console.error('Error 401: Unauthorized access');
+      return throwError('Unauthorized access, please log in again');
+    } else if (error.status === 403) {
+      console.error('Error 403: Forbidden access');
+      return throwError('Forbidden access, you do not have permission to view this resource');
+    } else if (error.status === 404) {
       console.error('Error 404: User not found');
       return throwError('User not found');
     } else if (error.status === 500) {

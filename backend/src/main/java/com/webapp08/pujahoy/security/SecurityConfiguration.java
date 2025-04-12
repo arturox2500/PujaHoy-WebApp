@@ -16,10 +16,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import com.webapp08.pujahoy.security.jwt.JwtRequestFilter;
 import com.webapp08.pujahoy.security.jwt.UnauthorizedHandlerJwt;
+import com.webapp08.pujahoy.security.jwt.CustomAccessDeniedHandler;
 import com.webapp08.pujahoy.service.RepositoryUserDetailsService;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 
 
@@ -36,9 +40,24 @@ public class SecurityConfiguration {
 	@Autowired
 	private UnauthorizedHandlerJwt unauthorizedHandlerJwt;
 
+	@Autowired
+	private CustomAccessDeniedHandler customAccessDeniedHandler;
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	public CorsFilter corsFilter() {
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowCredentials(true);
+		config.addAllowedOrigin("http://localhost:4200"); // Permitir el frontend
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
+		source.registerCorsConfiguration("/**", config);
+		return new CorsFilter(source);
 	}
 
 	@Bean
@@ -117,6 +136,7 @@ public class SecurityConfiguration {
 			)
 			.exceptionHandling(exceptionHandling -> exceptionHandling
             	.accessDeniedPage("/permitsError") // Redirect to /pageError if have error 403
+				.accessDeniedHandler(customAccessDeniedHandler)
         	);
 		return http.build();
 	}
@@ -129,7 +149,7 @@ public class SecurityConfiguration {
 		
 		http
 			.securityMatcher("/api/**")
-			.exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
+			.exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt).accessDeniedHandler(customAccessDeniedHandler));
 		
 		http
 			.authorizeHttpRequests(authorize -> authorize
