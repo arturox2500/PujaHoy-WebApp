@@ -4,8 +4,7 @@ import { UserComponent } from './components/users/users.component';
 
 const routes: Routes = [
   { path: 'users', component: UserComponent },
-  { path: 'auth/login', component: LoginComponent },
-  { path: '**', redirectTo: 'auth/login' }
+  { path: 'auth/login', component: LoginComponent }
 ];
 
 export const routing = RouterModule.forRoot(routes);
