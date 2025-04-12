@@ -1,16 +1,37 @@
 <br>
-<div>
-    <form>
-      <label for="name">Product Name</label>
-      <input id="name" type="text" placeholder="Enter product name" required />
+<div class="form-container">
+    <h2>Create New Product</h2>
+    <form (ngSubmit)="submitForm()">
+      <div>
+        <label for="name">Name:</label>
+        <input id="name" type="text" [(ngModel)]="product.name" name="name" required />
+      </div>
   
-      <label for="description">Product Description</label>
-      <textarea id="description" placeholder="Enter product description" rows="4" required></textarea>
+      <div>
+        <label for="description">Description:</label>
+        <textarea id="description" [(ngModel)]="product.description" name="description" required></textarea>
+      </div>
   
-      <label for="price">Price</label>
-      <input id="price" type="number" placeholder="Enter price" required />
+      <div>
+        <label for="iniValue">Initial Price:</label>
+        <input id="iniValue" type="number" [(ngModel)]="product.iniValue" name="iniValue" required />
+      </div>
   
-      <button type="submit">Submit</button>
+      <div>
+        <label for="duration">Duration (days):</label>
+        <select id="duration" [(ngModel)]="product.duration" name="duration" required>
+          <option [value]="7">7 Days</option>
+          <option [value]="14">14 Days</option>
+          <option [value]="30">30 Days</option>
+        </select>
+      </div>
+  
+      <div>
+        <label for="image">Image:</label>
+        <input id="image" type="file" (change)="onImageSelected($event)" />
+      </div>
+  
+      <button type="submit" (click)="submitForm">Submit</button>
     </form>
-</div>
+  </div>
 <br>
