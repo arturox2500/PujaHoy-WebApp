@@ -4,11 +4,11 @@
     <p>{{ user.contact }}</p>
     <p>{{ user.reputation }}</p>
     <p>{{ user.zipCode }}</p>
-    <div *ngIf="user.typeApplicant == 'owner'">
+    <div *ngIf="typeApplication == 'owner'">
         <a routerLink="/editProfile" class="footer-link">Edit</a>
     </div>
 
-    <div *ngIf="user.typeApplicant == 'owner'">
+    <div *ngIf="typeApplication == 'owner'">
         <a routerLink="/your-auctions" class="footer-link">Your Auctions</a>
         <br> 
         <a routerLink="/product-form" class="footer-link">New Auction</a>
@@ -16,7 +16,7 @@
         <a routerLink="/your-winning-bids" class="footer-link">Your Winning Bids</a>
     </div>
 
-    <div *ngIf="user.typeApplicant == 'admin'">
+    <div *ngIf="typeApplication == 'admin'">
         <button (click)="bannedUser(user.id)" class="footer-link">{{ text }}</button>
     </div>
     

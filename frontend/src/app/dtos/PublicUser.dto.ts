@@ -1,7 +1,6 @@
 
 export interface PublicUserDto {
     active: boolean;
-    typeApplicant: string;
     visibleName: string,
     image: string,
     contact: string,
@@ -10,5 +9,5 @@ export interface PublicUserDto {
     name: string,
     description: string,
     zipCode: number,
-    rols: string[],    
+    rols: string[],   
 }    

@@ -47,6 +47,10 @@ export class usersService {
       );
   }
 
+  getAuthenticatedUser(): Observable<PublicUserDto> {
+    return this.http.get<PublicUserDto>(`/api/v1/me`); // Endpoint para el usuario autenticado
+  }
+
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 400) {

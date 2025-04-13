@@ -13,7 +13,6 @@ public class PublicUserDTO {
     private int zipCode;
     private String image;
     private List<String> rols;
-    private String typeApplicant;
 
 
 
@@ -22,12 +21,6 @@ public class PublicUserDTO {
     }
     public void setActive(boolean active) {
         this.active = active;
-    }
-    public String getTypeApplicant() {
-        return typeApplicant;
-    }
-    public void setTypeApplicant(String typeApplicant) {
-        this.typeApplicant = typeApplicant;
     }
     public List<String> getRols() {
         return rols;
