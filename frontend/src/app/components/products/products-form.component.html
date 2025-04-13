@@ -1,37 +1,93 @@
 <br>
-<div class="form-container">
-    <h2>Create New Product</h2>
-    <form (ngSubmit)="submitForm()">
-      <div>
-        <label for="name">Name:</label>
-        <input id="name" type="text" [(ngModel)]="product.name" name="name" required />
+<div class="container mt-5">
+  <h4 class="font-weight-bold text-dark mb-4">PRODUCT INFORMATION</h4>
+  <form (ngSubmit)="submitForm()">
+    <!-- Product Name -->
+    <div class="form-group mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Product Name"
+        [(ngModel)]="product.name"
+        name="name"
+        required
+      />
+    </div>
+
+    <!-- Description -->
+    <div class="form-group mb-3">
+      <textarea
+        class="form-control"
+        placeholder="Description"
+        [(ngModel)]="product.description"
+        name="description"
+        rows="3"
+        required
+      ></textarea>
+    </div>
+
+    <!-- Price -->
+    <div class="form-group mb-3">
+      <input
+        type="number"
+        class="form-control"
+        placeholder="Price"
+        [(ngModel)]="product.iniValue"
+        name="iniValue"
+        required
+        min="0"
+        step="0.01"
+      />
+    </div>
+
+    <!-- Duration -->
+    <div class="form-group mb-3">
+      <select
+        class="form-control"
+        [(ngModel)]="product.duration"
+        name="duration"
+        required
+      >
+        <option [value]="0" disabled [selected]="product.duration === 0">Select Duration</option>
+        <option [value]="7">7 Days</option>
+        <option [value]="14">14 Days</option>
+        <option [value]="30">30 Days</option>
+      </select>
+    </div>
+
+    <!-- Image Upload -->
+    <div class="border p-4 mt-4 mb-4 text-center">
+      <h5 class="font-weight-bold text-dark mb-3">UPLOAD PRODUCT IMAGES</h5>
+      <div class="form-group">
+        <!-- Botón personalizado -->
+        <label class="btn btn-danger mb-2">
+          <i class="fas fa-upload"></i> Choose File
+          <input
+            type="file"
+            hidden
+            (change)="onImageSelected($event)"
+            accept="image/*"
+          />
+        </label>
+
+        <!-- Mostrar nombre del archivo -->
+        <div class="mt-2 text-muted" *ngIf="selectedFileName">
+          {{ selectedFileName }}
+        </div>
       </div>
-  
-      <div>
-        <label for="description">Description:</label>
-        <textarea id="description" [(ngModel)]="product.description" name="description" required></textarea>
-      </div>
-  
-      <div>
-        <label for="iniValue">Initial Price:</label>
-        <input id="iniValue" type="number" [(ngModel)]="product.iniValue" name="iniValue" required />
-      </div>
-  
-      <div>
-        <label for="duration">Duration (days):</label>
-        <select id="duration" [(ngModel)]="product.duration" name="duration" required>
-          <option [value]="7">7 Days</option>
-          <option [value]="14">14 Days</option>
-          <option [value]="30">30 Days</option>
-        </select>
-      </div>
-  
-      <div>
-        <label for="image">Image:</label>
-        <input id="image" type="file" (change)="onImageSelected($event)" />
-      </div>
-  
-      <button type="submit" (click)="submitForm">Submit</button>
-    </form>
-  </div>
+    </div>
+
+
+    <!-- Confirm Button -->
+    <div class="text-center">
+      <button type="submit" class="btn btn-danger px-4 py-2 rounded-pill font-weight-bold">
+        CONFIRM
+      </button>
+    </div>
+  </form>
+</div>
+
+
+
+
 <br>

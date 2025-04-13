@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 
 export class ProductsFormComponent implements OnInit {
   errorMessage: string | undefined;
+  selectedFileName: string = '';
   constructor(private productsService: productsService, private router: Router) { }
 
   ngOnInit(): void {
@@ -19,12 +20,17 @@ export class ProductsFormComponent implements OnInit {
     name: '',
     description: '',
     iniValue: 0,
-    duration: 7,
+    duration: 0,
   };
 
-  image=null
+  image: File | null = null;
 
   submitForm() {
+    
+    if (!this.isValid()){
+      return
+    }
+
     const productToSend = {
       name: this.product.name,
       description: this.product.description,
@@ -45,7 +51,7 @@ export class ProductsFormComponent implements OnInit {
               this.router.navigate(['/']);
             },
             (error) => {
-              window.alert('Producto creado, pero falló la subida de imagen: ' + error.message);
+              window.alert('Could not upload the image: ' + error.message);
             }
           );
         } else {
@@ -53,15 +59,52 @@ export class ProductsFormComponent implements OnInit {
         }
       },
       (error) => {
-        window.alert('Error al crear el producto: ' + error.message);
+        window.alert('Could not create product: ' + error.message);
       }
     );
   }
 
+  isValid(): boolean {
+    const validImageTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+  
+    if (!this.product.name || this.product.name.trim() === '') {
+      alert('Please provide a name.');
+      return false;
+    }
+  
+    if (!this.product.description || this.product.description.trim() === '') {
+      alert('Please provide a description.');
+      return false;
+    }
+  
+    if (this.product.iniValue <= 0) {
+      alert('Initial value must be greater than 0.');
+      return false;
+    }
+  
+    if (this.product.duration <= 0) {
+      alert('Must Select a duration');
+      return false;
+    }
+
+    if (!this.image) {
+      alert('Please upload an image before submitting.');
+      return false;
+    }
+  
+    if (!validImageTypes.includes(this.image.type)) {
+      alert('Please select a valid image file (JPEG, JPG, PNG, WEBP).');
+      return false;
+    }
+  
+    return true;
+  }
+  
 
   onImageSelected(event: any) {
     const file = event.target.files[0];
     this.image = file;
+    this.selectedFileName = file.name;
     console.log('Image selected:', file);
   }
 
