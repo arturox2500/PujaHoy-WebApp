@@ -26,7 +26,7 @@ export class usersService {
     return this.http.delete(`/api/v1/users/${id}`, { withCredentials: true });
   }
 
-  public getProfile(): Observable<PublicUserDto> { //Falta hacer q devulva el usuario logueado
+  public getProfile(): Observable<PublicUserDto> {
     return this.http.get<PublicUserDto>('/api/v1/users', { withCredentials: true })
       .pipe(
         catchError(this.handleError)

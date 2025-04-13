@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PublicUserDto } from '../../dtos/PublicUser.dto';
 import { usersService } from '../../services/users.service';
-import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-users',

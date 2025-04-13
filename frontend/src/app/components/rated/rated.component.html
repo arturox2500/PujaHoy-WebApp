@@ -1,0 +1,4 @@
+<h5>Rating product</h5>
+<input type="number" [(ngModel)]="rating"  min="1" max="5" required>
+<button (click)="submitRating(rating,3)">Submit</button>
+<button routerLink="/" class="footer-link">Go to home</button>
