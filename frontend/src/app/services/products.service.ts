@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { CreateProductDto } from "../dtos/CreateProduct.dto";
-import { catchError, Observable, throwError } from "rxjs";
+import { catchError, map, Observable, throwError } from "rxjs";
 import { ProductBasicDto } from "../dtos/ProductBasic.dto";
 
 @Injectable({ providedIn: "root" })
@@ -34,10 +34,20 @@ export class productsService {
     if (userId === undefined) {
       throw new Error('User ID is undefined');
     }
-    return this.http.get<ProductBasicDto[]>(`/api/v1/users/${userId}/products`)
-          .pipe(
-            catchError(this.handleError)
-          );
+    return this.http.get<any>(`/api/v1/users/${userId}/products`)
+        .pipe(
+          map(response => response.content) 
+        );
+  }
+
+  getWinningBids(userId: number | undefined): Observable<ProductBasicDto[]> {
+    if (userId === undefined) {
+      throw new Error('User ID is undefined');
+    }
+    return this.http.get<any>(`/api/v1/users/${userId}/boughtProducts`)
+        .pipe(
+          map(response => response.content) 
+        );
   }
 
   private handleError(error: HttpErrorResponse) {
