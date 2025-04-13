@@ -1,49 +1,29 @@
-<header style="margin-bottom: 20px;">
+<header style=" background-color: black; border-bottom: 4px solid #ff0000;">
     <!-- TOP HEADER -->
-    <div id="top-header">
-        <div class="container">
-            <ul class="header-links pull-left">
-                <li><a href="#"><i class="fa fa-phone"></i> +021-95-51-84</a></li>
-                <li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
-            </ul>
-            <ul class="header-links pull-right">
-                <!--{{#logged}}
-						<li><a style="color: white;"><i class="fa"></i> {{userName}}</a></li>
-						{{/logged}}
-						{{^logged}}
-                    	<li><a href="/login"><i class="fa fa-sign-in"></i> Log in / Sign up</a></li>
-						{{/logged}}
-						<li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
-                        <li><a href="/user"><i class="fa fa-user-o"></i> My Account</a></li>-->
-                        <a routerLink="/auth/login" class="footer-link">My Account</a>
-						<!--{{#logged}}
-                    	<li><a href="/logout" onclick="return confirmLogout()"><i class="fa fa-sign-out" ></i> Log out</a></li>
-                    	{{/logged}}-->
-            </ul>
-        </div>
-    </div>
-    <!-- /TOP HEADER -->
-
-    <!-- MAIN HEADER -->
-    <div id="header">
-        <!-- container -->
-        <div class="container">
-            <!-- row -->
-            <div class="row">
-                <!-- LOGO -->
-                <div class="col-md-4">
-                    <div class="header-logo">
-                        <a href="/" class="logo">
-                            <!--<img src="/img/logo.png" alt="">-->
-                        </a>
-                    </div>
-                </div>
-                <!-- /LOGO -->
+    <div id="top-header" style="padding: 15px 0; background-color: #333; ">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <!-- Logo -->
+            <div class="header-logo" style="display: flex; align-items: center;">
+                <a href="/" class="logo" style="display: flex; align-items: center;">
+                    <img src="./assets/images/logo.png" alt="Logo" style="max-width: 50px; margin-right: 10px;">
+                </a>
+                <h2 style="color: white; margin: 0; font-size: 26px; margin-left: 5px; cursor: pointer;">
+                    <a href="/" style="text-decoration: none; color: white;">PujaHoy</a>
+                </h2>
             </div>
-            <!-- row -->
+
+            <!-- User Actions -->
+            <ul class="header-links" style="display: flex; gap: 15px; align-items: center; margin: 0; padding: 0; list-style: none;">
+                <li *ngIf="!loginService.isLogged()">
+                    <a routerLink="/auth/login" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px;">
+                        <i class="fa fa-sign-in"></i> Log in / Sign up
+                    </a>
+                </li>
+                <li *ngIf="loginService.isLogged()">
+                    <a routerLink="/auth/login" class="btn btn-primary" style="margin-right: 5px; padding: 10px 20px; font-size: 16px;">My Account</a>
+                    <button (click)="logOut()" class="btn btn-danger" style="padding: 10px 20px; font-size: 16px;">Logout</button>
+                </li>
+            </ul>
         </div>
-        <!-- container -->
     </div>
-    <!-- /MAIN HEADER -->
 </header>
-<!-- /HEADER -->

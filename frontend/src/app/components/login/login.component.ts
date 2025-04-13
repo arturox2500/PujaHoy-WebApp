@@ -35,7 +35,8 @@ export class LoginComponent {
           console.log('Registration successful:', response);
           this.isRegister = false; // Cambiar a login después del registro
           this.errorMessage = null;
-          this.router.navigate(['/users']);
+          this.loginService.setLogged(true); // Marcar como logueado después del registro
+          this.router.navigate(['/users']);          
         },
         (error) => {
           console.error('Registration failed:', error);
@@ -49,6 +50,7 @@ export class LoginComponent {
         (response) => {
           console.log('Login successful:', response);
           this.errorMessage = null;
+          this.loginService.setLogged(true); // Marcar como logueado después del registro
           this.router.navigate(['/users']);
         },
         (error) => {

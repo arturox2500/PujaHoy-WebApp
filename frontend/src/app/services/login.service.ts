@@ -43,17 +43,24 @@ export class LoginService {
   }
 
   public logOut() {
-    return this.http
-      .post(BASE_URL + "/logout", { withCredentials: true })
-      .subscribe((_) => {
+    return this.http.post(BASE_URL + "/logout", {}, { withCredentials: true }).subscribe(
+      () => {
         console.log("LOGOUT: Successfully");
-        this.logged = false;
-        this.user = undefined;
-      });
+        this.logged = false; // Actualiza el estado de autenticación
+        this.user = undefined; // Limpia la información del usuario
+      },
+      (error) => {
+        console.error("Error during logout:", error);
+      }
+    );
   }
 
   public isLogged() {
     return this.logged;
+  }
+
+  public setLogged(logged: boolean) {
+    this.logged = logged;
   }
 
   public isAdmin() {

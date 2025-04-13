@@ -1,89 +1,87 @@
 <style>
-  body {
-      background-color: #000;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-  }
   .container {
-      background: #000;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      width: 300px;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
   }
+
   input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 5px;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
   }
+
   button {
-      width: 100%;
-      padding: 10px;
-      background: #ff0000;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background: #ff0000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
   }
+
   button:hover {
-      background: #ff5959;
+    background: #ff5959;
   }
+
   .hidden {
-      display: none;
+    display: none;
   }
+
   .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 20px;
-      text-decoration: none;
-      color: #ff0000;
-      font-weight: bold;
-      padding: 5px;
-      border-radius: 50%;
-      transition: 0.3s;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    text-decoration: none;
+    color: #ff0000;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 50%;
+    transition: 0.3s;
   }
+
   .close-btn:hover {
-      background: #ff0000;
-      color: #fff;
+    background: #ff0000;
+    color: #fff;
   }
 </style>
-<div class="container">
-  <h2 id="form-title" style="color:white">{{ isRegister ? 'Sign Up' : 'Login' }}</h2>
+<div style="background-color: #000;">
+  <div class="container">
+    <h2 id="form-title" style="color:white; margin-top:20px;">{{ isRegister ? 'Sign Up' : 'Login' }}</h2>
 
-  <form (ngSubmit)="onSubmit()">
-    <img style="max-width: 200px; margin-bottom: 15px; background-color: black;" src="./assets/images/logo.png" />
+    <form (ngSubmit)="onSubmit()">
+      <img style="max-width: 200px; margin-bottom: 15px; background-color: black;" src="./assets/images/logo.png" />
 
-    <div>
-      <input type="text" name="username" [(ngModel)]="userDto.username" placeholder="User Name" required />
-      <input type="password" name="password" [(ngModel)]="userDto.password" placeholder="Password" required />
+      <div>
+        <input type="text" name="username" [(ngModel)]="userDto.username" placeholder="User Name" required />
+        <input type="password" name="password" [(ngModel)]="userDto.password" placeholder="Password" required />
+      </div>
+      <div *ngIf="isRegister">
+        <input type="email" name="email" [(ngModel)]="userDto.email" placeholder="Email" required />
+        <input type="text" name="visibleName" [(ngModel)]="userDto.visibleName" placeholder="Visible Name" required />
+        <input type="text" name="zipCode" [(ngModel)]="userDto.zipCode" placeholder="Zip Code" required />
+        <input type="text" name="description" [(ngModel)]="userDto.description" placeholder="Description / Bio" />
+      </div>
+
+      <button type="submit">{{ isRegister ? 'Sign Up' : 'Log In' }}</button>
+    </form>
+
+    <button (click)="toggleForm()">
+      {{ isRegister ? 'Already have an account? Log in' : "Don't have an account? Sign up" }}
+    </button>
+
+    <div *ngIf="errorMessage" style="color: red;">
+      <p>{{ errorMessage }}</p>
     </div>
-    <div *ngIf="isRegister">
-      <input type="email" name="email" [(ngModel)]="userDto.email" placeholder="Email" required />
-      <input type="text" name="visibleName" [(ngModel)]="userDto.visibleName" placeholder="Visible Name" required />
-      <input type="text" name="zipCode" [(ngModel)]="userDto.zipCode" placeholder="Zip Code" required />
-      <input type="text" name="description" [(ngModel)]="userDto.description" placeholder="Description / Bio" />
+    <div  style="margin-bottom: 30px;">
+      <button routerLink="/" class="btn btn-primary">Go to Home</button>
     </div>
 
-    <button type="submit">{{ isRegister ? 'Sign Up' : 'Log In' }}</button>
-  </form>
-
-  <button (click)="toggleForm()">
-    {{ isRegister ? 'Already have an account? Log in' : "Don't have an account? Sign up" }}
-  </button>
-
-  <div *ngIf="errorMessage" style="color: red;">
-    <p>{{ errorMessage }}</p>
   </div>
-  <div>
-    <button routerLink="/" class="btn btn-primary">Go to Home</button>  
-  </div>
-  
 </div>
