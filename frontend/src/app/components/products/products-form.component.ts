@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { productsService } from '../../services/products.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products-form',  
@@ -8,8 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class ProductsFormComponent implements OnInit {
-
-  constructor(private http: HttpClient) { }
+  errorMessage: string | undefined;
+  constructor(private productsService: productsService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -19,8 +20,9 @@ export class ProductsFormComponent implements OnInit {
     description: '',
     iniValue: 0,
     duration: 7,
-    image: null
   };
+
+  image=null
 
   submitForm() {
     const productToSend = {
@@ -29,21 +31,37 @@ export class ProductsFormComponent implements OnInit {
       iniValue: this.product.iniValue,
       duration: this.product.duration
     };
-
-    this.http.post('https://localhost:8443/api/v1/user/submit_auction', productToSend)
-      .subscribe({
-        next: (res) => {
-          console.log('Producto creado:', res);
-        },
-        error: (err) => {
-          console.error('Error al crear producto:', err);
+  
+    this.productsService.createProduct(productToSend).subscribe(
+      (createdProduct: any) => {
+        this.errorMessage = '';
+  
+        if (this.image) {
+          const formData = new FormData();
+          formData.append('image', this.image);
+  
+          this.productsService.uploadImage(createdProduct.id, formData).subscribe(
+            () => {
+              this.router.navigate(['/']);
+            },
+            (error) => {
+              window.alert('Producto creado, pero falló la subida de imagen: ' + error.message);
+            }
+          );
+        } else {
+          this.router.navigate(['/']);
         }
-      });
+      },
+      (error) => {
+        window.alert('Error al crear el producto: ' + error.message);
+      }
+    );
   }
+
 
   onImageSelected(event: any) {
     const file = event.target.files[0];
-    this.product.image = file;
+    this.image = file;
     console.log('Image selected:', file);
   }
 

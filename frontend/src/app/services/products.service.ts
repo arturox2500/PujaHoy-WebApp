@@ -9,7 +9,17 @@ export class productsService {
   constructor(private http: HttpClient) { }
 
   createProduct(product: CreateProductDto) {
-    return this.http.post(this.apiUrl, product);
+    return this.http.post('/api/v1/products', product , { withCredentials: true })
+          .pipe(
+            catchError(this.handleError)
+          );
+  }
+
+  uploadImage(productId: number, formData: FormData) {
+    return this.http.post(`/api/v1/products/${productId}/image`, formData, {withCredentials: true, responseType: "text"})
+          .pipe(
+            catchError(this.handleError)
+        );
   }
 
   rateProduct(rating: number, id: number) {
