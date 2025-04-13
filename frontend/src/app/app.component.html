@@ -1,34 +1,53 @@
-<app-header></app-header>
+<style>
+  html, body {
+  height: 100%;
+  margin: 0;
+}
 
-<ng-container *ngIf="router.url === '/'" >
-  <!-- Solo visible en la ruta principal -->
-  <div class="landing-content" style="flex: 1;">
-    <h1>PANTALLA PRINCIPAL</h1>
-    <p>Contenido de la pantalla principal</p>
-    <p>Contenido adicional de la pantalla principal</p>
-    <p>Contenido adicional de la pantalla principal</p>
-    <p>Contenido adicional de la pantalla principal</p>
-    <p>Contenido adicional de la pantalla principal</p>
-    <p>Contenido adicional de la pantalla principal</p>
-    <p>Contenido adicional de la pantalla principal</p>
-    <p>Contenido adicional de la pantalla principal</p>
-    <p>Contenido de la pantalla principal</p>
-    <p>Contenido adicional de la pantalla principal</p>
-    <p>Contenido adicional de la pantalla principal</p>
-    <p>Contenido adicional de la pantalla principal</p>
-    <p>Contenido adicional de la pantalla principal</p>
-    <p>Contenido adicional de la pantalla principal</p>
-    <p>Contenido adicional de la pantalla principal</p>
-    <p>Contenido adicional de la pantalla principal</p>
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+}
+</style>
+
+<div class="page-container">
+  <app-header></app-header>
+
+  <ng-container *ngIf="router.url === '/'">
+    <!-- Solo visible en la ruta principal -->
+    <div class="landing-content" style="flex: 1;">
+      <h1>PANTALLA PRINCIPAL</h1>
+      <p>Contenido de la pantalla principal</p>
+      <p>Contenido adicional de la pantalla principal</p>
+      <p>Contenido adicional de la pantalla principal</p>
+      <p>Contenido adicional de la pantalla principal</p>
+      <p>Contenido adicional de la pantalla principal</p>
+      <p>Contenido adicional de la pantalla principal</p>
+      <p>Contenido adicional de la pantalla principal</p>
+      <p>Contenido adicional de la pantalla principal</p>
+      <p>Contenido de la pantalla principal</p>
+      <p>Contenido adicional de la pantalla principal</p>
+      <p>Contenido adicional de la pantalla principal</p>
+      <p>Contenido adicional de la pantalla principal</p>
+      <p>Contenido adicional de la pantalla principal</p>
+      <p>Contenido adicional de la pantalla principal</p>
+      <p>Contenido adicional de la pantalla principal</p>
+      <p>Contenido adicional de la pantalla principal</p>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="router.url === '/'">
+    <button routerLink="/products/3/rated" class="footer-link">TEST PARA VALORAR IPHONE</button>
+  </ng-container>
+
+  <div id="main-content">
+    <router-outlet></router-outlet>
   </div>
-</ng-container>
 
-<ng-container *ngIf="router.url === '/'">
-<button routerLink="/products/3/rated" class="footer-link">TEST PARA VALORAR IPHONE</button>
-</ng-container>
-
-<div id="main-content">
-  <router-outlet></router-outlet>
+  <app-footer></app-footer>
 </div>
-
-<app-footer></app-footer>
