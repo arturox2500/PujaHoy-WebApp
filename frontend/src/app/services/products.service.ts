@@ -1,7 +1,8 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { CreateProductDto } from "../dtos/CreateProduct.dto";
-import { catchError, throwError } from "rxjs";
+import { catchError, Observable, throwError } from "rxjs";
+import { ProductBasicDto } from "../dtos/ProductBasic.dto";
 
 @Injectable({ providedIn: "root" })
 export class productsService {
@@ -24,6 +25,16 @@ export class productsService {
 
   rateProduct(rating: number, id: number) {
     return this.http.post(`/api/v1/products/${id}/ratings`, { rating }, { withCredentials: true })
+          .pipe(
+            catchError(this.handleError)
+          );
+  }
+
+  getUserProducts(userId: number | undefined): Observable<ProductBasicDto[]> {
+    if (userId === undefined) {
+      throw new Error('User ID is undefined');
+    }
+    return this.http.get<ProductBasicDto[]>(`/api/v1/users/${userId}/products`)
           .pipe(
             catchError(this.handleError)
           );

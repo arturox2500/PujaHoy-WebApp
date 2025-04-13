@@ -10,7 +10,7 @@ import { UserComponent } from './components/users/users.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProductsFormComponent } from './components/products/products-form.component';
 import { RatedComponent } from './components/rated/rated.component';
-
+//import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [

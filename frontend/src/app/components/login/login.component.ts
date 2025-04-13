@@ -51,7 +51,7 @@ export class LoginComponent {
           console.log('Login successful:', response);
           this.errorMessage = null;
           this.loginService.setLogged(true); // Marcar como logueado después del registro
-          this.router.navigate(['/users']);
+          this.router.navigate(['/']);
         },
         (error) => {
           console.error('Login failed:', error);
