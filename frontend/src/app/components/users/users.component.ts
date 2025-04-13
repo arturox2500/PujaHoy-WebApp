@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PublicUserDto } from '../../dtos/PublicUser.dto';
 import { ActivatedRoute } from '@angular/router';
 import { usersService } from '../../services/users.service';
+import { forkJoin } from 'rxjs';
 import { catchError, forkJoin, of } from 'rxjs';
 
 @Component({

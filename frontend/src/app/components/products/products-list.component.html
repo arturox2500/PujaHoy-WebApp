@@ -5,6 +5,7 @@
     <p><strong>Precio inicial:</strong> {{ product.iniValue }}€</p>
     <!-- Otros datos del producto que quieras mostrar -->
   </div>
+  <button (click)="loadMoreProducts()" *ngIf="currentPage < totalPages - 1">Cargar más</button>
 </div>
 <ng-template #noProducts>
   <p>No products available.</p>
