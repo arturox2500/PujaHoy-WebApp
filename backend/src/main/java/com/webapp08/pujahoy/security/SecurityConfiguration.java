@@ -167,7 +167,7 @@ public class SecurityConfiguration {
 					.requestMatchers(HttpMethod.POST,"/api/v1/auth/*").permitAll()
 
 					// PRIVATE ENDPOINTS
-					.requestMatchers(HttpMethod.GET,"/api/v1/users").hasAnyRole("USER")
+					.requestMatchers(HttpMethod.GET,"/api/v1/users").hasAnyRole("USER", "ADMIN")
 					.requestMatchers(HttpMethod.GET,"/api/v1/users/*/products").hasAnyRole("USER")
 					.requestMatchers(HttpMethod.GET,"/api/v1/users/*/boughtProducts").hasAnyRole("USER")
 					

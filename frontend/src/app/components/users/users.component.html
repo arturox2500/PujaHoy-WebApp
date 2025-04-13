@@ -1,25 +1,134 @@
+<style>
+    .center-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .page-wrapper {
+        position: relative;
+        min-height: 70vh;
+    }
+
+    .button-container {
+        bottom: 20px;
+    }
+
+    .image {
+        text-align: center;
+    }
+
+    .actions-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
 <div *ngIf="user; else errorTemplate">
-    <h2>{{ user.visibleName }}</h2>
-    <p>{{ user.description }}</p>
-    <p>{{ user.contact }}</p>
-    <p>{{ user.reputation }}</p>
-    <p>{{ user.zipCode }}</p>
-    <div *ngIf="typeApplication == 'owner'">
-        <a routerLink="/editProfile" class="footer-link">Edit</a>
+    <div class="page-wrapper">
+        <div class="section container">
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card text-center">
+                        <div class="image">
+                            <img class="image" [src]="'/api/v1' + user.image"
+                                alt="Profile picture of {{user.visibleName}}" width="300" />
+                        </div>
+                        <div *ngIf="typeApplication == 'owner'; else notOwner">
+                            <h4 style="margin-top: 20px;">{{user.name }}</h4>
+                        </div>
+                        <ng-template #notOwner>
+                            <h4 style="margin-top: 20px;">{{user.visibleName}}</h4>
+                        </ng-template>
+                        <p class="text-secondary mb-1">Verified User ✔️</p>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card mb-3">
+                        <div class="user-details-title">
+                            <h4>User Details</h4>
+                        </div>
+
+                        <div class="card-body">
+                            <div *ngIf="user.active == false">
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-12"><strong>The user is banned</strong></div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div *ngIf="typeApplication == 'owner'">
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3"><strong>Visible name</strong></div>
+                                    <div class="col-sm-9 text-secondary">{{user.visibleName}}</div>
+                                </div>
+                                <hr>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3"><strong>User Rating</strong></div>
+                                <div class="col-sm-9 text-secondary">{{user.reputation}}</div>
+                            </div>
+                            <hr>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3"><strong>Zip code</strong></div>
+                                <div class="col-sm-9 text-secondary">{{user.zipCode}}</div>
+                            </div>
+                            <hr>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3"><strong>Conctact info</strong></div>
+                                <div class="col-sm-9 text-secondary">{{user.contact}}</div>
+                            </div>
+                            <hr>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3"><strong>Description</strong></div>
+                                <div class="col-sm-9 text-secondary">{{user.description}}</div>
+                            </div>
+                            <hr>
+                            <div *ngIf="typeApplication == 'owner'">
+                                <button routerLink="/editProfile" class="footer-link btn btn-primary">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="typeApplication == 'owner'">
+            <div class="center-container">
+                <h4>My Bids & Auctions</h4>
+            </div>
+            <div class="actions-container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <button routerLink="/your-auctions" type="button"
+                            class="footer-link  btn btn-outline-secondary">Your
+                            Auctions</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button routerLink="/product-form" type="button"
+                            class="footer-link  btn btn-outline-secondary">New
+                            Auction</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button routerLink="/your-winning-bids" type="button"
+                            class="footer-link  btn btn-outline-secondary">Your Winning Bids</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="typeApplication == 'admin'">
+            <div class="button-container">
+                <button (click)="bannedUser(user.id)" class="footer-link">{{ text }}</button>
+            </div>
+        </div>
     </div>
 
-    <div *ngIf="typeApplication == 'owner'">
-        <a routerLink="/your-auctions" class="footer-link">Your Auctions</a>
-        <br> 
-        <a routerLink="/product-form" class="footer-link">New Auction</a>
-        <br>
-        <a routerLink="/your-winning-bids" class="footer-link">Your Winning Bids</a>
-    </div>
-
-    <div *ngIf="typeApplication == 'admin'">
-        <button (click)="bannedUser(user.id)" class="footer-link">{{ text }}</button>
-    </div>
-    
 
     <button routerLink="/" class="btn btn-primary">Go to Home</button>
 </div>
