@@ -19,6 +19,7 @@ public interface UserMapper {
         @Mapping(source = "zipCode", target = "zipCode"),
         @Mapping(target = "image", expression = "java(generateImageUrl(userModel.getId()))"),
         @Mapping(source = "rols", target = "rols"),
+        @Mapping(source = "active", target = "active"),
     })
     PublicUserDTO toDTO(UserModel userModel);
 
@@ -40,8 +41,8 @@ public interface UserMapper {
         @Mapping(target = "products", ignore = true),
         @Mapping(target = "encodedPassword", ignore = true),
         @Mapping(target = "pass", ignore = true),
-        @Mapping(target = "active", ignore = true),
-        @Mapping(target = "rols", ignore = true)
+        @Mapping(target = "rols", ignore = true),
+        @Mapping(source = "active", target = "active")
     })
     UserModel toDomain(PublicUserDTO publicUserDTO);
 

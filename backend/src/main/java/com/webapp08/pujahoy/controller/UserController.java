@@ -84,7 +84,7 @@ public class UserController {
                 model.addAttribute("description", user.get().getDescription());
                 model.addAttribute("admin", false);
                 model.addAttribute("owner", true);
-                if (!userService.getActiveById(user.get().getId())) {
+                if (!user.get().isActive()) {
                     model.addAttribute("banned", true);
                     model.addAttribute("registered", false);
                 } else {
@@ -164,7 +164,7 @@ public class UserController {
                 } else { 
                     model.addAttribute("admin", false);
                 }
-                if (userService.getActiveById(seller.get().getId())) {
+                if (seller.get().isActive()) {
                     model.addAttribute("banned", false);
                 } else {
                     model.addAttribute("banned", true);
@@ -260,7 +260,7 @@ public class UserController {
             Optional<PublicUserDTO> user = userService.findByName(username);
 
             if (user.isPresent()) {
-                if (!userService.getActiveById(user.get().getId())){
+                if (!user.get().isActive()){
                     model.addAttribute("text", " You are banned");
                     model.addAttribute("url", "/user");
                     return "pageError";
@@ -320,7 +320,7 @@ public class UserController {
             Optional<PublicUserDTO> user = userService.findByName(username);
 
             if (user.isPresent()) {
-                if (!userService.getActiveById(user.get().getId())){
+                if (!user.get().isActive()){
                     model.addAttribute("text", " You are banned");
                     model.addAttribute("url", "/user");
                     return "pageError";
@@ -346,7 +346,7 @@ public class UserController {
     @GetMapping("/newProduct")
     public String newProduct(Model model, HttpSession session, HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
-        if (principal != null && userService.getActiveById(userService.findByName(principal.getName()).get().getId())) {
+        if (principal != null && userService.findByName(principal.getName()).get().isActive()) {
             session.setAttribute("after", 1);
             return "newAuction";
         } else {
@@ -362,12 +362,12 @@ public class UserController {
         Optional<ProductDTO> oldProd = productService.findById(id);
         Principal principal = request.getUserPrincipal();
         Optional<PublicUserDTO> user = userService.findByName(principal.getName());
-        if (!(oldProd.get().getSeller().getId() == user.get().getId() || userService.getUserTypeById(user.get().getId()).equals("Administrator"))) {
+        if (!(oldProd.get().getSeller().getId() == user.get().getId() || userService.getTypeById(user.get().getId()).equals("Administrator"))) {
             model.addAttribute("text", " This product is not yours");
             model.addAttribute("url", "/");
             return "pageError";
         }
-        if (!userService.getActiveById(userService.findByName(principal.getName()).get().getId())){
+        if (!userService.findByName(principal.getName()).get().isActive()){
             model.addAttribute("text", " You are banned");
             model.addAttribute("url", "/");
             return "pageError";
@@ -423,7 +423,7 @@ public class UserController {
             return "pageError";
         }
 
-        if (!userService.getActiveById(user.get().getId())){
+        if (!user.get().isActive()){
             model.addAttribute("text", " You are banned");
             model.addAttribute("url", "/");
             return "pageError";

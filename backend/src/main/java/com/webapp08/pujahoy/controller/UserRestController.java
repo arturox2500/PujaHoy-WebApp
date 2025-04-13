@@ -41,7 +41,9 @@ public class UserRestController {
         if (principal != null) {
             Optional<PublicUserDTO> user = userService.findByName(principal.getName());
             if (user.isPresent()) {
-                return ResponseEntity.ok(user);
+                PublicUserDTO loggedInUser = user.get();
+                loggedInUser.setTypeApplicant("owner");
+                return ResponseEntity.ok(loggedInUser);
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
@@ -49,8 +51,25 @@ public class UserRestController {
     }
 
     @GetMapping("/{id}")
-    public PublicUserDTO getUserById(@PathVariable Long id) { // Get user by id
-        return userService.findUser(id);
+    public PublicUserDTO getUserById(@PathVariable Long id, HttpServletRequest request) { // Get user by id
+        PublicUserDTO loggedInUser =  userService.findUser(id);
+        Principal principal = request.getUserPrincipal();
+        if (principal != null) {
+            Optional<PublicUserDTO> user = userService.findByName(principal.getName());
+            if (user.isPresent()) {
+                String tipo = userService.getTypeById(user.get().getId());
+                if (tipo.equals("Administrator")){
+                    loggedInUser.setTypeApplicant("admin");
+                } else if (user.get().getId() == id){
+                    loggedInUser.setTypeApplicant("owner");
+                } else {
+                    loggedInUser.setTypeApplicant("user");
+                }
+            }
+        } else{
+            loggedInUser.setTypeApplicant("not user");
+        }
+        return loggedInUser;
     }
 
     @GetMapping("/{id}/products")
@@ -72,7 +91,7 @@ public class UserRestController {
         }
 
         PublicUserDTO loggedInUser = user.get();
-        if (!userService.getActiveById(loggedInUser.getId())) {
+        if (!loggedInUser.isActive()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "Banned user"));
         }
@@ -102,7 +121,7 @@ public class UserRestController {
         }
 
         PublicUserDTO loggedInUser = user.get();
-        if (!userService.getActiveById(loggedInUser.getId())) {
+        if (!loggedInUser.isActive()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "Banned user"));
         }
@@ -152,7 +171,7 @@ public class UserRestController {
         if (principal != null) { 
             Optional<PublicUserDTO> user = userService.findByName(principal.getName());            
             if (user.isPresent()) {
-                if (userService.getUserTypeById(user.get().getId()).equals("Registered User") && user.get().getId() == updatedUserDTO.getId()) {
+                if (userService.getTypeById(user.get().getId()).equals("Registered User") && user.get().getId() == updatedUserDTO.getId()) {
                     PublicUserDTO userUpdated = userService.replaceUser(updatedUserDTO);
                     if (userUpdated == null) {
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not updated due to bad request parameters");

@@ -7,6 +7,7 @@ import { RatedComponent } from './components/rated/rated.component';
 
 const routes: Routes = [
   { path: 'users', component: UserComponent },
+  { path: 'users/:id', component: UserComponent },
   { path: 'auth/login', component: LoginComponent },
   { path: 'product-form', component: ProductsFormComponent },
   { path: 'your-auctions', component: ProductsListComponent },

@@ -71,7 +71,7 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
 
     // Verificar si necesita una transacción
     Optional<TransactionDTO> trans = transactionService.findByProduct(existingProduct.getId());
-    if (!existingProduct.getState().equals("In progress") && trans.isEmpty() && userService.getActiveById(existingProduct.getSeller().getId())) {
+    if (!existingProduct.getState().equals("In progress") && trans.isEmpty() && existingProduct.getSeller().isActive()) {
         productService.createTransaction(existingProduct.getId());
     }
 
@@ -119,7 +119,7 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
             if("Administrator".equalsIgnoreCase(userService.getTypeById(bidder.get().getId()))){
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
-            if(!userService.getActiveById(bidder.get().getId())){
+            if(!bidder.get().isActive()){
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
             if(bidder.get().getId().equals(product.get().getSeller().getId())){
@@ -177,7 +177,7 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
         Optional<PublicUserDTO> user = userService.findByName(principal.getName());
 
         PublicUserDTO loggedInUser = user.get();
-        if (!userService.getActiveById(loggedInUser.getId())) {
+        if (!loggedInUser.isActive()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "Banned user"));
         }
@@ -230,7 +230,7 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
         ProductDTO product = optionalProduct.get();
         PublicUserDTO loggedInUser = user.get();
 
-        if (!userService.getActiveById(loggedInUser.getId())) {
+        if (!loggedInUser.isActive()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "Banned user"));
         }
@@ -260,7 +260,7 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
                         .body(Collections.singletonMap("error", "You cannot edit a product if a user placed a bid"));
             }
             if (!(product.getSeller().getId().equals(loggedInUser.getId())
-                    || userService.getUserTypeById(loggedInUser.getId()).equals("Administrator"))) {
+                    || userService.getTypeById(loggedInUser.getId()).equals("Administrator"))) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .body(Collections.singletonMap("error", "You do not have permission to modify this product"));
             }
@@ -371,11 +371,11 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
         ProductDTO product = optionalProduct.get();
         PublicUserDTO loggedInUser = user.get();
 
-        if (!(product.getSeller().getId().equals(loggedInUser.getId()) || userService.getUserTypeById(loggedInUser.getId()).equals("Administrator"))) {
+        if (!(product.getSeller().getId().equals(loggedInUser.getId()) || userService.getTypeById(loggedInUser.getId()).equals("Administrator"))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "You do not have permission to modify this product"));
         }
-        if (!userService.getActiveById(loggedInUser.getId())) {
+        if (!loggedInUser.isActive()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "Banned user"));
         }
@@ -425,7 +425,7 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "You do not have permission to upload an image for this product"));
         }
-        if (!userService.getActiveById(loggedInUser.getId())) {
+        if (!loggedInUser.isActive()) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Collections.singletonMap("error", "Banned user"));
         }

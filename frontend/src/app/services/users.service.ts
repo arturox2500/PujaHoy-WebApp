@@ -33,6 +33,21 @@ export class usersService {
       );
   }
 
+  public getSellerProfile(id: number): Observable<PublicUserDto> {
+    return this.http.get<PublicUserDto>(`/api/v1/users/${id}`, { withCredentials: true })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  public bannedUser(id: number) {
+    return this.http.put(`/api/v1/users/${id}/active`, { withCredentials: true })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+
   private handleError(error: HttpErrorResponse) {
     if (error.status === 400) {
         console.error('Error 400: Bad request');

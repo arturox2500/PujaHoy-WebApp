@@ -145,7 +145,7 @@ public class ProductController {
         Optional<PublicUserDTO> user = userService.findByName(principal.getName());
 
         if (product.isPresent() && user.isPresent()) {
-            if(!(product.get().getSeller().getId()== user.get().getId() || "Administrator".equalsIgnoreCase(userService.getUserTypeById(user.get().getId())))){
+            if(!(product.get().getSeller().getId()== user.get().getId() || "Administrator".equalsIgnoreCase(userService.getTypeById(user.get().getId())))){
                 model.addAttribute("text", " This product is not yours");
                 model.addAttribute("url", "/");
                 return "pageError";
@@ -220,10 +220,10 @@ public class ProductController {
 
             // Check if user is logged in and handle user-related logic
             if (user != null) {
-                boolean esAdmin = "Administrator".equalsIgnoreCase(userService.getUserTypeById(user.getId()));
+                boolean esAdmin = "Administrator".equalsIgnoreCase(userService.getTypeById(user.getId()));
                 model.addAttribute("admin", esAdmin);
                 model.addAttribute("authenticated_user", true);
-                model.addAttribute("banned", userService.getActiveById(user.getId()));
+                model.addAttribute("banned", user.isActive());
 
                 // Check product state and offer status for the user
                 if (product.get().getState().equals("Finished") || product.get().getState().equals("Delivered")) {
