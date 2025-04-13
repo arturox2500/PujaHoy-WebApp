@@ -23,6 +23,10 @@
   </div>
 </ng-container>
 
+<ng-container *ngIf="router.url === '/'">
+<button routerLink="/products/3/rated" class="footer-link">TEST PARA VALORAR IPHONE</button>
+</ng-container>
+
 <div id="main-content">
   <router-outlet></router-outlet>
 </div>

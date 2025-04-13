@@ -9,6 +9,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { UserComponent } from './components/users/users.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProductsFormComponent } from './components/products/products-form.component';
+import { RatedComponent } from './components/rated/rated.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { ProductsFormComponent } from './components/products/products-form.compo
     FooterComponent,
     LoginComponent,
     UserComponent,
-    ProductsFormComponent
+    ProductsFormComponent,
+    RatedComponent
   ],
   imports: [BrowserModule, FormsModule, HttpClientModule, routing],
   bootstrap: [AppComponent]
