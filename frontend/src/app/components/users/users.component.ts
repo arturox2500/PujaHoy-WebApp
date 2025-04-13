@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { PublicUserDto } from '../../dtos/PublicUser.dto';
 import { ActivatedRoute } from '@angular/router';
 import { usersService } from '../../services/users.service';
-import { LoginService } from '../../services/login.service';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -17,7 +16,7 @@ export class UserComponent {
   text!: string;
   applicater!: PublicUserDto;
 
-  constructor(private route: ActivatedRoute, private usersService: usersService, private loginService: LoginService) { }
+  constructor(private route: ActivatedRoute, private usersService: usersService) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {

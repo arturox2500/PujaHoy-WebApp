@@ -30,23 +30,23 @@ export class productsService {
           );
   }
 
-  getUserProducts(userId: number | undefined): Observable<ProductBasicDto[]> {
+  getUserProducts(userId: number | undefined, page: number): Observable<any> {
     if (userId === undefined) {
       throw new Error('User ID is undefined');
     }
-    return this.http.get<any>(`/api/v1/users/${userId}/products`)
+    return this.http.get<any>(`/api/v1/users/${userId}/products?page=${page}`)
         .pipe(
-          map(response => response.content) 
+          catchError(this.handleError)
         );
   }
 
-  getWinningBids(userId: number | undefined): Observable<ProductBasicDto[]> {
+  getWinningBids(userId: number | undefined, page: number): Observable<any> {
     if (userId === undefined) {
       throw new Error('User ID is undefined');
     }
-    return this.http.get<any>(`/api/v1/users/${userId}/boughtProducts`)
+    return this.http.get<any>(`/api/v1/users/${userId}/boughtProducts?page=${page}`)
         .pipe(
-          map(response => response.content) 
+          catchError(this.handleError)
         );
   }
 
