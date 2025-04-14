@@ -10,7 +10,7 @@ import { UserDto } from '../../dtos/User.dto';
 })
 export class LoginComponent {
   public isRegister: boolean = false; // Alternar entre login y registro
-  public userDto: UserDto = { username: '', password: '', email: '', zipCode: '', visibleName: '' }; // DTO para login/registro
+  public userDto: UserDto = { username: '', password: '', email: '', zipCode: 0, visibleName: '' }; // DTO para login/registro
   public errorMessage: string | null = null; // Mensaje de error
 
   constructor(private loginService: LoginService, private router: Router) {}

@@ -24,34 +24,40 @@
         align-items: center;
     }
 </style>
-<div *ngIf="user; else errorTemplate">
-    <div class="page-wrapper">
-        <div class="section container">
 
+<div *ngIf="user; else errorTemplate">
+    <div class="page-wrapper" style="margin-top: 50px;">
+        <div class="section container">
             <div class="row">
+                <!-- User Profile Picture and Name -->
                 <div class="col-md-4 mb-3">
-                    <div class="card text-center">
+                    <div class="card text-center" >
                         <div class="image">
-                            <img class="image" [src]="'/api/v1' + user.image"
-                                alt="Profile picture of {{user.visibleName}}" width="300" />
+                            <img class="image" style="margin-top: 20px;" [src]="'/api/v1' + user.image"
+                                alt="Profile picture of {{user.visibleName}}" width="300"/>
                         </div>
                         <div *ngIf="typeApplication == 'owner'; else notOwner">
                             <h4 style="margin-top: 20px;">{{user.name }}</h4>
+                            <h5 style="margin-top: 5px;">{{user.visibleName}}</h5>
+                            <h5 style="margin-top: 5px;">{{user.reputation}} ⭐</h5>
                         </div>
                         <ng-template #notOwner>
                             <h4 style="margin-top: 20px;">{{user.visibleName}}</h4>
+                            <h5 style="margin-top: 5px;">{{user.reputation}} ⭐</h5>
                         </ng-template>
                         <p class="text-secondary mb-1">Verified User ✔️</p>
                     </div>
                 </div>
 
+                <!-- User Details -->
                 <div class="col-md-8">
                     <div class="card mb-3">
-                        <div class="user-details-title">
+                        <div class="user-details-title" style="margin-top: 20px; margin-left: 10px;">
                             <h4>User Details</h4>
                         </div>
 
                         <div class="card-body">
+                            <!-- Banned User Message -->
                             <div *ngIf="user.active == false">
                                 <hr>
                                 <div class="row">
@@ -59,46 +65,91 @@
                                 </div>
                                 <hr>
                             </div>
-                            <div *ngIf="typeApplication == 'owner'">
-                                <hr>
+
+                            <!-- Editable Fields for Owner -->
+                            <div *ngIf="typeApplication == 'owner'; else userDetails">
+                                <form (ngSubmit)="onSubmitEdit()" #editForm="ngForm">                                   
+                                    <div class="row mb-3">
+                                        <label for="zipCode" class="col-sm-3 col-form-label"><strong>Zip Code</strong></label>
+                                        <div class="col-sm-9">
+                                            <input
+                                                type="text"
+                                                id="zipCode"
+                                                [(ngModel)]="editData.zipCode"
+                                                name="zipCode"
+                                                class="form-control"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="contact" class="col-sm-3 col-form-label"><strong>Contact Info</strong></label>
+                                        <div class="col-sm-9">
+                                            <input
+                                                type="text"
+                                                id="contact"
+                                                [(ngModel)]="editData.contact"
+                                                name="contact"
+                                                class="form-control"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="description" class="col-sm-3 col-form-label"><strong>Description</strong></label>
+                                        <div class="col-sm-9">
+                                            <textarea
+                                                id="description"
+                                                [(ngModel)]="editData.description"
+                                                name="description"
+                                                class="form-control"
+                                                rows="3"
+                                            ></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 text-end">
+                                            <button type="submit" class="btn btn-success" style="margin-right: 10px;" [disabled]="!editForm.form.valid">Save</button>
+                                            <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Non-Editable User Details -->
+                            <ng-template #userDetails>
                                 <div class="row">
-                                    <div class="col-sm-3"><strong>Visible name</strong></div>
+                                    <div class="col-sm-3"><strong>Visible Name</strong></div>
                                     <div class="col-sm-9 text-secondary">{{user.visibleName}}</div>
                                 </div>
                                 <hr>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-sm-3"><strong>User Rating</strong></div>
-                                <div class="col-sm-9 text-secondary">{{user.reputation}}</div>
-                            </div>
-                            <hr>
-                            <hr>
-                            <div class="row">
-                                <div class="col-sm-3"><strong>Zip code</strong></div>
-                                <div class="col-sm-9 text-secondary">{{user.zipCode}}</div>
-                            </div>
-                            <hr>
-                            <hr>
-                            <div class="row">
-                                <div class="col-sm-3"><strong>Conctact info</strong></div>
-                                <div class="col-sm-9 text-secondary">{{user.contact}}</div>
-                            </div>
-                            <hr>
-                            <hr>
-                            <div class="row">
-                                <div class="col-sm-3"><strong>Description</strong></div>
-                                <div class="col-sm-9 text-secondary">{{user.description}}</div>
-                            </div>
-                            <hr>
-                            <div *ngIf="typeApplication == 'owner'">
-                                <button routerLink="/editProfile" class="footer-link btn btn-primary">Edit</button>
-                            </div>
+                                <div class="row">
+                                    <div class="col-sm-3"><strong>User Rating</strong></div>
+                                    <div class="col-sm-9 text-secondary">{{user.reputation}}</div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3"><strong>Zip Code</strong></div>
+                                    <div class="col-sm-9 text-secondary">{{user.zipCode}}</div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3"><strong>Contact Info</strong></div>
+                                    <div class="col-sm-9 text-secondary">{{user.contact}}</div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3"><strong>Description</strong></div>
+                                    <div class="col-sm-9 text-secondary">{{user.description}}</div>
+                                </div>
+                            </ng-template>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Owner Actions -->
         <div *ngIf="typeApplication == 'owner'">
             <div class="center-container">
                 <h4>My Bids & Auctions</h4>
@@ -106,29 +157,25 @@
             <div class="actions-container">
                 <div class="row">
                     <div class="col-md-4">
-                        <button routerLink="/your-auctions" type="button"
-                            class="footer-link  btn btn-outline-secondary">Your
-                            Auctions</button>
+                        <button routerLink="/your-auctions" type="button" class="footer-link btn btn-outline-secondary">Your Auctions</button>
                     </div>
                     <div class="col-md-4">
-                        <button routerLink="/product-form" type="button"
-                            class="footer-link  btn btn-outline-secondary">New
-                            Auction</button>
+                        <button routerLink="/product-form" type="button" class="footer-link btn btn-outline-secondary">New Auction</button>
                     </div>
                     <div class="col-md-4">
-                        <button routerLink="/your-winning-bids" type="button"
-                            class="footer-link  btn btn-outline-secondary">Your Winning Bids</button>
+                        <button routerLink="/your-winning-bids" type="button" class="footer-link btn btn-outline-secondary">Your Winning Bids</button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Admin Actions -->
         <div *ngIf="typeApplication == 'admin'">
             <div class="button-container">
                 <button (click)="bannedUser(user.id)" class="footer-link">{{ text }}</button>
             </div>
         </div>
     </div>
-
 
     <button routerLink="/" class="btn btn-primary">Go to Home</button>
 </div>

@@ -1,6 +1,6 @@
 export interface UserEditDto {
     id: number,
-    zipCode: string,
+    zipCode: number,
     contact: string,
     description?: string,
 }

@@ -1,7 +1,7 @@
 export interface UserDto {
     email: string,
     password: string,
-    zipCode: string,
+    zipCode: number,
     username: string,
     visibleName: string,
     description?: string,

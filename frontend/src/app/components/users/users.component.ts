@@ -3,6 +3,7 @@ import { PublicUserDto } from '../../dtos/PublicUser.dto';
 import { ActivatedRoute } from '@angular/router';
 import { usersService } from '../../services/users.service';
 import { catchError, forkJoin, of } from 'rxjs';
+import { UserEditDto } from '../../dtos/UserEdit.dto';
 
 @Component({
   selector: 'app-users',
@@ -15,6 +16,7 @@ export class UserComponent {
   typeApplication: string | undefined;
   text!: string;
   applicater: PublicUserDto | undefined;
+  editData: UserEditDto = { id: 0, zipCode: 0, contact: '', description: '' };
 
   constructor(private route: ActivatedRoute, private usersService: usersService) { }
 
@@ -46,6 +48,13 @@ export class UserComponent {
           else
             this.text = 'Unban User';
           this.errorMessage = '';
+
+          this.editData = {
+            id: this.user.id,
+            zipCode: this.user.zipCode || 0,
+            contact: this.user.contact || '',
+            description: this.user.description || '',
+          };
         }
       },
       (error) => {
@@ -92,5 +101,48 @@ export class UserComponent {
         this.errorMessage = error;
       }
     );
+  }
+
+  onSubmitEdit() {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const zipCodeRegex = /^\d{5}$/;
+
+    if (!emailRegex.test(this.editData.contact)) {
+      alert('Invalid email format. Please enter a valid email address.');
+      return;
+    }
+
+    if (!zipCodeRegex.test(this.editData.zipCode.toString())) {
+      alert('Invalid ZIP code. Please enter a 5-digit ZIP code.');
+      return;
+    }
+
+    this.usersService.updateProfile(this.editData).subscribe(
+      (response) => {
+        console.log('Profile updated successfully:', response);
+        alert('Profile updated successfully!');
+        if (this.user) {
+          this.user.zipCode = this.editData.zipCode ?? 0;
+          this.user.contact = this.editData.contact || '';
+          this.user.description = this.editData.description || '';
+        }
+      },
+      (error) => {
+        console.error('Error updating profile:', error);
+        const errorMessage = error?.error?.message || 'Failed to update profile';
+        alert(`Error: ${errorMessage}`);
+      }
+    );
+  }
+
+  cancelEdit() {
+    if (this.user) {
+      this.editData = {
+        id: this.user.id,
+        zipCode: this.user.zipCode ? +this.user.zipCode : 0,
+        contact: this.user.contact || '',
+        description: this.user.description || '',
+      };
+    }
   }
 }
