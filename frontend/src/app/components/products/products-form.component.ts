@@ -154,7 +154,7 @@ export class ProductsFormComponent implements OnInit {
   loadProduct(id: number) {
     forkJoin({
       product: this.productsService.getProductById(id),
-      user: this.loginService.reqUser()  // o el servicio donde esté tu getUserId
+      user: this.loginService.reqUser() 
     }).subscribe({
       next: ({ product, user: user }) => {
         if (user.rols.indexOf("ADMIN") === -1 && product.seller.id !== user.id) {
@@ -170,7 +170,7 @@ export class ProductsFormComponent implements OnInit {
         console.log(product.duration);
       },
       error: (err) => {
-        window.alert('Error al cargar el producto: ' + err);
+        this.router.navigate(['/']);
       }
     });
   }

@@ -13,7 +13,6 @@ export class LoginService {
 
   constructor(private http: HttpClient) {
     this.reqIsLogged();
-
   }
 
   public reqIsLogged() {
@@ -48,8 +47,8 @@ export class LoginService {
     return this.http.post(BASE_URL + "/logout", {}, { withCredentials: true }).subscribe(
       () => {
         console.log("LOGOUT: Successfully");
-        this.logged = false; // Actualiza el estado de autenticación
-        this.user = undefined; // Limpia la información del usuario
+        this.logged = false; 
+        this.user = undefined; 
       },
       (error) => {
         console.error("Error during logout:", error);
@@ -82,7 +81,7 @@ export class LoginService {
         observer.next(this.user.id);
         observer.complete();
       } else {
-        observer.error('Usuario no disponible');
+        observer.error('User not available');
       }
     });
   }
