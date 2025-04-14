@@ -48,10 +48,6 @@ export class usersService {
       );
   }
 
-  getAuthenticatedUser(): Observable<PublicUserDto> {
-    return this.http.get<PublicUserDto>(`/api/v1/me`); // Endpoint para el usuario autenticado
-  }
-
   updateProfile(editData: UserEditDto): Observable<any> {
     return this.http.put(`/api/v1/users`, editData);
   }

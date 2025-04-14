@@ -30,6 +30,7 @@ export class ProductsFormComponent implements OnInit {
         this.loadProduct(this.productId);
       }
     });
+    this.isLoading = false;
   }
 
   product = {
@@ -76,7 +77,8 @@ export class ProductsFormComponent implements OnInit {
           }
         },
         (error) => {
-          window.alert('Could not create product: ' + error.message);
+          window.alert('If another user placed a bid, you cannot edit the auction');
+          this.router.navigate(['/']);
         }
       );
     } else {
