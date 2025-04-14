@@ -12,7 +12,8 @@ const routes: Routes = [
   { path: 'product-form', component: ProductsFormComponent },
   { path: 'your-auctions', component: ProductsListComponent },
   { path: 'your-winning-bids', component: ProductsListComponent },
-  { path: 'products/:id/rated', component: RatedComponent }
+  { path: 'products/:id/rated', component: RatedComponent },
+  { path: 'products/:id/edit', component: ProductsFormComponent}
 ];
 
 export const routing = RouterModule.forRoot(routes);

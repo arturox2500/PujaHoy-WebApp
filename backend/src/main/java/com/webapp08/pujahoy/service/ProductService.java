@@ -160,14 +160,16 @@ public class ProductService {
 		}
 	}
 
-	public ProductDTO updateProduct(long id, ProductDTO pdto, MultipartFile imageFile) throws IOException{
+	public ProductDTO updateProduct(long id, ProductDTO pdto, MultipartFile imageFile) throws IOException {
 		Product product = repository.getReferenceById(id);
 		product.setName(pdto.getName());
 		product.setDescription(pdto.getDescription());
 		product.setIniValue(pdto.getIniValue());
-		if (!imageFile.isEmpty()) {
+	
+		if (imageFile != null && !imageFile.isEmpty()) {
 			this.savePostImage(id, imageFile);
 		}
+	
 		this.save(product);
 		return ProductMapper.INSTANCE.toDTO(product);
 	}
@@ -180,6 +182,7 @@ public class ProductService {
 		productDTO.getIniValue(), 
 		iniHour, endHour, 
 		"In progress", null, userModelRepository.getReferenceById(user.getId()));
+		product.setDuration(productDTO.getDuration());
 		this.save(product);
 
 		return ProductMapper.INSTANCE.toDTO(product);

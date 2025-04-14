@@ -16,7 +16,24 @@ export class productsService {
           );
   }
 
+  editProduct(product: CreateProductDto, prodId: number | undefined) {
+    if (prodId === undefined) {
+      throw new Error('User ID is undefined');
+    }
+    return this.http.put(`/api/v1/products/${prodId}`, product , { withCredentials: true })
+          .pipe(
+            catchError(this.handleError)
+          );
+  }
+
   uploadImage(productId: number, formData: FormData) {
+    return this.http.post(`/api/v1/products/${productId}/image`, formData, {withCredentials: true, responseType: "text"})
+          .pipe(
+            catchError(this.handleError)
+        );
+  }
+
+  putImage(productId: number, formData: FormData) {
     return this.http.post(`/api/v1/products/${productId}/image`, formData, {withCredentials: true, responseType: "text"})
           .pipe(
             catchError(this.handleError)
@@ -45,6 +62,16 @@ export class productsService {
       throw new Error('User ID is undefined');
     }
     return this.http.get<any>(`/api/v1/users/${userId}/boughtProducts?page=${page}`)
+        .pipe(
+          catchError(this.handleError)
+        );
+  }
+
+  getProductById(prodId: number | undefined): Observable<any> {
+    if (prodId === undefined) {
+      throw new Error('Product ID is undefined');
+    }
+    return this.http.get<any>(`/api/v1/products/${prodId}`)
         .pipe(
           catchError(this.handleError)
         );

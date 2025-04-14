@@ -288,7 +288,7 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
                 product.setName(productDTO.getName());
                 product.setDescription(productDTO.getDescription());
                 product.setIniValue(productDTO.getIniValue());
-                productService.save(product);
+                productService.updateProduct(product.getId(), productDTO, null);
 
                 return ResponseEntity.ok(product);
 

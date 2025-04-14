@@ -41,7 +41,7 @@
     </div>
 
     <!-- Duration -->
-    <div class="form-group mb-3">
+    <div class="form-group mb-3" *ngIf="!isEditMode">
       <select
         class="form-control"
         [(ngModel)]="product.duration"

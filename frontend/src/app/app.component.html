@@ -49,6 +49,10 @@
     <button routerLink="/users/3" class="footer-link">TEST PERFIL VENDEDOR 3</button>
   </ng-container>
 
+  <ng-container *ngIf="router.url === '/'">
+    <button routerLink="products/1/edit" class="footer-link">TEST EDITAR PRODUCTO 1</button>
+  </ng-container>
+
   <div id="main-content">
     <router-outlet></router-outlet>
   </div>

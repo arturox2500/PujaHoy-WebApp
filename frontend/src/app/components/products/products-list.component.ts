@@ -15,6 +15,7 @@ export class ProductsListComponent implements OnInit {
   totalPages: number = 0;
   totalElements: number = 0;
   products: any[] = [];
+  pageTitle = ""
 
   constructor(private loginService: LoginService, private productsService: productsService, private route: ActivatedRoute) { }
 
@@ -24,8 +25,10 @@ export class ProductsListComponent implements OnInit {
       this.route.url.subscribe((url) => {
         const path = url[0]?.path;
         if (path === 'your-auctions') {
+          this.pageTitle="Your Products"
           this.loadProducts();
         } else if (path === 'your-winning-bids') {
+          this.pageTitle="Your Winning Bids"
           this.loadWinningBids();
         }
       });

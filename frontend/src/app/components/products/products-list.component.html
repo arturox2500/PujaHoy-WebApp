@@ -1,4 +1,6 @@
 <div class="container px-4">
+  <h2>{{ pageTitle }}</h2>
+  <br>
   <div class="row" *ngIf="(products?.length ?? 0) > 0; else noProducts">
     <div *ngFor="let product of products" class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">
       <a [routerLink]="['/product', product.id]" class="product-link text-decoration-none">

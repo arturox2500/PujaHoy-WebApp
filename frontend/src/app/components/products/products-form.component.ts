@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { productsService } from '../../services/products.service';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-products-form',  
@@ -11,9 +12,20 @@ import { Router } from '@angular/router';
 export class ProductsFormComponent implements OnInit {
   errorMessage: string | undefined;
   selectedFileName: string = '';
-  constructor(private productsService: productsService, private router: Router) { }
+  isEditMode: boolean = false
+  productId: number | undefined
+  constructor(private productsService: productsService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.selectedFileName = '';
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.isEditMode = true;
+        this.productId = +id;
+        this.loadProduct(this.productId);
+      }
+    });
   }
 
   product = {
@@ -37,31 +49,60 @@ export class ProductsFormComponent implements OnInit {
       iniValue: this.product.iniValue,
       duration: this.product.duration
     };
-  
-    this.productsService.createProduct(productToSend).subscribe(
-      (createdProduct: any) => {
-        this.errorMessage = '';
-  
-        if (this.image) {
-          const formData = new FormData();
-          formData.append('image', this.image);
-  
-          this.productsService.uploadImage(createdProduct.id, formData).subscribe(
-            () => {
-              this.router.navigate(['/']);
-            },
-            (error) => {
-              window.alert('Could not upload the image: ' + error.message);
-            }
-          );
-        } else {
-          this.router.navigate(['/']);
+
+    if (this.isEditMode){
+      this.productsService.editProduct(productToSend, this.productId).subscribe(
+        (createdProduct: any) => {
+          this.errorMessage = '';
+    
+          if (this.selectedFileName != "" && this.image) {
+            const formData = new FormData();
+            formData.append('image', this.image);
+    
+            this.productsService.putImage(createdProduct.id, formData).subscribe(
+              () => {
+                this.router.navigate(['/']);
+              },
+              (error) => {
+                window.alert('Could not upload the image: ' + error.message);
+              }
+            );
+          } else {
+            this.router.navigate(['/']);
+          }
+        },
+        (error) => {
+          window.alert('Could not create product: ' + error.message);
         }
-      },
-      (error) => {
-        window.alert('Could not create product: ' + error.message);
-      }
-    );
+      );
+    } else {
+      this.productsService.createProduct(productToSend).subscribe(
+        (createdProduct: any) => {
+          this.errorMessage = '';
+    
+          if (this.image) {
+            const formData = new FormData();
+            formData.append('image', this.image);
+    
+            this.productsService.uploadImage(createdProduct.id, formData).subscribe(
+              () => {
+                this.router.navigate(['/']);
+              },
+              (error) => {
+                window.alert('Could not upload the image: ' + error.message);
+              }
+            );
+          } else {
+            this.router.navigate(['/']);
+          }
+        },
+        (error) => {
+          window.alert('Could not create product: ' + error.message);
+        }
+      );
+    }
+  
+    
   }
 
   isValid(): boolean {
@@ -82,19 +123,19 @@ export class ProductsFormComponent implements OnInit {
       return false;
     }
   
-    if (this.product.duration <= 0) {
-      alert('Must Select a duration');
-      return false;
-    }
-
-    if (!this.image) {
-      alert('Please upload an image before submitting.');
-      return false;
-    }
-  
-    if (!validImageTypes.includes(this.image.type)) {
-      alert('Please select a valid image file (JPEG, JPG, PNG, WEBP).');
-      return false;
+    if (!this.isEditMode){
+      if (this.product.duration <= 0) {
+        alert('Must Select a duration');
+        return false;
+      }
+      if (!this.image) {
+        alert('Please upload an image before submitting.');
+        return false;
+      }
+      if (!validImageTypes.includes(this.image.type)) {
+        alert('Please select a valid image file (JPEG, JPG, PNG, WEBP).');
+        return false;
+      }
     }
   
     return true;
@@ -106,6 +147,23 @@ export class ProductsFormComponent implements OnInit {
     this.image = file;
     this.selectedFileName = file.name;
     console.log('Image selected:', file);
+  }
+
+  loadProduct(id: number) {
+    this.productsService.getProductById(id).subscribe(
+      (product: any) => {
+        this.product = {
+          name: product.name,
+          description: product.description,
+          iniValue: product.iniValue,
+          duration: product.duration
+        };
+        console.log(product.duration)
+      },
+      (error) => {
+        window.alert('Could not load product' + error.message);
+      }
+    );
   }
 
 }
