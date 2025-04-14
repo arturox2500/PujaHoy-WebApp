@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { productsService } from '../../services/products.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { LoginService } from '../../services/login.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-products-form',  
@@ -14,7 +16,7 @@ export class ProductsFormComponent implements OnInit {
   selectedFileName: string = '';
   isEditMode: boolean = false
   productId: number | undefined
-  constructor(private productsService: productsService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private productsService: productsService, private router: Router, private route: ActivatedRoute, private loginService:LoginService) { }
 
   ngOnInit(): void {
     this.selectedFileName = '';
@@ -150,20 +152,27 @@ export class ProductsFormComponent implements OnInit {
   }
 
   loadProduct(id: number) {
-    this.productsService.getProductById(id).subscribe(
-      (product: any) => {
+    forkJoin({
+      product: this.productsService.getProductById(id),
+      user: this.loginService.reqUser()  // o el servicio donde esté tu getUserId
+    }).subscribe({
+      next: ({ product, user: user }) => {
+        if (user.rols.indexOf("ADMIN") === -1 && product.seller.id !== user.id) {
+          this.router.navigate(['/']);
+          return;
+        }  
         this.product = {
           name: product.name,
           description: product.description,
           iniValue: product.iniValue,
           duration: product.duration
         };
-        console.log(product.duration)
+        console.log(product.duration);
       },
-      (error) => {
-        window.alert('Could not load product' + error.message);
+      error: (err) => {
+        window.alert('Error al cargar el producto: ' + err);
       }
-    );
+    });
   }
 
 }
