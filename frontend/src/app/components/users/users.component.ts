@@ -7,7 +7,8 @@ import { UserEditDto } from '../../dtos/UserEdit.dto';
 
 @Component({
   selector: 'app-users',
-  templateUrl: './users.component.html'
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.css']
 })
 export class UserComponent {
   userId: number | null = null;
@@ -17,6 +18,7 @@ export class UserComponent {
   text!: string;
   applicater: PublicUserDto | undefined;
   editData: UserEditDto = { id: 0, zipCode: 0, contact: '', description: '' };
+  isEditing: boolean = false;
 
   constructor(private route: ActivatedRoute, private usersService: usersService) { }
 
@@ -144,5 +146,6 @@ export class UserComponent {
         description: this.user.description || '',
       };
     }
+    this.isEditing = false;
   }
 }

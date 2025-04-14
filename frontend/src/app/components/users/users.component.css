@@ -1,0 +1,24 @@
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-wrapper {
+    position: relative;
+    min-height: 70vh;
+}
+
+.button-container {
+    bottom: 20px;
+}
+
+.image {
+    text-align: center;
+}
+
+.actions-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

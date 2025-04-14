@@ -1,40 +1,13 @@
-<style>
-    .center-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .page-wrapper {
-        position: relative;
-        min-height: 70vh;
-    }
-
-    .button-container {
-        bottom: 20px;
-    }
-
-    .image {
-        text-align: center;
-    }
-
-    .actions-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-</style>
-
 <div *ngIf="user; else errorTemplate">
     <div class="page-wrapper" style="margin-top: 50px;">
         <div class="section container">
             <div class="row">
                 <!-- User Profile Picture and Name -->
                 <div class="col-md-4 mb-3">
-                    <div class="card text-center" >
+                    <div class="card text-center">
                         <div class="image">
                             <img class="image" style="margin-top: 20px;" [src]="'/api/v1' + user.image"
-                                alt="Profile picture of {{user.visibleName}}" width="300"/>
+                                alt="Profile picture of {{user.visibleName}}" width="300" />
                         </div>
                         <div *ngIf="typeApplication == 'owner'; else notOwner">
                             <h4 style="margin-top: 20px;">{{user.name }}</h4>
@@ -68,49 +41,42 @@
 
                             <!-- Editable Fields for Owner -->
                             <div *ngIf="typeApplication == 'owner'; else userDetails">
-                                <form (ngSubmit)="onSubmitEdit()" #editForm="ngForm">                                   
+                                <form (ngSubmit)="onSubmitEdit()" #editForm="ngForm">
                                     <div class="row mb-3">
-                                        <label for="zipCode" class="col-sm-3 col-form-label"><strong>Zip Code</strong></label>
+                                        <label for="zipCode" class="col-sm-3 col-form-label"><strong>Zip
+                                                Code</strong></label>
                                         <div class="col-sm-9">
-                                            <input
-                                                type="text"
-                                                id="zipCode"
-                                                [(ngModel)]="editData.zipCode"
-                                                name="zipCode"
-                                                class="form-control"
-                                                required
-                                            />
+                                            <input type="text" id="zipCode" [(ngModel)]="editData.zipCode"
+                                                name="zipCode" class="form-control" [disabled]="!isEditing" required />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="contact" class="col-sm-3 col-form-label"><strong>Contact Info</strong></label>
+                                        <label for="contact" class="col-sm-3 col-form-label"><strong>Contact
+                                                Info</strong></label>
                                         <div class="col-sm-9">
-                                            <input
-                                                type="text"
-                                                id="contact"
-                                                [(ngModel)]="editData.contact"
-                                                name="contact"
-                                                class="form-control"
-                                                required
-                                            />
+                                            <input type="text" id="contact" [(ngModel)]="editData.contact"
+                                                name="contact" class="form-control" [disabled]="!isEditing" required />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label for="description" class="col-sm-3 col-form-label"><strong>Description</strong></label>
+                                        <label for="description"
+                                            class="col-sm-3 col-form-label"><strong>Description</strong></label>
                                         <div class="col-sm-9">
-                                            <textarea
-                                                id="description"
-                                                [(ngModel)]="editData.description"
-                                                name="description"
-                                                class="form-control"
-                                                rows="3"
-                                            ></textarea>
+                                            <textarea id="description" [(ngModel)]="editData.description"
+                                                name="description" class="form-control" [disabled]="!isEditing"
+                                                rows="3"></textarea>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12 text-end">
-                                            <button type="submit" class="btn btn-success" style="margin-right: 10px;" [disabled]="!editForm.form.valid">Save</button>
-                                            <button type="button" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+                                            <button *ngIf="!isEditing" type="button" class="btn btn-primary" (click)="isEditing = true">Editar</button>
+                                            <ng-container *ngIf="isEditing">
+                                                <button type="submit" class="btn btn-success"
+                                                    style="margin-right: 10px;"
+                                                    [disabled]="!editForm.form.valid">Save</button>
+                                                <button type="button" class="btn btn-secondary"
+                                                    (click)="cancelEdit()">Cancel</button>
+                                            </ng-container>
                                         </div>
                                     </div>
                                 </form>
@@ -157,13 +123,16 @@
             <div class="actions-container">
                 <div class="row">
                     <div class="col-md-4">
-                        <button routerLink="/your-auctions" type="button" class="footer-link btn btn-outline-secondary">Your Auctions</button>
+                        <button routerLink="/your-auctions" type="button"
+                            class="footer-link btn btn-outline-secondary">Your Auctions</button>
                     </div>
                     <div class="col-md-4">
-                        <button routerLink="/product-form" type="button" class="footer-link btn btn-outline-secondary">New Auction</button>
+                        <button routerLink="/product-form" type="button"
+                            class="footer-link btn btn-outline-secondary">New Auction</button>
                     </div>
                     <div class="col-md-4">
-                        <button routerLink="/your-winning-bids" type="button" class="footer-link btn btn-outline-secondary">Your Winning Bids</button>
+                        <button routerLink="/your-winning-bids" type="button"
+                            class="footer-link btn btn-outline-secondary">Your Winning Bids</button>
                     </div>
                 </div>
             </div>
