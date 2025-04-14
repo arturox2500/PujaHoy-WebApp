@@ -16,6 +16,8 @@ export class ProductsFormComponent implements OnInit {
   selectedFileName: string = '';
   isEditMode: boolean = false
   productId: number | undefined
+  isAllowed: boolean = true;
+  isLoading: boolean = true;
   constructor(private productsService: productsService, private router: Router, private route: ActivatedRoute, private loginService:LoginService) { }
 
   ngOnInit(): void {
@@ -151,6 +153,10 @@ export class ProductsFormComponent implements OnInit {
     console.log('Image selected:', file);
   }
 
+  goBack() {
+    this.router.navigate(['/']);
+  }
+
   loadProduct(id: number) {
     forkJoin({
       product: this.productsService.getProductById(id),
@@ -158,7 +164,8 @@ export class ProductsFormComponent implements OnInit {
     }).subscribe({
       next: ({ product, user: user }) => {
         if (user.rols.indexOf("ADMIN") === -1 && product.seller.id !== user.id) {
-          this.router.navigate(['/']);
+          this.isAllowed=false
+          this.isLoading = false
           return;
         }  
         this.product = {
@@ -167,10 +174,12 @@ export class ProductsFormComponent implements OnInit {
           iniValue: product.iniValue,
           duration: product.duration
         };
+        this.isLoading = false
         console.log(product.duration);
       },
       error: (err) => {
-        this.router.navigate(['/']);
+        this.isAllowed=false
+        this.isLoading = false
       }
     });
   }
