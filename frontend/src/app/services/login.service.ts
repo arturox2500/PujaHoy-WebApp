@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { UserDto } from "../dtos/User.dto";
 import { PublicUserDto } from "../dtos/PublicUser.dto";
+import { Observable } from "rxjs";
 
 const BASE_URL = "/api/v1/auth";
 
@@ -12,6 +13,7 @@ export class LoginService {
 
   constructor(private http: HttpClient) {
     this.reqIsLogged();
+
   }
 
   public reqIsLogged() {
@@ -69,5 +71,19 @@ export class LoginService {
 
   currentUser() {
     return this.user;
+  }
+
+  reqUser(): Observable<PublicUserDto> {
+    return this.http.get<PublicUserDto>('/api/v1/users', { withCredentials: true });
+  }
+  getUserId(): Observable<number> {
+    return new Observable((observer) => {
+      if (this.user) {
+        observer.next(this.user.id);
+        observer.complete();
+      } else {
+        observer.error('Usuario no disponible');
+      }
+    });
   }
 }

@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 
 export class ProductsListComponent implements OnInit {
-  public userId: number | undefined = this.loginService.currentUser()?.id;
+  public userId: number | undefined;
   currentPage: number = 0;
   totalPages: number = 0;
   totalElements: number = 0;
@@ -19,12 +19,18 @@ export class ProductsListComponent implements OnInit {
   constructor(private loginService: LoginService, private productsService: productsService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.route.url.subscribe((url) => {
-      if (url[0].path === 'your-auctions') {
-        this.loadProducts();
-      } else if (url[0].path === 'your-winning-bids') {
-        this.loadWinningBids();
-      }
+    this.loginService.reqUser().subscribe((user) => {
+      this.userId = user.id;
+      this.route.url.subscribe((url) => {
+        const path = url[0]?.path;
+        if (path === 'your-auctions') {
+          this.loadProducts();
+        } else if (path === 'your-winning-bids') {
+          this.loadWinningBids();
+        }
+      });
+    }, (error) => {
+      console.log('Error:', error);
     });
   }
 
