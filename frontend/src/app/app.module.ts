@@ -10,6 +10,7 @@ import { UserComponent } from './components/users/users.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProductsFormComponent } from './components/products/products-form.component';
 import { ProductsListComponent } from './components/products/products-list.component';
+import { ProductDetailComponent } from './components/products/products-details.component';
 import { RatedComponent } from './components/rated/rated.component';
 //import { CommonModule } from '@angular/common';
 
@@ -22,7 +23,8 @@ import { RatedComponent } from './components/rated/rated.component';
     UserComponent,
     ProductsFormComponent,
     RatedComponent,
-    ProductsListComponent
+    ProductsListComponent,
+    ProductDetailComponent
   ],
   imports: [BrowserModule, FormsModule, HttpClientModule, routing],
   bootstrap: [AppComponent]

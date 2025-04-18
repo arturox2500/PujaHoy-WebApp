@@ -1,0 +1,72 @@
+<!-- BREADCRUMB -->
+<div class="section py-2 bg-light border-bottom">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <nav class="breadcrumb-custom">
+            <a routerLink="/" class="breadcrumb-link">HOME</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">{{ product?.name?.toUpperCase() }}</span>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- PRODUCT SECTION -->
+  <div class="section py-5">
+    <div class="container">
+      <div class="row">
+        <!-- Product Image -->
+        <div class="col-md-5">
+          <div class="product-preview border p-3">
+            <img
+              [src]="product?.imgURL ? '/api/v1' + product?.imgURL : '/img/default-product.png'"
+              class="img-fluid"
+              alt="Product image"
+            />
+          </div>
+        </div>
+  
+        <!-- Product Details -->
+        <div class="col-md-5">
+          <div class="product-details">
+            <h2 class="product-name">{{ product?.name }}</h2>
+            <h4 class="product-price text-danger mb-3">Initial Price: €{{ product?.iniValue }}</h4>
+            <p class="mb-2"><strong>Status:</strong> {{ product?.state }}</p>
+            <p>{{ product?.description }}</p>
+  
+            <!-- Place Bid Input -->
+            <div class="mb-3">
+              <input type="number" class="form-control form-control-sm mb-2" placeholder="Place your bid">
+              <button class="btn btn-sm btn-primary">Place Bid</button>
+            </div>
+  
+            <!-- Actions -->
+            <div class="my-3">
+              <button class="btn btn-sm btn-outline-secondary me-2">Seller</button>
+              <button class="btn btn-sm btn-outline-danger me-2">Delete</button>
+              <button class="btn btn-sm btn-outline-success me-2">Checkout</button>
+              <button class="btn btn-sm btn-outline-warning">Edit</button>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Auction Info -->
+        <div class="col-md-2 text-end">
+          <div class="info-box mb-3">
+            <small class="text-muted"><strong>End Date:</strong></small>
+            <div class="fw-bold">{{ product?.endHour }}</div>
+          </div>
+          <div class="info-box mb-3">
+            <small class="text-muted"><strong>Winning Bid:</strong></small>
+            <div class="fw-bold text-success">€{{ product?.winningBid || 'N/A' }}</div>
+          </div>
+          <div class="info-box">
+            <small class="text-muted"><strong>Bidder:</strong></small>
+            <div class="fw-bold">{{ product?.winningBidder || 'N/A' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

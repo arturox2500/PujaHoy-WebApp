@@ -3,6 +3,7 @@ import { LoginComponent } from './components/login/login.component';
 import { UserComponent } from './components/users/users.component';
 import { ProductsFormComponent } from './components/products/products-form.component';
 import { ProductsListComponent } from './components/products/products-list.component';
+import { ProductDetailComponent } from './components/products/products-details.component';
 import { RatedComponent } from './components/rated/rated.component';
 
 const routes: Routes = [
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path: 'your-auctions', component: ProductsListComponent },
   { path: 'your-winning-bids', component: ProductsListComponent },
   { path: 'products/:id/rated', component: RatedComponent },
-  { path: 'products/:id/edit', component: ProductsFormComponent}
+  { path: 'products/:id/edit', component: ProductsFormComponent},
+  { path: 'product/:id', component: ProductDetailComponent }
 ];
 
 export const routing = RouterModule.forRoot(routes);
