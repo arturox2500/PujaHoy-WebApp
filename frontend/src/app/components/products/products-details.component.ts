@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { LoginService } from '../../services/login.service';
 import { productsService } from '../../services/products.service';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Chart, CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend, LineController } from 'chart.js';
 
 @Component({
   selector: 'app-product-detail',
@@ -10,6 +11,9 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   //styleUrls: ['./products-details.component.css']
 })
 export class ProductDetailComponent implements OnInit {
+  @ViewChild('bidsChart') bidsChart: any;
+  private chart: Chart | undefined;
+
   productId: number | undefined;
   public userId: number | undefined;
   product: any;
@@ -21,6 +25,7 @@ export class ProductDetailComponent implements OnInit {
   safeMapUrl?: SafeResourceUrl;
 
   constructor(private loginService: LoginService, private productsService: productsService, private route: ActivatedRoute, private sanitizer: DomSanitizer) { }
+  
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -33,6 +38,7 @@ export class ProductDetailComponent implements OnInit {
             console.log('Producto recibido:', data);
             this.product = data;
             this.generateSafeMapUrl(this.product.seller.zipCode);
+            this.loadChart()
           },
           (error) => {
             console.error('Error al cargar el producto:', error);
@@ -48,6 +54,8 @@ export class ProductDetailComponent implements OnInit {
 
   }
 
+  
+
   placeBid(): void {
     if (this.bidAmount !== undefined && this.bidAmount > 3) {
       this.bidMessage = 'Puja realizada correctamente';
@@ -62,4 +70,35 @@ export class ProductDetailComponent implements OnInit {
     const rawUrl = `https://www.google.com/maps?q=${encodeURIComponent(zipCode + ', España')}&output=embed`;
     this.safeMapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(rawUrl);
   }
+
+  loadChart() {
+    Chart.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend, LineController);
+    const values = this.product.offers.map((b: any) => b.cost).sort((a:number, b:number) => a - b);
+    const labels = this.product.offers.map((_:any, index: number) => `Bid ${index + 1}`);
+    const ctx = this.bidsChart.nativeElement.getContext('2d');
+    
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Bid Progression',
+          data: values,
+          borderColor: 'rgb(75, 192, 192)',
+          fill: false,
+        }]
+      },
+      options: {
+        scales: {
+          x: {
+            type: 'category',
+          },
+          y: {
+            type: 'linear',
+          }
+        }
+      }
+    });
+  }
+
 }

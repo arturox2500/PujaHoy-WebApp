@@ -7,27 +7,28 @@
     color: #555;
   }
   
-  .breadcrumb-link {
-    text-decoration: none;
-    color: #999;
-    font-weight: 500;
-  }
-  
-  .breadcrumb-link:hover {
-    text-decoration: underline;
-  }
-  
-  .breadcrumb-separator {
-    margin: 0 8px;
-    color: #ccc;
-  }
-  
-  .breadcrumb-current {
-    color: #222;
-    font-weight: 600;
-  }
-  
-  .btn-sm {
-    font-size: 0.75rem;
-    padding: 0.35rem 0.6rem;
-  }
+.breadcrumb-link {
+  text-decoration: none;
+  color: #999;
+  font-weight: 500;
+}
+
+.breadcrumb-link:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-separator {
+  margin: 0 8px;
+  color: #ccc;
+}
+
+.breadcrumb-current {
+  color: #222;
+  font-weight: 600;
+}
+
+.btn-sm {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.6rem;
+}
+
