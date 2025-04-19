@@ -16,7 +16,7 @@ public class ProductDTO {
     private PublicUserDTO seller;
     private Long duration;
     
-    private List<OfferBasicDTO> offers;
+    private List<OfferDTO> offers;
     
 
     public Long getId() {
@@ -73,10 +73,10 @@ public class ProductDTO {
     public void setSeller(PublicUserDTO seller) {
         this.seller = seller;
     }
-    public List<OfferBasicDTO> getOffers() {
+    public List<OfferDTO> getOffers() {
         return offers;
     }
-    public void setOffers(List<OfferBasicDTO> offers) {
+    public void setOffers(List<OfferDTO> offers) {
         this.offers = offers;
     }
 

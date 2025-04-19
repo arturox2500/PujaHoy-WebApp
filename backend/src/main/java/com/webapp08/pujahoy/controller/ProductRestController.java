@@ -159,11 +159,11 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
     }
 
     @GetMapping("/{id_product}/offers")
-    public ResponseEntity<List<OfferBasicDTO>> getOffers(@PathVariable long id_product) {
+    public ResponseEntity<List<OfferDTO>> getOffers(@PathVariable long id_product) {
         Optional<ProductDTO> product = productService.findById(id_product);
         
         if (product.isPresent()) {
-            List<OfferBasicDTO> offerDTOs = product.get().getOffers();
+            List<OfferDTO> offerDTOs = product.get().getOffers();
             return ResponseEntity.ok(offerDTOs); 
         } else {
             return ResponseEntity.notFound().build(); 

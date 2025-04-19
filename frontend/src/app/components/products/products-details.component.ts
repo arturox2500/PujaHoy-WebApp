@@ -12,6 +12,10 @@ export class ProductDetailComponent implements OnInit {
     productId: number | undefined;
     public userId: number | undefined;
     product: any;
+
+    bidAmount: number | undefined;
+    bidMessage: string = '';
+    bidValid: boolean = false;
   
     constructor(private loginService: LoginService, private productsService: productsService, private route: ActivatedRoute) {}
   
@@ -39,4 +43,14 @@ export class ProductDetailComponent implements OnInit {
         });
         
     }
+
+    placeBid(): void {
+        if (this.bidAmount !== undefined && this.bidAmount > 3) {
+          this.bidMessage = 'Puja realizada correctamente';
+          this.bidValid = true;
+        } else {
+          this.bidMessage = 'Error al pujar. El valor debe ser mayor a 3';
+          this.bidValid = false;
+        }
+      }
   }
