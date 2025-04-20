@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 
-import com.webapp08.pujahoy.dto.OfferBasicDTO;
 import com.webapp08.pujahoy.dto.OfferDTO;
 import com.webapp08.pujahoy.dto.ProductBasicDTO;
 import com.webapp08.pujahoy.dto.ProductDTO;
@@ -451,11 +450,11 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
         // Check if the user can rate this product
         Principal principal = request.getUserPrincipal();
         if(principal == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You must be authenticated");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("error","You must be authenticated"));
         }
         Optional<PublicUserDTO> user = userService.findByName(principal.getName());
         if (!user.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error","User not found"));
         }
 
         Optional<ProductDTO> product = productService.findById(product_id);
@@ -471,7 +470,7 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
                     case 0:
                     return ResponseEntity.badRequest().body(Collections.singletonMap("error", "The rating must be between 1 and 5"));
                     case 1:
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Transaction not found");
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error","Transaction not found"));
                     case 2:
                     return ResponseEntity.badRequest().body(Collections.singletonMap("error", "You are not the buyer"));
                     case 3:
@@ -479,7 +478,7 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
                 }
             }
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error","Product not found"));
         
     }
     

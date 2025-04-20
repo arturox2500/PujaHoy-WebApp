@@ -11,7 +11,6 @@ import { LoginComponent } from './components/login/login.component';
 import { ProductsFormComponent } from './components/products/products-form.component';
 import { ProductsListComponent } from './components/products/products-list.component';
 import { ProductDetailComponent } from './components/products/products-details.component';
-import { RatedComponent } from './components/rated/rated.component';
 //import { CommonModule } from '@angular/common';
 
 @NgModule({
@@ -22,7 +21,6 @@ import { RatedComponent } from './components/rated/rated.component';
     LoginComponent,
     UserComponent,
     ProductsFormComponent,
-    RatedComponent,
     ProductsListComponent,
     ProductDetailComponent
   ],

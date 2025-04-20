@@ -47,9 +47,12 @@
 
                     <!-- Actions -->
                     <div class="my-3">
-                        <button class="btn btn-sm btn-outline-secondary me-2">Seller</button>
+                        <button routerLink="/users/{{ product?.seller?.id }}"
+                            class="btn btn-sm btn-outline-secondary me-2">Seller</button>
                         <button class="btn btn-sm btn-outline-danger me-2">Delete</button>
-                        <button class="btn btn-sm btn-outline-success me-2">Checkout</button>
+                        <button *ngIf="!ratedProduct" (click)="ratedProduct = !ratedProduct"
+                            class="btn btn-sm btn-outline-success me-2">Rating</button>
+                        <button *ngIf="checkoutProduct" (click)="checkout()" class="btn btn-sm btn-outline-info me-2">Checkout</button>
                         <button class="btn btn-sm btn-outline-warning">Edit</button>
                     </div>
                 </div>
@@ -72,6 +75,18 @@
                     <div class="fw-bold">{{ product?.winningBidder || 'N/A' }}</div>
                 </div>
             </div>
+
+            <div *ngIf="ratedProduct" class="d-flex justify-content-center" style="padding-top: 15px;">
+                <div class="p-3 border rounded bg-light w-20">
+                  <h5 class="mb-3">Rate this product</h5>
+                  <div class="mb-3">
+                    <input type="number" [(ngModel)]="rating" min="1" max="5" required
+                           class="form-control w-50 d-inline-block text-center" placeholder="1-5">
+                  </div>
+                  <button class="btn btn-sm btn-outline-success me-2" (click)="submitRating()">Submit</button>
+                  <button (click)="ratedProduct = !ratedProduct" class="btn btn-sm btn-outline-danger">Cancel</button>
+                </div>
+              </div>
 
             <h3 style="margin-top: 50px;">Product Location</h3>
             <div class="map-wrapper">

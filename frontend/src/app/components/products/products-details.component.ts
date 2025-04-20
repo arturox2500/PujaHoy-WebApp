@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { LoginService } from '../../services/login.service';
 import { productsService } from '../../services/products.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Chart, CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend, LineController } from 'chart.js';
 
@@ -14,6 +14,12 @@ export class ProductDetailComponent implements OnInit {
   @ViewChild('bidsChart') bidsChart: any;
   private chart: Chart | undefined;
 
+  ratedProduct: boolean = false;
+  rating!: number;
+  checkoutProduct: boolean = true;
+
+  errorMessage: string | undefined;
+
   productId: number | undefined;
   public userId: number | undefined;
   product: any;
@@ -24,8 +30,8 @@ export class ProductDetailComponent implements OnInit {
 
   safeMapUrl?: SafeResourceUrl;
 
-  constructor(private loginService: LoginService, private productsService: productsService, private route: ActivatedRoute, private sanitizer: DomSanitizer) { }
-  
+  constructor(private loginService: LoginService, private productsService: productsService, private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer) { }
+
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -54,7 +60,7 @@ export class ProductDetailComponent implements OnInit {
 
   }
 
-  
+
 
   placeBid(): void {
     if (this.bidAmount !== undefined && this.bidAmount > 3) {
@@ -73,10 +79,10 @@ export class ProductDetailComponent implements OnInit {
 
   loadChart() {
     Chart.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend, LineController);
-    const values = this.product.offers.map((b: any) => b.cost).sort((a:number, b:number) => a - b);
-    const labels = this.product.offers.map((_:any, index: number) => `Bid ${index + 1}`);
+    const values = this.product.offers.map((b: any) => b.cost).sort((a: number, b: number) => a - b);
+    const labels = this.product.offers.map((_: any, index: number) => `Bid ${index + 1}`);
     const ctx = this.bidsChart.nativeElement.getContext('2d');
-    
+
     new Chart(ctx, {
       type: 'line',
       data: {
@@ -101,4 +107,39 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
+  submitRating() {
+    if (this.rating < 1 || this.rating > 5) {
+      window.alert('Rating must be between 1 and 5');
+      return;
+    } else {
+      this.productsService.rateProduct(this.rating, this.product?.id).subscribe(
+        () => {
+          this.errorMessage = '';
+          const goToProduct = confirm('Rating submitted successfully');
+          if (goToProduct) {
+            this.ratedProduct = false;
+          }
+        },
+        (error) => {
+          window.alert(error.message);
+        }
+      );
+    }
+  }
+
+  checkout() {
+    this.productsService.checkoutProduct("Delivered", this.product?.id).subscribe(
+      (data) => {
+        this.errorMessage = '';
+        this.product = data;
+        const goToProduct = confirm('Checkout submitted successfully');
+        if (goToProduct) {
+          this.checkoutProduct = false;
+        }
+      },
+      (error) => {
+        window.alert(error.message);
+      }
+    );
+  }
 }
