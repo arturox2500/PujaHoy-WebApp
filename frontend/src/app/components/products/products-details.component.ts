@@ -15,6 +15,7 @@ import { OfferDTO } from '../../dtos/OfferDTO.dto';
 })
 export class ProductDetailComponent implements OnInit {
   @ViewChild('bidsChart') bidsChart: any;
+  showChart = true;
   private chart: Chart | undefined;
 
   ratedProduct: boolean = false;
@@ -49,6 +50,8 @@ export class ProductDetailComponent implements OnInit {
   winningBid: number | undefined;
   winningBidder: string = 'N/A';
 
+  productOffers: any;
+
   constructor(private loginService: LoginService, private userService: usersService, private productsService: productsService, private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer) { }
 
 
@@ -65,6 +68,7 @@ export class ProductDetailComponent implements OnInit {
           (data) => {
             console.log('Producto recibido:', data);
             this.product = data;
+            this.productOffers = this.product.offers.map((offer: any) => offer.cost).sort((a:number, b:number) => a - b);
             if (this.product?.offers?.length > 0) {
               this.higherOffer = this.product.offers[this.product.offers.length - 1];
             }
@@ -108,6 +112,7 @@ export class ProductDetailComponent implements OnInit {
       next: (response) => {
         this.message = { text: 'Bid placed successfully!', type: 'success' };
         this.higherOffer = response;
+        this.productOffers.push(this.higherOffer?.cost);
         this.product.offers.push(response);
         this.loadChart();
       },
@@ -125,33 +130,40 @@ export class ProductDetailComponent implements OnInit {
 
   loadChart() {
     Chart.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend, LineController);
-    const values = this.product.offers.map((b: any) => b.cost).sort((a: number, b: number) => a - b);
-    const labels = this.product.offers.map((_: any, index: number) => `Bid ${index + 1}`);
+    const labels = this.productOffers.map((_: any, index: number) => `Bid ${index + 1}`);
     const ctx = this.bidsChart.nativeElement.getContext('2d');
-
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Bid Progression',
-          data: values,
-          borderColor: 'rgb(75, 192, 192)',
-          fill: false,
-        }]
-      },
-      options: {
-        scales: {
-          x: {
-            type: 'category',
-          },
-          y: {
-            type: 'linear',
+  
+    if (this.chart) {
+      this.chart.data.labels = labels;
+      this.chart.data.datasets[0].data = this.productOffers;
+      console.log('Product offers:', this.productOffers);
+      this.chart.update();
+    } else {
+      this.chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Bid Progression',
+            data: this.productOffers,
+            borderColor: 'rgb(75, 192, 192)',
+            fill: false,
+          }]
+        },
+        options: {
+          scales: {
+            x: {
+              type: 'category',
+            },
+            y: {
+              type: 'linear',
+            }
           }
         }
-      }
-    });
+      });
+    }
   }
+  
 
   submitRating() {
     if (this.rating < 1 || this.rating > 5) {

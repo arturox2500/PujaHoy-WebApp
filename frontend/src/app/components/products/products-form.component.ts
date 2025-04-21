@@ -66,19 +66,19 @@ export class ProductsFormComponent implements OnInit {
     
             this.productsService.putImage(createdProduct.id, formData).subscribe(
               () => {
-                this.router.navigate(['/']);
+                this.router.navigate(['/product/'+this.productId]);
               },
               (error) => {
                 window.alert('Could not upload the image: ' + error.message);
               }
             );
           } else {
-            this.router.navigate(['/']);
+            this.router.navigate(['/product/'+this.productId]);
           }
         },
         (error) => {
           window.alert('If another user placed a bid, you cannot edit the auction');
-          this.router.navigate(['/']);
+          this.router.navigate(['/product/'+this.productId]);
         }
       );
     } else {
@@ -92,14 +92,14 @@ export class ProductsFormComponent implements OnInit {
     
             this.productsService.uploadImage(createdProduct.id, formData).subscribe(
               () => {
-                this.router.navigate(['/']);
+                this.router.navigate(['/product/'+this.productId]);
               },
               (error) => {
                 window.alert('Could not upload the image: ' + error.message);
               }
             );
           } else {
-            this.router.navigate(['/']);
+            this.router.navigate(['/product/'+this.productId]);
           }
         },
         (error) => {
@@ -158,6 +158,7 @@ export class ProductsFormComponent implements OnInit {
   goBack() {
     this.router.navigate(['/']);
   }
+
 
   loadProduct(id: number) {
     forkJoin({

@@ -63,7 +63,7 @@
                                 Checkout
                             </button>
                         </div>
-                        <button *ngIf="canEdit" routerLink="products/{{ product?.id }}/edit"
+                        <button *ngIf="canEdit" routerLink="/product/{{ product?.id }}/edit"
                             class="btn btn-sm btn-outline-danger me-2">Edit</button>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
             <br><br>
             <div id="bid-history">
                 <h3>Bidding History</h3>
-                <canvas #bidsChart width="400" height="200"></canvas>
+                <canvas #bidsChart></canvas>
             </div>
         </div>
     </div>
