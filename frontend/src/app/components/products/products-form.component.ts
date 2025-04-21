@@ -38,6 +38,7 @@ export class ProductsFormComponent implements OnInit {
     description: '',
     iniValue: 0,
     duration: 0,
+    hasBids: false
   };
 
   image: File | null = null;
@@ -175,8 +176,14 @@ export class ProductsFormComponent implements OnInit {
           name: product.name,
           description: product.description,
           iniValue: product.iniValue,
-          duration: product.duration
+          duration: product.duration,
+          hasBids: product.offers.length>0
         };
+
+        if (this.product.hasBids){
+          this.isAllowed=false
+        }
+
         this.isLoading = false
         console.log(product.duration);
       },
