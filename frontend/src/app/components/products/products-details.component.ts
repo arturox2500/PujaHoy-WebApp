@@ -110,17 +110,30 @@ export class ProductDetailComponent implements OnInit {
   placeBid(): void {
     this.productsService.postOffer(this.productId, this.bidAmount).subscribe({
       next: (response) => {
-        this.message = { text: 'Bid placed successfully!', type: 'success' };
+        alert('Bid placed successfully!');
         this.higherOffer = response;
         this.productOffers.push(this.higherOffer?.cost);
         this.product.offers.push(response);
         this.loadChart();
       },
       error: (err) => {
-        this.message = { text: '' + (err.error?.message || 'Unexpected error'), type: 'error' };
-
+        alert('ERROR, Bid is too low');
       }
     });
+  }
+
+  deleteProduct() {
+    if (this.productId) {
+      this.productsService.deleteProduct(this.productId).subscribe(
+        () => {
+          alert('Product deleted successfully.');
+          this.router.navigate(['/']); 
+        },
+        (error) => {
+          alert('Failed to delete the product.');
+        }
+      );
+    }
   }
 
   private generateSafeMapUrl(zipCode: string): void {

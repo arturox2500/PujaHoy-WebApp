@@ -97,6 +97,10 @@ export class productsService {
       );
   }
 
+  deleteProduct(prodId: number | undefined): Observable<any> {
+    return this.http.delete(`/api/v1/products/${prodId}`);
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error && error.error.error) {
       console.error(`Backend error: ${error.error.error}`);

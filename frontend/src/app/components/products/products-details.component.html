@@ -40,17 +40,12 @@
                         <button class="btn btn-sm btn-primary" (click)="placeBid()">Place Bid</button>
                     </div>
 
-                    <!-- Bid Message -->
-                    <div *ngIf="message"
-                        [ngClass]="{'text-success': message.type === 'success', 'text-danger': message.type === 'error'}">
-                        {{ message.text }}
-                    </div>
 
                     <!-- Actions -->
                     <div class="my-3">
                         <button routerLink="/users/{{ product?.seller?.id }}"
                             class="btn btn-sm btn-outline-secondary me-2">Seller</button>
-                        <button *ngIf="canDelete" class="btn btn-sm btn-outline-danger me-2">Delete</button>
+                        <button *ngIf="canDelete" (click)="deleteProduct()" class="btn btn-sm btn-outline-danger me-2">Delete</button>
                         <div *ngIf="canRate">
                             <button *ngIf="!ratedProduct" (click)="ratedProduct = !ratedProduct"
                                 class="btn btn-sm btn-outline-success me-2">
