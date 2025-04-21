@@ -51,6 +51,7 @@ export class usersService {
   updateProfile(editData: UserEditDto): Observable<any> {
     return this.http.put(`/api/v1/users`, editData);
   }
+  
 
 
   private handleError(error: HttpErrorResponse) {

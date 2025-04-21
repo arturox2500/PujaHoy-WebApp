@@ -4,6 +4,8 @@ import { productsService } from '../../services/products.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Chart, CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend, LineController } from 'chart.js';
+import { usersService } from '../../services/users.service';
+import { PublicUserDto } from '../../dtos/PublicUser.dto';
 
 @Component({
   selector: 'app-product-detail',
@@ -17,8 +19,11 @@ export class ProductDetailComponent implements OnInit {
   ratedProduct: boolean = false;
   rating!: number;
   checkoutProduct: boolean = true;
+  checkoutdone: boolean=false;
 
   errorMessage: string | undefined;
+
+  user: PublicUserDto | undefined;
 
   productId: number | undefined;
   public userId: number | undefined;
@@ -28,23 +33,41 @@ export class ProductDetailComponent implements OnInit {
   bidMessage: string = '';
   bidValid: boolean = false;
 
+  message: { text: string, type: 'success' | 'error' } | null = null;
+
+  canPlaceABid: boolean= false;
+  canEdit: boolean= false;
+  canDelete: boolean= false;
+  canCheckOut: boolean= false;
+  canRate: boolean= false;
+
   safeMapUrl?: SafeResourceUrl;
 
-  constructor(private loginService: LoginService, private productsService: productsService, private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer) { }
+  constructor(private loginService: LoginService, private userService: usersService, private productsService: productsService, private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer) { }
 
 
   ngOnInit(): void {
+    let userLoaded = false;
+    let productLoaded = false;
+  
     this.route.paramMap.subscribe(params => {
       const idParam = params.get('id');
       this.productId = idParam ? +idParam : undefined;
-
+  
       if (this.productId !== undefined) {
         this.productsService.getProductById(this.productId).subscribe(
           (data) => {
             console.log('Producto recibido:', data);
             this.product = data;
+            productLoaded = true;
+  
+            // Intentar ejecutar si ambos están cargados
+            if (userLoaded && productLoaded) {
+              this.selectbutton();
+            }
+  
             this.generateSafeMapUrl(this.product.seller.zipCode);
-            this.loadChart()
+            this.loadChart();
           },
           (error) => {
             console.error('Error al cargar el producto:', error);
@@ -54,22 +77,35 @@ export class ProductDetailComponent implements OnInit {
         console.error('Product ID no válido');
       }
     });
-    this.loginService.reqUser().subscribe((user) => {
-      this.userId = user.id;
-    });
-
+  
+    this.loginService.reqUser().subscribe(
+      (user) => {
+        this.user = user;
+        userLoaded = true;
+  
+        // Intentar ejecutar si ambos están cargados
+        if (userLoaded && productLoaded) {
+          this.selectbutton();
+        }
+      },
+      (error) => {
+        console.error('Error al cargar el usuario:', error);
+      }
+    );
   }
 
 
 
   placeBid(): void {
-    if (this.bidAmount !== undefined && this.bidAmount > 3) {
-      this.bidMessage = 'Puja realizada correctamente';
-      this.bidValid = true;
-    } else {
-      this.bidMessage = 'Error al pujar. El valor debe ser mayor a 3';
-      this.bidValid = false;
-    }
+    this.productsService.postOffer(this.productId, this.bidAmount).subscribe({
+        next: (response) => {
+          this.message = { text: 'Bid placed successfully!', type: 'success' };
+        },
+        error: (err) => {
+          this.message = { text: '' + (err.error?.message || 'Unexpected error'), type: 'error' };
+          
+        }
+      });
   }
 
   private generateSafeMapUrl(zipCode: string): void {
@@ -118,6 +154,7 @@ export class ProductDetailComponent implements OnInit {
           const goToProduct = confirm('Rating submitted successfully');
           if (goToProduct) {
             this.ratedProduct = false;
+            this.selectbutton();
           }
         },
         (error) => {
@@ -135,11 +172,49 @@ export class ProductDetailComponent implements OnInit {
         const goToProduct = confirm('Checkout submitted successfully');
         if (goToProduct) {
           this.checkoutProduct = false;
+          this.checkoutdone=true;
         }
       },
       (error) => {
         window.alert(error.message);
       }
     );
+  }
+  selectbutton() {
+    if (this.user) {
+      const isAdmin = this.user.rols?.includes('ADMIN');
+      const isSeller = this.user.id === this.product.seller?.id;
+      const isActive = this.product.state === "In progress";
+      const isFinished = this.product.state === "Finished";
+      const isBanned = !this.user.active;
+      const hasOffers = this.product.offers.length > 0;
+  
+      // Declarar isBuyer fuera y asignar valor condicionalmente
+      let isBuyer = false;
+      if (hasOffers) {
+        isBuyer = this.user.id === this.product.offers[this.product.offers.length - 1].user.id;
+      }
+  
+      // Place bid
+      if (!isAdmin && !isSeller && !isBanned && isActive) {
+        this.canPlaceABid = true;
+      }
+  
+      // Delete And Edit
+      if ((isAdmin || isSeller) && !hasOffers) {
+        this.canDelete = true;
+        this.canEdit = true;
+      }
+  
+      // Checkout
+      if (isFinished && isBuyer && !this.checkoutdone) {
+        this.canCheckOut = true;
+      }
+  
+      // Rating
+      if (this.checkoutdone && isBuyer) {
+        this.canRate = true;
+      }
+    }
   }
 }

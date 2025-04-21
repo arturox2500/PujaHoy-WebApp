@@ -84,6 +84,19 @@ export class productsService {
         );
   }
 
+  postOffer(productId: number | undefined, cost: number | undefined): Observable<any> {
+    if (productId === undefined) {
+      throw new Error('Product ID is undefined');
+    }
+    const url = `/api/v1/products/${productId}/offers`;
+    const body = { cost };
+  
+    return this.http.post<any>(url, body)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error && error.error.error) {
       console.error(`Backend error: ${error.error.error}`);

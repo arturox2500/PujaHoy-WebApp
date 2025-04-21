@@ -34,26 +34,34 @@
                     <p>{{ product?.description }}</p>
 
                     <!-- Place Bid Input -->
-                    <div class="mb-3">
-                        <input type="number" class="form-control form-control-sm mb-2" placeholder="Place your bid"
-                            [(ngModel)]="bidAmount" name="bidAmount" />
+                    <div class="mb-3" *ngIf="canPlaceABid">
+                        <input type="number" class="form-control form-control-sm mb-2" placeholder="Place your bid" [(ngModel)]="bidAmount">
                         <button class="btn btn-sm btn-primary" (click)="placeBid()">Place Bid</button>
-                    </div>
+                      </div>
 
                     <!-- Bid Message -->
-                    <div *ngIf="bidMessage" [ngClass]="{ 'text-success': bidValid, 'text-danger': !bidValid }">
-                        {{ bidMessage }}
-                    </div>
+                    <div *ngIf="message" [ngClass]="{'text-success': message.type === 'success', 'text-danger': message.type === 'error'}">
+                        {{ message.text }}
+                      </div>
 
                     <!-- Actions -->
                     <div class="my-3">
                         <button routerLink="/users/{{ product?.seller?.id }}"
                             class="btn btn-sm btn-outline-secondary me-2">Seller</button>
-                        <button class="btn btn-sm btn-outline-danger me-2">Delete</button>
-                        <button *ngIf="!ratedProduct" (click)="ratedProduct = !ratedProduct"
-                            class="btn btn-sm btn-outline-success me-2">Rating</button>
-                        <button *ngIf="checkoutProduct" (click)="checkout()" class="btn btn-sm btn-outline-info me-2">Checkout</button>
-                        <button class="btn btn-sm btn-outline-warning">Edit</button>
+                        <button *ngIf="canDelete" class="btn btn-sm btn-outline-danger me-2">Delete</button>
+                        <div *ngIf="canRate">
+                            <button *ngIf="!ratedProduct" (click)="ratedProduct = !ratedProduct"
+                              class="btn btn-sm btn-outline-success me-2">
+                              Rating
+                            </button>
+                          </div>
+                          <div *ngIf="canCheckOut">
+                            <button *ngIf="checkoutProduct" (click)="checkout()"
+                              class="btn btn-sm btn-outline-info me-2">
+                              Checkout
+                            </button>
+                          </div>
+                        <button *ngIf="canEdit" class="btn btn-sm btn-outline-danger me-2">Edit</button>
                     </div>
                 </div>
             </div>
