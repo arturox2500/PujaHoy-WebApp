@@ -35,14 +35,16 @@
 
                     <!-- Place Bid Input -->
                     <div class="mb-3" *ngIf="canPlaceABid">
-                        <input type="number" class="form-control form-control-sm mb-2" placeholder="Place your bid" [(ngModel)]="bidAmount">
+                        <input type="number" class="form-control form-control-sm mb-2" placeholder="Place your bid"
+                            [(ngModel)]="bidAmount">
                         <button class="btn btn-sm btn-primary" (click)="placeBid()">Place Bid</button>
-                      </div>
+                    </div>
 
                     <!-- Bid Message -->
-                    <div *ngIf="message" [ngClass]="{'text-success': message.type === 'success', 'text-danger': message.type === 'error'}">
+                    <div *ngIf="message"
+                        [ngClass]="{'text-success': message.type === 'success', 'text-danger': message.type === 'error'}">
                         {{ message.text }}
-                      </div>
+                    </div>
 
                     <!-- Actions -->
                     <div class="my-3">
@@ -51,17 +53,18 @@
                         <button *ngIf="canDelete" class="btn btn-sm btn-outline-danger me-2">Delete</button>
                         <div *ngIf="canRate">
                             <button *ngIf="!ratedProduct" (click)="ratedProduct = !ratedProduct"
-                              class="btn btn-sm btn-outline-success me-2">
-                              Rating
+                                class="btn btn-sm btn-outline-success me-2">
+                                Rating
                             </button>
-                          </div>
-                          <div *ngIf="canCheckOut">
+                        </div>
+                        <div *ngIf="canCheckOut">
                             <button *ngIf="checkoutProduct" (click)="checkout()"
-                              class="btn btn-sm btn-outline-info me-2">
-                              Checkout
+                                class="btn btn-sm btn-outline-info me-2">
+                                Checkout
                             </button>
-                          </div>
-                        <button *ngIf="canEdit" class="btn btn-sm btn-outline-danger me-2">Edit</button>
+                        </div>
+                        <button *ngIf="canEdit" routerLink="products/{{ product?.id }}/edit"
+                            class="btn btn-sm btn-outline-danger me-2">Edit</button>
                     </div>
                 </div>
             </div>
@@ -76,25 +79,25 @@
                 </div>
                 <div class="info-box mb-3">
                     <small class="text-muted"><strong>Winning Bid:</strong></small>
-                    <div class="fw-bold text-success">€{{ product?.winningBid || 'N/A' }}</div>
+                    <div class="fw-bold text-success">€{{ higherOffer?.cost || 'N/A' }}</div>
                 </div>
                 <div class="info-box">
                     <small class="text-muted"><strong>Bidder:</strong></small>
-                    <div class="fw-bold">{{ product?.winningBidder || 'N/A' }}</div>
+                    <div class="fw-bold">{{ higherOffer?.user?.name || 'N/A' }}</div>
                 </div>
             </div>
 
             <div *ngIf="ratedProduct" class="d-flex justify-content-center" style="padding-top: 15px;">
                 <div class="p-3 border rounded bg-light w-20">
-                  <h5 class="mb-3">Rate this product</h5>
-                  <div class="mb-3">
-                    <input type="number" [(ngModel)]="rating" min="1" max="5" required
-                           class="form-control w-50 d-inline-block text-center" placeholder="1-5">
-                  </div>
-                  <button class="btn btn-sm btn-outline-success me-2" (click)="submitRating()">Submit</button>
-                  <button (click)="ratedProduct = !ratedProduct" class="btn btn-sm btn-outline-danger">Cancel</button>
+                    <h5 class="mb-3">Rate this product</h5>
+                    <div class="mb-3">
+                        <input type="number" [(ngModel)]="rating" min="1" max="5" required
+                            class="form-control w-50 d-inline-block text-center" placeholder="1-5">
+                    </div>
+                    <button class="btn btn-sm btn-outline-success me-2" (click)="submitRating()">Submit</button>
+                    <button (click)="ratedProduct = !ratedProduct" class="btn btn-sm btn-outline-danger">Cancel</button>
                 </div>
-              </div>
+            </div>
 
             <h3 style="margin-top: 50px;">Product Location</h3>
             <div class="map-wrapper">

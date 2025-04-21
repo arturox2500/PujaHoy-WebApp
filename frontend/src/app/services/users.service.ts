@@ -42,7 +42,7 @@ export class usersService {
   }
 
   public bannedUser(id: number) {
-    return this.http.put(`/api/v1/users/${id}/active`, { withCredentials: true })
+    return this.http.put<PublicUserDto>(`/api/v1/users/${id}/active`, { withCredentials: true })
       .pipe(
         catchError(this.handleError)
       );

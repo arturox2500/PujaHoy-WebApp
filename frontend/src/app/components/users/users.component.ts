@@ -42,6 +42,9 @@ export class UserComponent {
         if (this.user.rols?.includes('ADMIN')) {
           this.errorMessage = "Error, admins can't have a profile";
           this.user = undefined;
+        } else if (this.user.active === false){
+          this.errorMessage = "You are banned, please contact the administrator";
+          this.user = undefined;
         } else {
           this.typeApplication = 'owner';
           console.log(this.typeApplication);
@@ -74,11 +77,21 @@ export class UserComponent {
     }).subscribe(({ applicater, user }) => {
       this.applicater = applicater || undefined;
       this.user = user;
+      if (this.user.rols?.includes('ADMIN')) {
+        this.errorMessage = "Error, admins can't have a profile";
+        this.user = undefined;
+        return;
+      }
       console.log(this.applicater?.rols);
       if (applicater?.rols?.includes('ADMIN')) {
         this.typeApplication = 'admin';
       } else if (applicater?.id === user.id) {
         this.typeApplication = 'owner';
+        if (this.user.active === false){
+          this.errorMessage = "You are banned, please contact the administrator";
+          this.user = undefined;
+          return;
+        }
       } else {
         this.typeApplication = 'other';
       }
@@ -89,7 +102,7 @@ export class UserComponent {
 
   bannedUser(id: number) {
     this.usersService.bannedUser(id).subscribe(
-      () => {
+      (data) => {
         if (this.text === 'Ban User') {
           this.text = 'Unban User';
           window.alert("User banned successfully");
@@ -97,6 +110,7 @@ export class UserComponent {
           this.text = 'Ban User';
           window.alert("User unbanned successfully");
         }
+        this.user = data;
         this.errorMessage = '';
       },
       (error) => {
