@@ -93,14 +93,14 @@ export class ProductsFormComponent implements OnInit {
     
             this.productsService.uploadImage(createdProduct.id, formData).subscribe(
               () => {
-                this.router.navigate(['/product/'+this.productId]);
+                this.router.navigate(['/product/'+ createdProduct?.id]);
               },
               (error) => {
                 window.alert('Could not upload the image: ' + error.message);
               }
             );
           } else {
-            this.router.navigate(['/product/'+this.productId]);
+            this.router.navigate(['/product/'+ createdProduct?.id]);
           }
         },
         (error) => {
