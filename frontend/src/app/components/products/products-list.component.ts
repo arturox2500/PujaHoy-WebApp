@@ -71,4 +71,19 @@ export class ProductsListComponent implements OnInit {
       this.loadProducts();
     }
   }
+
+  indexProduct(): void {
+    this.productsService.getProductIndex(this.currentPage).subscribe(
+      (data) => {
+        this.products = this.products.concat(data.content); 
+        this.totalPages = data.totalPages;
+        this.totalElements = data.totalElements;
+        this.currentPage = data.pageable.pageNumber;
+      },
+      (error) => {
+        window.alert('Error al cargar las pujas ganadas: ' + error.message);
+      }
+    );
+  }
+
 }

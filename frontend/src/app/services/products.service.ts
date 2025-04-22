@@ -102,7 +102,7 @@ export class productsService {
   }
 
   getProductIndex(page: number): Observable<any> {
-    return this.http.get<any>(/api/v1/products?page=${page})
+    return this.http.get<any>(`/api/v1/products?page=${page}`)
         .pipe(
           catchError(this.handleError)
         );
