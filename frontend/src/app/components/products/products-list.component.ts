@@ -23,17 +23,23 @@ export class ProductsListComponent implements OnInit {
     this.loginService.reqUser().subscribe((user) => {
       this.userId = user.id;
       this.route.url.subscribe((url) => {
-        const path = url[0]?.path;
-        if (path === 'your-auctions') {
-          this.pageTitle="Your Products"
+        const fullPath = url.map(segment => segment.path).join('/');
+  
+        if (!fullPath) {
+          this.pageTitle = "Todos los productos";
+          this.indexProduct();
+        } else if (fullPath === 'your-auctions') {
+          this.pageTitle = "Your Products";
           this.loadProducts();
-        } else if (path === 'your-winning-bids') {
-          this.pageTitle="Your Winning Bids"
+        } else if (fullPath === 'your-winning-bids') {
+          this.pageTitle = "Your Winning Bids";
           this.loadWinningBids();
         }
       });
     }, (error) => {
       console.log('Error:', error);
+      this.pageTitle = "Todos los productos";
+      this.indexProduct();
     });
   }
 
