@@ -23,17 +23,23 @@ export class ProductsListComponent implements OnInit {
     this.loginService.reqUser().subscribe((user) => {
       this.userId = user.id;
       this.route.url.subscribe((url) => {
-        const path = url[0]?.path;
-        if (path === 'your-auctions') {
-          this.pageTitle="Your Products"
+        const fullPath = url.map(segment => segment.path).join('/');
+  
+        if (!fullPath) {
+          this.pageTitle = "";
+          this.indexProduct();
+        } else if (fullPath === 'your-auctions') {
+          this.pageTitle = "Your Products";
           this.loadProducts();
-        } else if (path === 'your-winning-bids') {
-          this.pageTitle="Your Winning Bids"
+        } else if (fullPath === 'your-winning-bids') {
+          this.pageTitle = "Your Winning Bids";
           this.loadWinningBids();
         }
       });
     }, (error) => {
       console.log('Error:', error);
+      this.pageTitle = "";
+      this.indexProduct();
     });
   }
 
@@ -68,7 +74,36 @@ export class ProductsListComponent implements OnInit {
   loadMoreProducts(): void {
     if (this.currentPage < this.totalPages - 1) {
       this.currentPage++;
-      this.loadProducts();
+
+      this.route.url.subscribe((url) => {
+        const fullPath = url.map(segment => segment.path).join('/');
+  
+        if (!fullPath) {
+          this.pageTitle = "";
+          this.indexProduct();
+        } else if (fullPath === 'your-auctions') {
+          this.pageTitle = "Your Products";
+          this.loadProducts();
+        } else if (fullPath === 'your-winning-bids') {
+          this.pageTitle = "Your Winning Bids";
+          this.loadWinningBids();
+        }
+      });
     }
   }
+
+  indexProduct(): void {
+    this.productsService.getProductIndex(this.currentPage).subscribe(
+      (data) => {
+        this.products = this.products.concat(data.content); 
+        this.totalPages = data.totalPages;
+        this.totalElements = data.totalElements;
+        this.currentPage = data.pageable.pageNumber;
+      },
+      (error) => {
+        window.alert('Error al cargar las pujas ganadas: ' + error.message);
+      }
+    );
+  }
+
 }
