@@ -26,7 +26,7 @@ export class ProductsListComponent implements OnInit {
         const fullPath = url.map(segment => segment.path).join('/');
   
         if (!fullPath) {
-          this.pageTitle = "Todos los productos";
+          this.pageTitle = "";
           this.indexProduct();
         } else if (fullPath === 'your-auctions') {
           this.pageTitle = "Your Products";
@@ -38,7 +38,7 @@ export class ProductsListComponent implements OnInit {
       });
     }, (error) => {
       console.log('Error:', error);
-      this.pageTitle = "Todos los productos";
+      this.pageTitle = "";
       this.indexProduct();
     });
   }
@@ -79,7 +79,7 @@ export class ProductsListComponent implements OnInit {
         const fullPath = url.map(segment => segment.path).join('/');
   
         if (!fullPath) {
-          this.pageTitle = "Todos los productos";
+          this.pageTitle = "";
           this.indexProduct();
         } else if (fullPath === 'your-auctions') {
           this.pageTitle = "Your Products";
