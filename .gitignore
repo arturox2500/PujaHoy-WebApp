@@ -1,4 +1,5 @@
 backend/target/
+backend/src/main/resources/static/new/
 .vscode
 forntend/.angular/
 frontend/node_modules/
