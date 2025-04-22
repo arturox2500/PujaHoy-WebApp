@@ -68,7 +68,21 @@ export class ProductsListComponent implements OnInit {
   loadMoreProducts(): void {
     if (this.currentPage < this.totalPages - 1) {
       this.currentPage++;
-      this.loadProducts();
+
+      this.route.url.subscribe((url) => {
+        const fullPath = url.map(segment => segment.path).join('/');
+  
+        if (!fullPath) {
+          this.pageTitle = "Todos los productos";
+          this.indexProduct();
+        } else if (fullPath === 'your-auctions') {
+          this.pageTitle = "Your Products";
+          this.loadProducts();
+        } else if (fullPath === 'your-winning-bids') {
+          this.pageTitle = "Your Winning Bids";
+          this.loadWinningBids();
+        }
+      });
     }
   }
 
