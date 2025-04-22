@@ -141,6 +141,7 @@ export class UserComponent {
           this.user.zipCode = this.editData.zipCode ?? 0;
           this.user.contact = this.editData.contact || '';
           this.user.description = this.editData.description || '';
+          this.isEditing = false;
         }
       },
       (error) => {
