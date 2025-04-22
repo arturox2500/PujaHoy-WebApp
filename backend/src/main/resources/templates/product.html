@@ -17,9 +17,9 @@
                     <li><a href="/user/seeBuys">Your winning bids</a></li>
                     {{/isSeller}}
                     {{/after}}
-					{{#product}}
+                    {{#product}}
                     <li class="active">{{name}}</li>
-					{{/product}}
+                    {{/product}}
                 </ul>
             </div>
         </div>
@@ -34,7 +34,7 @@
     <!-- container -->
     <div class="container">
         <!-- row -->
-		{{#product}}
+        {{#product}}
         <div class="row">
             <!-- Product main img -->
             <div class="col-md-5 ">
@@ -101,7 +101,7 @@
                         </form>
                         {{/isSeller}}
                         {{/admin}}
-                        
+
                     </div>
                     <div class="add-to-cart">
                         {{#buyer}}
@@ -112,16 +112,18 @@
                         {{/buyer}}
                     </div>
                     <div class="add-to-cart">
-                        
-                        
+
+
                         {{#admin}}
-                            <button type="button" class="add-to-cart-btn" onclick="window.location.href='/user/editProduct/{{id}}'">Edit</button>
+                        <button type="button" class="add-to-cart-btn"
+                            onclick="window.location.href='/user/editProduct/{{id}}'">Edit</button>
                         {{/admin}}
 
                         {{#isSeller}}
-                            <button type="button" class="add-to-cart-btn" onclick="window.location.href='/user/editProduct/{{id}}'">Edit</button>
+                        <button type="button" class="add-to-cart-btn"
+                            onclick="window.location.href='/user/editProduct/{{id}}'">Edit</button>
                         {{/isSeller}}
-                        
+
                     </div>
                 </div>
             </div>
@@ -194,10 +196,12 @@
 <div class="section">
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
-                <h3>Product Location</h3>
-                <div id="map" style="height: 400px;"></div>
-            </div>
+            <h3>Product Location</h3>
+                <div class="map-wrapper">
+                    <iframe src="https://www.google.com/maps?q={{zipCode}}, España&output=embed" width="100%" height="400"
+                        style="border:0; border-radius: 5px;" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
         </div>
     </div>
 </div>
@@ -221,54 +225,16 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 {{#seller}}
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var map = L.map('map').setView([0, 0], 2); 
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
-
-        var marker;
-
-        function mostrarUbicacion(codigoPostal) {
-            if (!codigoPostal) {
-                alert("No zipCode Available");
-                return;
-            }
-
-            var url = `https://nominatim.openstreetmap.org/search?format=json&q=${codigoPostal}`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length === 0) {
-                        alert("Location Not Found");
-                        return;
-                    }
-
-                    var { lat, lon, display_name } = data[0];
-                    map.setView([lat, lon], 12);
-
-                    if (marker) map.removeLayer(marker);
-                    marker = L.marker([lat, lon]).addTo(map)
-                        .bindPopup(display_name)
-                        .openPopup();
-                })
-                .catch(error => console.error("Error when searching for location:", error));
-        }
-        
-        mostrarUbicacion("{{zipCode}}");
-    });
     document.addEventListener("DOMContentLoaded", function () {
         const numPujas = 10;
-        let montos = "{{costs}}";     
+        let montos = "{{costs}}";
         montos = JSON.parse(montos)
         montos.sort((a, b) => a - b);
         const ctx = document.getElementById("bidsChart").getContext("2d");
         new Chart(ctx, {
             type: "line",
             data: {
-                labels: montos.map((_, i) => `Bid ${i + 1}`), 
+                labels: montos.map((_, i) => `Bid ${i + 1}`),
                 datasets: [{
                     label: "Bid Progression",
                     data: montos,
