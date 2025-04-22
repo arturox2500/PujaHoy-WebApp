@@ -21,7 +21,7 @@ COPY backend/pom.xml .
 COPY backend/src ./src
 
 # Copiamos el build de Angular en el directorio static de Spring Boot
-COPY --from=frontend-build /app/dist/pujahoy/browser/ /app/src/main/resources/static/
+COPY --from=frontend-build /app/dist/pujahoy/browser/ /app/src/main/resources/static/new/
 
 # Compilamos el backend con Maven
 RUN mvn clean package -DskipTests
