@@ -101,6 +101,13 @@ export class productsService {
     return this.http.delete(`/api/v1/products/${prodId}`);
   }
 
+  getProductIndex(page: number): Observable<any> {
+    return this.http.get<any>(/api/v1/products?page=${page})
+        .pipe(
+          catchError(this.handleError)
+        );
+  }  
+
   private handleError(error: HttpErrorResponse) {
     if (error.error && error.error.error) {
       console.error(`Backend error: ${error.error.error}`);
