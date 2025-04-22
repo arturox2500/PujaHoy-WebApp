@@ -3,11 +3,11 @@ FROM node:20 AS frontend-build
 WORKDIR /frontend
 
 # Copiamos el package.json y el package-lock.json para instalar dependencias
-COPY frontend/package*.json ./
+COPY package*.json ./
 RUN npm install
 
 # Copiamos el código fuente de Angular
-COPY frontend/ .
+COPY / .
 
 # Construimos el proyecto de Angular para producción
 RUN npm run build --prod
