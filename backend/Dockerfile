@@ -1,13 +1,13 @@
 # Etapa 1: Construcción del frontend Angular
 FROM node:20 AS frontend-build
-WORKDIR /frontend
+WORKDIR /app
 
 # Copiamos el package.json y el package-lock.json para instalar dependencias
-COPY package*.json ./
+COPY frontend/package*.json ./
 RUN npm install
 
 # Copiamos el código fuente de Angular
-COPY / .
+COPY frontend/ .
 
 # Construimos el proyecto de Angular para producción
 RUN npm run build --prod
