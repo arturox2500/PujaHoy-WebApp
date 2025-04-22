@@ -8,9 +8,9 @@ RUN npm install
 
 # Copiamos el código fuente de Angular
 COPY frontend/ .
-
+RUN npm install -g @angular/cli@17.3.14
 # Construimos el proyecto de Angular para producción
-RUN npm run build --prod
+RUN ng build --configuration production --base-href="/new/"
 
 # Etapa 2: Construcción del backend con Maven
 FROM maven:3.9.4-eclipse-temurin-21 AS backend-build
@@ -21,7 +21,7 @@ COPY backend/pom.xml .
 COPY backend/src ./src
 
 # Copiamos el build de Angular en el directorio static de Spring Boot
-COPY --from=frontend-build /app/dist/pujahoy/browser/ /app/src/main/resources/static/new/
+COPY --from=frontend-build /app/dist/pujahoy/browser ./src/main/resources/static/new
 
 # Compilamos el backend con Maven
 RUN mvn clean package -DskipTests
