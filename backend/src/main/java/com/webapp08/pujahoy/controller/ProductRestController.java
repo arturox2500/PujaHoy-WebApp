@@ -61,7 +61,7 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
     ProductDTO existingProduct = product.get();
 
     // Si el producto ya no está activo, cambiar su estado a "Finished"
-    if (!existingProduct.isActive()) {
+    if (!existingProduct.isActive() && !existingProduct.getState().equals("Delivered")) {
         productService.setStateFinishedProduct(id_product);
 
         // Volvemos a obtener el producto actualizado después del cambio de estado

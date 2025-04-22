@@ -31,4 +31,22 @@
   font-size: 0.75rem;
   padding: 0.35rem 0.6rem;
 }
+.custom-btn-fixed {
+  width: 180px;
+  text-align: center;
+  background-color: #d32f2f;
+  color: white;
+  border: 2px solid #d32f2f;
+  transition: all 0.3s ease;
+}
 
+.custom-btn-fixed:hover {
+  background-color: white !important;
+  color: #d32f2f !important;
+  border-color: #d32f2f !important;
+}
+.product-img-limit {
+  max-height: 400px; /* Puedes ajustar esto según lo que necesites */
+  width: 100%;
+  object-fit: contain;
+}

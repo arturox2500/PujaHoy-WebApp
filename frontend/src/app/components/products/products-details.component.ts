@@ -22,6 +22,7 @@ export class ProductDetailComponent implements OnInit {
   rating!: number;
   checkoutProduct: boolean = true;
   checkoutdone: boolean = false;
+  rateDone: boolean = false;
 
   errorMessage: string | undefined;
 
@@ -74,7 +75,6 @@ export class ProductDetailComponent implements OnInit {
             }
             productLoaded = true;
 
-            // Intentar ejecutar si ambos están cargados
             if (userLoaded && productLoaded) {
               this.selectbutton();
             }
@@ -189,6 +189,7 @@ export class ProductDetailComponent implements OnInit {
           const goToProduct = confirm('Rating submitted successfully');
           if (goToProduct) {
             this.ratedProduct = false;
+            this.rateDone=true;
             this.selectbutton();
           }
         },
@@ -202,6 +203,7 @@ export class ProductDetailComponent implements OnInit {
   checkout() {
     this.productsService.checkoutProduct("Delivered", this.product?.id).subscribe(
       (data) => {
+        console.log(data);
         this.errorMessage = '';
         this.product = data;
         const goToProduct = confirm('Checkout submitted successfully');
@@ -243,12 +245,12 @@ export class ProductDetailComponent implements OnInit {
       }
 
       // Checkout
-      if (isFinished && isBuyer && !this.checkoutdone) {
+      if (isFinished && isBuyer) {
         this.canCheckOut = true;
       }
 
       // Rating
-      if (this.checkoutdone && isBuyer) {
+      if (this.product.state === "Delivered" && isBuyer && !this.rateDone) {
         this.canRate = true;
       }
     }
