@@ -6,7 +6,7 @@
                 <div class="col-md-4 mb-3">
                     <div class="card text-center">
                         <div class="image">
-                            <img [src]="imageUrl" alt="Profile picture of {{ user.visibleName }}" width="300" />
+                            <img [src]="imageUrl" alt="Profile picture of {{ user.visibleName }}" class="img-fluid" />
                         </div>
                         <div *ngIf="typeApplication == 'owner'; else notOwner">
                             <h4 style="margin-top: 20px;">{{user.name }}</h4>
