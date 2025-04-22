@@ -51,6 +51,13 @@ export class usersService {
   updateProfile(editData: UserEditDto): Observable<any> {
     return this.http.put(`/api/v1/users`, editData);
   }
+
+  uploadUserImage(userId: number, imageFile: File) {
+    const formData = new FormData();
+    formData.append('imageFile', imageFile);
+  
+    return this.http.put(`/api/v1/users/${userId}/image`, formData);
+  }
   
 
 

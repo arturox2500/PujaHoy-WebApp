@@ -19,6 +19,8 @@ export class UserComponent {
   applicater: PublicUserDto | undefined;
   editData: UserEditDto = { id: 0, zipCode: 0, contact: '', description: '' };
   isEditing: boolean = false;
+  selectedImage: File | null = null;
+  imageUrl: string | undefined;
 
   constructor(private route: ActivatedRoute, private usersService: usersService) { }
 
@@ -29,10 +31,11 @@ export class UserComponent {
 
       if (this.userId) {
         this.getSellerProfile(this.userId);
+        
       } else {
         this.getOwnProfile();
       }
-    });
+    });  
   }
 
   getOwnProfile() {
@@ -60,6 +63,9 @@ export class UserComponent {
             contact: this.user.contact || '',
             description: this.user.description || '',
           };
+          if (this.user?.image) {
+            this.imageUrl = `/api/v1${this.user.image}?t=${Date.now()}`;
+          } 
         }
       },
       (error) => {
@@ -97,6 +103,9 @@ export class UserComponent {
       }
       this.errorMessage = '';
       this.text = user.active ? 'Ban User' : 'Unban User';
+      if (this.user?.image) {
+        this.imageUrl = `/api/v1${this.user.image}?t=${Date.now()}`;
+      } 
     });
   }
 
@@ -137,6 +146,20 @@ export class UserComponent {
       (response) => {
         console.log('Profile updated successfully:', response);
         alert('Profile updated successfully!');
+        if (this.selectedImage && this.user?.id) {
+          this.usersService.uploadUserImage(this.user?.id, this.selectedImage).subscribe(
+            (response) => {
+              console.log('Imagen subida correctamente.');
+              this.selectedImage = null;
+              this.imageUrl = `/api/v1${this.user?.image}?t=${Date.now()}`;
+            },
+            (err) => {
+              console.error('Error al subir la imagen:', err);
+              alert('Error al subir la imagen.');
+            }
+          );
+        }
+
         if (this.user) {
           this.user.zipCode = this.editData.zipCode ?? 0;
           this.user.contact = this.editData.contact || '';
@@ -163,4 +186,13 @@ export class UserComponent {
     }
     this.isEditing = false;
   }
+
+  onImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedImage = input.files[0];
+      console.log('Image:', this.selectedImage);
+    }
+  }
+  
 }

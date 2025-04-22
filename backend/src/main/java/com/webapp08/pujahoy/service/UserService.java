@@ -136,19 +136,19 @@ public class UserService {
 		UserModel updatedPost = mapper.toUserModelFromEdit(updatedPostDTO);
 
 		// Check and update the zip code
-		if (updatedPost.getZipCode() != null && !updatedPost.getZipCode().equals(oldPost.getZipCode()) && updatedPost.getZipCode().toString().matches("\\d{5}")) {
+		if (updatedPost.getZipCode() != null && updatedPost.getZipCode().toString().matches("\\d{5}")) {
 			oldPost.setZipCode(updatedPost.getZipCode());
 			check = true;
 		}
 
 		// Check and update the contact
-		if (updatedPost.getContact() != null && !updatedPost.getContact().equals(oldPost.getContact()) && updatedPost.getContact().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+		if (updatedPost.getContact() != null && updatedPost.getContact().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
 			oldPost.setContact(updatedPost.getContact());
 			check = true;
 		}
 
 		// Check and update the description
-		if (updatedPost.getDescription() != null && !updatedPost.getDescription().equals(oldPost.getDescription())) {
+		if (updatedPost.getDescription() != null) {
 			oldPost.setDescription(updatedPost.getDescription());
 			check = true;
 		}
