@@ -45,7 +45,7 @@
    - [Required Technologies / Applications](#required-technologies--applications)
    - [Steps](#steps)
    - [Steps with Docker](#steps-with-docker)
-   - [Steps for bulding Docker Image](steps-for-nuilding-docker-image#)
+   - [Steps for bulding Docker Image](steps-for-building-docker-image#)
    - [Steps with Virtual Machine](#steps-with-virtual-machine)
 
 9. **[Documentation](#documentation)**
