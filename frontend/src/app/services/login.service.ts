@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { UserDto } from "../dtos/User.dto";
 import { PublicUserDto } from "../dtos/PublicUser.dto";
 import { Observable } from "rxjs";
+import { tap } from 'rxjs/operators';
 
 const BASE_URL = "/api/v1/auth";
 
@@ -73,8 +74,13 @@ export class LoginService {
   }
 
   reqUser(): Observable<PublicUserDto> {
-    return this.http.get<PublicUserDto>('/api/v1/users', { withCredentials: true });
+    return this.http.get<PublicUserDto>('/api/v1/users', { withCredentials: true }).pipe(
+      tap(user => {
+        this.user = user;
+      })
+    );
   }
+
   getUserId(): Observable<number> {
     return new Observable((observer) => {
       if (this.user) {

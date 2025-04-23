@@ -33,8 +33,7 @@ export class LoginComponent {
           console.log('Registration successful:', response);
           this.isRegister = false; 
           this.errorMessage = null;
-          this.loginService.setLogged(true); 
-          this.router.navigate(['/users']);          
+          this.router.navigate(['/']);          
         },
         (error) => {
           console.error('Registration failed:', error);

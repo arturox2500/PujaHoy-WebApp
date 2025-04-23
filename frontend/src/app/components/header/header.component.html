@@ -13,15 +13,28 @@
             </div>
 
             <!-- User Actions -->
-            <ul class="header-links" style="display: flex; gap: 15px; align-items: center; margin: 0; padding: 0; list-style: none;">
+            <ul class="header-links"
+                style="display: flex; gap: 15px; align-items: center; margin: 0; padding: 0; list-style: none;">
                 <li *ngIf="!loginService.isLogged()">
-                    <a routerLink="/auth/login" class="btn" style="padding: 10px 20px; font-size: 16px; background-color: #ff0000; color: white;">
+                    <a routerLink="/auth/login" class="btn"
+                        style="padding: 10px 20px; font-size: 16px; background-color: #ff0000; color: white;">
                         <i class="fa fa-sign-in"></i> Log in / Sign up
                     </a>
                 </li>
                 <li *ngIf="loginService.isLogged()">
-                    <a routerLink="/auth/login" class="btn btn-primary" style="margin-right: 5px; padding: 10px 20px; font-size: 16px; ">My Account</a>
-                    <button (click)="logOut()" class="btn" style="padding: 10px 20px; font-size: 16px; background-color: #ff0000; color: white;">Logout</button>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <ng-container *ngIf="!loginService.isAdmin()">
+                            <a routerLink="/auth/login" class="btn btn-primary"
+                                style="padding: 10px 20px; font-size: 16px;">
+                                My Account
+                            </a>
+                        </ng-container>
+
+                        <button (click)="logOut()" class="btn"
+                            style="padding: 10px 20px; font-size: 16px; background-color: #ff0000; color: white;">
+                            Logout
+                        </button>
+                    </div>
                 </li>
             </ul>
         </div>

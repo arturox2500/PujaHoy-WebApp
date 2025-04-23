@@ -95,7 +95,6 @@ export class ProductDetailComponent implements OnInit {
       (user) => {
         this.user = user;
         userLoaded = true;
-
         // Intentar ejecutar si ambos están cargados
         if (userLoaded && productLoaded) {
           this.selectbutton();
