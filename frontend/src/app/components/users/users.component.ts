@@ -83,6 +83,10 @@ export class UserComponent {
     }).subscribe(({ applicater, user }) => {
       this.applicater = applicater || undefined;
       this.user = user;
+      if (this.user?.id === this.applicater?.id) {
+        this.getOwnProfile();
+        return;
+      }
       if (this.user.rols?.includes('ADMIN')) {
         this.errorMessage = "Error, admins can't have a profile";
         this.user = undefined;

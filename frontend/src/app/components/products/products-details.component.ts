@@ -191,6 +191,7 @@ export class ProductDetailComponent implements OnInit {
             this.ratedProduct = false;
             this.rateDone=true;
             this.selectbutton();
+            this.canRate = false;
           }
         },
         (error) => {
@@ -210,6 +211,7 @@ export class ProductDetailComponent implements OnInit {
         if (goToProduct) {
           this.checkoutProduct = false;
           this.checkoutdone = true;
+          this.canRate = true;
         }
       },
       (error) => {
