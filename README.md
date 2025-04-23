@@ -45,7 +45,7 @@
    - [Required Technologies / Applications](#required-technologies--applications)
    - [Steps](#steps)
    - [Steps with Docker](#steps-with-docker)
-   - [Steps for bulding Docker Image](steps-for-building-docker-image#)
+   - [Steps for building Docker Image](steps-for-building-docker-image#)
    - [Steps with Virtual Machine](#steps-with-virtual-machine)
 
 9. **[Documentation](#documentation)**
@@ -216,7 +216,7 @@ As a summary we show the updated navigation diagram.
 - Go to https://localhost:8443
 - If you encounter security warnings, select Advanced options and then Proceed to the website
 
-### Steps for bulding Docker Image
+### Steps for building Docker Image
 -  Install Docker
 -  Run Docker
 -  Clone or download the repository
