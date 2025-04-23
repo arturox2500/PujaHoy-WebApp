@@ -9,14 +9,14 @@ export class productsService {
   private apiUrl = 'https://localhost:8443/api/v1/products'
   constructor(private http: HttpClient) { }
 
-  createProduct(product: CreateProductDto) {
+  createProduct(product: CreateProductDto) { // Used for creating auctions
     return this.http.post('/api/v1/products', product, { withCredentials: true })
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  editProduct(product: CreateProductDto, prodId: number | undefined) {
+  editProduct(product: CreateProductDto, prodId: number | undefined) { // Used for editing the regular attributes of a product
     if (prodId === undefined) {
       throw new Error('User ID is undefined');
     }
@@ -26,14 +26,14 @@ export class productsService {
       );
   }
 
-  uploadImage(productId: number, formData: FormData) {
+  uploadImage(productId: number, formData: FormData) { // Uploads an image when the user is creating an auction
     return this.http.post(`/api/v1/products/${productId}/image`, formData, { withCredentials: true, responseType: "text" })
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  putImage(productId: number, formData: FormData) {
+  putImage(productId: number, formData: FormData) { // Replaces an image when the user is editing an auction
     return this.http.post(`/api/v1/products/${productId}/image`, formData, { withCredentials: true, responseType: "text" })
       .pipe(
         catchError(this.handleError)
@@ -54,7 +54,7 @@ export class productsService {
       );
   }
 
-  getUserProducts(userId: number | undefined, page: number): Observable<any> {
+  getUserProducts(userId: number | undefined, page: number): Observable<any> { // Fetches the products that the user is auctioning
     if (userId === undefined) {
       throw new Error('User ID is undefined');
     }
@@ -74,7 +74,7 @@ export class productsService {
       );
   }
 
-  getProductById(prodId: number | undefined): Observable<any> {
+  getProductById(prodId: number | undefined): Observable<any> { // Fetches a specific product using its ID
     if (prodId === undefined) {
       throw new Error('Product ID is undefined');
     }

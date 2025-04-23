@@ -65,7 +65,7 @@ export class ProductsListComponent implements OnInit, OnDestroy{
         this.currentPage = data.pageable.pageNumber;
       },
       (error) => {
-        window.alert('Error al cargar los productos: ' + error.message);
+        window.alert('Could not load products: ' + error.message);
       }
     );
   }
