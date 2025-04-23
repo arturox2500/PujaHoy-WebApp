@@ -449,4 +449,5 @@ Docker compose down
 | [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/login/login.component.ts) | My job was to make sure all login and register related functionalities were working as intended. |
 | [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/services/login.service.ts) | I was also in charge of login and register workflows on the service. |
 | [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/Dockerfile) | As stated before I was in charge to make sure app was able to be deployed with Docker.|
+
 (NOTE: Despite only linking the components, it is straight forward to understand the html components related were done by me too)
