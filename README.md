@@ -487,19 +487,19 @@ Docker compose down
 
 | Commit | Description |
 | :----: | :---------: |
-| [1º](https://github.com) | |
-| [2º](https://github.com) | |
-| [3º](https://github.com) | |
-| [4º](https://github.com) | |
-| [5º](https://github.com) | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/34616a9e4fbd40f31ac68ff4c568c4487e8c378e) | Feature to view the seller's profile, ban and unban users. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/95cc68267a1dc1949532000c6b7225c2b59acd33) | Feature to view the seller's profile, rate product and proceed to checkout from the products page. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/5ac4aeed761fd767d843559c748c17639d0800b6) | Make the proxy to connect frontend with backend and the feature to view user's own profile with an initial error handler. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/91a8e2011940b9c21006393d1421e6edabb01074) | Added initial header and footer, and included Boostrap libreries for Angular. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/043366d90dce4bc8354643fb427e1b1d3245fae9) | Added css into users.component.html and fixed feature to view user's own profile. |
 
 | File | Description |
 | :----: | :---------: |
-| [1º](https://github.com) | |
-| [2º](https://github.com) | |
-| [3º](https://github.com) | |
-| [4º](https://github.com) | |
-| [5º](https://github.com) | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/services/users.service.ts) | I added the handler error, and the request to get user's own profile, get seller's profile and ban/unban users. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/users/users.component.ts) | I added the structure and the ngOnInit, getOwnProfile, getSellerProfile and bannedUser methods. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/users/users.component.html) | I added the submitRating and checkout methods. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-details.component.ts) | I added the HTML and CSS structure for all the odds betwween the profile requested and the one who made the request. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/services/products.service.ts) | I added the handler error, and the request to rate a product and checkout a product. |
 
 ### Victor Bartolomé Letosa
 
