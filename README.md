@@ -449,19 +449,19 @@ Docker compose down
 
 | Commit | Description |
 | :----: | :---------: |
-| [1º](https://github.com) | |
-| [2º](https://github.com) | |
-| [3º](https://github.com) | |
-| [4º](https://github.com) | |
-| [5º](https://github.com) | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/7d9fb03d3c15e2ef8752036a8b0c321d5e143098) | Added styles for the form component and the product list component, also implemented form validation |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/bb16a40cd7b11da0737b18e58da494ff460e5eeb) | Added the functionality to edit an auction |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/39b6241f414c4061bb22931747bca550c9f9c2a6) | Implemented the Bid progression chart that was previously implemented in phase 1 |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/8a696c32e7d5881272f0b57f8cc898594a80c790) | Added the functionality to create a new auction|
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/7a80589127c16c1e08cf04da316deeb9810cdff9) | This was my initial commit in which I created the necessary files and basic logic so that I could start working on the lisitngs and form components |
 
 | File | Description |
 | :----: | :---------: |
-| [1º](https://github.com) | |
-| [2º](https://github.com) | |
-| [3º](https://github.com) | |
-| [4º](https://github.com) | |
-| [5º](https://github.com) | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-form.component.html) | I recreated the original "create product" page as close as possible |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-form.component.ts) | I created the functionality for creating and editing auctions, and made it possible to reuse the component for both functionalities |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-list.component.html) | I recreated the listings design from Phase 1 |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-list.component.ts) | Made the code modular so that adding different listings was simple. Ajax functionality was also done here |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/services/products.service.ts) | I implemented all the necessary methods to interact with the backend and retrieve product information. |
 
 ### Jorge Andrés Echevarría
 
