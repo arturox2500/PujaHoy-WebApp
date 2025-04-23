@@ -2,13 +2,15 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { UserDto } from "../dtos/User.dto";
 import { PublicUserDto } from "../dtos/PublicUser.dto";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { tap } from 'rxjs/operators';
 
 const BASE_URL = "/api/v1/auth";
 
 @Injectable({ providedIn: "root" })
 export class LoginService {
+  private logoutSubject = new Subject<void>();
+  logout$ = this.logoutSubject.asObservable();
   public logged: boolean | undefined;
   public user: PublicUserDto | undefined;
 
@@ -50,6 +52,7 @@ export class LoginService {
         console.log("LOGOUT: Successfully");
         this.logged = false; 
         this.user = undefined; 
+        this.logoutSubject.next();
       },
       (error) => {
         console.error("Error during logout:", error);

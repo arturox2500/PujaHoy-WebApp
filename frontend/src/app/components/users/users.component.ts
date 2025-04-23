@@ -24,28 +24,28 @@ export class UserComponent {
 
   constructor(private route: ActivatedRoute, private usersService: usersService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { //Call the proper methods depending on the route parameter
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       this.userId = id ? +id : null;
 
       if (this.userId) {
         this.getSellerProfile(this.userId);
-        
+
       } else {
         this.getOwnProfile();
       }
-    });  
+    });
   }
 
-  getOwnProfile() {
+  getOwnProfile() { //If the user is logged in, get their profile
     this.usersService.getProfile().subscribe(
       (response) => {
         this.user = response;
         if (this.user.rols?.includes('ADMIN')) {
           this.errorMessage = "Error, admins can't have a profile";
           this.user = undefined;
-        } else if (this.user.active === false){
+        } else if (this.user.active === false) {
           this.errorMessage = "You are banned, please contact the administrator";
           this.user = undefined;
         } else {
@@ -65,7 +65,7 @@ export class UserComponent {
           };
           if (this.user?.image) {
             this.imageUrl = `/api/v1${this.user.image}?t=${Date.now()}`;
-          } 
+          }
         }
       },
       (error) => {
@@ -74,7 +74,7 @@ export class UserComponent {
     );
   }
 
-  getSellerProfile(id: number) {
+  getSellerProfile(id: number) { //If you get the seller profile
     forkJoin({
       applicater: this.usersService.getProfile().pipe(
         catchError(() => of(undefined))
@@ -97,7 +97,7 @@ export class UserComponent {
         this.typeApplication = 'admin';
       } else if (applicater?.id === user.id) {
         this.typeApplication = 'owner';
-        if (this.user.active === false){
+        if (this.user.active === false) {
           this.errorMessage = "You are banned, please contact the administrator";
           this.user = undefined;
           return;
@@ -109,11 +109,11 @@ export class UserComponent {
       this.text = user.active ? 'Ban User' : 'Unban User';
       if (this.user?.image) {
         this.imageUrl = `/api/v1${this.user.image}?t=${Date.now()}`;
-      } 
+      }
     });
   }
 
-  bannedUser(id: number) {
+  bannedUser(id: number) { //Change the active's attribute of the user
     this.usersService.bannedUser(id).subscribe(
       (data) => {
         if (this.text === 'Ban User') {
@@ -198,5 +198,5 @@ export class UserComponent {
       console.log('Image:', this.selectedImage);
     }
   }
-  
+
 }

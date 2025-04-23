@@ -11,7 +11,6 @@ import { LoginComponent } from './components/login/login.component';
 import { ProductsFormComponent } from './components/products/products-form.component';
 import { ProductsListComponent } from './components/products/products-list.component';
 import { ProductDetailComponent } from './components/products/products-details.component';
-//import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -27,4 +26,4 @@ import { ProductDetailComponent } from './components/products/products-details.c
   imports: [BrowserModule, FormsModule, HttpClientModule, routing],
   bootstrap: [AppComponent]
 })
-export class AppModule  {}
+export class AppModule { }
