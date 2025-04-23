@@ -134,7 +134,7 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  private generateSafeMapUrl(zipCode: string): void {
+  private generateSafeMapUrl(zipCode: string): void { //Generate the map URL using the zip code
     const rawUrl = `https://www.google.com/maps?q=${encodeURIComponent(zipCode + ', España')}&output=embed`;
     this.safeMapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(rawUrl);
   }
