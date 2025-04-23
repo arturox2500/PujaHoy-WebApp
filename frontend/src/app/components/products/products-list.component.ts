@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LoginService } from '../../services/login.service';
 import { productsService } from '../../services/products.service';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -9,7 +10,9 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./products-list.component.css']
 })
 
-export class ProductsListComponent implements OnInit {
+export class ProductsListComponent implements OnInit, OnDestroy{
+  private logoutSubscription: Subscription | undefined;
+
   public userId: number | undefined;
   currentPage: number = 0;
   totalPages: number = 0;
@@ -20,6 +23,10 @@ export class ProductsListComponent implements OnInit {
   constructor(private loginService: LoginService, private productsService: productsService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.logoutSubscription = this.loginService.logout$.subscribe(() => {
+      this.reloadComponent();
+    });
+
     this.loginService.reqUser().subscribe((user) => {
       this.userId = user.id;
       this.route.url.subscribe((url) => {
@@ -41,6 +48,12 @@ export class ProductsListComponent implements OnInit {
       this.pageTitle = "";
       this.indexProduct();
     });
+  }
+
+  reloadComponent(): void {  // Reload the component when logout is triggered
+    this.currentPage = 0;
+    this.products = [];
+    this.ngOnInit(); 
   }
 
   loadProducts(): void {
@@ -106,4 +119,7 @@ export class ProductsListComponent implements OnInit {
     );
   }
 
+  ngOnDestroy(): void {
+    this.logoutSubscription?.unsubscribe(); // Clean the subcription
+  }
 }

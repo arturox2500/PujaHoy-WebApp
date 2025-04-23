@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { PublicUserDto } from "../dtos/PublicUser.dto";
-import {Observable, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { UserEditDto } from "../dtos/UserEdit.dto";
 
@@ -9,39 +9,23 @@ import { UserEditDto } from "../dtos/UserEdit.dto";
 export class usersService {
 
   public user: PublicUserDto | undefined;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  public getUsers() {
-    return this.http.get<PublicUserDto[]>("/api/v1/users", { withCredentials: true });
-  }
-
-  public getUser(id: string) {
-    return this.http.get<PublicUserDto>(`/api/v1/users/${id}`, { withCredentials: true });
-  }
-
-  public updateUser(userDto: PublicUserDto) {
-    return this.http.put(`/api/v1/users/${userDto.id}`, userDto, { withCredentials: true });
-  }
-
-  public deleteUser(id: string) {
-    return this.http.delete(`/api/v1/users/${id}`, { withCredentials: true });
-  }
-
-  public getProfile(): Observable<PublicUserDto> {
+  public getProfile(): Observable<PublicUserDto> { // Make the get request to get the user profile
     return this.http.get<PublicUserDto>('/api/v1/users', { withCredentials: true })
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  public getSellerProfile(id: number): Observable<PublicUserDto> {
+  public getSellerProfile(id: number): Observable<PublicUserDto> { // Make the get request to get the seller profile
     return this.http.get<PublicUserDto>(`/api/v1/users/${id}`, { withCredentials: true })
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  public bannedUser(id: number) {
+  public bannedUser(id: number) { // Make the put request to ban/unban the user
     return this.http.put<PublicUserDto>(`/api/v1/users/${id}/active`, { withCredentials: true })
       .pipe(
         catchError(this.handleError)
@@ -55,13 +39,11 @@ export class usersService {
   uploadUserImage(userId: number, imageFile: File) {
     const formData = new FormData();
     formData.append('imageFile', imageFile);
-  
+
     return this.http.put(`/api/v1/users/${userId}/image`, formData);
   }
-  
 
-
-  private handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse) { // Get the error from the backend and return a custom error message
     if (error.error && error.error.error) {
       console.error(`Backend error: ${error.error.error}`);
       return throwError(() => new Error(error.error.error));

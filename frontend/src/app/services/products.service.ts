@@ -10,48 +10,48 @@ export class productsService {
   constructor(private http: HttpClient) { }
 
   createProduct(product: CreateProductDto) {
-    return this.http.post('/api/v1/products', product , { withCredentials: true })
-          .pipe(
-            catchError(this.handleError)
-          );
+    return this.http.post('/api/v1/products', product, { withCredentials: true })
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   editProduct(product: CreateProductDto, prodId: number | undefined) {
     if (prodId === undefined) {
       throw new Error('User ID is undefined');
     }
-    return this.http.put(`/api/v1/products/${prodId}`, product , { withCredentials: true })
-          .pipe(
-            catchError(this.handleError)
-          );
+    return this.http.put(`/api/v1/products/${prodId}`, product, { withCredentials: true })
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   uploadImage(productId: number, formData: FormData) {
-    return this.http.post(`/api/v1/products/${productId}/image`, formData, {withCredentials: true, responseType: "text"})
-          .pipe(
-            catchError(this.handleError)
-        );
+    return this.http.post(`/api/v1/products/${productId}/image`, formData, { withCredentials: true, responseType: "text" })
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   putImage(productId: number, formData: FormData) {
-    return this.http.post(`/api/v1/products/${productId}/image`, formData, {withCredentials: true, responseType: "text"})
-          .pipe(
-            catchError(this.handleError)
-        );
+    return this.http.post(`/api/v1/products/${productId}/image`, formData, { withCredentials: true, responseType: "text" })
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
-  rateProduct(rating: number, id: number) {
+  rateProduct(rating: number, id: number) { // Make the post request to rate the product
     return this.http.post(`/api/v1/products/${id}/ratings`, { rating }, { withCredentials: true })
-          .pipe(
-            catchError(this.handleError)
-          );
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
-  checkoutProduct(state: string, id: number) {
+  checkoutProduct(state: string, id: number) { // Make the put request to change the state of the product
     return this.http.put(`/api/v1/products/${id}`, { state }, { withCredentials: true })
-          .pipe(
-            catchError(this.handleError)
-          );
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   getUserProducts(userId: number | undefined, page: number): Observable<any> {
@@ -59,9 +59,9 @@ export class productsService {
       throw new Error('User ID is undefined');
     }
     return this.http.get<any>(`/api/v1/users/${userId}/products?page=${page}`)
-        .pipe(
-          catchError(this.handleError)
-        );
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   getWinningBids(userId: number | undefined, page: number): Observable<any> {
@@ -69,9 +69,9 @@ export class productsService {
       throw new Error('User ID is undefined');
     }
     return this.http.get<any>(`/api/v1/users/${userId}/boughtProducts?page=${page}`)
-        .pipe(
-          catchError(this.handleError)
-        );
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   getProductById(prodId: number | undefined): Observable<any> {
@@ -79,9 +79,9 @@ export class productsService {
       throw new Error('Product ID is undefined');
     }
     return this.http.get<any>(`/api/v1/products/${prodId}`)
-        .pipe(
-          catchError(this.handleError)
-        );
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   postOffer(productId: number | undefined, cost: number | undefined): Observable<any> {
@@ -90,7 +90,7 @@ export class productsService {
     }
     const url = `/api/v1/products/${productId}/offers`;
     const body = { cost };
-  
+
     return this.http.post<any>(url, body)
       .pipe(
         catchError(this.handleError)
@@ -103,12 +103,12 @@ export class productsService {
 
   getProductIndex(page: number): Observable<any> {
     return this.http.get<any>(`/api/v1/products?page=${page}`)
-        .pipe(
-          catchError(this.handleError)
-        );
-  }  
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 
-  private handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse) { // Get the error from the backend and return a custom error message
     if (error.error && error.error.error) {
       console.error(`Backend error: ${error.error.error}`);
       return throwError(() => new Error(error.error.error));
@@ -135,5 +135,5 @@ export class productsService {
       return throwError(() => new Error('Unexpected error'));
     }
   }
-    
+
 }

@@ -176,7 +176,7 @@ export class ProductDetailComponent implements OnInit {
   }
   
 
-  submitRating() {
+  submitRating() { //Submit the rating to the backend
     if (this.rating < 1 || this.rating > 5) {
       window.alert('Rating must be between 1 and 5');
       return;
@@ -199,7 +199,7 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  checkout() {
+  checkout() { //Change the state's product to "Delivered"
     this.productsService.checkoutProduct("Delivered", this.product?.id).subscribe(
       (data) => {
         console.log(data);
