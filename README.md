@@ -47,11 +47,15 @@
 
 9. **[Documentation](#documentation)**
    - [Diagram with the database entities](#diagram-with-the-database-entities)
-   - [Class and Templates Diagram](#class-and-templates-diagram)
+   - [Class and Templates Diagram Backend](#class-and-templates-diagram-backend)
+   - [Class and Templates Diagram Frontend](#class-and-templates-diagram-frontend)
+   - [Website demo video](#website-demo-video)
 
 10. **[Contributors tag 1](#contributors-tag-1)**
 
 11. **[Contributors tag 2](#contributors-tag-2)**
+
+12. **[Contributors tag 3](#contributors-tag-3)**
     
     
 
@@ -176,7 +180,7 @@ As a summary we show the updated navigation diagram.
 
 ![NavigationDiagram](imagenes/NavigationDiagram.png)
 
-## Instructions to Run //   Falta actualizar
+## Instructions to Run
 
 ### Required Technologies / Applications
 - VSCode (or any preferred IDE like IntelliJ IDEA or Eclipse)
@@ -243,8 +247,14 @@ Docker compose down
 ![BBDD Class Diagram](imagenes/BBDDClassDiagram.png)
 
 
-### Class and Templates Diagram
-![Class and Templates Diagram ](imagenes/ClassTemplatesDiagramP2BlancoRecu.png)
+### Class and Templates Diagram Backend
+![Class and Templates Diagram Backend](imagenes/ClassTemplatesDiagramP2BlancoRecu.png)
+
+### Class and Templates Diagram Frontend
+![Class and Templates Diagram Frontend](imagenes/)
+
+### Website demo video
+[Link to youtube](https://youtube.com)
 
 ## Contributors tag 1
 
@@ -432,6 +442,24 @@ Docker compose down
 
 ## Contributors tag 3
 
+### Arturo Enrique Gutierrez Mirandona 
+
+| Commit | Description |
+| :----: | :---------: |
+| [1º](https://github.com) | |
+| [2º](https://github.com) | |
+| [3º](https://github.com) | |
+| [4º](https://github.com) | |
+| [5º](https://github.com) | |
+
+| File | Description |
+| :----: | :---------: |
+| [1º](https://github.com) | |
+| [2º](https://github.com) | |
+| [3º](https://github.com) | |
+| [4º](https://github.com) | |
+| [5º](https://github.com) | |
+
 ### Jorge Andrés Echevarría
 
 | Commit | Description |
@@ -451,3 +479,57 @@ Docker compose down
 | [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/Dockerfile) | As stated before I was in charge to make sure app was able to be deployed with Docker.|
 
 (NOTE: Despite only linking the components, it is straight forward to understand the html components related were done by me too)
+
+### Iván Gutierrez González
+
+| Commit | Description |
+| :----: | :---------: |
+| [1º](https://github.com) | |
+| [2º](https://github.com) | |
+| [3º](https://github.com) | |
+| [4º](https://github.com) | |
+| [5º](https://github.com) | |
+
+| File | Description |
+| :----: | :---------: |
+| [1º](https://github.com) | |
+| [2º](https://github.com) | |
+| [3º](https://github.com) | |
+| [4º](https://github.com) | |
+| [5º](https://github.com) | |
+
+### Victor Bartolomé Letosa
+
+| Commit | Description |
+| :----: | :---------: |
+| [1º](https://github.com) | |
+| [2º](https://github.com) | |
+| [3º](https://github.com) | |
+| [4º](https://github.com) | |
+| [5º](https://github.com) | |
+
+| File | Description |
+| :----: | :---------: |
+| [1º](https://github.com) | |
+| [2º](https://github.com) | |
+| [3º](https://github.com) | |
+| [4º](https://github.com) | |
+| [5º](https://github.com) | |
+
+### Miguel Pradillo Bartolomé
+
+| Commit | Description |
+| :----: | :---------: |
+| [1º](https://github.com) | |
+| [2º](https://github.com) | |
+| [3º](https://github.com) | |
+| [4º](https://github.com) | |
+| [5º](https://github.com) | |
+
+| File | Description |
+| :----: | :---------: |
+| [1º](https://github.com) | |
+| [2º](https://github.com) | |
+| [3º](https://github.com) | |
+| [4º](https://github.com) | |
+| [5º](https://github.com) | |
