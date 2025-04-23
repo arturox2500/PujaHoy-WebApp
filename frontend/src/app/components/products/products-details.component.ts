@@ -139,7 +139,8 @@ export class ProductDetailComponent implements OnInit {
     this.safeMapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(rawUrl);
   }
 
-  loadChart() {
+  
+  loadChart() { // Generates and updates bid progression chart.
     Chart.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend, LineController);
     const labels = this.productOffers.map((_: any, index: number) => `Bid ${index + 1}`);
     const ctx = this.bidsChart.nativeElement.getContext('2d');
