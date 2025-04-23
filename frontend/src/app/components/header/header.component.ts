@@ -9,7 +9,7 @@ import { LoginService } from '../../services/login.service';
 export class HeaderComponent {
   constructor(public loginService: LoginService, private router: Router) {}
   
-  logOut() {
+  logOut() { 
     this.loginService.logOut(); 
     this.router.navigate(['/']);
   }

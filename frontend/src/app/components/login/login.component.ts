@@ -15,18 +15,18 @@ export class LoginComponent {
 
   constructor(private loginService: LoginService, private router: Router) {}
 
-  ngOnInit() {
+  ngOnInit() { // Check if the user is already logged in and redirect to users page if true
     if (this.loginService.isLogged()) {
       this.router.navigate(['/users']); 
     }
   }
   
-  toggleForm() {
+  toggleForm() { // Toggle between login and registration forms
     this.isRegister = !this.isRegister;
     this.errorMessage = null; 
   }
 
-  onSubmit() {
+  onSubmit() { // Handle form submission for both login and registration
     if (this.isRegister) {
       this.loginService.register(this.userDto).subscribe(
         (response) => {

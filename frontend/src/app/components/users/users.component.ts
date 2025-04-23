@@ -132,7 +132,7 @@ export class UserComponent {
     );
   }
 
-  onSubmitEdit() {
+  onSubmitEdit() { //Edit user profile
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const zipCodeRegex = /^\d{5}$/;
 
@@ -179,7 +179,7 @@ export class UserComponent {
     );
   }
 
-  cancelEdit() {
+  cancelEdit() { //Cancel the edit and reset the form
     if (this.user) {
       this.editData = {
         id: this.user.id,
@@ -191,7 +191,7 @@ export class UserComponent {
     this.isEditing = false;
   }
 
-  onImageSelected(event: Event) {
+  onImageSelected(event: Event) { //Handle the image selection
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedImage = input.files[0];
