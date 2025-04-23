@@ -44,6 +44,9 @@
 8. **[Instructions to Run](#instructions-to-run)**
    - [Required Technologies / Applications](#required-technologies--applications)
    - [Steps](#steps)
+   - [Steps with Docker](#steps-with-docker)
+   - [Steps for bulding Docker Image](steps-for-nuilding-docker-image#)
+   - [Steps with Virtual Machine](#steps-with-virtual-machine)
 
 9. **[Documentation](#documentation)**
    - [Diagram with the database entities](#diagram-with-the-database-entities)
