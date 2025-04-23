@@ -101,7 +101,7 @@ export class productsService {
     return this.http.delete(`/api/v1/products/${prodId}`);
   }
 
-  getProductIndex(page: number): Observable<any> {
+  getProductIndex(page: number): Observable<any> { //Fetches a paginated list of all products (public index) from the backend for the given page number.
     return this.http.get<any>(`/api/v1/products?page=${page}`)
       .pipe(
         catchError(this.handleError)
