@@ -217,6 +217,7 @@ As a summary we show the updated navigation diagram.
 -  Execute:
 chmod +x create_image.sh && ./create_image.sh
 chmod +x publish_image.sh && ./publish_image.sh
+- (NOTE:There's a chance you might encounter an unauthorized error. If this happens, run the "docker login" command and follow the process to log in, as Docker has rate limits for anonymous users. After logging in, simply rerun the above code.)
 
 ### Steps with Virtual Machine
 It is required to be connected to URJC network to be able to access VM
