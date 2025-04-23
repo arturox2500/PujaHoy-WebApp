@@ -10,7 +10,7 @@ export class HeaderComponent {
   constructor(public loginService: LoginService, private router: Router) {}
   
   logOut() {
-    this.loginService.logOut(); // Llama al método de logout
-    this.router.navigate(['/']); // Redirige al login después de cerrar sesión
+    this.loginService.logOut(); 
+    this.router.navigate(['/']);
   }
 }

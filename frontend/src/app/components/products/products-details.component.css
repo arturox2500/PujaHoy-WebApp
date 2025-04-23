@@ -46,7 +46,7 @@
   border-color: #d32f2f !important;
 }
 .product-img-limit {
-  max-height: 400px; /* Puedes ajustar esto según lo que necesites */
+  max-height: 400px; 
   width: 100%;
   object-fit: contain;
 }

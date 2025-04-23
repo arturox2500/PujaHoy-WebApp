@@ -95,7 +95,6 @@ export class ProductDetailComponent implements OnInit {
       (user) => {
         this.user = user;
         userLoaded = true;
-        // Intentar ejecutar si ambos están cargados
         if (userLoaded && productLoaded) {
           this.selectbutton();
         }
@@ -228,7 +227,6 @@ export class ProductDetailComponent implements OnInit {
       const isBanned = !this.user.active;
       const hasOffers = this.product.offers.length > 0;
 
-      // Declarar isBuyer fuera y asignar valor condicionalmente
       let isBuyer = false;
       if (hasOffers) {
         isBuyer = this.user.id === this.product.offers[this.product.offers.length - 1].user.id;
