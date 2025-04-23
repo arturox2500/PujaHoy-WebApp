@@ -119,6 +119,10 @@ export class ProductsListComponent implements OnInit, OnDestroy{
     );
   }
 
+  getStars(n: number): number[] {
+    return Array(n).fill(0);
+  }
+
   ngOnDestroy(): void {
     this.logoutSubscription?.unsubscribe(); // Clean the subcription
   }

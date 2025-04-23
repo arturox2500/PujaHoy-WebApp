@@ -17,6 +17,9 @@
             <h5 class="hover-red2 fw-bold text-dark">{{ product.name }}</h5>
             <h4 class="text-danger fw-bold">{{ product.iniValue }}€</h4>
           </div>
+          <div class="text-center mt-2">
+            <i class="fa fa-star text-danger" *ngFor="let star of getStars(product.seller.reputation)"></i>
+          </div>
         </div>
       </a>
     </div>
