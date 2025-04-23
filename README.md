@@ -430,3 +430,23 @@ Docker compose down
 | [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/service/TransactionService.java) | This file defines a Spring service TransactionService to manage transactions, including finding, saving, deleting, and creating transactions, as well as converting them to DTOs using the TransactionMapper. |
 | [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/src/main/java/com/webapp08/pujahoy/controller/ProductController.java) | Comments about the functionality of the methods added to this file which defines a Spring MVC controller to manage product-related operations in the web application. |
 
+## Contributors tag 3
+
+### Jorge Andrés Echevarría
+
+| Commit | Description |
+| :----: | :---------: |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/09e21f2a896d7057c1d156d2fb3b5ab13c84a715) | Added login and register to Angular and tested it.|
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/881a8cbe70f51cae114af30797b3223bd349eb78) | Added the map to the product details page.|
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/644098849059598dd0950ffb520370f134ebbbf3) | Added the possibility to edit user information. Later on was added to be able to edit the profile picture too.|
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/64da09ba636d41c854023c034c2e60a872d5f270) | Added funtionality and style to header and footer.|
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/3960eaa108e23317a879a43ff178024c96bdaca3) | Updated the dockerfile to be able to use the Angular program. It was later needed to change some minor details to make it work as intended.|
+
+| File | Description |
+| :----: | :---------: |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-details.component.ts) | I added the visual map from Google Maps. Despite beeing just a few lines, job took a long time since old map used in the spring app was not working as intended and had to search for alternatives. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/users/users.component.ts) | In users component i made all edit related code. From editing user information to edit his profile picture. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/login/login.component.ts) | My job was to make sure all login and register related functionalities were working as intended. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/services/login.service.ts) | I was also in charge of login and register workflows on the service. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/backend/Dockerfile) | As stated before I was in charge to make sure app was able to be deployed with Docker.|
+(NOTE: Despite only linking the components, it is straight forward to understand the html components related were done by me too)
