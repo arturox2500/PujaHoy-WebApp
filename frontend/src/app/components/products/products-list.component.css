@@ -26,11 +26,6 @@
     justify-content: center;
 }
 
-.container{
-    padding-top: 2em;
-    padding-bottom: 2em;
-}
-
 .hover-red, .hover-red2 {
     transition: all 0.3s ease; 
 }

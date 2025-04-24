@@ -19,6 +19,7 @@ export class ProductsListComponent implements OnInit, OnDestroy{
   totalElements: number = 0;
   products: any[] = [];
   pageTitle = ""
+  index: string | undefined;
 
   constructor(private loginService: LoginService, private productsService: productsService, private route: ActivatedRoute) { }
 
@@ -63,6 +64,7 @@ export class ProductsListComponent implements OnInit, OnDestroy{
         this.totalPages = data.totalPages;
         this.totalElements = data.totalElements;
         this.currentPage = data.pageable.pageNumber;
+        this.index = 'false';
       },
       (error) => {
         window.alert('Could not load products: ' + error.message);
@@ -77,6 +79,7 @@ export class ProductsListComponent implements OnInit, OnDestroy{
         this.totalPages = data.totalPages;
         this.totalElements = data.totalElements;
         this.currentPage = data.pageable.pageNumber;
+        this.index = 'false';
       },
       (error) => {
         window.alert('Error al cargar las pujas ganadas: ' + error.message);
@@ -112,6 +115,7 @@ export class ProductsListComponent implements OnInit, OnDestroy{
         this.totalPages = data.totalPages;
         this.totalElements = data.totalElements;
         this.currentPage = data.pageable.pageNumber;
+        this.index = 'true';
       },
       (error) => {
         window.alert('Error al cargar las pujas ganadas: ' + error.message);

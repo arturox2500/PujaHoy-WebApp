@@ -54,12 +54,18 @@ export class ProductDetailComponent implements OnInit {
 
   productNotFound: boolean = false;
 
+  index!: boolean;
+
   constructor(private loginService: LoginService, private userService: usersService, private productsService: productsService, private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer) { }
 
 
   ngOnInit(): void {
     let userLoaded = false;
     let productLoaded = false;
+
+    this.route.queryParams.subscribe(params => {
+      this.index = params['index'] === 'true';
+    });
 
     this.route.paramMap.subscribe(params => {
       const idParam = params.get('id');
