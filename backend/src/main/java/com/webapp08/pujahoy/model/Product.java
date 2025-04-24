@@ -1,5 +1,6 @@
 package com.webapp08.pujahoy.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 import java.sql.Blob;
 import java.util.ArrayList;
@@ -37,6 +39,9 @@ public class Product {
 
         @ManyToOne
         private UserModel seller;
+
+        @OneToOne(mappedBy = "product", cascade = CascadeType.ALL) 
+        private Rating rating;
     
         protected Product(){
     

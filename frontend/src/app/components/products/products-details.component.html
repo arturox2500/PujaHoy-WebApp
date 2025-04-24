@@ -1,5 +1,10 @@
+<div *ngIf="productNotFound" class="alert alert-danger text-center mt-4">
+    No product found with this ID.
+    <p class="text-muted mb-4">Please go back.</p>
+      <button (click)="goBack()" class="btn btn-danger px-4 py-2 rounded-pill font-weight-bold">Go Back</button>
+  </div>
 <!-- PRODUCT SECTION -->
-<div class="section py-5">
+<div class="section py-5" *ngIf="!productNotFound">
     <div class="container">
         <div class="row">
             <!-- Product Image -->
@@ -22,7 +27,7 @@
                     <div class="mb-3" *ngIf="canPlaceABid">
                         <input type="number" class="form-control form-control-sm mb-2" placeholder="Place your bid"
                             [(ngModel)]="bidAmount">
-                        <button class="btn btn-danger px-4 py-2 rounded-pill font-weight-bold" (click)="placeBid()">Place Bid</button>
+                        <button class="btn btn-danger custom-btn-fixed px-4 py-2 rounded-pill font-weight-bold" (click)="placeBid()">Place Bid</button>
                     </div>
 
 
