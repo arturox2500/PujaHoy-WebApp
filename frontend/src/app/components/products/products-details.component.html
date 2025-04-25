@@ -1,12 +1,50 @@
+<div *ngIf="productNotFound" class="alert alert-danger text-center mt-4">
+    No product found with this ID.
+    <p class="text-muted mb-4">Please go back.</p>
+    <button (click)="goBack()" class="btn btn-danger px-4 py-2 rounded-pill font-weight-bold">Go Back</button>
+</div>
 <!-- PRODUCT SECTION -->
-<div class="section py-5">
+<div class="section" *ngIf="!productNotFound">
+    <div id="breadcrumb" class="section py-3 bg-light mb-4" style="margin-top: 0px;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-12">
+                    <nav *ngIf="!index; else fromIndex" aria-label="breadcrumb" class="d-inline-block">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item">
+                                <a routerLink="/" class="text-decoration-none text-dark">Home</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a routerLink="/users" class="text-decoration-none text-dark">
+                                    Account
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active text-dark" aria-current="page">{{ product?.name }}
+                            </li>
+                        </ol>
+                    </nav>
+                    <ng-template #fromIndex>
+                        <nav aria-label="breadcrumb" class="d-inline-block">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item">
+                                    <a routerLink="/" class="text-decoration-none text-dark">Home</a>
+                                </li>
+                                <li class="breadcrumb-item active text-dark" aria-current="page">{{ product?.name }}
+                                </li>
+                            </ol>
+                        </nav>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <!-- Product Image -->
             <div class="col-md-5">
                 <div class="product-preview border p-3">
-                  <img [src]="product?.imgURL ? '/api/v1' + product?.imgURL : '/img/default-product.png'"
-                       class="img-fluid product-img-limit" alt="Product image" />
+                    <img [src]="product?.imgURL ? '/api/v1' + product?.imgURL : '/img/default-product.png'"
+                        class="img-fluid product-img-limit" alt="Product image" />
                 </div>
             </div>
 
@@ -22,34 +60,36 @@
                     <div class="mb-3" *ngIf="canPlaceABid">
                         <input type="number" class="form-control form-control-sm mb-2" placeholder="Place your bid"
                             [(ngModel)]="bidAmount">
-                        <button class="btn btn-danger px-4 py-2 rounded-pill font-weight-bold" (click)="placeBid()">Place Bid</button>
+                        <button class="btn btn-danger custom-btn-fixed px-4 py-2 rounded-pill font-weight-bold"
+                            (click)="placeBid()">Place Bid</button>
                     </div>
 
 
                     <!-- Actions -->
                     <div class="my-3 d-flex flex-column align-items-start gap-2">
                         <button routerLink="/users/{{ product?.seller?.id }}"
-                          class="btn btn-danger custom-btn-fixed px-4 py-2 rounded-pill font-weight-bold">Seller</button>
-                      
+                            [queryParams]="{ id: product?.id, productName: product?.name }"
+                            class="btn btn-danger custom-btn-fixed px-4 py-2 rounded-pill font-weight-bold">Seller</button>
+
                         <button *ngIf="canDelete" (click)="deleteProduct()"
-                          class="btn btn-danger custom-btn-fixed px-4 py-2 rounded-pill font-weight-bold">Delete</button>
-                      
+                            class="btn btn-danger custom-btn-fixed px-4 py-2 rounded-pill font-weight-bold">Delete</button>
+
                         <div *ngIf="canRate">
-                          <button *ngIf="!ratedProduct" (click)="ratedProduct = !ratedProduct"
-                            class="btn btn-danger custom-btn-fixed px-4 py-2 rounded-pill font-weight-bold">
-                            Rating
-                          </button>
+                            <button *ngIf="!ratedProduct" (click)="ratedProduct = !ratedProduct"
+                                class="btn btn-danger custom-btn-fixed px-4 py-2 rounded-pill font-weight-bold">
+                                Rating
+                            </button>
                         </div>
-                      
+
                         <div *ngIf="canCheckOut">
-                          <button *ngIf="checkoutProduct" (click)="checkout()"
-                            class="btn btn-danger custom-btn-fixed px-4 py-2 rounded-pill font-weight-bold">
-                            Checkout
-                          </button>
+                            <button *ngIf="checkoutProduct" (click)="checkout()"
+                                class="btn btn-danger custom-btn-fixed px-4 py-2 rounded-pill font-weight-bold">
+                                Checkout
+                            </button>
                         </div>
-                      
+
                         <button *ngIf="canEdit" routerLink="/product/{{ product?.id }}/edit"
-                          class="btn btn-danger custom-btn-fixed px-4 py-2 rounded-pill font-weight-bold">Edit</button>
+                            class="btn btn-danger custom-btn-fixed px-4 py-2 rounded-pill font-weight-bold">Edit</button>
                     </div>
                 </div>
             </div>

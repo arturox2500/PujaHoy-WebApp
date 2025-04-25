@@ -21,6 +21,9 @@ export class UserComponent {
   isEditing: boolean = false;
   selectedImage: File | null = null;
   imageUrl: string | undefined;
+  productName: string | undefined;
+  productId: number | undefined;
+  text2: string = "Seller";
 
   constructor(private route: ActivatedRoute, private usersService: usersService) { }
 
@@ -29,10 +32,18 @@ export class UserComponent {
       const id = params.get('id');
       this.userId = id ? +id : null;
 
+      this.route.queryParams.subscribe(params => {
+        this.productId = params['id'];
+        this.productName = params['productName'];
+      });
+
       if (this.userId) {
         this.getSellerProfile(this.userId);
 
       } else {
+        if (this.productId) {
+          this.text2 = "Account";
+        }
         this.getOwnProfile();
       }
     });
@@ -84,6 +95,7 @@ export class UserComponent {
       this.applicater = applicater || undefined;
       this.user = user;
       if (this.user?.id === this.applicater?.id) {
+        this.text2 = "Account";
         this.getOwnProfile();
         return;
       }

@@ -301,40 +301,45 @@ public ResponseEntity<ProductDTO> getProduct(@PathVariable long id_product) {
     
     @DeleteMapping("/{id_product}")
     public ResponseEntity<?> deleteProduct(@PathVariable long id_product, HttpServletRequest request) {
-        Optional<ProductDTO> product = productService.findById(id_product);
-
-        if (product.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        ProductDTO existingProduct = product.get();
-
-        Principal principal = request.getUserPrincipal();
-        if (principal == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        Optional<PublicUserDTO> user = userService.findByName(principal.getName());
-        if (user.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        PublicUserDTO loggedInUser = user.get();
-        // Check if the product has registered bids
-
-        if(product.get().getState().equals("In progress")){
-            if (!existingProduct.getOffers().isEmpty() ) {
-                return ResponseEntity.badRequest().body("You cannot delete a product that has bids.");
+        try {
+            Optional<ProductDTO> product = productService.findById(id_product);
+            if (product.isEmpty()) {
+                return ResponseEntity.notFound().build();
             }
-            
-            if (!"Administrator".equalsIgnoreCase(userService.getTypeById(loggedInUser.getId())) &&
-                !existingProduct.getSeller().getId().equals(loggedInUser.getId())) {
+    
+            ProductDTO existingProduct = product.get();
+    
+            Principal principal = request.getUserPrincipal();
+            if (principal == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+    
+            Optional<PublicUserDTO> user = userService.findByName(principal.getName());
+            if (user.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+    
+            PublicUserDTO loggedInUser = user.get();
+    
+            if ("In progress".equalsIgnoreCase(existingProduct.getState())) {
+                if (!existingProduct.getOffers().isEmpty()) {
+                    return ResponseEntity.badRequest().body("You cannot delete a product that has bids.");
+                }
+            }
+    
+            String userType = userService.getTypeById(loggedInUser.getId());
+            if (userType == null || 
+                (!"Administrator".equalsIgnoreCase(userType) && 
+                !existingProduct.getSeller().getId().equals(loggedInUser.getId()))) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
-        }   
-
-        productService.deleteById(id_product);
-        return ResponseEntity.ok(existingProduct);
+    
+            productService.deleteById(id_product);
+            return ResponseEntity.ok(existingProduct);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error occurred: " + e.getMessage());
+        }
     }
 
 

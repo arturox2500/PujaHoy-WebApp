@@ -19,10 +19,11 @@ export class ProductsListComponent implements OnInit, OnDestroy{
   totalElements: number = 0;
   products: any[] = [];
   pageTitle = ""
+  index: string | undefined;
 
   constructor(private loginService: LoginService, private productsService: productsService, private route: ActivatedRoute) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {   //Initializes the component by fetching the current user and loading the appropriate product list based on the active route.
     this.logoutSubscription = this.loginService.logout$.subscribe(() => {
       this.reloadComponent();
     });
@@ -63,9 +64,10 @@ export class ProductsListComponent implements OnInit, OnDestroy{
         this.totalPages = data.totalPages;
         this.totalElements = data.totalElements;
         this.currentPage = data.pageable.pageNumber;
+        this.index = 'false';
       },
       (error) => {
-        window.alert('Error al cargar los productos: ' + error.message);
+        window.alert('Could not load products: ' + error.message);
       }
     );
   }
@@ -77,6 +79,7 @@ export class ProductsListComponent implements OnInit, OnDestroy{
         this.totalPages = data.totalPages;
         this.totalElements = data.totalElements;
         this.currentPage = data.pageable.pageNumber;
+        this.index = 'false';
       },
       (error) => {
         window.alert('Error al cargar las pujas ganadas: ' + error.message);
@@ -84,7 +87,7 @@ export class ProductsListComponent implements OnInit, OnDestroy{
     );
   }
 
-  loadMoreProducts(): void {
+  loadMoreProducts(): void { //Loads the next page of products based on the current route and appends them to the existing list.
     if (this.currentPage < this.totalPages - 1) {
       this.currentPage++;
 
@@ -105,18 +108,23 @@ export class ProductsListComponent implements OnInit, OnDestroy{
     }
   }
 
-  indexProduct(): void {
+  indexProduct(): void { // Loads a general list of products (not user-specific) for the current page and appends them to the list.
     this.productsService.getProductIndex(this.currentPage).subscribe(
       (data) => {
         this.products = this.products.concat(data.content); 
         this.totalPages = data.totalPages;
         this.totalElements = data.totalElements;
         this.currentPage = data.pageable.pageNumber;
+        this.index = 'true';
       },
       (error) => {
         window.alert('Error al cargar las pujas ganadas: ' + error.message);
       }
     );
+  }
+
+  getStars(n: number): number[] {
+    return Array(n).fill(0);
   }
 
   ngOnDestroy(): void {

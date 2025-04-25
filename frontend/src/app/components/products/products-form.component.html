@@ -1,53 +1,66 @@
+<div id="breadcrumb" class="section py-3 bg-light">
+  <div class="container">
+    <div class="row align-items-center">
+      <div *ngIf="product.name == ''; else edit" class="col-12">
+        <nav aria-label="breadcrumb" class="d-inline-block">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a routerLink="/" class="text-decoration-none text-dark">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a routerLink="/users" class="text-decoration-none text-dark">
+                Account
+              </a>
+            </li>
+            <li class="breadcrumb-item active text-dark" aria-current="page">New Product</li>
+          </ol>
+        </nav>
+      </div>
+      <ng-template #edit>
+        <div class="col-12">
+          <nav aria-label="breadcrumb" class="d-inline-block">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item">
+                <a routerLink="/" class="text-decoration-none text-dark">Home</a>
+              </li>
+              <li class="breadcrumb-item">
+                <a [routerLink]="['/product', productId]" class="text-decoration-none text-dark">
+                  {{ product.name }}
+                </a>
+              </li>
+              <li class="breadcrumb-item active text-dark" aria-current="page">Edit Product</li>
+            </ol>
+          </nav>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
 <br>
 <div *ngIf="isAllowed && !isLoading; else goBackTemplate" class="container mt-5">
   <h4 class="font-weight-bold text-dark mb-4">PRODUCT INFORMATION</h4>
   <form (ngSubmit)="submitForm()">
     <!-- Product Name -->
     <div class="form-group mb-3">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Product Name"
-        [(ngModel)]="product.name"
-        name="name"
-        required
-      />
+      <input type="text" class="form-control" placeholder="Product Name" [(ngModel)]="product.name" name="name"
+        required />
     </div>
 
     <!-- Description -->
     <div class="form-group mb-3">
-      <textarea
-        class="form-control"
-        placeholder="Description"
-        [(ngModel)]="product.description"
-        name="description"
-        rows="3"
-        required
-      ></textarea>
+      <textarea class="form-control" placeholder="Description" [(ngModel)]="product.description" name="description"
+        rows="3" required></textarea>
     </div>
 
     <!-- Price -->
     <div class="form-group mb-3">
-      <input
-        type="number"
-        class="form-control"
-        placeholder="Price"
-        [(ngModel)]="product.iniValue"
-        name="iniValue"
-        required
-        min="0"
-        step="0.01"
-      />
+      <input type="number" class="form-control" placeholder="Price" [(ngModel)]="product.iniValue" name="iniValue"
+        required min="0" step="0.01" />
     </div>
 
     <!-- Duration -->
     <div class="form-group mb-3" *ngIf="!isEditMode">
-      <select
-        class="form-control"
-        [(ngModel)]="product.duration"
-        name="duration"
-        required
-      >
+      <select class="form-control" [(ngModel)]="product.duration" name="duration" required>
         <option [value]="0" disabled [selected]="product.duration === 0">Select Duration</option>
         <option [value]="7">7 Days</option>
         <option [value]="14">14 Days</option>
@@ -62,12 +75,7 @@
         <!-- buton -->
         <label class="btn btn-danger mb-2">
           <i class="fas fa-upload"></i> Choose File
-          <input
-            type="file"
-            hidden
-            (change)="onImageSelected($event)"
-            accept="image/*"
-          />
+          <input type="file" hidden (change)="onImageSelected($event)" accept="image/*" />
         </label>
 
         <div class="mt-2 text-muted" *ngIf="selectedFileName">
@@ -88,7 +96,8 @@
 <ng-template #goBackTemplate>
   <div class="container mt-5">
     <div class="text-center">
-      <h4 class="font-weight-bold text-dark mb-4">Unable to load product details or insufficient permissions to access this information.</h4>
+      <h4 class="font-weight-bold text-dark mb-4">Unable to load product details or insufficient permissions to access
+        this information.</h4>
       <p class="text-muted mb-4">Please go back.</p>
       <button (click)="goBack()" class="btn btn-danger px-4 py-2 rounded-pill font-weight-bold">Go Back</button>
     </div>

@@ -1,33 +1,55 @@
-<div class="container px-4">
+<div *ngIf="pageTitle != ''" id="breadcrumb" class="section py-3 bg-light">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-12">
+        <nav aria-label="breadcrumb" class="d-inline-block">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a routerLink="/" class="text-decoration-none text-dark">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a routerLink="/users" class="text-decoration-none text-dark">
+                Account
+              </a>
+            </li>
+            <li class="breadcrumb-item active text-dark" aria-current="page">{{ pageTitle }}</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container px-4" style="padding-top: 2em; padding-bottom: 2em;">
   <h2>{{ pageTitle }}</h2>
   <br>
   <div class="row" *ngIf="(products?.length ?? 0) > 0; else noProducts">
     <div *ngFor="let product of products" class="col-lg-4 col-md-4 col-sm-6 col-12 mb-4">
-      <a [routerLink]="['/product', product.id]" class="product-link text-decoration-none">
+      <a [routerLink]="['/product', product.id]" [queryParams]="{ index: index }"
+        class="product-link text-decoration-none">
         <div class="product-card border rounded shadow-sm p-3 h-100 hover-red">
           <div class="product-img text-center mb-3">
-            <img
-              [src]="product.imgURL ? '/api/v1' + product.imgURL : '/img/default-product.png'"
-              [alt]="'Image'"
-              class="img-fluid"
-            />
+            <img [src]="product.imgURL ? '/api/v1' + product.imgURL : '/img/default-product.png'" [alt]="'Image'"
+              class="img-fluid" />
           </div>
           <div class="product-body text-center">
             <p class="text-uppercase text-secondary mb-1" style="font-size: 0.8rem;">Category</p>
             <h5 class="hover-red2 fw-bold text-dark">{{ product.name }}</h5>
             <h4 class="text-danger fw-bold">{{ product.iniValue }}€</h4>
           </div>
+          <div class="text-center mt-2">
+            <i class="fa fa-star text-danger" *ngFor="let star of getStars(product.seller.reputation)"></i>
+          </div>
         </div>
       </a>
     </div>
-  
+
     <div class="col-12 text-center mt-3" *ngIf="currentPage < totalPages - 1">
       <button class="btn btn-danger" (click)="loadMoreProducts()">Load More</button>
     </div>
   </div>
-  
+
   <ng-template #noProducts>
-    <p class="text-center">Nothing to show.</p>
+    <p class="text-center">...</p>
   </ng-template>
 </div>
-

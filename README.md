@@ -449,19 +449,19 @@ Docker compose down
 
 | Commit | Description |
 | :----: | :---------: |
-| [1º](https://github.com) | |
-| [2º](https://github.com) | |
-| [3º](https://github.com) | |
-| [4º](https://github.com) | |
-| [5º](https://github.com) | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/7d9fb03d3c15e2ef8752036a8b0c321d5e143098) | Added styles for the form component and the product list component, also implemented form validation |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/bb16a40cd7b11da0737b18e58da494ff460e5eeb) | Added the functionality to edit an auction |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/39b6241f414c4061bb22931747bca550c9f9c2a6) | Implemented the Bid progression chart that was previously implemented in phase 1 |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/8a696c32e7d5881272f0b57f8cc898594a80c790) | Added the functionality to create a new auction|
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/7a80589127c16c1e08cf04da316deeb9810cdff9) | This was my initial commit in which I created the necessary files and basic logic so that I could start working on the lisitngs and form components |
 
 | File | Description |
 | :----: | :---------: |
-| [1º](https://github.com) | |
-| [2º](https://github.com) | |
-| [3º](https://github.com) | |
-| [4º](https://github.com) | |
-| [5º](https://github.com) | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-form.component.html) | I recreated the original "create product" page as close as possible |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-form.component.ts) | I created the functionality for creating and editing auctions, and made it possible to reuse the component for both functionalities |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-list.component.html) | I recreated the listings design from Phase 1 |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-list.component.ts) | Made the code modular so that adding different listings was simple. Ajax functionality was also done here |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/services/products.service.ts) | I implemented all the necessary methods to interact with the backend and retrieve product information. |
 
 ### Jorge Andrés Echevarría
 
@@ -487,19 +487,19 @@ Docker compose down
 
 | Commit | Description |
 | :----: | :---------: |
-| [1º](https://github.com) | |
-| [2º](https://github.com) | |
-| [3º](https://github.com) | |
-| [4º](https://github.com) | |
-| [5º](https://github.com) | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/34616a9e4fbd40f31ac68ff4c568c4487e8c378e) | Feature to view the seller's profile, ban and unban users. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/95cc68267a1dc1949532000c6b7225c2b59acd33) | Feature to view the seller's profile, rate product and proceed to checkout from the products page. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/5ac4aeed761fd767d843559c748c17639d0800b6) | Make the proxy to connect frontend with backend and the feature to view user's own profile with an initial error handler. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/91a8e2011940b9c21006393d1421e6edabb01074) | Added initial header and footer, and included Boostrap libreries for Angular. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/043366d90dce4bc8354643fb427e1b1d3245fae9) | Added css into users.component.html and fixed feature to view user's own profile. |
 
 | File | Description |
 | :----: | :---------: |
-| [1º](https://github.com) | |
-| [2º](https://github.com) | |
-| [3º](https://github.com) | |
-| [4º](https://github.com) | |
-| [5º](https://github.com) | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/services/users.service.ts) | I added the handler error, and the request to get user's own profile, get seller's profile and ban/unban users. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/users/users.component.ts) | I added the structure and the ngOnInit, getOwnProfile, getSellerProfile and bannedUser methods. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/users/users.component.html) | I added the submitRating and checkout methods. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-details.component.ts) | I added the HTML and CSS structure for all the odds betwween the profile requested and the one who made the request. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/services/products.service.ts) | I added the handler error, and the request to rate a product and checkout a product. |
 
 ### Victor Bartolomé Letosa
 

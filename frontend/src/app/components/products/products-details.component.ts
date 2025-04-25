@@ -11,7 +11,7 @@ import { OfferDTO } from '../../dtos/OfferDTO.dto';
 @Component({
   selector: 'app-product-detail',
   templateUrl: './products-details.component.html',
-  //styleUrls: ['./products-details.component.css']
+  styleUrls: ['./products-details.component.css']
 })
 export class ProductDetailComponent implements OnInit {
   @ViewChild('bidsChart') bidsChart: any;
@@ -22,7 +22,6 @@ export class ProductDetailComponent implements OnInit {
   rating!: number;
   checkoutProduct: boolean = true;
   checkoutdone: boolean = false;
-  rateDone: boolean = false;
 
   errorMessage: string | undefined;
 
@@ -53,12 +52,20 @@ export class ProductDetailComponent implements OnInit {
 
   productOffers: any;
 
+  productNotFound: boolean = false;
+
+  index!: boolean;
+
   constructor(private loginService: LoginService, private userService: usersService, private productsService: productsService, private route: ActivatedRoute, private router: Router, private sanitizer: DomSanitizer) { }
 
 
   ngOnInit(): void {
     let userLoaded = false;
     let productLoaded = false;
+
+    this.route.queryParams.subscribe(params => {
+      this.index = params['index'] === 'true';
+    });
 
     this.route.paramMap.subscribe(params => {
       const idParam = params.get('id');
@@ -67,7 +74,10 @@ export class ProductDetailComponent implements OnInit {
       if (this.productId !== undefined) {
         this.productsService.getProductById(this.productId).subscribe(
           (data) => {
-            console.log('Producto recibido:', data);
+            if (!data) {
+              this.productNotFound = true;
+              return;
+            }
             this.product = data;
             this.productOffers = this.product.offers.map((offer: any) => offer.cost).sort((a:number, b:number) => a - b);
             if (this.product?.offers?.length > 0) {
@@ -76,18 +86,17 @@ export class ProductDetailComponent implements OnInit {
             productLoaded = true;
 
             if (userLoaded && productLoaded) {
-              this.selectbutton();
+              this.selectPermissions();
             }
 
             this.generateSafeMapUrl(this.product.seller.zipCode);
             this.loadChart();
           },
           (error) => {
-            console.error('Error al cargar el producto:', error);
+            console.error('Error: ', error);
+            this.productNotFound = true;
           }
         );
-      } else {
-        console.error('Product ID no válido');
       }
     });
 
@@ -96,16 +105,16 @@ export class ProductDetailComponent implements OnInit {
         this.user = user;
         userLoaded = true;
         if (userLoaded && productLoaded) {
-          this.selectbutton();
+          this.selectPermissions();
         }
       },
       (error) => {
-        console.error('Error al cargar el usuario:', error);
+        console.error('Error to load user: ', error);
       }
     );
   }
 
-  placeBid(): void {
+  placeBid(): void { // places a bid
     this.productsService.postOffer(this.productId, this.bidAmount).subscribe({
       next: (response) => {
         alert('Bid placed successfully!');
@@ -120,7 +129,7 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
-  deleteProduct() {
+  deleteProduct() { // deletes the product
     if (this.productId) {
       this.productsService.deleteProduct(this.productId).subscribe(
         () => {
@@ -139,7 +148,8 @@ export class ProductDetailComponent implements OnInit {
     this.safeMapUrl = this.sanitizer.bypassSecurityTrustResourceUrl(rawUrl);
   }
 
-  loadChart() {
+  
+  loadChart() { // Generates and updates bid progression chart.
     Chart.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend, LineController);
     const labels = this.productOffers.map((_: any, index: number) => `Bid ${index + 1}`);
     const ctx = this.bidsChart.nativeElement.getContext('2d');
@@ -187,8 +197,6 @@ export class ProductDetailComponent implements OnInit {
           const goToProduct = confirm('Rating submitted successfully');
           if (goToProduct) {
             this.ratedProduct = false;
-            this.rateDone=true;
-            this.selectbutton();
             this.canRate = false;
           }
         },
@@ -218,12 +226,13 @@ export class ProductDetailComponent implements OnInit {
     );
   }
 
-  selectbutton() {
+  selectPermissions() { //selects what actions the user can perform on a product
     if (this.user) {
       const isAdmin = this.user.rols?.includes('ADMIN');
       const isSeller = this.user.id === this.product.seller?.id;
       const isActive = this.product.state === "In progress";
       const isFinished = this.product.state === "Finished";
+      const isDelivered = this.product.state === "Delivered";
       const isBanned = !this.user.active;
       const hasOffers = this.product.offers.length > 0;
 
@@ -238,7 +247,7 @@ export class ProductDetailComponent implements OnInit {
       }
 
       // Delete And Edit
-      if ((isAdmin || isSeller) && !hasOffers) {
+      if ((isAdmin || isSeller) && (isDelivered || !hasOffers)) {
         this.canDelete = true;
         this.canEdit = true;
       }
@@ -248,10 +257,10 @@ export class ProductDetailComponent implements OnInit {
         this.canCheckOut = true;
       }
 
-      // Rating
-      if (this.product.state === "Delivered" && isBuyer && !this.rateDone) {
-        this.canRate = true;
-      }
     }
+  }
+
+  goBack() { //redirects user to index
+    this.router.navigate(['/']);
   }
 }

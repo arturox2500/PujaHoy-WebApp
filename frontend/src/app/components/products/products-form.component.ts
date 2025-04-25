@@ -43,7 +43,7 @@ export class ProductsFormComponent implements OnInit {
 
   image: File | null = null;
 
-  submitForm() {
+  submitForm() { //submits the form regardless of whether or not it is the edit or new auction form
     
     if (!this.isValid()){
       return
@@ -112,7 +112,7 @@ export class ProductsFormComponent implements OnInit {
     
   }
 
-  isValid(): boolean {
+  isValid(): boolean { // checks if the form is completely filled in and if not it stops the user from submitting
     const validImageTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
   
     if (!this.product.name || this.product.name.trim() === '') {
@@ -148,20 +148,20 @@ export class ProductsFormComponent implements OnInit {
     return true;
   }
   
-
-  onImageSelected(event: any) {
+  
+  onImageSelected(event: any) { // Shows the name of the image provided by the user
     const file = event.target.files[0];
     this.image = file;
     this.selectedFileName = file.name;
     console.log('Image selected:', file);
   }
 
-  goBack() {
+  goBack() { //redirects user to index
     this.router.navigate(['/']);
   }
 
 
-  loadProduct(id: number) {
+  loadProduct(id: number) { // loads the product if the user is in edit mode
     forkJoin({
       product: this.productsService.getProductById(id),
       user: this.loginService.reqUser() 

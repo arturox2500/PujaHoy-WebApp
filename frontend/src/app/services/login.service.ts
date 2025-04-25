@@ -84,7 +84,7 @@ export class LoginService {
     );
   }
 
-  getUserId(): Observable<number> {
+  getUserId(): Observable<number> { // gives back the current user's id
     return new Observable((observer) => {
       if (this.user) {
         observer.next(this.user.id);
