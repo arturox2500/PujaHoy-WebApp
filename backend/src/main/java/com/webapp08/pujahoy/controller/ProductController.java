@@ -192,7 +192,7 @@ public class ProductController {
         }
 
         model.addAttribute("product", product.get());
-
+        model.addAttribute("zipCode", product.get().getSeller().getZipCode());
         //Check if a product has ended or is still in progress and create transaction
         productService.checkProduct(id_product);
 
@@ -215,8 +215,6 @@ public class ProductController {
 
             PublicUserDTO user = userOpt.get();
             model.addAttribute("isSeller", product.get().getSeller().getId().equals(user.getId()));
-
-            model.addAttribute("zipCode", product.get().getSeller().getZipCode());
 
             // Check if user is logged in and handle user-related logic
             if (user != null) {
