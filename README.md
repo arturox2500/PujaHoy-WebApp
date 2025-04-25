@@ -194,6 +194,7 @@ As a summary we show the updated navigation diagram.
 - MySQL Workbench 8.0.33 or higher
 - Docker
 - Docker Compose
+- Angular Lenguage Service extensions (Available in VSCode)
 
 ### Steps
 - Download the ZIP from this GitHub repository
@@ -222,8 +223,12 @@ As a summary we show the updated navigation diagram.
 -  Clone or download the repository
 -  Go to "backend" folder
 -  Execute:
+```bash
 chmod +x create_image.sh && ./create_image.sh
+```
+```bash
 chmod +x publish_image.sh && ./publish_image.sh
+```
 - (NOTE:There's a chance you might encounter an unauthorized error. If this happens, run the "docker login" command and follow the process to log in, as Docker has rate limits for anonymous users. After logging in, simply rerun the above code.)
 
 ### Steps with Virtual Machine
@@ -231,9 +236,13 @@ It is required to be connected to URJC network to be able to access VM
 
 - Open terminal
 - Execute:
+```bash
 ssh -i ssh-keys/appWeb08.key vmuser@10.100.139.202
+```
 or
+```bash
 ssh -i ssh-keys/appWeb08.key vmuser@appWeb08.dawgis.etsii.urjc.es
+```
 - Clone or download the repository
 - Go to "backend" folder
 - Build the app with:
@@ -241,6 +250,17 @@ Docker compose up
 - GO to https://10.100.139.202:443
 - Ultimately dont forget to execute this command after finished using to save energy :) :
 Docker compose down
+
+### Steps for execute Angular
+Follow the nexts commands:
+
+```bash
+cd ./frontend
+npm install
+ng serve
+```
+
+And go to localhost:4200
 
 ## Documentation
 
