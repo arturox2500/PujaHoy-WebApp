@@ -47,6 +47,7 @@
    - [Steps with Docker](#steps-with-docker)
    - [Steps for building Docker Image](#steps-for-building-docker-image)
    - [Steps with Virtual Machine](#steps-with-virtual-machine)
+   - [Steps for execute Angular](#steps-for-execute-angular)
 
 9. **[Documentation](#documentation)**
    - [Diagram with the database entities](#diagram-with-the-database-entities)
@@ -203,7 +204,10 @@ As a summary we show the updated navigation diagram.
 - Configure the MySQL database with the password Password0] (specified in application.properties)
 - Run the application
 - Open your browser
-- Go to https://localhost:8443
+- Go to
+```bash
+https://localhost:8443
+```
 - If you encounter security warnings, select Advanced options and then Proceed to the website
 
 ### Steps with Docker
@@ -214,7 +218,10 @@ As a summary we show the updated navigation diagram.
 - Go to "backend" folder
 - Execute Pujahoy with Docker Compose: "docker compose up"
 - Open your browser
-- Go to https://localhost:8443
+- Go to
+```bash
+https://localhost:8443
+```
 - If you encounter security warnings, select Advanced options and then Proceed to the website
 
 ### Steps for building Docker Image
@@ -247,7 +254,10 @@ ssh -i ssh-keys/appWeb08.key vmuser@appWeb08.dawgis.etsii.urjc.es
 - Go to "backend" folder
 - Build the app with:
 Docker compose up
-- GO to https://10.100.139.202:443
+- GO to
+```bash
+https://10.100.139.202:443
+```
 - Ultimately dont forget to execute this command after finished using to save energy :) :
 Docker compose down
 
@@ -260,7 +270,10 @@ npm install
 ng serve
 ```
 
-And go to localhost:4200
+And go to this URL in your browser
+```bash
+localhost:4200
+````
 
 ## Documentation
 
