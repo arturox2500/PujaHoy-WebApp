@@ -266,6 +266,7 @@ Follow the nexts commands:
 
 ```bash
 cd ./frontend
+npm install -g @angular/cli@17.3.14
 npm install
 ng serve
 ```
