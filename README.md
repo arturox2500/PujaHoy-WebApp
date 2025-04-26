@@ -288,7 +288,7 @@ localhost:4200
 ![Class and Templates Diagram Backend](imagenes/ClassTemplatesDiagramP2BlancoRecu.png)
 
 ### Class and Templates Diagram Frontend
-![Class and Templates Diagram Frontend](imagenes/)
+![Class and Templates Diagram Frontend](imagenes/Diagram3.jpg)
 
 ### Website demo video
 [Link to youtube](https://youtube.com)
