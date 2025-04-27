@@ -557,7 +557,7 @@ localhost:4200
 
 | Commit | Description |
 | :----: | :---------: |
-| [1º](https://github.com) | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/884d7fba092eaceea1f853743ff8beac8f2dac65) | Added Angular |
 | [2º](https://github.com) | |
 | [3º](https://github.com) | |
 | [4º](https://github.com) | |
@@ -565,7 +565,7 @@ localhost:4200
 
 | File | Description |
 | :----: | :---------: |
-| [1º](https://github.com) | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/angular.json) | Angular json file |
 | [2º](https://github.com) | |
 | [3º](https://github.com) | |
 | [4º](https://github.com) | |
