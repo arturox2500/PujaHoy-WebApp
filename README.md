@@ -561,12 +561,12 @@ localhost:4200
 | [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/68a2a1b45ce72527d289af476c506d1a5c699cdb) | getProductIndex |
 | [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/b2f1d18a83ce24b47bf8e2ff422f298a846fa003) | indexProduct added |
 | [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/39422e80a226a169279c812a5f2ded17aef7993d) | loadMoreProducts updated |
-| [5º](https://github.com) | |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/da3ec29e0192a4916ce4ba699d24c731ffd2fd59) | ngOnInit updated |
 
 | File | Description |
 | :----: | :---------: |
 | [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/angular.json) | Angular json file |
-| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/services/products.service.ts) | frontend/src/app/services/products.service.ts |
-| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-list.component.ts) | frontend/src/app/components/products/products-list.component.ts |
-| [4º](https://github.com) | ""frontend/src/app/components/products/products-list.component.ts"" |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/services/products.service.ts) | products.service.ts |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-list.component.ts) | products-list.component.ts |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/app.component.html) | app.component.html fixes |
 | [5º](https://github.com) | |
