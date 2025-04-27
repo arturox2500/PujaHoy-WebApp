@@ -291,7 +291,7 @@ localhost:4200
 ![Class and Templates Diagram Frontend](imagenes/Diagram3.jpg)
 
 ### Website demo video
-[Link to youtube](https://youtube.com)
+[Link to youtube](https://youtu.be/mZCYIwExsls?si=cbz9QYbE-jWg9PXT)
 
 ## Contributors tag 1
 
@@ -539,19 +539,19 @@ localhost:4200
 
 | Commit | Description |
 | :----: | :---------: |
-| [1º](https://github.com) | |
-| [2º](https://github.com) | |
-| [3º](https://github.com) | |
-| [4º](https://github.com) | |
-| [5º](https://github.com) | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/6ff5e696c8e42f470cef40cc0f86b57b3de93bfd) | Move the product page template to Angular and add initial functionalities. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/32838af31190ec7d33fa0f4ccfd122d55d28c747) | Add the functionality to place bids and control the visibility of buttons depending on the user accessing the screen. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/d6e95b19de09ae0993ee5277389d8e673c26017f) | Add functionality to delete a product. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/6463156960c3e70c28b0313b821ea24f95dfb6b9) | Add star rating design based on the seller's reputation for the main page of the application. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/daccdd573a0505a586ae55e7dc407d2b952f81ab) | We fixed issues with product deletion and added styling to the buttons to match the old design. |
 
 | File | Description |
 | :----: | :---------: |
-| [1º](https://github.com) | |
-| [2º](https://github.com) | |
-| [3º](https://github.com) | |
-| [4º](https://github.com) | |
-| [5º](https://github.com) | |
+| [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-details.component.html) | HTML template for Angular. |
+| [2º]([https://github.com](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-details.component.ts)) | File with all the logic for the product page. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-details.component.css) | CSS file with the styling for the product page. |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-form.component.html) | File with the logic for the main page. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/services/products.service.ts) | Product service used to communicate with the API and perform specific functionalities for the products. |
 
 ### Miguel Pradillo Bartolomé
 
