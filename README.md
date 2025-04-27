@@ -558,15 +558,15 @@ localhost:4200
 | Commit | Description |
 | :----: | :---------: |
 | [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/884d7fba092eaceea1f853743ff8beac8f2dac65) | Added Angular |
-| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/68a2a1b45ce72527d289af476c506d1a5c699cdb) | I added the getProductIndex function wich fetches a paginated list of all public products from the backend for a given page number, handling any potential errors. |
-| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/b2f1d18a83ce24b47bf8e2ff422f298a846fa003) | I added the indexProduct wich loads and appends a paginated public list of products to the current list.|
-| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/39422e80a226a169279c812a5f2ded17aef7993d) | loadMoreProducts updated |
-| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/da3ec29e0192a4916ce4ba699d24c731ffd2fd59) | ngOnInit updated |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/68a2a1b45ce72527d289af476c506d1a5c699cdb) | I added the getProductIndex function which fetches a paginated list of all public products from the backend for a given page number, handling any potential errors. |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/b2f1d18a83ce24b47bf8e2ff422f298a846fa003) | I added the indexProduct which loads and appends a paginated public list of products to the current list.|
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/39422e80a226a169279c812a5f2ded17aef7993d) | I worked on the method loadMoreProducts which loads and appends the next page of products based on the current route. |
+| [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/da3ec29e0192a4916ce4ba699d24c731ffd2fd59) | I worked on the method ngOnInit which initializes the component by fetching user data and loading the appropriate product list based on the route. |
 
 | File | Description |
 | :----: | :---------: |
 | [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/angular.json) | Angular json file |
 | [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/services/products.service.ts) | Angular service for managing products via HTTP requests with centralized error handling were I added the getProductIndex method. |
 | [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-list.component.ts) | This is an Angular component for displaying and paginating product lists based on the route and user session where I worked on the indexProduct, loadMoreProducts and ngOnInit methods |
-| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/app.component.html) | app.component.html fixes |
+| [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/app.component.html) | It is the main layout template that displays a header, footer, dynamic routed content, and the product list on the homepage. |
 | [5º](https://github.com) | |
