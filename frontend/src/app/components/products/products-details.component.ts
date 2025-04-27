@@ -246,9 +246,14 @@ export class ProductDetailComponent implements OnInit {
         this.canPlaceABid = true;
       }
 
-      // Delete And Edit
+      // Delete
       if ((isAdmin || isSeller) && (isDelivered || !hasOffers)) {
         this.canDelete = true;
+  
+      }
+      // Edit
+      if ((isAdmin || isSeller) && !hasOffers) {
+      
         this.canEdit = true;
       }
 
@@ -256,6 +261,7 @@ export class ProductDetailComponent implements OnInit {
       if (isFinished && isBuyer) {
         this.canCheckOut = true;
       }
+      
 
     }
   }
