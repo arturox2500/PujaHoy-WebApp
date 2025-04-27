@@ -548,7 +548,7 @@ localhost:4200
 | File | Description |
 | :----: | :---------: |
 | [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-details.component.html) | HTML template for Angular. |
-| [2º]([https://github.com](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-details.component.ts)) | File with all the logic for the product page. |
+| [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-details.component.ts) | File with all the logic for the product page. |
 | [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-details.component.css) | CSS file with the styling for the product page. |
 | [4º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-form.component.html) | File with the logic for the main page. |
 | [5º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/services/products.service.ts) | Product service used to communicate with the API and perform specific functionalities for the products. |
