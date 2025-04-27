@@ -559,7 +559,7 @@ localhost:4200
 | :----: | :---------: |
 | [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/884d7fba092eaceea1f853743ff8beac8f2dac65) | Added Angular |
 | [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/68a2a1b45ce72527d289af476c506d1a5c699cdb) | getProductIndex |
-| [3º](https://github.com) | |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/commit/b2f1d18a83ce24b47bf8e2ff422f298a846fa003) | indexProduct added |
 | [4º](https://github.com) | |
 | [5º](https://github.com) | |
 
@@ -567,6 +567,6 @@ localhost:4200
 | :----: | :---------: |
 | [1º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/angular.json) | Angular json file |
 | [2º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/services/products.service.ts) | frontend/src/app/services/products.service.ts |
-| [3º](https://github.com) | |
+| [3º](https://github.com/CodeURJC-DAW-2024-25/webapp08/blob/main/frontend/src/app/components/products/products-list.component.ts) | frontend/src/app/components/products/products-list.component.ts |
 | [4º](https://github.com) | |
 | [5º](https://github.com) | |
