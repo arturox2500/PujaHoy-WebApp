@@ -2,7 +2,7 @@
 
 ---
 
-# 📌 Descripción
+## 📌 Descripción
 
 ## Entidades de la Aplicación
 
@@ -109,7 +109,7 @@ ng serve
 ```
 Ir a `localhost:4200`
 
-# 👥 Colaboradores
+## 👥 Colaboradores
 - **Jorge Andrés Echevarría**
 - **Arturo Enrique Gutierrez Mirandona** 
 - **Iván Gutiérrez González**
